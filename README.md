@@ -15,7 +15,7 @@ TBD
 * [8 - ZTP at Scale](./content/8.md)
 * [9 - Topology Aware Lifecycle Manager (TALM)](./content/9.md)
 * [10 - PolicyGen Deepdive](./content/10.md)
-* [11 - Deployment Hardware Considerations](./content/11.md)
+* [11 - Deployment Considerations](./content/11.md)
 * [12 - Crafting Deployment's IaaC](./content/12.md)
 * [13 - Crafting Cluster and CNF Operators Configs](./content/13.md)
 * [14 - Running the Deployment](./content/14.md)
