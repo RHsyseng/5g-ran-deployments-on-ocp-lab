@@ -1,0 +1,5 @@
+= Troubleshooting Tips
+include::_attributes.adoc[]
+:profile: 5g-ran-lab
+
+TBD

@@ -1,0 +1,26 @@
+runtime:
+  cache_dir: ./.cache/antora
+
+site:
+  title: LAB - 5G RAN Deployments on OpenShift
+  url: http://localhost:3000/5g-ran-deployments-on-ocp-lab/index.html
+  start_page: 5g-ran-deployments-on-ocp-lab::index.adoc
+
+content:
+  sources:
+    - url: .
+      branches: HEAD
+      start_path: documentation
+asciidoc:
+  attributes:
+    title: LAB - 5G RAN Deployments on OpenShift
+  extensions:
+    - ./lib/remote-include-processor.js
+    - ./lib/tab-block.js
+ui:
+  bundle:
+    url: https://github.com/redhat-developer-demos/rhd-tutorial-ui/releases/download/v0.1.9/ui-bundle.zip
+    snapshot: true
+  supplemental_files: ./supplemental-ui
+output:
+  dir: ./gh-pages

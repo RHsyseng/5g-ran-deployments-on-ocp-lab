@@ -1,0 +1,23 @@
+= Topology Aware Lifecycle Manager (TALM)
+include::_attributes.adoc[]
+:profile: 5g-ran-lab
+
+TALM is used to manage the software lifecycle of multiple single-node OpenShift clusters. TALM leverages RHACM policies to perform changes on the target clusters.
+
+Using TALM in a large network of clusters allows the phased rollout of policies to the clusters in limited batches. This helps to minimize possible service disruptions when updating. With TALM, you can control the following actions:
+
+* The timing of the update.
+* The number of RHACM managed clusters.
+* The subset of managed clusters to apply the policies to.
+* The update order of the clusters.
+* The set of policies remediated to the cluster.
+* The order of policies remediated to the cluster.
+
+[#cluster-lifecycle-at-scale]
+== Lifecycle management of many clusters at scale
+
+Leveraging TALM we can manage the lifecycle of thousands of clusters at scale, this is required when working on complex RAN environments.
+
+As described in the previous section we will make use of the different TALM features to have full control on what, when and how changes are applied to our cluster fleet.
+
+We will be covering TALM in detail in a future section, but you can read more about it https://docs.openshift.com/container-platform/4.11//scalability_and_performance/cnf-talm-for-cluster-upgrades.html[here].

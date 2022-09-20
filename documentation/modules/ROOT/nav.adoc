@@ -1,0 +1,78 @@
+* xref:00-introduction.adoc[Introduction]
+
+* xref:01-5g-ran-context.adoc[5G Ran Context]
+** xref:01-5g-ran-context.adoc#low-latency[Low Latency]
+** xref:01-5g-ran-context.adoc#numa-nodes[NUMA Nodes]
+** xref:01-5g-ran-context.adoc#huge-pages[Huge Pages]
+** xref:01-5g-ran-context.adoc#cpu-pinning[CPU Pinning]
+** xref:01-5g-ran-context.adoc#irq-load-balancing[IRQ Load Balancing]
+** xref:01-5g-ran-context.adoc#dpdk[DPDK]
+** xref:01-5g-ran-context.adoc#oot-drivers[OoT Drivers]
+** xref:01-5g-ran-context.adoc#cpu-reduction-tuning[Tuning for CPU Reduction]
+
+* xref:02-sno-intro.adoc[Introduction to Single Node OpenShift (SNO)]
+** xref:02-sno-intro.adoc#5g-ran[5G Radio Access Network]
+** xref:02-sno-intro.adoc#things-keep-mind[Things to keep in mind]
+** xref:02-sno-intro.adoc#deployments[Deployments]
+** xref:02-sno-intro.adoc#extra-information[Extra information]
+
+* xref:03-cnf-operators-intro.adoc[Introduction to CNF Operators]
+** xref:03-cnf-operators-intro.adoc#node-tuning-operator[Node Tuning Operator]
+** xref:03-cnf-operators-intro.adoc#sriov-operator[SR-IOV Operator]
+** xref:03-cnf-operators-intro.adoc#ptp-operator[PTP Operator]
+** xref:03-cnf-operators-intro.adoc#accelerators-operators[Accelerators Operators]
+
+* xref:04-ztp-intro.adoc[Introduction to Zero Touch Provisioning (ZTP)]
+** xref:04-ztp-intro.adoc#gitops[GitOps]
+*** xref:04-ztp-intro.adoc#gitops-principles[GitOps Principles]
+*** xref:04-ztp-intro.adoc#gitops-patterns-ocp[GitOps Patterns on OpenShift]
+*** xref:04-ztp-intro.adoc#direct-commit-to-main[Direct commit to main]
+*** xref:04-ztp-intro.adoc#prs-review-cycles[Pull Requests and review cycles]
+*** xref:04-ztp-intro.adoc#directories-vs-branches[Directories vs Branches]
+** xref:04-ztp-intro.adoc#ztp-workflow[ZTP workflow]
+
+
+* xref:05-ocp-gitops.adoc[OpenShift GitOps]
+** xref:05-ocp-gitops.adoc#gitops-principles[Principles of GitOps]
+** xref:05-ocp-gitops.adoc#gitops-ocp[GitOps on OpenShift]
+
+* xref:06-rhacm-policies.adoc[RHACM Policies]
+
+* xref:07-managing-at-scale.adoc[Managing at Scale]
+** xref:07-managing-at-scale.adoc#inform-policies[Inform Policies]
+** xref:07-managing-at-scale.adoc#olm-subscriptions[OLM Subscriptions]
+** xref:07-managing-at-scale.adoc#cluster-policies[Cluster Policies]
+
+* xref:08-ztp-at-scale.adoc[ZTP at Scale]
+
+* xref:09-talm.adoc[Topology Aware Lifecycle Manager (TALM)]
+** xref:09-talm.adoc#cluster-lifecycle-at-scale[Lifecycle management of many clusters at scale]
+
+* xref:10-policygen-deepdive.adoc[PolicyGen Deepdive]
+
+* xref:11-deployment-considerations.adoc[Deployment Considerations]
+** xref:11-deployment-considerations.adoc#hardware-configurations[Hardware configurations]
+*** xref:11-deployment-considerations.adoc#bios-settings[Bios Settings]
+** xref:11-deployment-considerations.adoc#networking[Networking]
+** xref:11-deployment-considerations.adoc#disconnected-environments[Disconnected Environments]
+*** xref:11-deployment-considerations.adoc#connected-proxy[Connected through proxy]
+*** xref:11-deployment-considerations.adoc#fully-disconnected[Fully disconnected]
+** xref:11-deployment-considerations.adoc#git-repo-structure[Git Repository Structure]
+
+* xref:12-crafting-deployments-iaac.adoc[Crafting Deployment's IaaC]
+
+* xref:13-crafting-cluster-cnf-operators-configs.adoc[Crafting Cluster and CNF Operators Configs]
+
+* xref:14-running-the-deployment.adoc[Running the Deployment]
+
+* xref:15-monitoring-the-deployment.adoc[Monitoring the Deployment]
+
+* xref:16-check-deployment-is-finished.adoc[Check Deployment is finished]
+
+* xref:17-using-talm-to-update-clusters.adoc[Using TALM to update clusters]
+
+* xref:18-troubleshooting-tips.adoc[Troubleshooting Tips]
+
+* xref:19-common-pitfalls.adoc[Common Pitfalls]
+
+* xref:20-closing-thoughts.adoc[Closing Thoughts]

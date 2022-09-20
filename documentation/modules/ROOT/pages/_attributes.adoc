@@ -1,0 +1,5 @@
+:experimental:
+:source-highlighter: highlightjs
+:branch: main
+:github-repo: https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/blob/{branch}
+:profile: 5g-ran-lab

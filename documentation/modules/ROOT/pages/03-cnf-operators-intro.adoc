@@ -1,0 +1,45 @@
+= Introduction to CNF Operators
+include::_attributes.adoc[]
+:profile: 5g-ran-lab
+
+When working on RAN environments there are a set of operators that will be common to almost all of them. In this section we will introduce what those operators are and what they are used for.
+
+[#node-tuning-operator]
+== Node Tuning Operator
+
+Helps you manage node-level tuning by orchestrating the TuneD daemon and achieves low latency performance by using the Performance Profile controller.
+
+In RAN environments we will leverage the PerformanceProfile API in order to:
+
+* Update the kernel to kernel-rt.
+* Configure CPUs for housekeeping (reserved CPUs).
+* Configure CPUs for running workloads (isolated CPUs).
+
+The Node Tuning Operator is part of the standard OpenShift installation.
+
+You can read more about the NTO https://docs.openshift.com/container-platform/4.11/scalability_and_performance/using-node-tuning-operator.html[here].
+
+[#sriov-operator]
+== SR-IOV Operator
+
+Helps you manage SR-IOV network devices and network attachments. You can think of an SR-IOV NIC like a hypervisor for NICs, you have a physical NIC and you can create (a limited number of) virtualized NICs out of it.
+
+We usually refer to this virtualized NICs as virtual functions (VFs), and these are exposed in the containers in order to provide extra networks to workloads.
+
+You can read more about the SR-IOV operator https://docs.openshift.com/container-platform/4.11/networking/hardware_networks/about-sriov.html[here].
+
+[#ptp-operator]
+== PTP Operator
+
+Precision Time Protocol (PTP) is used to synchronize clocks in a network. When used in conjunction with hardware support, PTP is capable of sub-microsecond accuracy, and is more accurate than Network Time Protocol (NTP).
+
+The PTP Operator can be used to configure PTP on OpenShift nodes.
+
+You can read more about the PTP operator https://docs.openshift.com/container-platform/4.11/networking/using-ptp.html[here].
+
+[#accelerators-operators]
+== Accelerators Operators
+
+Hardware accelerator cards can be used to accelerate 4G/LTE and 5G virtualized radio access networks (vRAN) workloads. The use of these cards increases the overall compute capacity of a commercial, off-the-shelf platform.
+
+In order to manage these cards, there are multiple accelerator operators that we may need to deploy in our OpenShift clusters.

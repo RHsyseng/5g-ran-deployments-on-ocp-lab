@@ -1,0 +1,5 @@
+= Crafting the Cluster CNF Operators Configs
+include::_attributes.adoc[]
+:profile: 5g-ran-lab
+
+TBD
