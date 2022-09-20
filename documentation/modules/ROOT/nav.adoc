@@ -37,6 +37,10 @@
 ** xref:05-ocp-gitops.adoc#gitops-ocp[GitOps on OpenShift]
 
 * xref:06-rhacm-policies.adoc[RHACM Policies]
+** xref:07-rhacm-policies.adoc#policy-framework[Policy Framework]
+** xref:07-rhacm-policies.adoc#policies[Policies]
+** xref:07-rhacm-policies.adoc#policy-remediation[Policy Remediation]
+
 
 * xref:07-managing-at-scale.adoc[Managing at Scale]
 ** xref:07-managing-at-scale.adoc#inform-policies[Inform Policies]
