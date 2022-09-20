@@ -152,7 +152,10 @@ spec:
     type: ManagedClusterConditionAvailable
 -----
 
-Policies can be enabled or disabled by setting the disabled parameter value to true or false. By default they are enabled. With that, we have covered the basics of what a Policy in RHACM is, and how it works.
+[#policy-status]
+=== Policy status
+
+Policies can be enabled or disabled by setting the _disabled_ parameter value to true or false. By default they are enabled. 
 
 [#policy-remediation]
 === Policy remediation
@@ -165,5 +168,7 @@ This is important, since sometimes we just need to be informed about the drift b
 
 [#rhacm-policies-takeaways]
 == Takeaways
+
+With that, we have covered the basics of what a Policy in RHACM is, and how it works.
 
 [1] https://github.com/stolostron/policy-collection
