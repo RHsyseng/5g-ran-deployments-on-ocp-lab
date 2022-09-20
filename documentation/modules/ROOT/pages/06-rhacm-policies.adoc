@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-As we mentioned in the [ZTP Workflow](https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/blob/main/content/4.md#ztp-workflow) section, the Advanced Cluster Management for Kubernetes allow us to _provision_ and _configure_ multiple clusters in a declarative way following GitOps best practices. ZTP makes intensive use of Policies when setting up the target clusters as a day 2 operation. In our telco use case, the ZTP policyGen kustomize plugin translates the vRAN DU profile based on `PolicyGenTemplates` into multiple `Policies`that are understood by the Hub cluster and applied to the managed clusters.
+As we mentioned in the https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/blob/main/content/4.md#ztp-workflow[ZTP Workflow] section, the Advanced Cluster Management for Kubernetes allow us to _provision_ and _configure_ multiple clusters in a declarative way following GitOps best practices. ZTP makes intensive use of Policies when setting up the target clusters as a day 2 operation. In our telco use case, the ZTP policyGen kustomize plugin translates the vRAN DU profile based on `PolicyGenTemplates` into multiple `Policies`that are understood by the Hub cluster and applied to the managed clusters.
 
 In this section we provide an introduction to the concepts behind the “Governance" section of RHACM. Furthermore, we are going to introduce the concept of a Policy, which is key for managing the configuration lifecycle of our managed clusters.
 
@@ -164,6 +164,6 @@ Policy controllers periodically check specified policies against control state a
 This is important, since sometimes we just need to be informed about the drift between our desired state defined by the Policy and the current status of the spoke cluster or clusters. On the other hand, in case where we want to apply a configuration, such as installing an operator, replacing the existing configuration or adding a new set up to the cluster, the Policy should be set to enforce.
 
 [#rhacm-policies-takeaways]
-==Takeaways
+== Takeaways
 
 [1] https://github.com/stolostron/policy-collection
