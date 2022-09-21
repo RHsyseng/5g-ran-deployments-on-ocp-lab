@@ -6,25 +6,29 @@ As mentioned, Zero Touch Provisioning (ZTP) leverages multiple products[..link t
 
 IMPORTANT: The workflow does not need any intervention, so ZTP automatically will configure the SNO once it is provisioned. However, two stages are clearly differentiated.
 
-You start the workflow by creating declarative configurations for the provisioning of your OpenShift clusters. This configuration is called `siteConfig` and it is understood by ZTP using an specific kustomize plugin called https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/siteconfig-generator-kustomize-plugin[siteconfig-generator]. This CR contains all the necessary information for RHACM and Assisted Installer to provision your node or nodes. Basically, it will create ISO images with the the defined configuration that are delivered to the edge nodes to begin the installation process. The images are used to repeatedly provision large numbers of nodes efficiently and quickly, allowing you keep up with requirements from the field for far edge nodes. 
+You start the workflow by creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is described in a custom resource called `siteConfig`. Once the configuration is created you can push it to the Git repo where Argo CD is continuously looking to pull the new content:
 
 image::ztp_workflow_0.png[ZTP Workflow 0]
 
+Then, Argo CD pulls the siteConfig and uses a specific kustomize plugin called https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/siteconfig-generator-kustomize-plugin[siteconfig-generator] to transform it into custom resources understandable by the hub cluster (RHACM/MCE). A siteConfig contains all the necessary information to provision your node or nodes. Basically, it will create ISO images with the the defined configuration that are delivered to the edge nodes to begin the installation process. The images are used to repeatedly provision large numbers of nodes efficiently and quickly, allowing you keep up with requirements from the field for far edge nodes. 
+
+IMPORTANT: On telco use cases, clusters are mainly running on baremetal hosts. Therefore the created ISO images are mounted using remote virtual media features of the baseboard management controller (BMC).
+
+In the picture, these resulting manifests are called Cluster Installation CRs. Then, the provisioning process starts.
+
 image::ztp_workflow_1.png[ZTP Workflow 1]
+
+The provisioning process includes innstalling the host operating system (RHCOS) on a blank server and deploying OpenShift Container Platform. Notice in the picture how ZTP allow us to provision clusters at scale.
 
 image::ztp_workflow_2.png[ZTP Workflow 2]
 
+Once the clusters are provisioned, the day-2 configuration defined in multiple `PolicyGenTemplate` (PGTs) custom resources will be automatically applied. `PolicyGenTemplate`custom resource is understood by the ZTP using an specific kustomize plugin called https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin[policy-generator]. In telco RAN DU nodes, this configuration includes the installation of the common telco operators, common configuration for RAN and specific configuration (SR-IOV or performance settings) for each site since it is very dependant on the hardware.
+
 image::ztp_workflow_3.png[ZTP Workflow 3]
-
-
-
-Once a cluster is provisioned, the day-2 configuration defined in multiple `PolicyGenTemplate` custom resources will be automatically applied. `PolicyGenTemplate`custom resource is understood by the ZTP using an specific kustomize plugin called https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin[policy-generator]. In telco RAN DU nodes, this configuration includes the installation of the common telco operators, common configuration for RAN and specific configuration (SR-IOV or performance settings) for each site since it is very dependant on the hardware.
 
 Notice that if, later on, you want to apply a new configuration or replace an existing configuration  you must use a new `policyGenTemplate` to do that.
 
-image::ztp_gitops_flow.png[External Resource Reconciler]
-
-The deployment of the clusters includes:
+Summing up, the deployment of the clusters includes:
 
 * Installing the host operating system (RHCOS) on a blank server.
 * Deploying OpenShift Container Platform.
