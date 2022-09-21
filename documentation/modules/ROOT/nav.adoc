@@ -40,7 +40,7 @@
 *** xref:08-ztp-at-scale.adoc#policygen[PolicyGen]
 ** xref:08-ztp-at-scale.adoc#talm[Topology Aware Lifecycle Manager]
 
-* xref:21-ztp-workflow.doc[ZTP Workflow]
+* xref:21-ztp-workflow.adoc[ZTP Workflow]
 
 * xref:05-ocp-gitops.adoc[OpenShift GitOps]
 ** xref:05-ocp-gitops.adoc#gitops-principles[Principles of GitOps]
