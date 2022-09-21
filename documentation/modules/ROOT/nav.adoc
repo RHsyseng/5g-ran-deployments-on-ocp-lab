@@ -31,6 +31,14 @@
 *** xref:04-ztp-intro.adoc#directories-vs-branches[Directories vs Branches]
 ** xref:04-ztp-intro.adoc#ztp-workflow[ZTP workflow]
 
+* xref:08-ztp-at-scale.adoc[ZTP Components]
+** xref:08-ztp-at-scale.adoc#rhacm[Red Hat Advanced Cluster Management]
+*** xref:08-ztp-at-scale.adoc#mce[Multicluster Engine]
+*** xref:08-ztp-at-scale.adoc#ai[Infrastructure Operator]
+** xref:08-ztp-at-scale.adoc#gitops-operator[GitOps Operator]
+*** xref:08-ztp-at-scale.adoc#sitegen[SiteGen]
+*** xref:08-ztp-at-scale.adoc#policygen[PolicyGen]
+*** xref:08-ztp-at-scale.adoc#talm[Topology Aware Lifecycle Manager]
 
 * xref:05-ocp-gitops.adoc[OpenShift GitOps]
 ** xref:05-ocp-gitops.adoc#gitops-principles[Principles of GitOps]
@@ -45,8 +53,6 @@
 ** xref:07-managing-at-scale.adoc#inform-policies[Inform Policies]
 ** xref:07-managing-at-scale.adoc#olm-subscriptions[OLM Subscriptions]
 ** xref:07-managing-at-scale.adoc#cluster-policies[Cluster Policies]
-
-* xref:08-ztp-at-scale.adoc[ZTP at Scale]
 
 * xref:09-talm.adoc[Topology Aware Lifecycle Manager (TALM)]
 ** xref:09-talm.adoc#cluster-lifecycle-at-scale[Lifecycle management of many clusters at scale]
