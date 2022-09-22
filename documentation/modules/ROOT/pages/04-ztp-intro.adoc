@@ -3,15 +3,17 @@ include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
 5G is not only about the speed as in bandwidth, but also as the latency, and one of the key areas being pursued this, is getting the network functions closest to the end-user. 
-Nobody said that this could be simple, as it demands a lot of technology and instead of being datacenter-centric, the promises of higher speed and reduced latency, come with a cost: services should be closest to the customer to satisfy them. Therefore, telco edge computing presents extraordinary challenges with managing hundreds to tens of thousands of clusters in hundreds of thousands of locations. These challenges require fully-automated management solutions with, as closely as possible, zero human interaction.
+Nobody said that this could be simple, as it demands a lot of technology and instead of being datacenter-centric, the promises of higher speed and reduced latency, come with a cost: services should be closest to the customer to satisfy them. 
 
-Zero touch provisioning (ZTP) allows you to provision new edge sites with declarative configurations of bare-metal equipment at remote sites following a GitOps deployment set of practices. Template or overlay configurations install OpenShift Container Platform features that are required for CNF workloads. End-to-end functional test suites are used to verify CNF related features. All configurations are declarative in nature.
+Therefore, telco edge computing presents extraordinary challenges with managing hundreds to tens of thousands of clusters in hundreds of thousands of locations. These challenges require fully-automated management solutions with, as closely as possible, zero human interaction.
 
-ZTP is a project to deploy and deliver OpenShift 4 in a hub-and-spoke architecture (in a relation of 1-N), where a single hub cluster manages many spoke clusters. The hub and the spokes will be based on OpenShift 4 but with the difference that the hub cluster will manage, deploy and control the lifecycle of the spokes using Red Hat Advanced Cluster Management (RHACM). So, hub clusters running RHACM apply radio access network (RAN) policies from predefined custom resources (CRs) and provision and deploy the spoke clusters using ZTP and Assisted Installer (AI). https://placeholder.link[link to ZTP components]
+*Zero touch provisioning (ZTP)* allows you to provision new edge sites with declarative configurations of bare-metal equipment at remote sites following a GitOps deployment set of practices. All configurations are declarative in nature.
 
-IMPORTANT: ZTP, of course, can have two scenarios, connected and disconnected, wether the OpenShift Container Platform Worker nodes can directly access the internet or not. In our lab and for telco deployments, disconnected scenario is the most common.
+ZTP is a project to deploy and deliver OpenShift 4 in a hub-and-spoke architecture (in a relation of 1-N), where a single hub cluster manages many spoke clusters. The hub and the spokes will be based on OpenShift 4 but with the difference that the hub cluster will manage, deploy and control the lifecycle of the spokes using Red Hat Advanced Cluster Management (RHACM). So, hub clusters running RHACM apply radio access network (RAN) policies from predefined custom resources (CRs) and provision and deploy the spoke clusters using multiple products. We will take a closer look at these components in link:08-ztp-at-scale.html[ZTP components] section.
 
-ZTP provides support for deploying single node clusters, three-node clusters, and standard OpenShift clusters. This includes the installation of OpenShift and deployment of the distributed units (DUs) at scale. In this lab, we will focus on SNO clusters which was a topic discussed in [Introduction to Single Node OpenShift (SNO)](./2.md)
+IMPORTANT: ZTP can have two scenarios, connected and disconnected, wether the OpenShift Container Platform Worker nodes can directly access the internet or not. In our lab and for telco deployments, disconnected scenario is the most common.
+
+ZTP provides support for deploying single node clusters, three-node clusters, and standard OpenShift clusters. This includes the installation of OpenShift and deployment of the distributed units (DUs) at scale. In this lab, we will focus on SNO clusters which was a topic discussed in link:02-sno-intro.html[Introduction to Single Node OpenShift (SNO)].
 
 image::ztp_edge_framework.png[ZTP Edge Framework]
 
@@ -80,28 +82,3 @@ TBD
 === Directories vs Branches
 
 TBD
-
-[#ztp-workflow]
-== ZTP workflow
-
-As mentioned, Red Hat Advanced Cluster Management (RHACM) leverages zero touch provisioning (ZTP) to deploy OpenShift Container Platform clusters using a GitOps approach. While the workflow starts when the site is connected to the network and ends with the CNF workload deployed and running on the site nodes, it can be logically divided into two different stages: provisioning of the SNO and applying the desired configuration, which in our case is applying the validated RAN DU profile.
-
-IMPORTANT: The workflow does not need any intervention, so ZTP automatically will configure the SNO once it is provisioned. However, two stages are clearly differentiated.
-
-You start the workflow by creating declarative configurations for the provisioning of your OpenShift clusters. This configuration is called `siteConfig` and it is understood by ZTP using an specific kustomize plugin called https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/siteconfig-generator-kustomize-plugin[siteconfig-generator]. This CR contains all the necessary information for RHACM and Assisted Installer to provision your node or nodes. Basically, it will create ISO images with the the defined configuration that are delivered to the edge nodes to begin the installation process. The images are used to repeatedly provision large numbers of nodes efficiently and quickly, allowing you keep up with requirements from the field for far edge nodes. 
-
-Once a cluster is provisioned, the day-2 configuration defined in multiple `PolicyGenTemplate` custom resources will be automatically applied. `PolicyGenTemplate`custom resource is understood by the ZTP using an specific kustomize plugin called https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin[policy-generator]. In telco RAN DU nodes, this configuration includes the installation of the common telco operators, common configuration for RAN and specific configuration (SR-IOV or performance settings) for each site since it is very dependant on the hardware.
-
-Notice that if, later on, you want to apply a new configuration or replace an existing configuration  you must use a new `policyGenTemplate` to do that.
-
-image::ztp_gitops_flow.png[External Resource Reconciler]
-
-The deployment of the clusters includes:
-
-* Installing the host operating system (RHCOS) on a blank server.
-* Deploying OpenShift Container Platform.
-* Creating cluster policies via `PolicyGenTemplate` and site subscriptions via `SiteConfig`
-* Leveraging a GitOps deployment topology for a develop once, deploy anywhere model.
-* Making the necessary network configurations to the server operating system.
-* Deploying profile Operators and performing any needed software-related configuration, such as performance profile, PTP, and SR-IOV.
-* Downloading images needed to run workloads (CNFs).

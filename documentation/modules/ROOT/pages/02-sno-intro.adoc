@@ -11,7 +11,9 @@ SNO's primary use case is for edge computing workloads, including intermittent c
 
 Notice that in the context of telecommunications service providers' 5G RANs, it is increasingly common to see "cloud native" implementations of the 5G Distributed Unit (DU) components. Due to latency constraints, the DU needs to be deployed very close to the Radio Units (RUs), for which it is responsible. In practice, this can mean running the DU on anything from a single server at the base of a cell tower to a more datacenter-like environment serving several RUs.
 
-A typical DU example is a resource-intensive workload, requiring 6 dedicated cores per DU and several DUs packed on the server, with 16-24 GB of RAM per DU (consumed as huge pages), multiple single route I/O virtualization (SR-IOV) NICs, FPGA, or GPU acceleration cards  carrying several Gbps of traffic each. One crucial detail of this use case is ensuring that this workload can be "autonomous" so that it can continue operating with its existing configuration, even when any centralized management functionality is unavailable. This is where single node OpenShift comes in.
+A typical DU example is a resource-intensive workload, requiring 6 dedicated cores per DU and several DUs packed on the server, with 16-24 GB of RAM per DU (consumed as huge pages), multiple single route I/O virtualization (SR-IOV) NICs, FPGA, or GPU acceleration cards  carrying several Gbps of traffic each. 
+
+One crucial detail of this use case is ensuring that this workload can be "autonomous" so that it can continue operating with its existing configuration, even when any centralized management functionality is unavailable. This is where single node OpenShift comes in.
 
 [#things-keep-mind]
 == Things to keep in mind
