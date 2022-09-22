@@ -23,19 +23,10 @@ As we explained earlier, in RAN environments we want to have control over when c
 [#cluster-policies]
 == Cluster Policies
 
-* **Common Policies**
+* **Common Policies**. Policies that apply to all our clusters. Some examples of policies that can fit this group will be: OAuth configuration, logging configuration, etc.
 
-    Policies that apply to all our clusters. Some examples of policies that can fit this group will be: OAuth configuration, logging configuration, etc.
+* **Group Policies**. Policies that apply to a group of clusters that share a common identifier/feature. Some examples of policies that can fit this group will be: SRI-OV deployment on clusters with SRI-OV cards, accelerator operator deployment on clusters with accelerator cards.
 
-* **Group Policies**
+* **Site Policies**. Policies that apply to a specific cluster. Some examples of policies that can fit this group will be: a performance profile configuration for a cluster, an SRI-OV configuration for a specific NIC in the cluster.
 
-    Policies that apply to a group of clusters that share a common identifier/feature. Some examples of policies that can fit this group will be: SRI-OV deployment on clusters with SRI-OV cards, accelerator operator deployment on clusters with accelerator cards.
-
-* **Site Policies**
-
-    Policies that apply to a specific cluster. Some examples of policies that can fit this group will be: a performance profile configuration for a cluster, an SRI-OV configuration for a specific NIC in the cluster.
-
-
-* **Zone Policies**
-
-    Policies that apply to clusters within a zone. Zone can be whatever you want it to be; a physical location, an infrastructure provider, etc. Some examples of policies that can fit this group will be: storage configuration, proxy configurations, ntp configuration, etc.
+* **Zone Policies**. Policies that apply to clusters within a zone. Zone can be whatever you want it to be; a physical location, an infrastructure provider, etc. Some examples of policies that can fit this group will be: storage configuration, proxy configurations, ntp configuration, etc.

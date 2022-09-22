@@ -23,13 +23,15 @@
 ** xref:03-cnf-operators-intro.adoc#accelerators-operators[Accelerators Operators]
 
 * xref:04-ztp-intro.adoc[Introduction to Zero Touch Provisioning (ZTP)]
-** xref:04-ztp-intro.adoc#gitops[GitOps]
-*** xref:04-ztp-intro.adoc#gitops-principles[GitOps Principles]
-*** xref:04-ztp-intro.adoc#gitops-patterns-ocp[GitOps Patterns on OpenShift]
-*** xref:04-ztp-intro.adoc#direct-commit-to-main[Direct commit to main]
-*** xref:04-ztp-intro.adoc#prs-review-cycles[Pull Requests and review cycles]
-*** xref:04-ztp-intro.adoc#directories-vs-branches[Directories vs Branches]
-** xref:04-ztp-intro.adoc#ztp-workflow[ZTP workflow]
+
+* xref:05-ocp-gitops.adoc[OpenShift GitOps]
+** xref:05-ocp-gitops.adoc#gitops[GitOps]
+*** xref:05-ocp-gitops.adoc#gitops-principles[GitOps Principles]
+*** xref:05-ocp-gitops.adoc#gitops-patterns-ocp[GitOps Patterns on OpenShift]
+*** xref:05-ocp-gitops.adoc#direct-commit-to-main[Direct commit to main]
+*** xref:05-ocp-gitops.adoc#prs-review-cycles[Pull Requests and review cycles]
+*** xref:05-ocp-gitops.adoc#directories-vs-branches[Directories vs Branches]
+** xref:05-ocp-gitops.adoc#gitops-ocp[GitOps on OpenShift]
 
 * xref:08-ztp-at-scale.adoc[ZTP Components]
 ** xref:08-ztp-at-scale.adoc#rhacm[Red Hat Advanced Cluster Management]
@@ -41,10 +43,6 @@
 ** xref:08-ztp-at-scale.adoc#talm[Topology Aware Lifecycle Manager]
 
 * xref:21-ztp-workflow.adoc[ZTP Workflow]
-
-* xref:05-ocp-gitops.adoc[OpenShift GitOps]
-** xref:05-ocp-gitops.adoc#gitops-principles[Principles of GitOps]
-** xref:05-ocp-gitops.adoc#gitops-ocp[GitOps on OpenShift]
 
 * xref:06-rhacm-policies.adoc[RHACM Policies]
 ** xref:06-rhacm-policies.adoc#policy-framework[Policy Framework]

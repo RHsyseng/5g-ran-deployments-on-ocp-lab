@@ -73,11 +73,10 @@ In our Git repository we will have the following folder structure:
 ----
 
 * `site-configs`: This folder is used to store the different SiteConfigs describing the environments we will deploy through ZTP.
-    * `pre-reqs`: This folder is used to store the different configurations that are required for the deployment of the environments, things like: pull secrets, bmc credentials, etc.
+** `pre-reqs`: This folder is used to store the different configurations that are required for the deployment of the environments, things like: pull secrets, bmc credentials, etc.
 
 * `site-policies`: This folder has different sub-folders storing different sets of PolicyGenTemplates.
-
-    * `common-policies`: This folder is used to store PolicyGenTemplates that apply to all clusters.
-    * `group-policies`: This folder is used to store PolicyGenTemplates that apply to a group of clusters.
-    * `site-policies`: This folder is used to store PolicyGenTemplates that apply to specific clusters.
-    * `zone-policies`: This folder is used to store PolicyGenTemplates that apply to clusters in a specific zone.
+** `common-policies`: This folder is used to store PolicyGenTemplates that apply to all clusters.
+** `group-policies`: This folder is used to store PolicyGenTemplates that apply to a group of clusters.
+** `site-policies`: This folder is used to store PolicyGenTemplates that apply to specific clusters.
+** `zone-policies`: This folder is used to store PolicyGenTemplates that apply to clusters in a specific zone.

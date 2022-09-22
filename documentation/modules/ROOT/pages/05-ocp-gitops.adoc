@@ -2,30 +2,73 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-GitOps is a big part of how we deploy and manage RAN infrastructure at scale, in this section we are going to cover the basics around GitOps patterns and how we can leverage these in OpenShift.
+GitOps is a big part of how we deploy and manage RAN infrastructure at scale, in this section we are going to cover the basics around GitOps in OpenShift.
 
-GitOps can be defined as a set of practices that use Git pull requests to manage infrastructure and application configurations. In GitOps, the Git repository is the only source of truth for system and application configuration. This Git repository contains a declarative description of the infrastructure you need in your specified environment and contains an automated process to make your environment match the described state. Also, it contains the entire state of the system so that the trail of changes to the system state are visible and auditable. By using GitOps, you resolve the issues of infrastructure and application configuration sprawl.
+[#gitops]
+== GitOps
 
-GitOps defines infrastructure and application definitions as code. Then, it uses this code to manage multiple workspaces and clusters to simplify the creation of infrastructure and application configurations. By following the principles of the code, you can store the configuration of clusters and applications in Git repositories, and then follow the Git workflow to apply these repositories to your chosen clusters. You can apply the core principles of developing and maintaining software in a Git repository to the creation and management of your cluster and application configuration files.
+ZTP uses the GitOps deployment set of practices for infrastructure deployment that allows developers to perform tasks that would otherwise fall under the purview of IT operations. GitOps rely on Git pull requests to manage infrastructure and application configurations. Git repository in GitOps is considered the only source of truth and contains the entire state of the system so that the trail of changes to the system state are visible and auditable.
+
+Traceability of changes in GitOps is no novelty in itself as this approach is almost universally employed for the application source code. However GitOps advocates applying the same principles (reviews, pull requests, tagging, etc) to infrastructure and application configuration so that teams can benefit from the same assurance as they do for the application source code.
+
+Although there is no precise definition or agreed upon set of rules, the following principles are an approximation of what constitutes a GitOps practice:
+
+* Declarative description of the system is stored in Git (configs, monitoring, etc).
+* Changes to the state are made via pull requests.
+* Git push reconciled with the state of the running system with the state in the Git repository.
 
 [#gitops-principles]
-== Principles of GitOps
+=== GitOps Principles
 
-1. **Declaratively**
+GitOps paradigm requires us to describe and observe systems with **declarative** specifications that eventually form the basis of continuous everything. (As a refresher, continuous everything includes but is not limited to continuous integration (CI), testing, delivery, deployment, analytics, governance with many more to come). In turn, in an imperative paradigm, the user is responsible for defining exact steps which are necessary to achieve the end goal and carefully plan every step and the sequence in which they are executed. 
 
-    The system's desired state must be declarative.
+GitOps achieves these tasks using declarative specifications stored in Git repositories, such as YAML files and other defined patterns, that provide a framework for deploying the infrastructure. The declarative output is leveraged by the Red Hat Advanced Cluster Management (RHACM) for multisite deployment.
 
-2. **Immutability**
+IMPORTANT:  Red Hat OpenShift is a declarative Kubernetes platform that administrators can configure and manage using GitOps principles. Furthermore, Red Hat collaborates with open source projects like ArgoCD and Tekton to implement a framework for GitOps.
 
-    Declarations must be stored as immutable versions in Git.
+One of the motivators for a GitOps approach is the requirement for **reliability at scale**. This is a significant challenge that GitOps helps solve. GitOps addresses the reliability issue by providing traceability, RBAC, and a single source of truth for the desired state of each site. Every change throughout the application life cycle is traced in the Git repository and is auditable. Making changes via Git means developers can finally do what they want: code at their own pace without waiting on resources to be assigned or approved by operations teams. **Scale** issues are addressed by GitOps providing structure, tooling, and event driven operations through webhooks.
 
-3. **Continuous Reconciliation**
+Below, the list of the basic principles on which GitOps stands:
 
-    State reconciliation must be continuous.
+* **The definition of our systems is described as code**. The configuration for our systems can be treated as code, so we can store it and have it automatically versioned in Git, our single source of truth. That way we can rollout and rollback changes in our systems in an easy way.
 
-4. **Declarative Operations**
+* **The desired system state and configuration is defined and versioned in Git**. Having the desired configuration of our systems stored and versioned in Git give us the ability to rollout / rollback changes easily to our systems and applications. On top of that we can leverage Git's security mechanisms in order to ensure the ownership and provence of the code.
 
-    Operations should be through versioned mutation of the declaration.
+* **Changes to the configuration can be automatically applied using pull request (PR) mechanisms**. Using Git Pull Requests we can manage in an easy way how changes are applied to the stored configuration, you can request reviews from different team members, run CI tests, etc. On top of that you don't need to share your cluster credentials with anyone, the person committing the change only needs access to the Git repository where the configuration is stored.
+
+* **There is a controller that ensures no configuration drifts are present**. As the desired system state is present in Git, we only need a software that makes sure the current system state matches the desired system state. In case the states differ this software should be able to self-heal or notify the drift based on its configuration.
+
+[#gitops-patterns-ocp]
+=== GitOps Patterns on OpenShift
+
+By using the same Git-based workflows that developers are familiar with, GitOps expands upon existing processes from application development to deployment, application life cycle management, and infrastructure configuration.  For ops teams, visibility to change means the ability to trace and reproduce issues quickly, improving overall security. 
+
+**On-Cluster Resource Reconciler**
+
+In this pattern, a controller on the cluster is responsible for comparing the Kubernetes resources (YAML files) in the Git repository that acts as the single source of truth, with the resources on the cluster. When a discrepancy is detected, the controller would send out notifications and possibly take action to reconcile the resources on Kubernetes with the ones in the Git repository. Weaveworks Flux use this pattern in their GitOps implementation.
+
+image::gitops_pattern-01.png[On-Cluster Resource Reconciller]
+
+**External Resource Reconciler (Push)**
+
+A variation of the previous pattern is that one or a number of controllers are responsible for keeping resources in sync between pairs of Git repositories and Kubernetes clusters. The difference with the previous pattern is that the controllers are not necessarily running any of the managed clusters. The Git-k8s cluster pairs are often defined as a CRD which configures the controllers on how the sync should take place. The controllers in this pattern would compare the Git repository defined in the CRD with the resources on the Kubernetes cluster that is also defined in the CRD and takes action based on the result of the comparison. OpenShift GitOps based on ArgoCD is one of the solutions that uses this pattern for GitOps implementation.
+
+image::gitops_pattern_02.webp[External Resource Reconciler]
+
+[#direct-commit-to-main]
+=== Direct commit to main
+
+TBD
+
+[#prs-review-cycles]
+=== Pull Requests and review cycles
+
+TBD
+
+[#directories-vs-branches]
+=== Directories vs Branches
+
+TBD
 
 [#gitops-ocp]
 == GitOps on OpenShift
