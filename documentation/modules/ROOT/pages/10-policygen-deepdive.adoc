@@ -74,18 +74,13 @@ Kustomize will get the GVK and after that will go to the plugins path and execut
 
 The SiteConfigGenerator reads the SiteConfig manifest and uses the information provided in that file to output a set of manifests that will be used for running a cluster installation. The manifests templates can be found https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/siteconfig-generator/siteConfig/clusterCRs.go[here].
 
-
-
-Explain how it works (templates), put examples
-
-
 [#policy-generator]
 === Policy Generator
 
 The PolicyGenerator reads the PolicyGenTemplate manifests and uses the information provided in these files to output a set of RHACM policies that will be used for different pourposes, from day2ops to monitoring the cluster health. It makes use os templated policies that can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/source-crs[here].
 
 [#5g-ran-profile]
-=== 5G RAN Profile
+== 5G RAN Profile
 
 The Red Hat CNF team has crafted specific configurations to improve the performance on clusters running RAN workloads. All the configurations described below are expected to be present in a cluster where RAN workloads are expected to run.
 
@@ -98,42 +93,42 @@ Above picture describes what areas are covered by the 5G Ran profile. Red Hat co
 A more in-detail explanation of the 5G RAN Profile is covered in this https://videos.learning.redhat.com/media/CNF+RAN+validated+pattern/1_x32rfqrs/253048913[training material].
 
 [#workload-partitioning]
-==== Workload Partitioning
+=== Workload Partitioning
 
 Pins OCP platform and day2 operator pods that are part of the DU profile to the reserved cpuset.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/workload/03-workload-partitioning.yaml[Manifest]
 
 [#kubelet-tuning]
-==== Kubelet Tuning
+=== Kubelet Tuning
 
 Reduce frequency of kubelet housekeeping and eviction monitoring to reduce cpu usage.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml[Manifest]
 
 [#sctp]
-==== SCTP
+=== SCTP
 
 Enable SCTP which is required by RAN applications but disabled by default in RHCOS.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/03-sctp-machine-config-master.yaml[Manifest]
 
 [#hide-container-mount]
-==== Container Mount Hiding
+=== Container Mount Hiding
 
 In order to reduce system mount scanning overhead, creates a mount namespaces for container mounts visible to kubelet/crio.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml[Manifest]
 
 [#recovery-optimization]
-==== Recovery Optimization
+=== Recovery Optimization
 
 Systemd service which will assign additional cpus to systemd services during reboot recovery.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/04-accelerated-container-startup-master.yaml[Manifest]
 
 [#monitoring-footprint]
-==== Monitoring Operator Config
+=== Monitoring Operator Config
 
 Reduce footprint of the monitoring stack by:
 
@@ -143,21 +138,21 @@ Reduce footprint of the monitoring stack by:
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/ReduceMonitoringFootprint.yaml[Manifest]
 
 [#ocp-console]
-==== Console Operator
+=== Console Operator
 
 Since the DUs are being centrally managed from a RHACM Hub, disable the local console to reduce resource consumption.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/ConsoleOperatorDisable.yaml[Manifest]
 
 [#networking-diags]
-==== Networking Operator
+=== Networking Operator
 
 Disable Networking diags for SNO as it is not applicable.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/DisableSnoNetworkDiag.yaml[Manifest]
 
 [#operatorhub]
-==== OperatorHub
+=== OperatorHub
 
 A single catalog source is recommended that contains only the operators required for a RAN DU deployment.
 
@@ -166,7 +161,7 @@ https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/sourc
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/DefaultCatsrc.yaml[Manifest 2]
 
 [#ptp-operator]
-==== PTP Operator
+=== PTP Operator
 
 Configuration of precision time protocol. The DU can run in the following modes: 
 
@@ -182,7 +177,7 @@ https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/sourc
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/PtpOperatorConfigForEvent.yaml[Event Notification Manifest]
 
 [#sr-iov]
-==== SR-IOV
+=== SR-IOV
 
 Provision and configure the SR-IOV CNI and device plugin. Both netdevice (kernel VFs) and vfio (DPDK) are supported. 
 
@@ -195,7 +190,7 @@ https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/sourc
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/SriovNetwork.yaml[SriovNetwork Manifest]
 
 [#nto]
-==== Node Tuning Operator
+=== Node Tuning Operator
 
 Performance Tuning interface including:
 
@@ -209,7 +204,7 @@ https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/sourc
 
 
 [#local-storage]
-==== Local Storage
+=== Local Storage
 
 Enables creation of persistent volumes which can be consumed as pvcs by applications. This will be customer specific.
 
@@ -217,7 +212,7 @@ https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/sourc
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/StorageLV.yaml[Storage Local Volume Manifest]
 
 [#logs]
-==== Log Collector and Forwarder
+=== Log Collector and Forwarder
 
 Enables collection and shipping of logs off the edge node for remote analysis.
 
