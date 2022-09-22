@@ -80,7 +80,7 @@ IMPORTANT: The SiteConfig is a Custom Resource created to facilitate the creatio
 
 
 [#policygen]
-=== policyGen
+=== PolicyGen
 
 The policy generator kustomize plugin consumes the policygenerator library and PolicyGenTemplate as a kustomize plugin.  The PolicyGen library is used to facilitate creating ACM policies based on a set of provided source CRs (custom resources) and PolicyGenTemplate CR which describe how to customize those source CRs. The plugin helps to generate:
 
@@ -108,9 +108,3 @@ TALM manages the deployment of Red Hat Advanced Cluster Management (RHACM) polic
 * The order of policies remediated to the cluster
 
 TALM supports the orchestration of the OpenShift Container Platform y-stream and z-stream updates, and day-two operations on y-streams and z-streams.
-
-
-
-
-
-
