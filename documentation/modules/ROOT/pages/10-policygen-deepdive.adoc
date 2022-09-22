@@ -2,4 +2,62 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-TBD
+
+Red Hat Advanced Cluster Management for Kubernetes (RHACM) Governance provides an extensible framework for enterprises to introduce their own security and configuration policies that can be applied to managed OpenShift or Kubernetes clusters. For more information on RHACM policies, you can check its own :08-rhacm-policies.html[section] in this lab.
+
+In order to assist in the creation and management of RHACM policies, use the policy generator tool. This tool, along with GitOps, greatly simplifies the distribution of Kubernetes resource objects to managed OpenShift or Kubernetes clusters through RHACM policies. In particular, the policy generator supports the following functionalities:
+
+Convert any Kubernetes manifest files to RHACM configuration policies.
+Patch the input Kubernetes manifests before they are inserted into a generated RHACM policy.
+Generate additional configuration policies to be able to report on Gatekeeper and Kyverno policy violations through RHACM.
+Be run locally so that generated RHACM policies can be stored directly in Git and applied using GitOps.
+Be run by GitOps tools so that only the manifests and the policy generator configuration need to be stored in Git.
+The policy generator is implemented as a Kustomize generator plugin. This allows for any Kustomize configuration (e.g. patches, common labels) to be applied to the generated policies. This also means that the policy generator can be integrated into existing GitOps processes that support Kustomize, such as RHACM Application Lifecycle Management and OpenShift GitOps (i.e. ArgoCD).
+
+OpenShift GitOps, based on ArgoCD, can also be used to generate policies using the policy generator through GitOps. Since the policy generator does not come preinstalled in the OpenShift GitOps container image, some customization must take place. In order to follow along, it is expected that you have the OpenShift GitOps Operator installed on the RHACM hub cluster and be sure to log in to the hub cluster.
+
+In order for OpenShift GitOps to have access to the policy generator when you run Kustomize, an Init Container is required to copy the policy generator binary from the RHACM Application Subscription container image to the OpenShift GitOps container that runs Kustomize. Additionally, OpenShift GitOps must be configured to provide the --enable-alpha-plugins flag when you run Kustomize. Run the following command to configure OpenShift GitOps:
+
+Now that OpenShift GitOps can use the policy generator, we must now give OpenShift GitOps access to create policies on the RHACM hub cluster. To do that, run the following command to create a ClusterRole called openshift-gitops-policy-admin, with access to create, read, update, and delete policies. Additionally, a ClusterRoleBinding is created to grant the OpenShift GitOps service account the openshift-gitops-policy-admin ClusterRole:
+
+
+
+Kustomize plug-ins
+
+===siteGenerator
+
+show examples 
+
+===policygenerator
+
+show examples
+
+Templates (sourceCRs)
+
+list all source and examples
+explain overrides Templates and extra-manifest folder
+
+vRAN DU profile
+
+image::pgt_ran_du_profile.png[validated vRAN DU profile]
+
+
+Exaplin what is and the picture where all the pgts are applied
+
+===Speeded up pod start
+
+===Reduced footprint
+
+===Container mounts namespace
+
+===etc.
+
+
+Link with the recording?
+
+Local validation
+
+Example of a local validation for site and pgts
+
+
+
