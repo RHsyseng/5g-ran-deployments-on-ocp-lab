@@ -2,4 +2,43 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-TBD
+In this section we are going to put some common pitfalls we have observed while working with Telco partners/customers.
+
+[#exec-probes-cpu-pinning]
+== Exec Probes and CPU Pinning
+
+In 5G RAN environments is pretty common to do CPU pinning for the workload, which as you already know means that the application will only run on a subset of CPUs.
+
+When this workloads use exec probres we need to be extremely careful about what kind of workloads those are. We have seen nodes hanging when using exec probes on pods running DPDK workloads.
+
+DPDK applications run a polling thread which does not yield the CPU.
+
+If we look at the different Kubernetes liveness and readiness probes we can see that there are different kinds of probes, how they run differs a bit from each other. The important thing here is that the "exec" probes are scheduled in the same CPU that is being used by the POD, which means that eventually some of the probes will be scheduled to be executed on the CPU where the rt polling thread is running, leading to the system eventually crashing.
+
+In order to avoid this, you should use httpProbes instead of exec probes, which will avoid the probes being scheduled on the application cpuset.
+
+[#energy-saving-hw-profiles]
+== Energy Saving Hardware Profiles
+
+When running CPU exhaustive workloads we have seen from time to time a drastic decrease in terms of performance of these workloads. Most of the time the issues were caused by a hardware profile which was limiting the energy sent to the CPU. 
+
+Make sure your nodes do not have an energy saving profile configured.
+
+[#secure-boot-oot-unsigned-drivers]
+== Secure Boot and Unsigned OoT Drivers
+
+When working with out-of-tree drivers which are unsigned, Secure Boot cannot be enabled, otherwise the boot process will fail when those unsigned drivers are loaded. If you plan to use or test these kind of drivers remember to disable the Secure Boot.
+
+[#sriov-node-drain]
+== SR-IOV Node Drain
+
+By default, the SR-IOV Network Operator drains workloads from a node before every policy change. The Operator performs this action to ensure that there no workloads using the virtual functions before the reconfiguration.
+
+For installations on a single node, there are no other nodes to receive the workloads. As a result, the Operator must be configured not to drain the workloads from the single node.
+
+The CNF SR-IOV Policy templates already have this configuration in place.
+
+[#pod-disruption-budgets]
+== Pod Disruption Budgets
+
+PDBs will not be honored in single node OpenShift installations. You can read more about it https://github.com/openshift/machine-config-operator/blob/master/docs/SingleNodeOpenShift.md[here].

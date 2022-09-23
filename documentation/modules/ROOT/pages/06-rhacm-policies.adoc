@@ -153,12 +153,12 @@ spec:
 -----
 
 [#policy-status]
-=== Policy status
+=== Policy Status
 
 Policies can be enabled or disabled by setting the _disabled_ parameter value to true or false. By default they are enabled. 
 
 [#policy-remediation]
-=== Policy remediation
+=== Policy Remediation
 
 As it will detailed in the following section [..] `PolicyGenTemplates` are by default set to inform mode. This value is then propagated to their respective `Policies`.
 

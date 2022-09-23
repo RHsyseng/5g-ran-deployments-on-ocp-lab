@@ -2,5 +2,21 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-TBD
+Welcome to this 5G RAN Deployments on OpenShift Lab. 
 
+The first part of this lab is an introduction to the required concepts that one needs to know when planning and running a 5G RAN Deployment on OpenShift. The second part is a practical scenario where we will run RAN-enabled OCP deployments by using the ZTP deployment technologies and methodologies.
+
+[#lab-aim]
+== Who is this lab aimed at? 
+
+The lab is aimed to technical profiles working with telco customers/partners in projects involving RAN workloads on OpenShift.
+
+[#lab-software-versions]
+== Lab Software Versions
+
+The lab is based on the following software versions.
+
+* OpenShift vTBD
+* TALM vTBD
+* PolicyGenTool vTBD
+* TBD...

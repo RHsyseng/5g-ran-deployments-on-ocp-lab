@@ -1,4 +1,6 @@
 * xref:00-introduction.adoc[Introduction]
+** xref:00-introduction.adoc#lab-aim[Who is this lab aimed at? ]
+** xref:00-introduction.adoc#lab-software-versions[Lab Software Versions]
 
 * xref:01-5g-ran-context.adoc[5G Ran Context]
 ** xref:01-5g-ran-context.adoc#low-latency[Low Latency]
@@ -47,6 +49,7 @@
 * xref:06-rhacm-policies.adoc[RHACM Policies]
 ** xref:06-rhacm-policies.adoc#policy-framework[Policy Framework]
 ** xref:06-rhacm-policies.adoc#policies[Policies]
+*** xref:06-rhacm-policies.adoc#policy-status[Policy Status]
 *** xref:06-rhacm-policies.adoc#policy-remediation[Policy Remediation]
 
 * xref:07-managing-at-scale.adoc[Managing at Scale]
@@ -85,7 +88,7 @@
 *** xref:10-policygen-deepdive.adoc#logs[Log Collector and Forwarder]
 ** xref:10-policygen-deepdive.adoc#siteconfig-templating[SiteConfig Templating]
 ** xref:10-policygen-deepdive.adoc#policies-templating[Policies Templating]
-** xref:10-policygen-deepdive.adoc#kustomize-plugins-localy[Running Kustomize Plugins Locally]
+** xref:10-policygen-deepdive.adoc#kustomize-plugins-locally[Running Kustomize Plugins Locally]
 
 * xref:11-deployment-considerations.adoc[Deployment Considerations]
 ** xref:11-deployment-considerations.adoc#hardware-configurations[Hardware configurations]
@@ -111,5 +114,12 @@
 * xref:18-troubleshooting-tips.adoc[Troubleshooting Tips]
 
 * xref:19-common-pitfalls.adoc[Common Pitfalls]
+** xref:19-common-pitfalls.adoc#exec-probes-cpu-pinning[Exec Probes and CPU Pinning]
+** xref:19-common-pitfalls.adoc#energy-saving-hw-profiles[Energy Saving Hardware Profiles]
+** xref:19-common-pitfalls.adoc#secure-boot-oot-unsigned-drivers[Secure Boot and Unsigned OoT Drivers]
+** xref:19-common-pitfalls.adoc#sriov-node-drain[SR-IOV Node Drain]
+** xref:19-common-pitfalls.adoc#pod-disruption-budgets[Pod Disruption Budgets
+]
+
 
 * xref:20-closing-thoughts.adoc[Closing Thoughts]
