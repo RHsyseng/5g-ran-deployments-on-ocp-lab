@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-As we saw in an earlier section of the lab, we can leverage RHACM policies to get our clusters configured the way we want. We also introduced the PolicyGen component which helps us to create a set of policies based on pre-backed templates crafted by the Red Hat CNF team.
+As we saw in an earlier section of the lab, we can leverage link:06-rhacm-policies[RHACM policies] to get our clusters configured the way we want. We also introduced the link:08-ztp-at-scale#policygen[PolicyGen component] which helps us to create a set of policies based on pre-backed templates crafted by the Red Hat CNF team.
 
 In this section we are going to get into the implementation details of the PolicyGen tooling.
 
