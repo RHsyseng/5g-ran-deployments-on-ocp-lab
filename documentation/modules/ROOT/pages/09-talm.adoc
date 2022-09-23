@@ -17,11 +17,12 @@ In these events, TALM will step through the set of created policies and switch t
 
 IMPORTANT: TALM enables us to select the timing and the clusters where the configuration is about to be applied.
 
+[#cgu]
 == Cluster Group Upgrade (CGU)
 
 The Topology Aware Lifecycle Manager (TALM) builds the remediation plan from the `ClusterGroupUpgrade` CR for a group of clusters. You can define the following specifications in a ClusterGroupUpgrade CR. Note that this is a CGU CR that enforces a OpenShift release upgrade which was previously defined by a policy called _du-upgrade-platform-upgrade_ defined by the managedPolicies spec.
 
-[.console-input]
+[console-input]
 [source,yaml,subs="attributes+,+macros"]
 -----
 apiVersion: ran.openshift.io/v1alpha1
@@ -49,6 +50,7 @@ spec:
 
 :WARNING: TALM does not only deal with OpenShift release upgrades, when we talk about upgrades in this section, we mean all kind of modifications to the managed clusters. Essentially, a CGU must be created everytime we want to enforce a policy.
 
+[#autocreation-cgu]
 === Auto creation of CGU
 
 So far we have been talking of using TALM for our common day-2 operations. But, if a CGU must be created in order to enforce a previously applied policy,  how is it possible to run a fully automated ZTP workflow, e.g configure and even run our CNF workloads, on the target clusters?
@@ -67,12 +69,14 @@ So, once clusters are provisioned, TALM monitors their state by checking the Man
 
 IMPORTANT: TALM will basically enforce all existing policies targeting a cluster that has not the label "ztp-done'. This is performed by creating automatically a proper CGU CR.
 
+[#phase-labels]
 == Phase labels
 
 The ClusterGroupUpgrade CR that is auto created for ZTP includes directives to annotate the ManagedCluster CR with labels at the start and end of the ZTP process. When ZTP configuration (post-installation) commences the ManagedCluster will have the ztp-running label applied. When all policies are remediated to the cluster (fully compliant) these directives will cause TALM to remove the ztp-running label and apply the ztp-done label. 
 
 In essence, the ztp-done label will be applied when the cluster is fully ready for deployment of applications.
 
+[#waves]
 == Waves
 
 A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every link:10-policygen-deepdive#policies-templating[policy] generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the link:https://github.com/openshift-kni/cnf-features-deploy/blob/master/ztp/source-crs/SriovSubscriptionNS.yaml[SriovSubscriptionNS.yaml]:
@@ -95,8 +99,8 @@ TALO will apply the configuration policies in the order specified by the wave an
 
 WARNING: All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate.
 
-
-== Precache
+[#talm-precache]
+== Precaching
 
 Clusters might have limited bandwidth to access the container image registry, which can cause a timeout before the updates are completed. This feature help us to schedule cluster upgrades to newer OCP releases in an organized manner and within the maintenance window assigned. Notice in the following picture how the upgrade can be orchestrated depending on our requirements. See that in the first maintenance window not all clusters had time to precache all container images, then the precache process was postponed to a be finished in another agreed maintenance window. Finally, a new maintenance window was requested to actually execute the platform upgrade.
 
@@ -131,6 +135,7 @@ Once the container images are precached, we can just enable the CGU by setting `
 
 CAUTION: If both policy and precaching are enabled, the upgrade will be executed immediately after the precache is done successfully.
 
+[#talm-backup]
 == Backup and Recovery
 
 Backup & Recovery feature creates a pre-upgrade backup and provides a procedure for rapid recovery of a SNO in the event of a failed upgrade. In case of an upgrade failure, this feature allows the SNO to be restored to a working state with the previous version of OCP without requiring a re-provision of the application(s).
