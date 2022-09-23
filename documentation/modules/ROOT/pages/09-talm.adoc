@@ -135,6 +135,9 @@ Once the container images are precached, we can just enable the CGU by setting `
 
 CAUTION: If both policy and precaching are enabled, the upgrade will be executed immediately after the precache is done successfully.
 
+A more in-detail explanation of the Backup & Recovery is covered in this https://videos.learning.redhat.com/media/OCP+TALO+precache+sequential+platform+upgrade/1_7kgh6jze/253048913[training material] "Precaching and sequential platform upgrades using TALM".
+
+
 [#talm-backup]
 == Backup and Recovery
 
@@ -175,5 +178,7 @@ The backup workload generates an utility called upgrade-recovery.sh in the recov
 
 In case, the upgrade failed in a spoke cluster, the TALM CGU needs to be deleted in the hub cluster and an admin needs to login to the spoke cluster to start the recovery process. The process is detailed in the https://github.com/openshift-kni/cluster-group-upgrades-operator/tree/main/docs/backup-recovery#recovery-from-upgrade-failure[Recovery from Upgrade failure] documentation.
 
+A more in-detail explanation of the Backup & Recovery is covered in this https://videos.learning.redhat.com/media/Upgrade%2C+backup+and+recovery+with+TALO/1_27k8gb8m/253048913[training material] "Upgrade, backup and recover your cluster with TALM".
 
 [1] You can read more about it https://docs.openshift.com/container-platform/latest/scalability_and_performance/cnf-talm-for-cluster-upgrades.html[here].
+[2] https://videos.learning.redhat.com/media/Using+TALO+to+perform+OCP+upgrades+via+RHACM/1_ozf040n9/253048913[Platform upgrades in RHACM with TALM operator]
