@@ -81,7 +81,7 @@ Once a user sends a PR to a specific branch we should have some automated checks
 
 Once the automatic checks have passed, we want a different user to review the content of the PR and approve it once it's ready.
 
-TIP: Review cycles for commits changing non-production environments can be automatic to reduce the time it take for a change to hit the non-productive environment.
+TIP: Review cycles for commits changing non-production environments can be automatic to reduce the time it takes for a change to hit the non-productive environment.
 
 [#gitops-ocp]
 == GitOps on OpenShift
