@@ -55,20 +55,33 @@ A variation of the previous pattern is that one or a number of controllers are r
 
 image::gitops_pattern_02.webp[External Resource Reconciler]
 
-[#direct-commit-to-main]
-=== Direct commit to main
-
-TBD
-
-[#prs-review-cycles]
-=== Pull Requests and review cycles
-
-TBD
-
 [#directories-vs-branches]
 === Directories vs Branches
 
-TBD
+When doing GitOps we need to keep in mind that using branches is an anti-pattern. We have been using branches for a long time when developing our applications, but when doing GitOps we are no longer developing an application, but defining a configuration. If we look at the different tooling around Kubernetes for managing configurations like `Helm` or `Kustomize` you will soon enough see that they know nothing about Git branches, they use just files.
+
+We need to start defining our different environments using folders rather than branches, that will help us manage many environments at scale without having to deal with git merges that eventually will be hard to reconcile.
+
+One thing that we still need to keep in mind is that we want to have different repositories for the application code (where you can continue to use branches) and for the GitOps configuration.
+
+[#direct-commit-to-main]
+=== Direct Commit to Main
+
+Direct commit to main (or the branch the GitOps tooling monitor) in the upstream repository is strongly discouraged, instead users should work with forks and send PRs to the main branch.
+
+[#prs-review-cycles]
+=== Pull Requests and Review Cycles
+
+Once a user sends a PR to a specific branch we should have some automated checks to make sure that the PR is safe, some of them could be:
+
+* Commits are signed by the user.
+* No passwords/confidential information is present in the PR.
+* Commits should have keywords that can be used to enforce some policies like for example putting the environment name and making sure the PR only changes files for that environment.
+* etc.
+
+Once the automatic checks have passed, we want a different user to review the content of the PR and approve it once it's ready.
+
+TIP: Review cycles for commits changing non-production environments can be automatic to reduce the time it take for a change to hit the non-productive environment.
 
 [#gitops-ocp]
 == GitOps on OpenShift

@@ -28,9 +28,9 @@
 ** xref:05-ocp-gitops.adoc#gitops[GitOps]
 *** xref:05-ocp-gitops.adoc#gitops-principles[GitOps Principles]
 *** xref:05-ocp-gitops.adoc#gitops-patterns-ocp[GitOps Patterns on OpenShift]
+*** xref:05-ocp-gitops.adoc#directories-vs-branches[Directories vs Branches]
 *** xref:05-ocp-gitops.adoc#direct-commit-to-main[Direct commit to main]
 *** xref:05-ocp-gitops.adoc#prs-review-cycles[Pull Requests and review cycles]
-*** xref:05-ocp-gitops.adoc#directories-vs-branches[Directories vs Branches]
 ** xref:05-ocp-gitops.adoc#gitops-ocp[GitOps on OpenShift]
 
 * xref:08-ztp-at-scale.adoc[ZTP Components]
