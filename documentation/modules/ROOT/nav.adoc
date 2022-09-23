@@ -55,7 +55,13 @@
 ** xref:07-managing-at-scale.adoc#cluster-policies[Cluster Policies]
 
 * xref:09-talm.adoc[Topology Aware Lifecycle Manager (TALM)]
-** xref:09-talm.adoc#cluster-lifecycle-at-scale[Lifecycle management of many clusters at scale]
+** xref:09-talm.adoc##inform-policies[Default Inform Policies]
+** xref:09-talm.adoc##cgu[Cluster Group Upgrade]
+*** xref:09-talm.adoc##autocreation-cgu[Auto Creation of CGUs]
+** xref:09-talm.adoc##phase-labels[Phase labels]
+** xref:09-talm.adoc##waves[Policy Waves]
+** xref:09-talm.adoc#talm-precache[Precaching]
+** xref:09-talm.adoc#talm-backup[Backup & Recovery]
 
 * xref:10-policygen-deepdive.adoc[PolicyGen Deepdive]
 ** xref:10-policygen-deepdive.adoc#policygen-implementation[PolicyGen Implementation]
