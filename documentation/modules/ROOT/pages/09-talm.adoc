@@ -2,6 +2,98 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
+The ZTP workflow generates installation and configuration resources from manifests (`siteConfig` and `policyGenTemplates`) stored in Git. These artifacts are applied to a centralized hub cluster where a combination of OpenShift GitOps, Red Hat Advanced Cluster Management, the Assisted Service which is deployed by the Infrastructure Operator, and the Topology Aware Lifecycle Manager (TALM) use them to install and configure the cluster. See link:08-ztp-at-scale.html[ZTP components] chapter.
+
+The configuration phase of this ZTP process depends on TALM to orchestrate the application of the configuration custom resources to the cluster. There are several key integration points between GitOps ZTP and TALM.
+
+[#inform-policies]
+== Default inform policies
+
+ZTP, as mentioned in the link:07-managing-at-scale.html#inform-policies[Managing at scale] section, will create all policies with a remediation action of "inform". With this remediation action Red Hat ACM will note the compliance state of the policy but will not take any action to apply the desired configuration. However, this is not always our preferred choice. Most of the times we want a configuration to be actually applied to our managed clusters.
+
+In this events, TALM will step through the set of created policies and switch them to an "enforce" policy in order to push configuration to the spoke cluster. This strategy ensures that ZTP integrates seamlessly with future configuration changes that need to be made without the risk of rolling those changes out to all spoke clusters in the network simultaneously.
+
+IMPORTANT: TALM enables us to select the timing and the clusters where the configuration is about to be applied.
+
+== Cluster Group Upgrade (CGU)
+
+The Topology Aware Lifecycle Manager (TALM) builds the remediation plan from the `ClusterGroupUpgrade` CR for a group of clusters. You can define the following specifications in a ClusterGroupUpgrade CR. Note that this is a CGU CR that enforces a OpenShift release upgrade which was previously defined by a policy called _du-upgrade-platform-upgrade_ defined by the managedPolicies spec.
+
+[.console-input]
+[source,yaml,subs="attributes+,+macros"]
+-----
+apiVersion: ran.openshift.io/v1alpha1
+kind: ClusterGroupUpgrade
+metadata:
+  name: ocp411-3 
+  namespace: ztp-group-du-sno
+spec:
+  preCaching: true #precache enabled before upgrade
+  backup: true  #backup enabled before upgrade
+  deleteObjectsOnCompletion: false
+  clusters:   #Clusters in the group
+  - snonode-virt02
+  - snonode-virt01
+  - snonode-virt03
+  enable: true
+  managedPolicies:
+  - du-upgrade-platform-upgrade #Applicable list of managed policies
+  remediationStrategy:
+    canaries:
+      - snonode-virt01 #Defines the clusters for canary updates
+    maxConcurrency: 2 #Defines the maximum number of concurrent updates in a batch
+    timeout: 240 
+-----
+
+:WARNING: TALM does not only deal with OpenShift release upgrades, when we talk about upgrades in this section, we mean all kind of modifications to the managed clusters. Essentially, a CGU must be created everytime we want to enforce a policy.
+
+=== Auto creation of CGU
+
+So far we have been talking of using TALM for our common day-2 operations. But, if a CGU must be created in order to enforce a previously applied policy,  how is it possible to run a fully automated ZTP workflow, e.g configure and even run our CNF workloads, on the target clusters?
+
+The answer is that TALM interacts with ZTP for newly created clusters. When we define one or multiple spoke clusters in telco, we do not only want to provision them, we also want to apply an specific configuration such as the validated RAN DU profile. Often we also want our workloads to be running on top of them. ZTP is envisioned as a streamlined process, where as a developer we only push manifest definitions to the proper Git repository.
+
+So, once clusters are provisioned, TALM monitors their state by checking the ManagedCluster CRs on the hub cluster. Any ManagedCluster CR which does not have a *"ztp-done"* label applied, including newly created ManagedCluster CRs, will cause TALM to automatically create a ClusterGroupUpgrade CR with the following characteristics:
+
+* It is created in the ztp-install namespace
+* It has the same name as the ManagedCluster CR
+* The cluster selector includes only the cluster associated with that ManagedCluster CR
+* The set of managedPolicies includes *ALL* policies that ACM has bound to the cluster at the time the CGU is created.
+* It is enabled
+* Precaching is disabled
+* Timeout set to 4 hours (240 minutes)
+
+IMPORTANT: TALM will basically enforce all existing policies targeting a cluster that has not the label "ztp-done'. This is performed by creating automatically a proper CGU CR.
+
+
+=== Waves
+
+A ZTP wave is basically an annotation included on each `policyGenTemplate` that will permit TALM to apply them in an ordered manner. As an example, every source-cr PGT such as the https://github.com/openshift-kni/cnf-features-deploy/blob/master/ztp/source-crs/ClusterLogging.yaml#L7[clusterLogging] is created with a _ran.openshift.io/ztp-deploy-wave_ annotation.
+
+Each policy generated from a PolicyGenTemplate by ZTP will include a ztp-deploy-wave annotation. This annotation is based on the same annotation from each CR which is included in that policy. 
+
+WARNING: All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate.
+
+TALO will apply the configuration policies in the order specified by the wave annotations. TALO will wait for each policy to be compliant before moving to the next policy. It is important to ensure that the wave annotation for each CR takes into account any pre-requisites for those CRs to be applied to the cluster. For example an operator must be installed before, or concurrently with, the configuration for the operator.
+
+Multiple CRs and policies can share the same wave number. Having fewer policies (see best practices) can result in faster deployments and lower CPU usage which implies grouping many CRs into relatively few waves.
+
+=== Phase labels
+
+The ClusterGroupUpgrade CR that is auto created for ZTP includes directives to annotate the ManagedCluster CR with labels at the start and end of the ZTP process. When ZTP configuration (post-installation) commences the ManagedCluster will have the ztp-running label applied. When all policies are remediated to the cluster (fully compliant) these directives will cause TALO to remove the ztp-running label and apply the ztp-done label. 
+
+For deployments which make use of the Done Indication policy (*** link to the definition of done docs***) the ztp-done label will be applied when the cluster is fully ready for deployment of Applications, including all reconciliation and resulting effects of the ZTP applied configuration CRs.
+
+
+== Precache
+
+
+== Backup
+
+
+
+
+
 TALM is used to manage the software lifecycle of multiple single-node OpenShift clusters. TALM leverages RHACM policies to perform changes on the target clusters.
 
 Using TALM in a large network of clusters allows the phased rollout of policies to the clusters in limited batches. This helps to minimize possible service disruptions when updating. With TALM, you can control the following actions:
