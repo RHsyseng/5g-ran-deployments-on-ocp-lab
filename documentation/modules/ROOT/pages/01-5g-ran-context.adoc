@@ -60,6 +60,12 @@ _Interrupt Requests (IRQ)_ need to be handled by the CPUs, in Telco environments
 
 The _Data Plane Development Kit (DPDK)_ is an open source software project that provides a set of data plane libraries and network interface controller polling-mode drivers for offloading TCP packet processing from the operating system kernel to processes running in user space.
 
+DPDK libraries offer to free up the Kernel space from interrupts by processing the work in User space instead. This is possible thanks to the DPDK libraries and the DPDK poll mode driver (PMD). This driver is responsible for the communication between the application and network card, listening in a loop avoiding as much as possible interrupts while forwarding packets. The following diagram streamlines the idea:
+
+image::kernel-user-space.webp[DPDK]
+
+In OpenShift, it is possible to use the DPDK libraries and attach a network interface (SR-IOV virtual function) directly to the Pod. To ease the application building process, we can leverage https://catalog.redhat.com/software/containers/openshift4/dpdk-base-rhel8/5e32be6cdd19c77896004a41?container-tabs=dockerfile[Red Hat's DPDK builder image] available from Red Hat's official registry. This base or builder image is intended to build applications powered by DPDK and also work with multiple CNI plugins.
+
 [#oot-drivers]
 == OoT Drivers
 
