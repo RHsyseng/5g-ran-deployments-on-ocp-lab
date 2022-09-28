@@ -8,14 +8,14 @@ IMPORTANT: The workflow does not need any intervention, so ZTP automatically wil
 
 The workflow is officially started by creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is described in a custom resource called `siteConfig`. See that in a disconnected environment, there is a need for a container registry which has been configured to deliver the required OpenShift container images required for the installation. This task can be achieved by using https://docs.openshift.com/container-platform/latest/installing/disconnected_install/installing-mirroring-disconnected.html[oc-mirror]. 
 
-WARNING: Depending on your specific environment, you might need a couple of extra services such as DHCP, DNS, NTP or HTTP. The latest will be needed for downloading the RHCOS live ISO and the roofts image locally instead of the default http://mirror.openshift.com.
+WARNING: Depending on your specific environment, you might need a couple of extra services such as DHCP, DNS, NTP or HTTP. The latest will be needed for downloading the RHCOS live ISO and the rootfs image locally instead of the default http://mirror.openshift.com.
 
 Once the configuration is created you can push it to the Git repo where Argo CD is continuously looking to pull the new content:
 
 image::ztp_workflow_0.png[ZTP Workflow 0]
 
 
-Argo CD pulls the siteConfig and uses a specific kustomize plugin called https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/siteconfig-generator-kustomize-plugin[siteconfig-generator] to transform it into custom resources that are understood by the hub cluster (RHACM/MCE). A siteConfig contains all the necessary information to provision your node or nodes. Basically, it will create ISO images with the the defined configuration that are delivered to the edge nodes to begin the installation process. The images are used to repeatedly provision large numbers of nodes efficiently and quickly, allowing you keep up with requirements from the field for far edge nodes. 
+Argo CD pulls the siteConfig and uses a specific kustomize plugin called https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/siteconfig-generator-kustomize-plugin[siteconfig-generator] to transform it into custom resources that are understood by the hub cluster (RHACM/MCE). A siteConfig contains all the necessary information to provision your node or nodes. Basically, it will create ISO images with the defined configuration that are delivered to the edge nodes to begin the installation process. The images are used to repeatedly provision large numbers of nodes efficiently and quickly, allowing you keep up with requirements from the field for far edge nodes. 
 
 IMPORTANT: On telco use cases, clusters are mainly running on baremetal hosts. Therefore the produced ISO images are mounted using remote virtual media features of the baseboard management controller (BMC).
 
@@ -23,9 +23,9 @@ In the picture, these resulting manifests are called Cluster Installation CRs bu
 
 image::ztp_workflow_1.png[ZTP Workflow 1]
 
-The provisioning process includes innstalling the host operating system (RHCOS) on a blank server and deploying OpenShift Container Platform. This stage is managed mainly by the Infrastructure Operator. In the previous link:08-ztp-at-scale.html#ai[Infrastructure operator] section there is detailed information of the worklow controlled by this piece of software.
+The provisioning process includes installing the host operating system (RHCOS) on a blank server and deploying OpenShift Container Platform. This stage is managed mainly by the Infrastructure Operator. In the previous link:08-ztp-at-scale.html#ai[Infrastructure operator] section there is detailed information of the worklow controlled by this piece of software.
 
-IMPORTANT: Notice, in the picture, how ZTP allow us to provision clusters at scale.
+IMPORTANT: Notice, in the picture, how ZTP allows us to provision clusters at scale.
 
 image::ztp_workflow_2.png[ZTP Workflow 2]
 

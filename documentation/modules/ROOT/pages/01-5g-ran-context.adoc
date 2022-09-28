@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-Before we start introducing specific concepts about RAN deployments on OpenShift we first need to set the context around RAN deployments:
+Before we start introducing specific concepts about Radio Access Network (RAN) deployments on OpenShift we first need to set the context around them:
 
 * Common configurations on almost any RAN deployment.
 * Linux features that are not commonly used outside RAN, but that are very important for RAN workloads.
@@ -40,6 +40,9 @@ There are three policies when memory needs to be allocated:
 Physical memory is managed in fixed-size chunks called pages. On the x86_64 architecture, the default size of a memory page is `4 KB`. This default page size has proved to be suitable for general-purpose operating systems which supports many kinds of workloads. 
 
 However, specific applications can benefit from using larger page sizes in certain cases. In order to reduce the overhead in the O.S and CPU we can pre-allocate memory pages with a fixed size that can later be consumed by our workloads.
+
+You can learn more about huge pages in Linux https://kerneltalks.com/services/what-is-huge-pages-in-linux/[here].
+
 
 [#cpu-pinning]
 == CPU Pinning
