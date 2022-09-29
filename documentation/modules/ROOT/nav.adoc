@@ -11,6 +11,8 @@
 ** xref:01-5g-ran-context.adoc#dpdk[DPDK]
 ** xref:01-5g-ran-context.adoc#oot-drivers[OoT Drivers]
 ** xref:01-5g-ran-context.adoc#cpu-reduction-tuning[Tuning for CPU Reduction]
+** xref:01-5g-ran-context.adoc#vran-accelerators[vRAN Dedicated Accelerators]
+** xref:01-5g-ran-context.adoc#ptp[PTP]
 
 * xref:02-sno-intro.adoc[Introduction to Single Node OpenShift (SNO)]
 ** xref:02-sno-intro.adoc#5g-ran[5G Radio Access Network]

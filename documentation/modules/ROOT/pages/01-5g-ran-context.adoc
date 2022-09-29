@@ -77,3 +77,23 @@ In Red Hat Enterprise Linux CoreOS releases we get a bunch of drivers for the di
 In RAN environments the CPU usage by the platform must be reduced to the bare minimum so RAN workloads can benefit from as much CPU as possible. In order to accomplish that, the OpenShift platform will be limited to run their infrastructure components on a limited set of CPUs. This is what we call _workload partitioning_, OCP components will be allowed to run in a sub set of the available CPUs, leaving the rest of CPUs available for the RAN workloads.
 
 On top of _workload partitioning_, the CNF team has tuned the OpenShift platform for RAN workloads by removing components that are not required in a RAN context such as Grafana Web Console, OpenShift Web Console, etc.
+
+[#vran-accelerators]
+== vRAN Dedicated Accelerators
+
+Hardware accelerator cards accelerate 4G/LTE and 5G Virtualized Radio Access Networks (vRAN) workloads. This in turn increases the overall compute capacity of the plataform.
+
+vRAN accelerators are designed to offload and accelerate the computing-intensive process of forward error correction (FEC) for 4G/LTE and 5G technology, freeing up processing power.
+
+[#ptp]
+== PTP
+
+Precision Time Protocol (PTP) is used to synchronize clocks in a network. When used in conjunction with hardware support, PTP is capable of sub-microsecond accuracy, and is more accurate than Network Time Protocol (NTP).
+
+PTP can work in three modes:
+
+* `GrandMaster`: A PTP daemon connected to a hardware with PTP support to synchronize its clock. Other PTP daemons will connect to this PTP GrandMaster in order to sync their clocks.
+* `Ordinary Clock`: A PTP daemon connected to a GrandMaster to synchronize its clock.
+* `Boundary Clock`: A PTP daemon connected to a GrandMaster to synchronize its clock and being master for other PTP daemons on the network.
+
+image::ptp_diagram.png[PTP Diagram]
