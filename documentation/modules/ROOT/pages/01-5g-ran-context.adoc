@@ -85,6 +85,8 @@ Hardware accelerator cards accelerate 4G/LTE and 5G Virtualized Radio Access Net
 
 vRAN accelerators are designed to offload and accelerate the computing-intensive process of forward error correction (FEC) for 4G/LTE and 5G technology, freeing up processing power.
 
+As of OpenShift {openshift-release} the only accelerator supported is the Intel® vRAN Dedicated Accelerator ACC100, which can be managed through the use of an operator.
+
 [#ptp]
 == PTP
 

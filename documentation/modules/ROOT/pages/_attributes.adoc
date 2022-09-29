@@ -3,3 +3,4 @@
 :branch: main
 :github-repo: https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/blob/{branch}
 :profile: 5g-ran-lab
+:openshift-release: v4.11
