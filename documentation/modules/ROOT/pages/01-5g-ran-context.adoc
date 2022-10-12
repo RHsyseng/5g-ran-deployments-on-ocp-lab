@@ -66,11 +66,6 @@ image::kernel-user-space.webp[DPDK]
 
 In OpenShift, it is possible to use the DPDK libraries and attach a network interface (SR-IOV virtual function) directly to the Pod. To ease the application building process, we can leverage https://catalog.redhat.com/software/containers/openshift4/dpdk-base-rhel8/5e32be6cdd19c77896004a41?container-tabs=dockerfile[Red Hat's DPDK builder image] available from Red Hat's official registry. This base or builder image is intended to build applications powered by DPDK and also work with multiple CNI plugins.
 
-[#oot-drivers]
-== OoT Drivers
-
-In Red Hat Enterprise Linux CoreOS releases we get a bunch of drivers for the different hardware components, we call in-tree drivers to those that come pre-packaged in a given release, on the other hand drivers that need to be layered on top of a given release are called out-of-tree (OoT) drivers. In Telco environments we usually need to work with OoT NIC drivers for the most recent cards in the market.
-
 [#cpu-reduction-tuning]
 == Tuning for CPU Reduction
 
