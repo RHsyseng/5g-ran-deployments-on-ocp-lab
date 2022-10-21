@@ -1,0 +1,18 @@
+---
+apiVersion: agent-install.openshift.io/v1beta1
+kind: InfraEnv
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+  name: sno1
+  namespace: sno1
+spec:
+  clusterRef:
+    name: sno1
+    namespace: sno1
+  sshAuthorizedKey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDUetMOs+ShTfPkQ6s+SiSTmlKXzS8YJNEwjVJSDjSpdJQ7iTRBKK67wsdX0YQoebMkGGBQ7sX2RnMD1fIl6a5Nsl38IsQ2gjR4t5r0B5zjtiT1NEzXLBb+DL8aIU8MtocPLh21GLv6IIoIjhsIHrHX3u5+gn19uXydHZsgK9BlrTF55udjcdAlECgzRqEmPQdPiGfN6UfWbwqFMpl3uTQi/itfbJDywhQyXRhfjj+vAeeO4FoRwP9jWi9Om7FF2xMf/Gdrwfj33460dk90phZgAVVbffPxXMt+GSFObwlMxhBeQUTi5pgoKODXrVrEBN+b28hSooHPUk3CxSL6vueseWDT4dDgU7nopzkcvhWJQHPRYrkQVQgE4iFv9sMVbLM1zAb7BuugBLD3b8PZqzim2aJKupJypfv42jssj2vwvo/gLJCw92hjbaAYI8r7y0/gynOBcrKREoLqHK0oHkzWAOLndqgtMyjhDgAqRJOUQ+A27mUUNAQmSXwqRG2xlZ8= root@mavazque-virt.cloud.lab.eng.bos.redhat.com'
+  agentLabelSelector:
+    matchLabels:
+      cluster-name: "sno1"
+  pullSecretRef:
+    name: pullsecret

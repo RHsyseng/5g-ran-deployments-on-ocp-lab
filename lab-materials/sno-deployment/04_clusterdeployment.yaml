@@ -1,0 +1,26 @@
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
+  name: sno1
+  namespace: sno1
+spec:
+  baseDomain: e2e.bos.redhat.com
+  clusterName: sno1
+  controlPlaneConfig:
+    servingCertificates: {}
+  installed: false
+  clusterInstallRef:
+    group: extensions.hive.openshift.io
+    kind: AgentClusterInstall
+    name: sno1
+    version: v1beta1
+  platform:
+    agentBareMetal: 
+      agentSelector:
+        matchLabels:
+          cluster-name: "sno1"
+  pullSecretRef:
+    name: pullsecret

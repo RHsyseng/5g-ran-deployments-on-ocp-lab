@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "5"
+  name: sno1
+  namespace: sno1
+data:
+  username: "QWRtaW5pc3RyYXRvcg=="
+  password: "cGFzc3dvcmQ="
+type: Opaque
+---
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "6"
+    inspect.metal3.io: disabled
+    bmac.agent-install.openshift.io/hostname: "openshift-master-0"
+    bmac.agent-install.openshift.io/role: "master"
+  name: sno1
+  namespace: sno1
+  labels:
+    infraenvs.agent-install.openshift.io: "sno1"
+spec:
+  online: true
+  bootMACAddress: de:ad:bb:f3:22:05
+  automatedCleaningMode: disabled
+  rootDeviceHints:
+    deviceName: /dev/vda
+  bmc:
+    address: redfish-virtualmedia://10.19.3.4:8080/redfish/v1/Systems/4bcdd62f-d316-4fe1-9341-8e9d90d130b8
+    credentialsName: sno1
+    disableCertificateVerification: true

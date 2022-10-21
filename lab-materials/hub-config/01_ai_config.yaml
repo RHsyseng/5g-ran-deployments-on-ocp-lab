@@ -1,0 +1,29 @@
+---
+apiVersion: agent-install.openshift.io/v1beta1
+kind: AgentServiceConfig
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  name: agent
+  namespace: multicluster-engine
+spec:
+  databaseStorage:
+    storageClassName: fs-lso
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 10Gi
+  filesystemStorage:
+    storageClassName: fs-lso
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: 20Gi
+  osImages:
+  - cpuArchitecture: x86_64
+    openshiftVersion: "4.11"
+    rootFSUrl: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.11/4.11.0/rhcos-4.11.0-x86_64-live-rootfs.x86_64.img
+    url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.11/4.11.0/rhcos-4.11.0-x86_64-live.x86_64.iso
+    version: 411.86.202208031059-0

@@ -1,0 +1,29 @@
+---
+apiVersion: extensions.hive.openshift.io/v1beta1
+kind: AgentClusterInstall
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  name: sno1
+  namespace: sno1
+spec:
+  manifestsConfigMapRef:
+    name: extra-manifests
+  clusterDeploymentRef:
+    name: sno1
+  imageSetRef:
+    name: img4.11.5-x86-64-appsub
+  networking:
+    networkType: "OVNKubernetes"
+    clusterNetwork:
+      - cidr: "10.128.0.0/14"
+        hostPrefix: 23
+    serviceNetwork:
+      - "172.30.0.0/16"
+    machineNetwork:
+      - cidr: "10.19.3.0/26"
+  provisionRequirements:
+    controlPlaneAgents: 1
+    workerAgents: 0
+  sshPublicKey: 'changeme'
+
