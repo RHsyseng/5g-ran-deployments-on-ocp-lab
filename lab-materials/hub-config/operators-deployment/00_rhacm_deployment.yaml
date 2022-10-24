@@ -33,13 +33,3 @@ spec:
   name: advanced-cluster-management
   source: redhat-operators
   sourceNamespace: openshift-marketplace
----
-apiVersion: operator.open-cluster-management.io/v1
-kind: MultiClusterHub
-metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
-  name: multiclusterhub
-  namespace: open-cluster-management
-spec: 
-  availabilityConfig: "Basic"

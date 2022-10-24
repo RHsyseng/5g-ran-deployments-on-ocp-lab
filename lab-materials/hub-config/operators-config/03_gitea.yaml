@@ -1,0 +1,27 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  name: gitea
+---
+apiVersion: gpte.opentlc.com/v1
+kind: Gitea
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  name: gitea-server
+  namespace: gitea
+spec:
+  giteaImageTag: 1.17.3
+  giteaVolumeSize: 4Gi
+  giteaSsl: true
+  postgresqlVolumeSize: 4Gi
+  giteaAdminUser: gitadmin
+  giteaAdminPassword: "git4dmin!"
+  giteaAdminEmail: "gitadmin@gitea.local"
+  giteaCreateUsers: true
+  giteaGenerateUserFormat: "student%d"
+  giteaUserNumber: 3
+  giteaUserPassword: openshift
