@@ -8,14 +8,14 @@ metadata:
   namespace: multicluster-engine
 spec:
   databaseStorage:
-    storageClassName: fs-lso
+#    storageClassName: fs-lso
     accessModes:
     - ReadWriteOnce
     resources:
       requests:
         storage: 10Gi
   filesystemStorage:
-    storageClassName: fs-lso
+#    storageClassName: fs-lso
     accessModes:
     - ReadWriteOnce
     resources:
