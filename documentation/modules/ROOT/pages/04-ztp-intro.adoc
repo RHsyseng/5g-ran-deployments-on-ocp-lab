@@ -2,16 +2,13 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-5G is not only about the speed as in bandwidth, but also as the latency, and one of the key areas being pursued this, is getting the network functions closest to the end-user. 
-Nobody said that this could be simple, as it demands a lot of technology and instead of being datacenter-centric, the promises of higher speed and reduced latency, come with a cost: services should be closest to the customer to satisfy them. 
+Edge deployments of clusters are typically characterized by a large number of clusters that must be managed with a high degree of reliability and service uptime. These deployments may include tens of clusters or tens of thousands of clusters which must be organized and managed across their lifetimes, from initial deployment through upgrades, configuration updates, and when necessary hardware replacement. Typically the services being provided on these clusters must meet a high level of service availability, for example 5G services, which drives requirements on controlled access to the authoritative network description and carefully managing disruptive changes.
 
-Therefore, telco edge computing presents extraordinary challenges with managing hundreds to tens of thousands of clusters in hundreds of thousands of locations. These challenges require fully-automated management solutions with, as closely as possible, zero human interaction.
-
-*Zero touch provisioning (ZTP)* allows you to provision new edge sites with declarative configurations of bare-metal equipment at remote sites following a GitOps deployment set of practices. All configurations are declarative in nature.
+The *GitOps Zero Touch Provisioning (ZTP)* methodology is designed to provide a highly reliabile way to manage a fleet of Edge deployed clusters that meets these requirements across the full lifecycle of the clusters. ZTP allows you to provision new edge sites using declarative specifications for the configuration of bare-metal equipment at remote sites following a GitOps deployment set of practices. Ongoing management of configuration is also managed through the declarative specifications in Git. The ZTP methodology leverages Red Hat Advanced Cluster Management (RHACM) to fully automate ("zero touch") the initial deployment and configuration of the clustes as well as to provide ongoing cluster management and observability.
 
 ZTP is a project to deploy and deliver OpenShift 4 in a hub-and-spoke architecture (in a relation of 1-N), where a single hub cluster manages many spoke clusters. The hub and the spokes will be based on OpenShift 4 but with the difference that the hub cluster will manage, deploy and control the lifecycle of the spokes using Red Hat Advanced Cluster Management (RHACM). So, hub clusters running RHACM apply radio access network (RAN) policies from predefined custom resources (CRs) and provision and deploy the spoke clusters using multiple products. We will take a closer look at these components in link:08-ztp-at-scale.html[ZTP components] section.
 
-IMPORTANT: ZTP can have two scenarios, connected and disconnected, wether the OpenShift Container Platform Worker nodes can directly access the internet or not. In our lab and for telco deployments, disconnected scenario is the most common.
+IMPORTANT: ZTP can operate in both connected and disconnected environments. In the connected case clusters have direct access to the Internet. The disconnected case, which uses a private registry accessible within the customer's network, is most common in the telecom environment and will be used in this lab.
 
 ZTP provides support for deploying single node clusters, three-node clusters, and standard OpenShift clusters. This includes the installation of OpenShift and deployment of the distributed units (DUs) at scale. In this lab, we will focus on SNO clusters which was a topic discussed in link:02-sno-intro.html[Introduction to Single Node OpenShift (SNO)].
 
