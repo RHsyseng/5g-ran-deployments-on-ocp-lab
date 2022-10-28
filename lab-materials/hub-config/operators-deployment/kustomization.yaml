@@ -4,3 +4,6 @@ resources:
   - 00_rhacm_deployment.yaml
   - 01_talm_deployment.yaml
   - 02_gitea.yaml
+  - 03_cnv.yaml
+  - 04_metallb.yaml 
+  - 05_agent_autoapprover.yaml
