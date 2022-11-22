@@ -25,11 +25,11 @@ metadata:
     infraenvs.agent-install.openshift.io: "sno1"
 spec:
   online: true
-  bootMACAddress: de:ad:bb:f3:22:05
+  bootMACAddress: aa:aa:aa:aa:02:01
   automatedCleaningMode: disabled
   rootDeviceHints:
     deviceName: /dev/vda
   bmc:
-    address: redfish-virtualmedia://10.19.3.4:8080/redfish/v1/Systems/4bcdd62f-d316-4fe1-9341-8e9d90d130b8
+    address: redfish-virtualmedia://192.168.125.1:8080/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201
     credentialsName: sno1
     disableCertificateVerification: true

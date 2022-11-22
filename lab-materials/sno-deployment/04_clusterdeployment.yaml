@@ -7,7 +7,7 @@ metadata:
   name: sno1
   namespace: sno1
 spec:
-  baseDomain: e2e.bos.redhat.com
+  baseDomain: 5g-deployment.lab
   clusterName: sno1
   controlPlaneConfig:
     servingCertificates: {}
