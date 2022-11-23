@@ -133,14 +133,14 @@ metadata:
   namespace: multicluster-engine
 spec:
   databaseStorage:
-    storageClassName: ocs-storagecluster-ceph-rbd
+    storageClassName: odf-lvm-vg1
     accessModes:
     - ReadWriteOnce
     resources:
       requests:
         storage: 10Gi
   filesystemStorage:
-    storageClassName: ocs-storagecluster-ceph-rbd
+    storageClassName: odf-lvm-vg1
     accessModes:
     - ReadWriteOnce
     resources:
