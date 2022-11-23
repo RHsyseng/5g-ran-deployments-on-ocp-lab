@@ -4,7 +4,8 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
   name: custom-registries
-  namespace: multicluster-engine
+#  namespace: multicluster-engine
+  namespace: open-cluster-management
   labels:
     app: assisted-service
 data:
