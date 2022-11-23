@@ -123,12 +123,23 @@ data:
     [[registry.mirror]]
       location = "infra.5g-deployment.lab:8443/openshift/release-images"
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: assisted-service-config
+  namespace: multicluster-engine
+  labels:
+    app: assisted-service
+data:
+  PUBLIC_CONTAINER_REGISTRIES: "quay.io,registry.ci.openshift.org,registry.redhat.io"
+#  DISABLED_HOST_VALIDATIONS: sufficient-packet-loss-requirement-for-role
+---
 apiVersion: agent-install.openshift.io/v1beta1
 kind: AgentServiceConfig
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "2"
-#    unsupported.agent-install.openshift.io/assisted-service-configmap: 'assisted-service-config'
+    unsupported.agent-install.openshift.io/assisted-service-configmap: 'assisted-service-config'
   name: agent
   namespace: multicluster-engine
 spec:
