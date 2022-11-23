@@ -127,7 +127,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: assisted-service-config
-  namespace: multicluster-engine
+  namespace: open-cluster-management
   labels:
     app: assisted-service
 data:
