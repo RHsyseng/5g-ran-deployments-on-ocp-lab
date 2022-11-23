@@ -144,6 +144,8 @@ metadata:
   name: agent
   namespace: multicluster-engine
 spec:
+  mirrorRegistryRef:
+    name: custom-registries
   databaseStorage:
     storageClassName: odf-lvm-vg1
     accessModes:
