@@ -41,6 +41,37 @@ data:
     s+KzXHlydQpzajOOzwRgq+dIGl6y4GYM1Y0EElHY7S/LvJBNpcw8BDjWmZfpie0y
     /fp7Z8v3m9S2+TmGjDVC
     -----END CERTIFICATE-----
+    -----BEGIN CERTIFICATE-----
+    MIIFSzCCAzOgAwIBAgIUftZTEgOzThmcDJZdqdU7HyTqdYswDQYJKoZIhvcNAQEL
+    BQAwIjEgMB4GA1UEAwwXaW5mcmEuNWctZGVwbG95bWVudC5sYWIwIBcNMjIxMTIx
+    MTMwNzMzWhgPMjA1MDA0MDcxMzA3MzNaMCIxIDAeBgNVBAMMF2luZnJhLjVnLWRl
+    cGxveW1lbnQubGFiMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAzJ1t
+    TNULAmWUrX9/u8m0vXFipvO/ZmlWjl2CuUN+Ip8Tv6ifmrLntW1AFb80FxWogoQr
+    I6arzHfa22WNfXMkrdUjGJdJ8W4Iyua1WYIfQENcMq4H0kiNbhBF3PdX22Cyvi4h
+    DIRTE97Zy+s73F1i+sh9TT6CXZ8SwN8+tQAIimxRWB6qChV4iAkDPwHXweQifmz2
+    mWNfCkbd4DBWL9n8D3HJBJnhcJESK9Rlr9CEvzvB9KGiq7gIM1z00klJYTZcmzZ8
+    YLn+qHYPe361E+HyJzpP4dvlKAV8pqjWObfIZUWMfXarH8W/Vi79dbawKxFqKEu0
+    0cNkurXsoqVbYP9Nu6QVd9zFwXVoJUpFJuwHuIGnpsoHIgj5qAj38QUfTttWsKCz
+    Q5gcwe7pqO/+ot6cMdlBqZBelTLeP+o5+wV7Y4zH5cedjvsCcTuvjRYt5PR2xOGj
+    zpa2/r+xfPVBBRR82Sz8csbPmvf7zOY3PcitcFBJDQVyojKIMZZ8tdgveKaCrXNJ
+    om/R4arnGkNKq6/Zv7m/eBcet/TmaP4C0KTylcGIe1uN0UFgMqlai0G0cf5EAFjE
+    L1UeXmtM7U826ZMRQH/wYeMU3sf1qs+Parc1zXcQXaFXs0Toygy9JmHAOT6OvbvU
+    e9d7wLRcfzHtQVqQM+cDbvMkaCDHTc3ll4yP6YsCAwEAAaN3MHUwHQYDVR0OBBYE
+    FPe7k7yHMrDW+rJfVEoVuOroKKVtMB8GA1UdIwQYMBaAFPe7k7yHMrDW+rJfVEoV
+    uOroKKVtMA8GA1UdEwEB/wQFMAMBAf8wIgYDVR0RBBswGYIXaW5mcmEuNWctZGVw
+    bG95bWVudC5sYWIwDQYJKoZIhvcNAQELBQADggIBADwIGsOscekLD2qOEIn4jfry
+    ERvW0C3yFxOZ3xcGNgJ4Hvnk5eS4TsCqXApM7Qk3GKeF6JykjLF5QdPYgxrRJQ2Q
+    HnSnqNHf/fuCPMnXVTIQjNUoDtztLt1cbTY8Vs7QDoqI0W3ozdy5Brmbnq74oIlm
+    lDsPtzw3FUhAcDZqctwX/PGYYUYUHK6hSwplaWOB28coQgF6Z5dpj2Hg0wgd9mK4
+    6IinGjRxkiw3CIiDaQuMrcaOKcLjeKBJmrhXko+V3aWq0O9ZOunA7149el49TFRK
+    m1OgsC+JfhqdkR934KuFasUQDtdt9m6QofU2N3GNKhd59nITw3+C2rzsqcOY0nPe
+    BfVMaIKt+ZQdfX7CpVhFZdhnrhxA6s0xlUqebb4M4kRr2B9J8zk2kz6aG1YuEqDt
+    mXDAG364/gjDiX/7YU1PT5naCR2tLgcdEoJ81tU0IPcWUF1ouYklQDXJ5o8quVqj
+    HbUSr9ktUlkafKxHfNB+t3HeqmiRTa2uK0kmTYvbx8Y2lzlZHnaTKCY4KDrTCfcr
+    wUA47qj/3i3lRmmIYfl/G8a+Q2ojADs+3Ul3zH/ow/61PcBMa3G3xm0wyiH/rhMx
+    F8TXNVRAgVx6QzHdKz9fqY6V4XP3TwmBNHeKzvUGMH5hhxuUXEQQ9xw7cycACmT2
+    5csXfh2Bl6a+jyUANR8M
+    -----END CERTIFICATE-----
   registries.conf: |
     unqualified-search-registries = ["registry.access.redhat.com", "docker.io"]
 
