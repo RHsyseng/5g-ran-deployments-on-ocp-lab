@@ -1,0 +1,4 @@
+host-record=api-int.sno1.5g-deployment.lab,192.168.125.30
+host-record=api.sno1.5g-deployment.lab,192.168.125.30
+address=/apps.sno1.5g-deployment.lab/192.168.125.30
+dhcp-host=aa:aa:aa:aa:02:01,ocp-sno1,192.168.125.30

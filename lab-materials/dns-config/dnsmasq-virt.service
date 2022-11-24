@@ -1,0 +1,11 @@
+[Unit]
+Description=DNS server for Openshift 4 Clusters.
+After=network.target
+
+[Service]
+User=root
+Group=root
+ExecStart=/usr/sbin/dnsmasq -k --conf-file=/opt/dnsmasq/dnsmasq.conf
+
+[Install]
+WantedBy=multi-user.target
