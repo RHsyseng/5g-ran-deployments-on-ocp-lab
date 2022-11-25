@@ -157,6 +157,8 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
   name: assisted-service-config
   namespace: multicluster-engine
   labels:
