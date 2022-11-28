@@ -11,7 +11,7 @@ spec:
   clusterName: sno1
   controlPlaneConfig:
     servingCertificates: {}
-  installed: false
+#  installed: false
   clusterInstallRef:
     group: extensions.hive.openshift.io
     kind: AgentClusterInstall
