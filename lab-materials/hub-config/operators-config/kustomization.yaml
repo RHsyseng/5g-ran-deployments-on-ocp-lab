@@ -6,3 +6,4 @@ resources:
   - 00_rhacm_config.yaml
   - 01_ai_config.yaml
   - 02_patch_provisioning.yaml
+  - 03_mce_config.yaml 
