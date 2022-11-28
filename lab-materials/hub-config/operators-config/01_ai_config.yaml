@@ -206,4 +206,4 @@ metadata:
         argocd.argoproj.io/sync-wave: "4"
   name: openshift-v4.11-disconnected
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/ocp4:4.11.13-x86_64
+  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.11.13-x86_64
