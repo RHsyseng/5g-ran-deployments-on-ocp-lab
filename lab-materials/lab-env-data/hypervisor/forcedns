@@ -1,0 +1,12 @@
+#!/bin/bash
+export IP="192.168.125.1"
+export BASE_RESOLV_CONF="/run/NetworkManager/resolv.conf"
+
+if ! [[ `grep -q "$IP" /etc/resolv.conf` ]]; then
+export TMP_FILE=$(mktemp /etc/forcedns_resolv.conf.XXXXXX)
+cp $BASE_RESOLV_CONF $TMP_FILE
+chmod --reference=$BASE_RESOLV_CONF $TMP_FILE
+sed -i -e "s/5g-deployment.lab//" -e "s/search /& 5g-deployment.lab /" -e "0,/nameserver/s/nameserver/& $IP\n&/" $TMP_FILE
+mv $TMP_FILE /etc/resolv.conf
+fi
+echo "ok"

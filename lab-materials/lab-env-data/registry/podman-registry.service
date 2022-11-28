@@ -1,0 +1,18 @@
+[Unit]
+Description=Podman container - Docker Registry
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root
+TimeoutStartSec=300
+ExecStartPre=-/usr/bin/podman rm -f registry
+ExecStart=/usr/bin/podman run --name registry --hostname ${REGISTRY_NAME} --net host -e REGISTRY_AUTH=htpasswd -e REGISTRY_AUTH_HTPASSWD_REALM=basic-realm -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd -e REGISTRY_HTTP_SECRET=redhat -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry-cert.pem -e REGISTRY_HTTP_TLS_KEY=/certs/registry-key.pem -e REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/registry -v /opt/registry/auth:/auth:Z -v /opt/registry/certs:/certs:z -v /opt/registry/data:/registry:z -v /opt/registry/conf/config.yml:/etc/docker/registry/config.yml:z quay.io/mavazque/registry:2.7.1
+ExecStop=-/usr/bin/podman rm -f image-registry
+Restart=always
+RestartSec=30s
+StartLimitInterval=60s
+StartLimitBurst=99
+
+[Install]
+WantedBy=multi-user.target
