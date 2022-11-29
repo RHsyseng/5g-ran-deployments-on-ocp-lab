@@ -101,7 +101,37 @@
 *** xref:11-deployment-considerations.adoc#fully-disconnected[Fully disconnected]
 ** xref:11-deployment-considerations.adoc#git-repo-structure[Git Repository Structure]
 
+* xref:22-lab-environment.adoc[Lab Environment]
+** xref:22-lab-environment.adoc#lab-requirements[Lab Requirements]
+** xref:22-lab-environment.adoc#lab-deployment[Lab Deployment]
+*** xref:22-lab-environment.adoc#install-kcli[Install KCli]
+*** xref:22-lab-environment.adoc#install-oc-kubectl[Install oc/kubectl CLIs]
+*** xref:22-lab-environment.adoc#configure-local-dns-dhcp-server[Configure Local DNS/DHCP Server]
+*** xref:22-lab-environment.adoc#disable-firewall[Disable Firewall]
+*** xref:22-lab-environment.adoc#install-sushytools[Install Sushy Tools]
+*** xref:22-lab-environment.adoc#configure-disconnected-registry[Configure Disconnected Registry]
+*** xref:22-lab-environment.adoc#configure-git-server[Configure Git Server]
+*** xref:22-lab-environment.adoc#configure-disconnected-network[Configure Disconnected Network]
+*** xref:22-lab-environment.adoc#create-openshift-nodes-vms[Create OpenShift Nodes VMs]
+*** xref:22-lab-environment.adoc#deploy-openshift-hub-cluster[Deploy OpenShift Hub Cluster]
+*** xref:22-lab-environment.adoc#configure-openshift-hub-cluster[Configure OpenShift Hub Cluster]
+*** xref:22-lab-environment.adoc#deploy-openshift-hub-cluster-operators[Deploy OpenShift HUB Cluster Operators]
+*** xref:22-lab-environment.adoc#deploy-sno1-cluster-without-ztp[Deploy SNO1 Cluster (without ZTP)]
+*** xref:22-lab-environment.adoc#configure-access-to-cluster-apps[Configure Access to Cluster Apps]
+
+* xref:23-lab-environment-introduction.adoc[Introduction to the Lab Environment]
+** xref:23-lab-environment-introduction.adoc#git-server[Git Server]
+** xref:23-lab-environment-introduction.adoc#container-registry[Container Registry]
+** xref:23-lab-environment-introduction.adoc#openshift-hub-cluster[OpenShift Hub Cluster]
+
 * xref:12-crafting-deployments-iaac.adoc[Crafting Deployment's IaaC]
+** xref:12-crafting-deployments-iaac.adoc#introduction-to-siteconfig[Introduction to the SiteConfig]
+** xref:12-crafting-deployments-iaac.adoc#crafting-our-own-siteconfig[Crafting our own SiteConfig]
+*** xref:12-crafting-deployments-iaac.adoc#git-repository[Git Repository]
+*** xref:12-crafting-deployments-iaac.adoc#baremetal-node-details[Bare Metal Node Details]
+*** xref:12-crafting-deployments-iaac.adoc#pre-reqs[Deployment Prerequesites]
+*** xref:12-crafting-deployments-iaac.adoc#siteconfig[SiteConfig]
+
 
 * xref:13-crafting-cluster-cnf-operators-configs.adoc[Crafting Cluster and CNF Operators Configs]
 
@@ -120,8 +150,7 @@
 ** xref:19-common-pitfalls.adoc#energy-saving-hw-profiles[Energy Saving Hardware Profiles]
 ** xref:19-common-pitfalls.adoc#secure-boot-oot-unsigned-drivers[Secure Boot and Unsigned OoT Drivers]
 ** xref:19-common-pitfalls.adoc#sriov-node-drain[SR-IOV Node Drain]
-** xref:19-common-pitfalls.adoc#pod-disruption-budgets[Pod Disruption Budgets
-]
+** xref:19-common-pitfalls.adoc#pod-disruption-budgets[Pod Disruption Budgets]
 
 
 * xref:20-closing-thoughts.adoc[Closing Thoughts]

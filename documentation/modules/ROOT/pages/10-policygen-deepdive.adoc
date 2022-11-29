@@ -304,7 +304,7 @@ kustomize build site-configs/ --enable-alpha-plugins
 We will get the output (manifests that will be consumed by the RHACM Hub).
 
 [.console-output]
-[source,bash,subs="attributes+,+macros"]
+[source,yaml,subs="attributes+,+macros"]
 -----
 apiVersion: v1
 kind: Namespace

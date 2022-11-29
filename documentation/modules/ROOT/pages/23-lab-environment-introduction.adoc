@@ -1,0 +1,35 @@
+= Introduction to the lab environment
+include::_attributes.adoc[]
+:profile: 5g-ran-lab
+
+Before jumping into the hands-on sections let's get familiar with the lab environment we have deployed.
+
+[#git-server]
+== Git Server
+
+A https://github.com/go-gitea/gitea[gitea] server is running on the infrastructure host, you can reach it out at http://infra.5g-deployment.lab:3000/.
+
+Credentials for the git server:
+
+* Username: `student` 
+* Password: `student`
+
+[#container-registry]
+== Container Registry
+
+A container registry is running on the infrastructure host, you can reach it out at https://infra.5g-deployment.lab:8443/.
+
+Credentials for the container registry:
+
+* Username: `admin` 
+* Password: `r3dh4t1!`
+
+[#openshift-hub-cluster]
+== OpenShift Hub Cluster
+
+An OpenShift cluster is running on the infrastructure host, you can reach it out at https://console-openshift-console.apps.hub.5g-deployment.lab and https://api.hub.5g-deployment.lab:6443
+
+Credentials for the OCP cluster (htpassidp provider):
+
+* Username: `admin` 
+* Password: `admin`
