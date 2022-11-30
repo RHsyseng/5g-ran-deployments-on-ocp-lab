@@ -136,6 +136,8 @@
 * xref:13-crafting-cluster-cnf-operators-configs.adoc[Crafting Cluster and CNF Operators Configs]
 
 * xref:14-running-the-deployment.adoc[Running the Deployment]
+** xref:14-running-the-deployment.adoc#deploying-ztp-gitops-pipeline[Deploying the ZTP GitOps Pipeline]
+** xref:14-running-the-deployment.adoc#deploying-sno-using-gitops-pipeline[Deploying the SNO Cluster using the ZTP GitOps Pipeline]
 
 * xref:15-monitoring-the-deployment.adoc[Monitoring the Deployment]
 

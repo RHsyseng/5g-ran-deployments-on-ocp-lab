@@ -2,4 +2,86 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-TBD
+As we saw in previous sections, clusters are deployed using the ZTP GitOps Pipeline, but before using it we need to load it into our cluster.
+
+We already have the git repository that will be used for storing our Infrastructure as Code (IaC) and Configuration as Code (CaC). Next step is deploying the ZTP GitOps Pipeline, let's do it.
+
+[#deploying-ztp-gitops-pipeline]
+== Deploying the ZTP GitOps Pipeline
+
+In the workstation, run the following command to extract the pipeline installation files:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+[user@workstation ~]$ mkdir -p ~/5g-deployment-lab/ztp-pipeline/
+[user@workstation ~]$ podman run --log-driver=none --rm infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.11 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/
+-----
+
+Now that we extracted the pipeline content we need to get it applied to our hub cluster.
+
+. Login into the hub cluster
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+[user@workstation ~]$ oc login -u admin -p admin https://api.hub.5g-deployment.lab:6443
+-----
++
+. Modify the ZTP GitOps Pipeline configuration to match our environment configuration
++
+.. Change the repository url for the two ArgoApps
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+[user@workstation ~]$ sed -i "s|repoURL: .*|repoURL: http://infra.5g-deployment.lab:3000/student/ztp-repository.git|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+[user@workstation ~]$ sed -i "s|repoURL: .*|repoURL: http://infra.5g-deployment.lab:3000/student/ztp-repository.git|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
+-----
++
+.. Change the repository path for the two ArgoApps
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+[user@workstation ~]$ sed -i "s|path: .*|path: site-configs|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+[user@workstation ~]$ sed -i "s|path: .*|path: site-policies|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
+-----
++
+.. Change the repository branch for the two ArgoApps
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+[user@workstation ~]$ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+[user@workstation ~]$ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
+-----
++
+. Apply the ZTP GitOps Pipeline configuration
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+[user@workstation ~]$ oc apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/
+-----
+
+[#deploying-sno-using-gitops-pipeline]
+== Deploying the SNO Cluster using the ZTP GitOps Pipeline
+
+When we applied the ZTP GitOps Pipeline configuration in the last section, that created two ArgoCD apps. One of the apps (clusters) take care of deploying the clusters defined in the `SiteConfig` while the other (policies) take care of deploying the policies defined in the different `PolicyGenTemplates`.
+
+Since the apps have been created, ArgoCD started doing its magic which means that the cluster deployment should already be running, let's see what happened in Argo CD.
+
+1. Login into https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab/[Argo CD] using OpenShift credentials
+2. You will see the follow applications:
++
+image::argocd-apps.png[ArgoCD Apps]
++
+3. From all these apps, the ones related to the ZTP GitOps Pipeline are `clusters` and `policies`. If we click on `clusters` we will see the following screen:
++
+image::argocd-clusters-app.png[ArgoCD Clusters App]
++
+4. You can see how the pipeline created all the required objects to get our site deployed.
+5. If we check the `policies` app this is what we will see:
+
+//TODO add policies view
