@@ -125,7 +125,8 @@
 ** xref:23-lab-environment-introduction.adoc#container-registry[Container Registry]
 ** xref:23-lab-environment-introduction.adoc#openshift-hub-cluster[OpenShift Hub Cluster]
 
-* xref:12-crafting-deployments-iaac.adoc[Crafting Deployment's IaaC]
+//when changing numbers there is a linkref in this 12-crafting-deployments-iaac doc.
+* xref:12-crafting-deployments-iaac.adoc[Crafting Deployment's IaaC] 
 ** xref:12-crafting-deployments-iaac.adoc#introduction-to-siteconfig[Introduction to the SiteConfig]
 ** xref:12-crafting-deployments-iaac.adoc#crafting-our-own-siteconfig[Crafting our own SiteConfig]
 *** xref:12-crafting-deployments-iaac.adoc#git-repository[Git Repository]
@@ -145,6 +146,10 @@
 ** xref:14-running-the-deployment.adoc#deploying-sno-using-gitops-pipeline[Deploying the SNO Cluster using the ZTP GitOps Pipeline]
 
 * xref:15-monitoring-the-deployment.adoc[Monitoring the Deployment]
+** xref:15-monitoring-the-deployment.adoc#monitoring-deployment-webui[Monitoring the Deployment via the WebUI]
+** xref:15-monitoring-the-deployment.adoc#monitoring-deployment-cli[Monitoring the Deployment via the CLI]
+
+* xref:24-managing-existing-clusters.adoc[Managing Existing Clusters]
 
 * xref:16-check-deployment-is-finished.adoc[Check Deployment is finished]
 

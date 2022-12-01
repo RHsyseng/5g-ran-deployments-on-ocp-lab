@@ -2,4 +2,74 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-TBD
+Once the ZTP GitOps Pipeline starts deploying our clusters we can follow the installation status via the WebUI or the CLI.
+
+[#monitoring-deployment-webui]
+== Monitoring the Deployment via the WebUI
+
+1. Access the https://multicloud-console.apps.hub.5g-deployment.lab/[RHACM WebUI] and login with the OpenShift credentials.
+2. Once you're in, click on `Infrastructure` -> `Clusters`. You will see an screen like the one below:
++
+image::acm-clusterview.png[RHACM Cluster View] 
++
+3. In order to check the deployment status of the `sno2` cluster, click on `sno2` and you will get presented this creen:
++
+image::acm-sno2-view.png[RHACM sno2 Cluster View]
++
+4. You can follow the progress here, if you want to get extra details you can click on `View Cluster Events` and you should see more information:
++
+image::acm-sno2-clusterevents.png[RHACM sno2 Cluster Events]
+5. Deployment will eventually finish:
++
+image::acm-sno2-install-completed.png[RHACM sno2 Cluster Deployment Finished]
+
+[#monitoring-deployment-cli]
+== Monitoring the Deployment via the CLI
+
+1. Access the Hub cluster as admin
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+[user@workstation ~]$ oc login -u admin -p admin https://api.hub.5g-deployment.lab:6443
+-----
++
+2. Check the `AgentClusterInstall` for SNO2 cluster
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+[user@workstation ~]$ oc -n sno2 get agentclusterinstall sno2
+
+NAME   CLUSTER   STATE
+sno2   sno2      finalizing
+-----
++
+3. In case you want expanded information like we saw in the WebUI you can check the conditions of the `AgentClusterInstall` object. For example, while installing:
++
+[.console-input]
+[source,yaml,subs="attributes+,+macros"]
+-----
+- lastProbeTime: "2022-12-01T17:53:42Z"
+  lastTransitionTime: "2022-12-01T17:53:42Z"
+  message: 'The installation is in progress: Finalizing cluster installation.
+    Cluster version status: available, message: Done applying 4.11.13'
+  reason: InstallationInProgress
+  status: "False"
+  type: Completed
+-----
++
+4. Once installed:
++
+[.console-input]
+[source,yaml,subs="attributes+,+macros"]
+-----
+- lastProbeTime: "2022-12-01T18:00:00Z"
+  lastTransitionTime: "2022-12-01T18:00:00Z"
+  message: 'The installation has completed: Cluster is installed'
+  reason: InstallationCompleted
+  status: "True"
+  type: Completed
+-----
+
+While the `SNO2` cluster installs, let's move to the next section where we will learn how to add an existing cluster to RHACM and get it managed by the ZTP GitOps Pipeline.

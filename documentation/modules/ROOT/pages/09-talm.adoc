@@ -157,21 +157,21 @@ Below we can see the same CGU shown in the previous section, but this time the C
 apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
 metadata:
-  name: du-upgrade-41018
-  namespace: ztp-group-du-sno
+  name: du-upgrade-41018
+  namespace: ztp-group-du-sno
 spec:
-  preCaching: true #precache was done
+  preCaching: true #precache was done
   backup: true #backup feature enabled
-  deleteObjectsOnCompletion: true
-  clusters:
-  - cnfdb1
-  - cnfdb2
-  enable: true #backup is triggered when CGU is enabled
-  managedPolicies:
-  - du-upgrade-platform-upgrade
-  remediationStrategy:
-    maxConcurrency: 2
-    timeout: 240
+  deleteObjectsOnCompletion: true
+  clusters:
+  - cnfdb1
+  - cnfdb2
+  enable: true #backup is triggered when CGU is enabled
+  managedPolicies:
+  - du-upgrade-platform-upgrade
+  remediationStrategy:
+    maxConcurrency: 2
+    timeout: 240
 -----
 
 The backup workload generates an utility called upgrade-recovery.sh in the recovery partition or at the recovery folder at `/var/recovery` and takes the pre-upgrade backup. In addition, the active OS deployment is pinned using ostree and the standby deployments are removed.
