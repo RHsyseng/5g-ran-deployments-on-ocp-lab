@@ -15,6 +15,7 @@ In the workstation, run the following command to extract the pipeline installati
 [source,bash,subs="attributes+,+macros"]
 -----
 [user@workstation ~]$ mkdir -p ~/5g-deployment-lab/ztp-pipeline/
+[user@workstation ~]$ podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1!
 [user@workstation ~]$ podman run --log-driver=none --rm infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.11 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/
 -----
 
@@ -83,5 +84,8 @@ image::argocd-clusters-app.png[ArgoCD Clusters App]
 +
 4. You can see how the pipeline created all the required objects to get our site deployed.
 5. If we check the `policies` app this is what we will see:
++
+image::argocd-policies-app.png[ArgoCD Policies App]
++
 
-//TODO add policies view
+In the next section we will see how we can monitor the deployment process.

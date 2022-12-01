@@ -72,11 +72,11 @@ spec:
   remediationAction: inform
   sourceFiles:
     - fileName: ReduceMonitoringFootprint.yaml
-      policyName: du-profile
+      policyName: du-profile-wave1
     - fileName: ConsoleOperatorDisable.yaml
-      policyName: du-profile
+      policyName: du-profile-wave10
     - fileName: DisableSnoNetworkDiag.yaml
-      policyName: du-profile          
+      policyName: du-profile-wave10   
 EOF
 -----
 
