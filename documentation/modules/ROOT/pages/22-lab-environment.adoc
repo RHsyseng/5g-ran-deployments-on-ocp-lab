@@ -27,7 +27,7 @@ We use https://github.com/karmab/kcli[KCli] to do several things, like managing 
 [source,bash,subs="attributes+,+macros"]
 -----
 [root@hypervisor ~]# dnf -y copr enable karmab/kcli
-[root@hypervisor ~]# dnf -y install kcli bash-completion vim jq
+[root@hypervisor ~]# dnf -y install kcli bash-completion vim jq tar
 -----
 
 [#install-oc-kubectl]
@@ -36,10 +36,18 @@ We use https://github.com/karmab/kcli[KCli] to do several things, like managing 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# curl -L https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest-4.11/openshift-client-linux.tar.gz -o openshift-client-linux.tar.gz
-[root@hypervisor ~]# tar xvfz openshift-client-linux.tar.gz kubectl oc
+[root@hypervisor ~]# kcli download oc -P version=stable -P tag='4.11'
+[root@hypervisor ~]# kcli download kubectl -P version=stable -P tag='4.11'
 [root@hypervisor ~]# mv kubectl oc /usr/bin/
-[root@hypervisor ~]# rm -f openshift-client-linux.tar.gz
+-----
+
+[#configure-disconnected-network]
+=== Configure Disconnected Network
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+[root@hypervisor ~]# kcli create network -c 192.168.125.0/24 --nodhcp --domain 5g-deployment.lab 5gdeploymentlab
 -----
 
 [#configure-local-dns-dhcp-server]
@@ -63,6 +71,18 @@ We use https://github.com/karmab/kcli[KCli] to do several things, like managing 
 [root@hypervisor ~]# systemctl daemon-reload
 [root@hypervisor ~]# systemctl enable --now dnsmasq-virt
 [root@hypervisor ~]# systemctl mask dnsmasq
+-----
+
+[#configure-local-dns-as-primary-server]
+=== Configure Local DNS as Primary Server
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+[root@hypervisor ~]# curl -L https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hypervisor/forcedns -o /etc/NetworkManager/dispatcher.d/forcedns
+[root@hypervisor ~]# chmod +x /etc/NetworkManager/dispatcher.d/forcedns
+[root@hypervisor ~]# systemctl restart NetworkManager
+[root@hypervisor ~]# /etc/NetworkManager/dispatcher.d/forcedns
 -----
 
 [#disable-firewall]
@@ -123,15 +143,6 @@ You can also create the required rules in the firewall if you want, but for the 
 [root@hypervisor ~]# systemctl enable podman-gitea --now
 [root@hypervisor ~]# podman exec --user 1000 gitea /bin/sh -c 'gitea admin user create --username student --password student --email student@5g-deployment.lab --must-change-password=false --admin'
 [root@hypervisor ~]# curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab.git","uid":1,"repo_name":"5g-ran-deployments-on-ocp-lab"}' http://infra.5g-deployment.lab:3000/api/v1/repos/migrate
------
-
-[#configure-disconnected-network]
-=== Configure Disconnected Network
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-[root@hypervisor ~]# kcli create network -c 192.168.125.0/24 --nodhcp --domain 5g-deployment.lab 5gdeploymentlab
 -----
 
 [#create-openshift-nodes-vms]
@@ -201,7 +212,7 @@ A SNO is deployed outside the ZTP workflow so students can import it and see how
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# curl -L http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/main/lab-materials/helper-data/ssh-key -o /root/.ssh/snokey
+[root@hypervisor ~]# curl -L http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/main/lab-materials/lab-env-data/hypervisor/ssh-key -o /root/.ssh/snokey
 [root@hypervisor ~]# chmod 400 /root/.ssh/snokey
 [root@hypervisor ~]# oc apply -f https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml
 -----

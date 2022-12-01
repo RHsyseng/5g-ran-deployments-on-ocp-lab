@@ -25,7 +25,7 @@ IMPORTANT: The steps below rely the lab environment being up and running.
 
 We need a git repository where we will store our clusters configurations, we will create a new git repository in the Git server running on the infrastructure node.
 
-1. Login into the http://infra.5g-deployment.lab:3000/[Git server]
+1. Login into the http://infra.5g-deployment.lab:3000/[Git server] (use student credentials)
 2. You will see that a git repository already exist, you **must not** change that repository, instead you will create a new one.
 +
 image::gitea-repository.png[Gitea Repository]
@@ -195,7 +195,7 @@ spec:
     # Cluster labels (this will be used by RHACM)
     clusterLabels:
       common: "ocp411"
-      du-group: "ran"
+      group-du-sno: ""
       du-site: "sno2"
       du-zone: "europe"
     # Pod's SDN network range
@@ -263,7 +263,9 @@ At this point we can push the changes to the repo and continue to the next secti
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ git add --all
-[user@workstation ~]$ git commit -m 'Added SNO2 and 5GLab Site information'
-[user@workstation ~]$ git push origin main
+[user@workstation ~]$ cd ~/5g-deployment-lab/ztp-repository
+[user@workstation ztp-repository]$ git add --all
+[user@workstation ztp-repository]$ git commit -m 'Added SNO2 and 5GLab Site information'
+[user@workstation ztp-repository]$ git push origin main
+[user@workstation ztp-repository]$ cd ~
 -----

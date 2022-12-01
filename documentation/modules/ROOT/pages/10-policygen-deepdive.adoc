@@ -68,7 +68,6 @@ Kustomize will get the GVK and after that will go to the plugins path and execut
 
 Kustomize will get the GVK and after that will go to the plugins path and execute the plugin binary, the path for the binary is `$KUSTOMIZE_PLUGINS_PATH/<group>/<version>/<kind>/<pluginbinary>`. In this case Kustomize will execute the binary at `~/.config/kustomize/plugin/ran.openshift.io/v1/policygentemplate/PolicyGenTemplate`.
 
-
 [#siteconfig-generator]
 === SiteConfigGenerator
 

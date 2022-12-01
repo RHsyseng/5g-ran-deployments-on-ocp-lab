@@ -106,12 +106,13 @@
 ** xref:22-lab-environment.adoc#lab-deployment[Lab Deployment]
 *** xref:22-lab-environment.adoc#install-kcli[Install KCli]
 *** xref:22-lab-environment.adoc#install-oc-kubectl[Install oc/kubectl CLIs]
+*** xref:22-lab-environment.adoc#configure-disconnected-network[Configure Disconnected Network]
 *** xref:22-lab-environment.adoc#configure-local-dns-dhcp-server[Configure Local DNS/DHCP Server]
+*** xref:22-lab-environment.adoc#configure-local-dns-as-primary-server[Configure Local DNS as Primary Server]
 *** xref:22-lab-environment.adoc#disable-firewall[Disable Firewall]
 *** xref:22-lab-environment.adoc#install-sushytools[Install Sushy Tools]
 *** xref:22-lab-environment.adoc#configure-disconnected-registry[Configure Disconnected Registry]
 *** xref:22-lab-environment.adoc#configure-git-server[Configure Git Server]
-*** xref:22-lab-environment.adoc#configure-disconnected-network[Configure Disconnected Network]
 *** xref:22-lab-environment.adoc#create-openshift-nodes-vms[Create OpenShift Nodes VMs]
 *** xref:22-lab-environment.adoc#deploy-openshift-hub-cluster[Deploy OpenShift Hub Cluster]
 *** xref:22-lab-environment.adoc#configure-openshift-hub-cluster[Configure OpenShift Hub Cluster]
@@ -132,8 +133,12 @@
 *** xref:12-crafting-deployments-iaac.adoc#pre-reqs[Deployment Prerequesites]
 *** xref:12-crafting-deployments-iaac.adoc#siteconfig[SiteConfig]
 
-
 * xref:13-crafting-cluster-cnf-operators-configs.adoc[Crafting Cluster and CNF Operators Configs]
+** xref:13-crafting-cluster-cnf-operators-configs.adoc#crafting-common-policies[Crafting Common Policies]
+** xref:13-crafting-cluster-cnf-operators-configs.adoc#crafting-group-policies[Crafting Group Policies]
+** xref:13-crafting-cluster-cnf-operators-configs.adoc#crafting-zone-policies[Crafting Zone Policies]
+** xref:13-crafting-cluster-cnf-operators-configs.adoc#crafting-site-policies[Crafting Site Policies]
+** xref:13-crafting-cluster-cnf-operators-configs.adoc#configure-kustomization-for-policies[Configure Kustomization for Policies]
 
 * xref:14-running-the-deployment.adoc[Running the Deployment]
 ** xref:14-running-the-deployment.adoc#deploying-ztp-gitops-pipeline[Deploying the ZTP GitOps Pipeline]
