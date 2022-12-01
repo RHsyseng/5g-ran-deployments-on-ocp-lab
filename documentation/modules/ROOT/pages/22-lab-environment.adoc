@@ -19,9 +19,9 @@ RHEL 8+ (or similar) box with access to the Internet. This lab relies on KVM, so
 IMPORTANT: All the steps in the below sections must be run as `root` user on the hypervisor host.
 
 [#install-kcli]
-=== Install KCli
+=== Install kcli
 
-We use https://github.com/karmab/kcli[KCli] to do several things, like managing VMs, deploying the first OCP cluster, etc.
+We use https://github.com/karmab/kcli[kcli] to do several things, like managing VMs, deploying the first OCP cluster, etc.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -258,5 +258,5 @@ After that you need to add the following entries to your /etc/hosts file:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-<HYPERVISOR_REACHABLE_IP> infra.5g-deployment.lab api.hub.5g-deployment.lab console-openshift-console.apps.hub.5g-deployment.lab oauth-openshift.apps.hub.5g-deployment.lab openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab
+<HYPERVISOR_REACHABLE_IP> infra.5g-deployment.lab api.hub.5g-deployment.lab multicloud-console.apps.hub.5g-deployment.lab console-openshift-console.apps.hub.5g-deployment.lab oauth-openshift.apps.hub.5g-deployment.lab openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab
 -----

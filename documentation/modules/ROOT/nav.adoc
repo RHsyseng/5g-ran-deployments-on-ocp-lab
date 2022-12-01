@@ -104,7 +104,7 @@
 * xref:22-lab-environment.adoc[Lab Environment]
 ** xref:22-lab-environment.adoc#lab-requirements[Lab Requirements]
 ** xref:22-lab-environment.adoc#lab-deployment[Lab Deployment]
-*** xref:22-lab-environment.adoc#install-kcli[Install KCli]
+*** xref:22-lab-environment.adoc#install-kcli[Install kcli]
 *** xref:22-lab-environment.adoc#install-oc-kubectl[Install oc/kubectl CLIs]
 *** xref:22-lab-environment.adoc#configure-disconnected-network[Configure Disconnected Network]
 *** xref:22-lab-environment.adoc#configure-local-dns-dhcp-server[Configure Local DNS/DHCP Server]
