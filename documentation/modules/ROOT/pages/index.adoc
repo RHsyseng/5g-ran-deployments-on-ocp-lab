@@ -9,6 +9,7 @@ This lab will guide you throught the deployment of a RAN ready infrastructure.
 
 IMPORTANT: This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
 
+[#contributors]
 == Contributors
 
 [cols="1,1"]

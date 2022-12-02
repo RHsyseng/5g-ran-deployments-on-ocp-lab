@@ -10,8 +10,9 @@ The first part of this lab is an introduction to the required concepts that one 
 == Who is this lab aimed at? 
 
 The lab is aimed to technical profiles working with OpenShift who are interested in any of these areas:
-* interested in GitOps management of a fleet of clusters
-* working with telecom customers/partners in projects involving RAN workloads
+
+* Interested in GitOps management of a fleet of clusters
+* Working with telecom customers/partners in projects involving RAN workloads
 
 [#lab-software-versions]
 == Lab Software Versions

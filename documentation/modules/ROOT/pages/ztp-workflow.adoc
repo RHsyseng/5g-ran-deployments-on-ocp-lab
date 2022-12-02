@@ -1,4 +1,4 @@
-= ZTP Worlflow
+= ZTP Workflow
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
@@ -35,7 +35,8 @@ image::ztp_workflow_3.png[ZTP Workflow 3]
 
 Notice that if, later on, you want to apply a new configuration or replace an existing configuration  you must use a new `policyGenTemplate` to do that.
 
-## Takeaway
+[#takeaways]
+== Takeaways
 
 Summing up, the deployment of the clusters includes:
 
