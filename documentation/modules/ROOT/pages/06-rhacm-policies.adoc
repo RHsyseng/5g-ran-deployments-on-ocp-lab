@@ -2,9 +2,9 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-As we mentioned in the https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/blob/main/content/4.md#ztp-workflow[ZTP Workflow] section, the Advanced Cluster Management for Kubernetes allows us to _provision_ and _configure_ multiple clusters in a declarative way following GitOps best practices. ZTP makes intensive use of Policies when setting up the target clusters as a day 2 operation. In our telco use case, the ZTP policyGen kustomize plugin translates the vRAN DU profile based on `PolicyGenTemplates` into multiple `Policies` that are understood by the Hub cluster and applied to the managed clusters.
+As we mentioned in the https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/blob/main/content/4.md#ztp-workflow[ZTP Workflow] section, the Red Hat Advanced Cluster Management (RHACM) for Kubernetes allows us to _provision_ and _configure_ multiple clusters in a declarative way and can be easily coupled with GitOps. ZTP makes intensive use of RHACM Policies for managing the configuration of deployed clusters. In our telco use case, creation of these `Policies` is simplified with the ZTP policyGen kustomize plugin. This plugin translates the vRAN DU profile based on `PolicyGenTemplates` into multiple `Policies` that are understood by the Hub cluster and applied to the managed clusters.
 
-In this section we provide an introduction to the concepts behind the “Governance" section of RHACM. Furthermore, we are going to introduce the concept of a Policy, which is key for managing the configuration lifecycle of our managed clusters.
+In this section we provide an introduction to the concepts behind the RHACM “Governance" pillar (section). Furthermore, we are going to introduce the concept of a Policy, which is key for managing the configuration lifecycle of our managed clusters.
 
 In the RHACM console you can find the governance section in the bottom left part of the menu bar. As you can see in the picture, there are multiple Policies applied, some are disabled while most of them are enabled (Status) with remediation set to inform. We will get into the details later on.
 
@@ -26,16 +26,16 @@ In the next picture you can see the communication flow and the multiple componen
 
 image::policy-framework-architecture-diagram.jpg[Policy framework architecture]
 
-At a glance, once we create a Policy in the hub cluster, the Governance Policy framework is responsible for propagating it to the target managed cluster or clusters if it must be applied to multiple. Then, the policy rules are evaluated against the current state of the managed cluster. The results of this assessment are sent back to the hub cluster and depending on the needs, we can remediate the drift or just be informed.
+At a glance, once we create a Policy in the hub cluster, the Governance Policy framework is responsible for propagating it to set of target managed clusters based on a set of binding rules for the Policy. Then, the policy rules are evaluated against the current state of the managed cluster. The results of this assessment are sent back to the hub cluster and depending on the needs, we can remediate the drift or just be informed.
 
 [#policies]
 == Policies
 
-The Policy is the Custom Resource Definition (CRD), created for policy framework controllers to monitor. It acts as a vehicle to deliver policies to managed cluster and collect results to send to the hub cluster.
+Policy CRs, as defined by the Policy Custom Resource Definition (CRD), are created on the hub cluster and act as a vehicle to deliver policies to managed cluster and collect results to send to the hub cluster.
 
-A `Policy` can contain one or multiple policy rules. They are created in the Hub cluster and the propagated to the target managed clusters. For the policy to be effective, it needs to consist of three parts: the `Policy`, the `PlacementBinding` and the `PlacementRule`. 
+Each `Policy` can contain one or multiple policy rules that will be evaluated against cluster(s) that they are bound to. Policy binding is determined by the RHACM placement APIs which include the `PlacementBinding` and the `PlacementRule` CRs.
 
-Note that the PlacementBinding connects the Policy to the PlacementRule, and the PlacementRule defines where the Policy should be active. View the following example specification of a Policy object:
+Note that the PlacementBinding connects the Policy to the PlacementRule, and the PlacementRule defines where (on what clusters) the Policy should be active. View the following example specification of a Policy object:
 
 [.console-input]
 [source,yaml,subs="attributes+,+macros"]
@@ -75,37 +75,27 @@ spec:
             apiVersion: performance.openshift.io/v2
             kind: PerformanceProfile
             metadata:
-              annotations:
-                kubeletconfig.experimental: |
-                  {"topologyManagerScope": "pod",
-                   "systemReserved": {"memory": "10.5Gi"}
-                  }
               name: openshift-node-performance-profile
             spec:
               additionalKernelArgs:
-              - firmware_class.path=/var/lib/firmware/
-              - nohz_full=2-39,43-79
-              - crashkernel=1024M
-              - efi=runtime
+                - rcupdate.rcu_normal_after_boot=0
+                - efi=runtime
               cpu:
                 isolated: 2-39,42-79
                 reserved: 0-1,40-41
-              globallyDisableIrqLoadBalancing: false
               hugepages:
                 defaultHugepagesSize: 1G
                 pages:
-                - count: 32
-                  size: 1G
+                  - count: 32
+                    size: 1G
               machineConfigPoolSelector:
                 pools.operator.machineconfiguration.openshift.io/master: ""
-              net:
-                userLevelNetworking: true
               nodeSelector:
                 node-role.kubernetes.io/master: ""
               numa:
-                topologyPolicy: single-numa-node
+                topologyPolicy: restricted
               realTimeKernel:
-                enabled: false
+                enabled: true
         remediationAction: inform
         severity: low
 -----
@@ -130,7 +120,7 @@ subjects:
   name: sno-worker-0-performance-policy
 -----
 
-The PlacementRule CRD is used to determine the target clusters to distribute policies to. View the following example specification of a PlacementRule object:
+The PlacementRule CRD is used to determine the target clusters to distribute policies to. The PlacementRule can match clusters based on labels applied to the ManagedCluster CR on the hub cluster. Each target (spoke) cluster under management by RHACM on the hub cluster will have a corresponding ManagedCluster CR. View the following example specification of a PlacementRule object:
 
 [.console-input]
 [source,yaml,subs="attributes+,+macros"]
@@ -155,16 +145,16 @@ spec:
 [#policy-status]
 === Policy Status
 
-Policies can be enabled or disabled by setting the _disabled_ parameter value to true or false. By default they are enabled. 
+Policies can be enabled or disabled by setting the _disabled_ parameter value to true or false. By default they are enabled.
 
 [#policy-remediation]
 === Policy Remediation
 
-As it will detailed in the following section [..] `PolicyGenTemplates` are by default set to inform mode. This value is then propagated to their respective `Policies`.
+As we will detail in the following section [..] `PolicyGenTemplates` are by default set to generate Policies set to inform mode. 
 
-Policy controllers periodically check specified policies against control state and remediate the violation. When the policy is set to inform, a report of the violations is created. However, when the controller is set to enforce violations are remediated as specified in the policy.
+Policy controllers periodically (as set by evaluationInterval) check policies against the current state of CRs on the target clusters. This check sets the Policy to either the Compliant or NonCompliant state. When the policy is set to inform, a report of the violations is created. However, when the controller is set to enforce a report is created _and_ violations are remediated as specified in the policy.
 
-This is important, since sometimes we just need to be informed about the drift between our desired state defined by the Policy and the current status of the spoke cluster or clusters. On the other hand, in case where we want to apply a configuration, such as installing an operator, replacing the existing configuration or adding a new set up to the cluster, the Policy should be set to enforce.
+The difference in behavior between inform and enforce is used by the GitOps ZTP flow to provide users continuous visibility into the state of clusters in their fleet (inform mode). When a violation (drift) is observed Policies may be converted to enforce mode (more on this in later sections) to bring the cluster(s) into compliance. This enforcement is used to apply initial configuration such as installing and configuring an operator as well as "day-n" changes to the configuration.
 
 [#rhacm-policies-takeaways]
 == Takeaways

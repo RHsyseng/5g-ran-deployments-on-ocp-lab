@@ -11,22 +11,24 @@ In RHACM as we saw in the previous section we can configure our policies in two 
 
 When using _inform_ mode no changes will be done in the clusters targeted by the policy, whereas _enforce_ mode will make the required changes to clusters targeted by the policy have the required configuration described in the policy.
 
-In RAN environments we want to have control over when changes to our clusters happen, and that's why all the policies will be configured with _inform_ mode. On top of these policies we have another component named TALM which controls when a policy gets enforced based on a configuration created by the cluster admins. TALM will be introduced in a future section.
+In Edge deployments where potentially disruptive events must be carefully managed with respect to timing and rollout we must have control over when changes to our clusters happen. With all Policies in _inform_ mode we have visibility into the compliance of all clusters but the enforcement (changes to clustes) will occur only when the Policies are switched to enforce mode. On top of these policies we have another component named Topology Aware Lifecycle Manager (TALM) which controls when a policy gets enforced based on a configuration created by the cluster admins. TALM will be introduced in a future section.
 
 [#olm-subscriptions]
 == OLM Subscriptions
 
-When installing operators in OpenShift we make use of OLM subscriptions. One of the configurations exposed by subscriptions is the update policy which can be either set to _manual_ or _automatic_.
+Additional functionality for OpenShift clusters can be provided through use of optional Operators installed on the cluster. These Operators are installed and managed through use of an OLM Subscription CR. Operators are stored in a registry which is periodically updated with new versions of the Operator. The Subscription CR may be set to automatically install new versions as they become available, or to a _manual_ mode which requires approval before new versions are installed.
 
-As we explained earlier, in RAN environments we want to have control over when changes to our clusters happen, so all our subscriptions will have an update policy set to _manual_. Again, TALM will control when the operators are updated.
+For the same reasons described earlier the reference configurations for RAN 5G deployments sets Subscription CRs to _manual_ mode to ensure that Operator updates occur only when cluster administrators explicitly allow them. Similar to the way in which Policies can be scheduled for enforcement, TALM gives cluster administrators the tools to automatically approve Operator Updates on selected clusters at specified times.
 
 [#cluster-policies]
 == Cluster Policies
 
-* **Common Policies**. Policies that apply to all our clusters. Some examples of policies that can fit this group will be: OAuth configuration, logging configuration, etc.
+RHACM Policies and bindings provide the tools to simplify management of a large fleet of clusters by allowing one Policy to define configuration across multiple target (spoke) clusters. In the GitOps ZTP flow these policies are maintained in Git and synchronized to the hub cluster where RHACM makes use of them.
 
-* **Group Policies**. Policies that apply to a group of clusters that share a common identifier/feature. Some examples of policies that can fit this group will be: SRI-OV deployment on clusters with SRI-OV cards, accelerator operator deployment on clusters with accelerator cards.
+In most Edge deployments there is a large amount of configuration that is common to all clusters. The set of installed day-2 Operators is one such example. These "common" configurations can be captured into a single policy that is then bound to all clusters in the fleet. This ensures that the clusters are consistently configured, simplifies management of the configuration, and improves the overall scalability of the solution.
 
-* **Site Policies**. Policies that apply to a specific cluster. Some examples of policies that can fit this group will be: a performance profile configuration for a cluster, an SRI-OV configuration for a specific NIC in the cluster.
+In some cases subsets of clusters may have significant commonality based on things like regionality, hardware type, etc. There may be a relatively small number of these "groups" of clusters within the fleet. By defining one policy per group users can realize the same benefits of consistency, ease of management, etc. Some examples of policies that can fit this group will be: SRI-OV deployment on clusters with SRI-OV cards, accelerator operator deployment on clusters with accelerator cards.
 
-* **Zone Policies**. Policies that apply to clusters within a zone. Zone can be whatever you want it to be; a physical location, an infrastructure provider, etc. Some examples of policies that can fit this group will be: storage configuration, proxy configurations, ntp configuration, etc.
+Where clusters have configuration which is truly cluster specific (different on every cluster in the fleet) the user must provide unique content on a per-cluster basis. In a RAN deployment some examples of site specific configuration may include specific VLAN settings for SR-IOV virtual functions. There are multiple options for handling site specific configuration using Policy:
+* **Site Sepecific Policies**. Each site may have a Policy defined which maintains the unique CRs for that site
+* **Hub side templating**. RHACM supports hub-side templating in which one Policy may be defined with one or more templates included. The site-specific values for these templates are pulled from a ConfigMap on the hub cluster prior to the Policy being evaluated for compliance and/or remediated.
