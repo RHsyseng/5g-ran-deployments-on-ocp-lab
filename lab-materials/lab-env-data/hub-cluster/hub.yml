@@ -28,7 +28,7 @@ disconnected_operators:
 - local-storage-operator
 disconnected_extra_images:
 - registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.11
-disconnected_extra_ocp_releases:
+disconnected_extra_releases:
 - quay.io/openshift-release-dev/ocp-release:4.11.17-x86_64
 installer_mac: aa:aa:aa:aa:01:06
 baremetal_bootstrap_mac: aa:aa:aa:aa:01:07
