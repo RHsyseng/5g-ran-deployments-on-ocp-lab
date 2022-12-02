@@ -1,0 +1,62 @@
+kind: ImageSetConfiguration
+apiVersion: mirror.openshift.io/v1alpha2
+storageConfig:
+  registry:
+    imageURL: infra.5g-deployment.lab:8443/metadata:latest
+    skipTLS: true
+mirror:
+  platform:
+    channels:
+      - name: stable-4.11
+        minVersion: 4.11.13
+        maxVersion: 4.11.17
+        type: ocp
+    graph: true
+  operators:
+    - catalog: registry.redhat.io/redhat/redhat-operator-index:v4.11 # References entire catalog
+      packages:
+        - name: advanced-cluster-management
+          channels:
+            - name: 'release-2.6'
+              minVersion: '2.6.2'
+        - name: multicluster-engine
+          channels:
+            - name: 'stable-2.1'
+              minVersion: '2.1.2'
+        - name: local-storage-operator
+          channels:
+            - name: 'stable'
+        - name: ocs-operator
+          channels:
+            - name: 'stable-4.11'
+        - name: ptp-operator
+          channels:
+            - name: 'stable'
+        - name: sriov-network-operator
+          channels:
+            - name: 'stable'
+        - name: cluster-logging
+          channels:
+            - name: 'stable'
+        - name: openshift-gitops-operator
+          channels:
+            - name: 'latest'
+        - name: odf-lvm-operator
+          channels:
+            - name: 'stable-4.11'
+        - name: amq7-interconnect-operator
+          channels:
+            - name: '1.10.x'
+        - name: topology-aware-lifecycle-manager
+          channels:
+            - name: 'stable'
+    - catalog: registry.redhat.io/redhat/certified-operator-index:v4.11
+      packages:
+        - name: sriov-fec
+          channels:
+            - name: 'stable'
+  additionalImages:
+    - name: registry.redhat.io/ubi8/ubi:latest
+    - name: quay.io/alosadag/troubleshoot:latest
+    - name: quay.io/alosadag/tc:latest
+  helm: {}
