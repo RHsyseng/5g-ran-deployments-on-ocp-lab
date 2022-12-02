@@ -1,5 +1,63 @@
-= Check Deployment is Finished
+= Check SNO Deployment is Finished
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-TBD
+In the previous section we have learned how to follow the cluster deployment process, but the cluster finished its deployment doesn't mean that the SNO deployment is complete.
+
+We say that the SNO deployment finished when the SNO cluster has been deployed *and* day2 configurations has been applied. In this section we will learn how to verify that the configs have been applied and our SNO is ready to run 5G RAN workloads.
+
+[#check-sno-deployment-webui]
+== Check SNO Deployment has Finished via the WebUI
+
+1. Access the https://multicloud-console.apps.hub.5g-deployment.lab/[RHACM WebUI] and login with the OpenShift credentials.
+2. Once you're in, click on `Infrastructure` -> `Clusters`. You will see an screen like the one below, notice how there is a label saying `ztp-done` (that means ztp pipeline has finished):
++
+image::acm-sno2-ztp-done.png[RHACM SNO2 ztp-done]
++
+3. Additionally we can verify that all policies are compliant for our SNO cluster. On the RHACM WebUI go to `Governance` -> `Policies` and you will see the following screen where we can see all policies are green:
++
+image::acm-sno2-policies-done.png[RHACM SNO2 policies done]
++
+4. At this point the SNO is ready ro tun 5G RAN workloads.
+
+[#check-sno-deployment-cli]
+== Check SNO Deployment has Finished via the CLI
+
+1. Access the Hub cluster as admin
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+[user@workstation ~]$ oc login -u admin -p admin https://api.hub.5g-deployment.lab:6443
+-----
++
+2. Check the `ManagedCluster` for SNO2 cluster (including its labels). You should see the `ztp-done` label, just as we saw in the WebUI
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+[user@workstation ~]$ oc get managedcluster sno2 --show-labels
+
+NAME   HUB ACCEPTED   MANAGED CLUSTER URLS                      JOINED   AVAILABLE   AGE    LABELS
+sno2   true           https://api.sno2.5g-deployment.lab:6443   True     True        122m   <OMITTED_LABELS>,ztp-done=
+-----
++
+3. Check the policies are compliant for our SNO cluster.
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+[user@workstation ~]$ oc -n sno2 get policies
+
+NAME                                           REMEDIATION ACTION   COMPLIANCE STATE   AGE
+ztp-policies.common-operator-catalog-411       inform               Compliant          123m
+ztp-policies.group-du-sno-du-profile-wave1     inform               Compliant          123m
+ztp-policies.group-du-sno-du-profile-wave10    inform               Compliant          123m
+ztp-policies.site-sno2-performance-policy      inform               Compliant          123m
+ztp-policies.site-sno2-storage-configuration   inform               Compliant          123m
+ztp-policies.site-sno2-tuned-policy            inform               Compliant          123m
+ztp-policies.zone-europe-storage-operator      inform               Compliant          123m
+-----
++
+4. At this point the SNO is ready ro tun 5G RAN workloads.
+

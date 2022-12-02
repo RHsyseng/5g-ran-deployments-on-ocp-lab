@@ -151,9 +151,11 @@
 
 * xref:24-managing-existing-clusters.adoc[Managing Existing Clusters]
 
-* xref:16-check-deployment-is-finished.adoc[Check Deployment is finished]
-
 * xref:17-using-talm-to-update-clusters.adoc[Using TALM to update clusters]
+
+* xref:16-check-deployment-is-finished.adoc[Check SNO Deployment is finished]
+** xref:16-check-deployment-is-finished.adoc#check-sno-deployment-webui[Check SNO Deployment has Finished via the WebUI]
+** xref:16-check-deployment-is-finished.adoc#check-sno-deployment-cli[Check SNO Deployment has Finished via the CLI]
 
 * xref:18-troubleshooting-tips.adoc[Troubleshooting Tips]
 

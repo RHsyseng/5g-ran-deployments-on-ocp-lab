@@ -147,7 +147,7 @@ spec:
       spec:
         storageClassDevices:
           - storageClassName: "lso-fs"
-            volumeMode: FileSystem
+            volumeMode: Filesystem
             fsType: xfs
             devicePaths:
               - /dev/vdb
