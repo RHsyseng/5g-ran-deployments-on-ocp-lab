@@ -4,7 +4,7 @@ include::_attributes.adoc[]
 
 In the previous section we created the infrastructure as code (IaC) for our `SNO2` cluster using the `SiteConfig` object. In this section we are going to create the configuration as code (CaC) for our clusters by using the `PolicyGenTemplate` object.
 
-We described how `PolicyGenTemplate` works in detail xref:10-policygen-deepdive.adoc#policies-templating[here], so let's jump directly to the creation of the different templates.
+We described how `PolicyGenTemplate` works in detail xref:policygen-deepdive.adoc#policies-templating[here], so let's jump directly to the creation of the different templates.
 
 [#crafting-common-policies]
 == Crafting Common Policies

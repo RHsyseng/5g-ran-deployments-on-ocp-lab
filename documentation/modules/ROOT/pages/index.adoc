@@ -11,4 +11,16 @@ IMPORTANT: This is not an official Red Hat Training. Please, contact with your R
 
 == Contributors
 
-This lab has been developed and is maintained by Alberto Losada and Mario Vázquez.
+[cols="1,1"]
+|===
+|Name |Role
+
+|Alberto Losada
+|Lab Developer / Maintainer
+
+|Ian Miller
+|Lab Contributor / CNF Developer
+
+|Mario Vázquez
+|Lab Developer / Maintainer
+|===
