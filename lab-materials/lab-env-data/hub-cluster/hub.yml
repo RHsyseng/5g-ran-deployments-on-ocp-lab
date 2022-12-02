@@ -25,6 +25,7 @@ disconnected_operators:
 - multicluster-engine
 - odf-lvm-operator
 - topology-aware-lifecycle-manager
+- local-storage-operator
 disconnected_extra_images:
 - registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.11
 installer_mac: aa:aa:aa:aa:01:06
