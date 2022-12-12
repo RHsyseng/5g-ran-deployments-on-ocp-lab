@@ -155,6 +155,11 @@
 * xref:managing-existing-clusters.adoc[Managing Existing Clusters]
 
 * xref:using-talm-to-update-clusters.adoc[Using TALM to update clusters]
+** xref:using-talm-to-update-clusters.adoc#verify-talm[Verifing the TALM state]
+** xref:using-talm-to-update-clusters.adoc#upgrade-policy-creation[Creating the upgrade PGT]
+** xref:using-talm-to-update-clusters.adoc#upgrade-cgu-creation[Applying the upgrade]
+*** xref:using-talm-to-update-clusters.adoc#talm-backup-precache[Backup and pre-cache]
+*** xref:using-talm-to-update-clusters.adoc#talm-upgrade[Triggering the upgrade]
 
 * xref:check-deployment-is-finished.adoc[Check SNO Deployment is finished]
 ** xref:check-deployment-is-finished.adoc#check-sno-deployment-webui[Check SNO Deployment has Finished via the WebUI]

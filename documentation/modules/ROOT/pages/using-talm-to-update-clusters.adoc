@@ -9,7 +9,7 @@ The backup feature, on the other hand, implements a procedure for rapid recovery
 Let's upgrade our both clusters. First of all, let's verify the TALM operator is running in our **hub cluster**:
 
 [#verify-talm]
-== Verify TALM state
+== Verifying the TALM state
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -58,7 +58,7 @@ ztp-install   sno2   UpgradeCompleted   14h
 -----
 
 [#upgrade-policy-creation]
-== Create the upgrade PGT
+== Creating the upgrade PGT
 
 Create an upgrade PGT in inform mode, as usual, that will applied and upgrade both SNO1 and SNO2 clusters. This file needs to be created in the ztp-repository Git repo that we have created.
 
@@ -117,9 +117,9 @@ Then commit all the changes:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ztp-repository]# git add site-policies/zone-policies/upgrade-411-17.yaml site-policies/kustomization.yaml
-[user@workstation ztp-repository]# git commit -m "adds upgrade policy"
-[user@workstation ztp-repository]# git push origin main 
+[user@workstation ztp-repository]$ git add site-policies/zone-policies/upgrade-411-17.yaml site-policies/kustomization.yaml
+[user@workstation ztp-repository]$ git commit -m "adds upgrade policy"
+[user@workstation ztp-repository]$ git push origin main 
 -----
 
 Once commited, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named europe-upgrade-version-411-17 has a violation. However, only one. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the label zone-europe that the PGT is targeting in its binding rule. 
@@ -132,7 +132,7 @@ Let's add the proper label to SNO1:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@workstation site-policies]# oc label managedcluster sno1 du-zone=europe
+[user@workstation site-policies]$ oc label managedcluster sno1 du-zone=europe
 managedcluster.cluster.open-cluster-management.io/sno1 labeled
 -----
 
@@ -144,7 +144,7 @@ image::talm_upgrade_policy_02.png[TALM upgrade policy 2]
 
 
 [#upgrade-cgu-creation]
-== Apply the upgrade
+== Applying the upgrade
 
 At this point we need to create a CGU resource that will start the upgrade process. In our case, the process will be divided into two stages:
 
@@ -209,8 +209,8 @@ Connecting to any of our spoke clusters we can see a new job being created calle
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# export KUBECONFIG=~/sno2-kubeconfig 
-[root@hypervisor ~]# oc get jobs -A
+[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig 
+[root@hypervisor ~]$ oc get jobs -A
 NAMESPACE                              NAME                                                              COMPLETIONS   DURATION   AGE
 assisted-installer                     assisted-installer-controller                                     1/1           42m        17h
 openshift-image-registry               image-pruner-27846720                                             1/1           13s        9h
@@ -226,8 +226,8 @@ This job basically runs a Pod that will execute a recovery procedure and will st
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# export KUBECONFIG=~/sno2-kubeconfig 
-[root@hypervisor ~]# oc logs backup-agent-glwxq -n openshift-talo-backup
+[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig 
+[root@hypervisor ~]$ oc logs backup-agent-glwxq -n openshift-talo-backup
 INFO[0018] {"hash":206408152,"revision":336652,"totalKey":7146,"totalSize":78827520} 
 INFO[0018] snapshot db and kube resources are successfully saved to /var/recovery/cluster 
 INFO[0026] Command succeeded: rsync -a /etc/ /var/recovery/etc/ 
@@ -243,8 +243,8 @@ Once done, the next step is the precache phase as we can see from the CGU status
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor site-policies]# export KUBECONFIG=~/hub-kubeconfig
-[root@hypervisor site-policies]# oc get cgu -A
+[root@hypervisor site-policies]$ export KUBECONFIG=~/hub-kubeconfig
+[root@hypervisor site-policies]$ oc get cgu -A
 NAMESPACE      NAME        UPGRADE STATE              AGE
 ztp-install    sno2        UpgradeCompleted           16h
 ztp-policies   telco-ops   PrecacheSpecIsWellFormed   3m46s
@@ -255,8 +255,8 @@ The approach is very similar to the backup, a new job called pre-cache is create
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# export KUBECONFIG=~/sno2-kubeconfig 
-[root@hypervisor ~]# oc get jobs -A
+[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig 
+[root@hypervisor ~]$ oc get jobs -A
 NAMESPACE                              NAME                                                              COMPLETIONS   DURATION   AGE
 assisted-installer                     assisted-installer-controller                                     1/1           42m        17h
 openshift-image-registry               image-pruner-27846720                                             1/1           13s        9h
@@ -273,8 +273,8 @@ This job creates a Pod that will run the precache process. As we can see below, 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# export KUBECONFIG=~/sno2-kubeconfig 
-[root@hypervisor ~]# oc logs pre-cache-mzbns -n openshift-talo-pre-cache -f
+[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig 
+[root@hypervisor ~]$ oc logs pre-cache-mzbns -n openshift-talo-pre-cache -f
 upgrades.pre-cache 2022-12-12T09:52:06+00:00 DEBUG Release index image processing done
 a778fa0a77a59ef64f76bc52991be761ab3abe3fa4ab29ffd3f66c0e302acbae
 upgrades.pre-cache 2022-12-12T09:52:06+00:00 DEBUG Operators index is not specified. Operators wont be pre-cached
@@ -306,7 +306,7 @@ ztp-policies   telco-ops   UpgradeNotStarted   37m
 -----
 
 [#talm-upgrade]
-=== Trigger the upgrade
+=== Triggering the upgrade
 
 Now, we have our backup done in case of upgrade failure and all the images required to perform the upgrade process locally store to each spoke cluster. Notice that this will improve the time needed to fulfill the process, since there is no need to pull down all the gigabytes of container images again. Let's start the upgrade process by enabling the CGU:
 
@@ -332,8 +332,8 @@ If we connect to any of our spoke clusters we can see that the upgrade process i
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# export KUBECONFIG=~/sno2-kubeconfig 
-[root@hypervisor ~]# oc get clusterversion,nodes                                                                                                                   hypervisor: Mon Dec 12 10:38:43 2022
+[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig 
+[root@hypervisor ~]$ oc get clusterversion,nodes                                                                                                                   hypervisor: Mon Dec 12 10:38:43 2022
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.11.13   True        True          11s	 Working towards 4.11.17: 9 of 803 done (1% complete)
 
@@ -354,16 +354,16 @@ Finally our clusters are upgraded:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# export KUBECONFIG=~/sno2-kubeconfig 
-[root@hypervisor ~]# oc get clusterversion,nodes                                                                                                                   hypervisor: Mon Dec 12 11:49:05 2022
+[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig 
+[root@hypervisor ~]$ oc get clusterversion,nodes                                                                                                                   hypervisor: Mon Dec 12 11:49:05 2022
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.11.17   True        False         6m41s   Cluster version is 4.11.17
 
 NAME                          STATUS   ROLES           AGE   VERSION
 node/sno2.5g-deployment.lab   Ready    master,worker   18h   v1.24.6+5658434
 
-[root@hypervisor ~]# export KUBECONFIG=~/sno1-kubeconfig 
-[root@hypervisor site-policies]# oc get clusterversion,nodes
+[root@hypervisor ~]$ export KUBECONFIG=~/sno1-kubeconfig 
+[root@hypervisor site-policies]$ oc get clusterversion,nodes
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.11.17   True        False         21m     Cluster version is 4.11.17
 
