@@ -223,7 +223,7 @@ spec:
         rootDeviceHints:
           deviceName: /dev/vda
         # CPUs that will be used for running the platform services (other cpus will be available for workloads)
-        cpuset: "0-7"
+        cpuset: "0-3"
         nodeNetwork:
           interfaces:
             - name: enp1s0
