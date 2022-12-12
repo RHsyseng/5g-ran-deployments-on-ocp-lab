@@ -162,21 +162,21 @@ spec:
         annotations:
           kubeletconfig.experimental: |
             {"topologyManagerScope": "pod",
-             "systemReserved": {"memory": "8Gi"}
+             "systemReserved": {"memory": "3Gi"}
             }
       spec:
         additionalKernelArgs:
         - "firmware_class.path=/var/lib/firmware/"
-        - "nohz_full=8-11"          
+        - "nohz_full=4-11"          
         - "crashkernel=1024M"
         - "efi=runtime"
         cpu:
-          isolated: "8-11"
-          reserved: "0-7"
+          isolated: "4-11"
+          reserved: "0-3"
         hugepages:
           defaultHugepagesSize: 1G
           pages:
-          - count: 8
+          - count: 4
             size: 1G
         numa:
           topologyPolicy: single-numa-node
@@ -193,7 +193,7 @@ spec:
               summary=Configuration changes profile inherited from performance created tuned
               include=openshift-node-performance-openshift-node-performance-profile
               [bootloader]
-              cmdline_crash=nohz_full=8-11
+              cmdline_crash=nohz_full=4-11
               [sysctl]
               kernel.timer_migration=1
               [scheduler]
