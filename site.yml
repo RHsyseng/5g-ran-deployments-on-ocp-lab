@@ -23,6 +23,8 @@ ui:
   bundle:
 #    url: https://github.com/redhat-developer-demos/rhd-tutorial-ui/releases/download/v0.1.9/ui-bundle.zip
     url: ./ui-bundle-telco.zip
+    # UI Repo: https://github.com/RHsyseng/rht-tutorial-ui/tree/latest-antora
+    # In order to build: gulp bundle
     snapshot: true
   supplemental_files:
     - path: ./supplemental-ui
