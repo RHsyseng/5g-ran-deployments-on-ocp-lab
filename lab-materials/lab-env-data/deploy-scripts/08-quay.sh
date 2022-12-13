@@ -6,8 +6,9 @@ su - lab-user -c 'ssh-keygen -t rsa -b 2048 -f /home/lab-user/.ssh/id_rsa -q -N 
 su - lab-user -c "cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys"
 
 mkdir -p /etc/quay-install/certs/
-cp 5g-ran-deployments-on-ocp-lab/lab-materials/helper-data/registry-*.pem /etc/quay-install/certs/
-cp 5g-ran-deployments-on-ocp-lab/lab-materials/helper-data/registry-cert.pem /etc/pki/ca-trust/source/anchors/
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/registry-key.pem -o /etc/quay-install/certs/registry-key.pem
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/registry-cert.pem -o /etc/quay-install/certs/registry-cert.pem
+cp /etc/quay-install/certs/registry-cert.pem /etc/pki/ca-trust/source/anchors/
 update-ca-trust
 
 curl -s -L https://developers.redhat.com/content-gateway/rest/mirror/pub/openshift-v4/clients/mirror-registry/latest/mirror-registry.tar.gz | sudo tar xvz -C /usr/bin
