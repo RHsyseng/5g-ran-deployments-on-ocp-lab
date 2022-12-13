@@ -21,7 +21,7 @@ One crucial detail of this use case is ensuring that this workload can be "auton
 Single Node OpenShift offers both control and worker node capabilities in a single server and provides users with a consistent experience across the sites where OpenShift is deployed, regardless of the size of the deployment. Keep in mind a Single Node OpenShift deployment differs from the default self-managed/highly-available cluster profile in a couple of ways:
 
 * To optimize system resource usage, many operators are configured to reduce the footprint (cpu use) of their operands when running on a Single Node OpenShift. This is even more visible when deploying the Telco 5G RAN QE validated pattern which establishes a base platform for RAN DU workloads.
-* In environments that require high availability, it is recommended that the architecture be configured in a way in which if the hardware was to fail, those workloads are transitioned to other sites or nodes while the impacted node is recovered. This is where Red Hat Advanced Cluster Management can really help us controlling our fleet of clusters.
+* In environments that require high availability, it is recommended that the architecture be configured in a way in which if the hardware was to fail, those workloads are transitioned to other sites or nodes while the impacted node is recovered. This is where Red Hat Advanced Cluster Management can really help us control our fleet of clusters.
 
 [#deployments]
 == Deployments
