@@ -11,7 +11,7 @@ In RHACM as we saw in the previous section we can configure our policies in two 
 
 When using _inform_ mode no changes will be done in the clusters targeted by the policy, whereas _enforce_ mode will make the required changes to clusters targeted by the policy have the required configuration described in the policy.
 
-In Edge deployments where potentially disruptive events must be carefully managed with respect to timing and rollout we must have control over when changes to our clusters happen. With all Policies in _inform_ mode we have visibility into the compliance of all clusters but the enforcement (changes to clustes) will occur only when the Policies are switched to enforce mode. On top of these policies we have another component named Topology Aware Lifecycle Manager (TALM) which controls when a policy gets enforced based on a configuration created by the cluster admins. TALM will be introduced in a future section.
+In Edge deployments where potentially disruptive events must be carefully managed with respect to timing and rollout we must have control over when changes to our clusters happen. With all Policies in _inform_ mode we have visibility into the compliance of all clusters but the enforcement (changes to clusters) will occur only when the Policies are switched to enforce mode. On top of these policies we have another component named Topology Aware Lifecycle Manager (TALM) which controls when a policy gets enforced based on a configuration created by the cluster admins. TALM will be introduced in a future section.
 
 [#olm-subscriptions]
 == OLM Subscriptions
@@ -30,5 +30,6 @@ In most Edge deployments there is a large amount of configuration that is common
 In some cases subsets of clusters may have significant commonality based on things like regionality, hardware type, etc. There may be a relatively small number of these "groups" of clusters within the fleet. By defining one policy per group users can realize the same benefits of consistency, ease of management, etc. Some examples of policies that can fit this group will be: SRI-OV deployment on clusters with SRI-OV cards, accelerator operator deployment on clusters with accelerator cards.
 
 Where clusters have configuration which is truly cluster specific (different on every cluster in the fleet) the user must provide unique content on a per-cluster basis. In a RAN deployment some examples of site specific configuration may include specific VLAN settings for SR-IOV virtual functions. There are multiple options for handling site specific configuration using Policy:
-* **Site Sepecific Policies**. Each site may have a Policy defined which maintains the unique CRs for that site
+
+* **Site Specific Policies**. Each site may have a Policy defined which maintains the unique CRs for that site
 * **Hub side templating**. RHACM supports hub-side templating in which one Policy may be defined with one or more templates included. The site-specific values for these templates are pulled from a ConfigMap on the hub cluster prior to the Policy being evaluated for compliance and/or remediated.

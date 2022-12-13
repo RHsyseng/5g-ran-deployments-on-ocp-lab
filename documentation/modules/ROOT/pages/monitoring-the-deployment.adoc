@@ -8,11 +8,11 @@ Once the ZTP GitOps Pipeline starts deploying our clusters we can follow the ins
 == Monitoring the Deployment via the WebUI
 
 1. Access the https://multicloud-console.apps.hub.5g-deployment.lab/[RHACM WebUI] and login with the OpenShift credentials.
-2. Once you're in, click on `Infrastructure` -> `Clusters`. You will see an screen like the one below:
+2. Once you're in, click on `Infrastructure` -> `Clusters`. You will see a screen like the one below:
 +
 image::acm-clusterview.png[RHACM Cluster View] 
 +
-3. In order to check the deployment status of the `sno2` cluster, click on `sno2` and you will get presented this creen:
+3. In order to check the deployment status of the `sno2` cluster, click on `sno2` and you will get presented this screen:
 +
 image::acm-sno2-view.png[RHACM sno2 Cluster View]
 +

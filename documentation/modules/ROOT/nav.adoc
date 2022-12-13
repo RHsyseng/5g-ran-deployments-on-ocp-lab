@@ -155,7 +155,7 @@
 * xref:managing-existing-clusters.adoc[Managing Existing Clusters]
 
 * xref:using-talm-to-update-clusters.adoc[Using TALM to update clusters]
-** xref:using-talm-to-update-clusters.adoc#verify-talm[Verifing the TALM state]
+** xref:using-talm-to-update-clusters.adoc#verify-talm[Verifying the TALM state]
 ** xref:using-talm-to-update-clusters.adoc#upgrade-policy-creation[Creating the upgrade PGT]
 ** xref:using-talm-to-update-clusters.adoc#upgrade-cgu-creation[Applying the upgrade]
 *** xref:using-talm-to-update-clusters.adoc#talm-backup-precache[Backup and pre-cache]

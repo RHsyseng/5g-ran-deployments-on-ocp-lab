@@ -6,8 +6,8 @@ If we have clusters that have been provisioned outside the ZTP GitOps Pipeline, 
 
 In the lab environment we have a SNO cluster `SNO1` that was deployed outside the ZTP GitOps Pipeline, in this section we will get it added to RHACM and make it load the policies we have for SNO clusters.
 
-[#Import a cluster]
-== Importcluster
+[#Importcluster]
+== Import a cluster
 
 Actually, everything can be done from the Red Hat ACM multicloud console. Therefore, browse to https://multicloud-console.apps.hub.5g-deployment.lab, click on Infrastructure -> Clusters and then click on the three dots of our SNO1 cluster. Notice that the status of the cluster is **detached**. Now, click on Import cluster:
 
