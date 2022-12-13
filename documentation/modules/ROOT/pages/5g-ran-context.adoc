@@ -8,7 +8,7 @@ Before we start introducing specific concepts about Radio Access Network (RAN) d
 * Linux features that are not commonly used outside RAN, but that are very important for RAN workloads.
 * Etc.
 
-We won't be covering these in many details, since that will require a lab of its own, we just need you to have basic knowledge and know the surrounding basics.
+We won't be covering these in many details, since that will require a lab of its own, we just need you to have basic knowledge on the topics being discussed.
 
 [#low-latency]
 == Low Latency
@@ -53,7 +53,7 @@ When running workloads in Linux these processes can be executed on any of multip
 [#irq-load-balancing]
 == IRQ Load Balancing
 
-_Interrupt Requests (IRQ)_ need to be handled by the CPUs, in latency sensitive environments we want to limit the IRQs to a given set of CPUs in order to avoid taking compute power from workloads running on pinned CPUs for example. IRQs can be run in pinned CPUs otherwise specified.
+_Interrupt Requests (IRQ)_ need to be handled by the CPUs, in latency sensitive environments we want to limit the IRQs to a given set of CPUs in order to avoid taking compute power from workloads running on pinned CPUs for example. IRQs can be run on pinned CPUs unless otherwise specified.
 
 [#dpdk]
 == DPDK
