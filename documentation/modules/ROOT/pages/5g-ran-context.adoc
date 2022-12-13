@@ -76,7 +76,7 @@ On top of _workload partitioning_, the CNF team has tuned the OpenShift platform
 [#vran-accelerators]
 == vRAN Dedicated Accelerators
 
-Hardware accelerator cards accelerate 4G/LTE and 5G Virtualized Radio Access Networks (vRAN) workloads. This in turn increases the overall compute capacity of the plataform.
+Hardware accelerator cards accelerate 4G/LTE and 5G Virtualized Radio Access Networks (vRAN) workloads. This in turn increases the overall compute capacity of the platform.
 
 vRAN accelerators are designed to offload and accelerate the computing-intensive process of forward error correction (FEC) for 4G/LTE and 5G technology, freeing up processing power.
 

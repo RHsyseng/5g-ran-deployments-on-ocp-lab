@@ -9,7 +9,7 @@ We described how `PolicyGenTemplate` works in detail xref:policygen-deepdive.ado
 [#crafting-common-policies]
 == Crafting Common Policies
 
-The common policies apply to every cluster in our infrastructure that matches our binding rule. This policies are often used to configure things like CatalogSources, Operator Deployments, etc. that are common to all our clusters.
+The common policies apply to every cluster in our infrastructure that matches our binding rule. These policies are often used to configure things like CatalogSources, Operator Deployments, etc. that are common to all our clusters.
 
 These configs may vary from release to release, that's why we create a `common-411.yaml` file. We will likely have a common configuration profile for each release we deploy.
 
@@ -47,7 +47,7 @@ EOF
 [#crafting-group-policies]
 == Crafting Group Policies
 
-The group policies apply to a group of clusters that typicall have something in common, for example they are SNOs or they have SR-IOV cards, etc.
+The group policies apply to a group of clusters that typically have something in common, for example they are SNOs, or they have SR-IOV cards, etc.
 
 The CNF team has prepared some common tuning configurations that should be applied on every SNO DU deployed. In this section we will be crafting these configurations.
 
@@ -121,7 +121,7 @@ EOF
 [#crafting-site-policies]
 == Crafting Site Policies
 
-Site policies apply to a specific cluster/s in our site, they usually configure stuff that is very specific to a single cluster or to a small subset of clusters. For example we could configure storage for a group of clusters if those share the same hardware, disks configurations, etc. otherwise we will need to have different bindings for different clusters.
+Site policies apply to a specific cluster/s in our site, they usually configure stuff that is very specific to a single cluster or to a small subset of clusters. For example, we could configure storage for a group of clusters if those share the same hardware, disks configurations, etc. otherwise we will need to have different bindings for different clusters.
 
 We are going to create the `PerformanceProfile` and storage configurations for our SNO2 cluster.
 
@@ -207,7 +207,7 @@ EOF
 [#configure-kustomization-for-policies]
 == Configure Kustomization for Policies
 
-We need to create the required kustomization as we did for SiteConfigs, in this case policies also require a namespace where these will be created so we will create the required namespace and the kustomization.
+We need to create the required kustomization as we did for SiteConfigs, in this case policies also require a namespace where these will be created, so we will create the required namespace and the kustomization.
 
 1. Policies need to live in a namespace, let's add it to the repo:
 +

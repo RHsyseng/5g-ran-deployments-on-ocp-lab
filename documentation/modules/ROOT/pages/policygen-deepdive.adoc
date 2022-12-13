@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-As we saw in an earlier section of the lab, we can leverage link:06-rhacm-policies[RHACM policies] to get our clusters configured the way we want. We also introduced the link:08-ztp-at-scale#policygen[PolicyGen component] which helps us to create a set of policies based on pre-backed templates crafted by the Red Hat CNF team.
+As we saw in an earlier section of the lab, we can leverage link:rhacm-policies[RHACM policies] to get our clusters configured the way we want. We also introduced the link:ztp-at-scale#policygen[PolicyGen component] which helps us to create a set of policies based on pre-backed templates crafted by the Red Hat CNF team.
 
 In this section we are going to get into the implementation details of the PolicyGen tooling.
 
@@ -14,7 +14,7 @@ The policy generator is implemented as a Kustomize generator plugin. This allows
 There are two Kustomize plugins, we refer to them as PolicyGenTool, but each has its own name and mission:
 
 * **SiteConfig Generator**. Reads the SiteConfig manifest and generates the required Kubernetes manifests to run a RAN-enabled OpenShift deployment using RHACM. Code is located https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/siteconfig-generator[here].
-* **Policy Generator**. Reads the PolicyGenTemplate manifest and generates the required Kubernetes manifest to configure an RHACM Policy targetting a set of clusters. Code is located https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/policygenerator[here].
+* **Policy Generator**. Reads the PolicyGenTemplate manifest and generates the required Kubernetes manifest to configure an RHACM Policy targeting a set of clusters. Code is located https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/policygenerator[here].
 
 
 [#kustomize-plugins]
@@ -76,14 +76,14 @@ The SiteConfigGenerator reads the SiteConfig manifest and uses the information p
 [#policy-generator]
 === Policy Generator
 
-The PolicyGenerator reads the PolicyGenTemplate manifests and uses the information provided in these files to output a set of RHACM policies that will be used for different pourposes, from day2ops to monitoring the cluster health. It makes use os templated policies that can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/source-crs[here].
+The PolicyGenerator reads the PolicyGenTemplate manifests and uses the information provided in these files to output a set of RHACM policies that will be used for different purposes, from day2ops to monitoring the cluster health. It makes use os templated policies that can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/source-crs[here].
 
 [#5g-ran-profile]
 == 5G RAN Profile
 
 The Red Hat CNF team has crafted specific configurations to improve the performance on clusters running RAN workloads. All the configurations described below are expected to be present in a cluster where RAN workloads are expected to run.
 
-TIP: Some of these configurations are configured at install time (through the use of extra-manifests during  the install) and others are configured as a day2ops automatically after the cluster joins the RHACM Hub.
+TIP: Some of these configurations are configured at install time (through the use of extra-manifests during the installation) and others are configured as a day2ops automatically after the cluster joins the RHACM Hub.
 
 image::pgt_ran_du_profile.png[validated vRAN DU profile]
 
@@ -267,11 +267,11 @@ spec:
               count: 32
 ----
 
-We can see that the PolicyGenTemplate is targetting two policy templates: `SriovOperatorConfig.yaml` and `PerformanceProfile.yaml`.
+We can see that the PolicyGenTemplate is targeting two policy templates: `SriovOperatorConfig.yaml` and `PerformanceProfile.yaml`.
 
 The first template `SriovOperatorConfig.yaml` is not overriding any settings, we can tell this because we don't have a `spec` or `metadata` section below the `policyName`. That means that the final policy will be configured as the https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/SriovOperatorConfig.yaml[source template file].
 
-The second template `PerformanceProfile.yaml` is overriding some of the parameters in the `spec`. That means that the final policy will be configured as a merge of the https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/PerformanceProfile.yaml[original template] plus the custom overrides we provided in the PolicyGenTemplate.
+The second template `PerformanceProfile.yaml` is overriding some parameters in the `spec`. That means that the final policy will be configured as a merge of the https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/PerformanceProfile.yaml[original template] plus the custom overrides we provided in the PolicyGenTemplate.
 
 CAUTION: Inside the templates we can often see references to what may appear variables like `$size`, `$count`, etc. These are not vars, that tells the Kustomize plugin to remove that line from the output if no value was provided as an override. The only variable that is referenced and is actually substituted is the `$mcp` variable that will be replaced with the value of the same property defined in the PolicyGenTemplate.
 
