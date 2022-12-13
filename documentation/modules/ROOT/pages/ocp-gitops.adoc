@@ -76,7 +76,7 @@ One thing that we still need to keep in mind is that we want to have different r
 [#direct-commit-to-main]
 === Direct Commit to Main
 
-Users can tailor their operational model to their particular use case, phase of operation, etc. Typically a model where changes are directly commited to hte main (active) branch is discouraged as this bypasses the merge review process and potentially exposes the clusters to incorrect/undesired changes. However, in some phases of operation such as initial development in the lab, a direct-commit to main model may be appropriate. GitOps allows for flexibility in the way users manage configuration in Git to suit their operational needs.
+Users can tailor their operational model to their particular use case, phase of operation, etc. Typically a model where changes are directly commited to the main (active) branch is discouraged as this bypasses the merge review process and potentially exposes the clusters to incorrect/undesired changes. However, in some phases of operation such as initial development in the lab, a direct-commit to main model may be appropriate. GitOps allows for flexibility in the way users manage configuration in Git to suit their operational needs.
 
 [#prs-review-cycles]
 === Pull Requests and Review Cycles
