@@ -7,7 +7,7 @@ When working on RAN environments there are a set of operators that will be commo
 [#node-tuning-operator]
 == Node Tuning Operator
 
-Helps you manage node-level tuning by orchestrating the TuneD daemon and other OS level tuning. In the context of RAN deployments it is used to achieve low latency performance by using the Performance Profile controller.
+The Node Tuning Operator helps you manage node-level tuning by orchestrating the TuneD daemon and other OS level tuning. In the context of RAN deployments it is used to achieve low latency performance by using the Performance Profile controller.
 
 In RAN environments we will leverage the PerformanceProfile API in order to:
 
@@ -22,7 +22,7 @@ You can read more about the NTO https://docs.openshift.com/container-platform/4.
 [#sriov-operator]
 == SR-IOV Operator
 
-Helps you manage SR-IOV network devices and network attachments. You can think of an SR-IOV NIC like a hypervisor for NICs, you have a physical NIC and you can create (a limited number of) virtualized NICs out of it.
+This Operator helps you manage SR-IOV network devices and network attachments. You can think of an SR-IOV NIC like a hypervisor for NICs, you have a physical NIC and you can create (a limited number of) virtualized NICs out of it.
 
 We usually refer to this virtualized NICs as virtual functions (VFs), and these are exposed in the containers in order to provide extra networks to workloads. These VFs are "slices" of the underlying NIC which are passed into the container as hardware devices. This allows the container direct access to that "slice" of the NIC and is typically used to provide high performance access to networking.
 
@@ -31,7 +31,7 @@ You can read more about the SR-IOV operator https://docs.openshift.com/container
 [#ptp-operator]
 == PTP Operator
 
-Precision Time Protocol (PTP) is used to synchronize clocks in a network. When used in conjunction with hardware support, PTP is capable of sub-microsecond accuracy, and is more accurate than Network Time Protocol (NTP).
+Precision Time Protocol (PTP) is used to synchronize clocks in a network, as discussed https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/5g-ran-context.html#ptp[prevously]. When used in conjunction with hardware support, PTP is capable of sub-microsecond accuracy, and is more accurate than Network Time Protocol (NTP).
 
 The PTP Operator can be used to configure PTP on OpenShift nodes.
 
