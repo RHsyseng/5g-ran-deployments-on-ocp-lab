@@ -41,7 +41,7 @@ apps:
 - users
 - openshift-gitops-operator
 - odf-lvm-operator
-masters:
+ctlplanes:
 - redfish_address: redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0101
   provisioning_mac: aa:aa:aa:aa:01:01
   disk: /dev/vda
