@@ -1,5 +1,5 @@
 plan: hub-cluster
-force: true
+force: false
 version: stable
 tag: "4.11.13"
 provisioning_enable: false
