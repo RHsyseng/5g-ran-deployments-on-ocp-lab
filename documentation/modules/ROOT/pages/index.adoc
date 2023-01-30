@@ -24,4 +24,14 @@ IMPORTANT: This is not an official Red Hat Training. Please, contact with your R
 
 |Mario Vázquez
 |Lab Developer / Maintainer
+
+|Leo Ochoa
+|Lab Reviewer
+
+|Scott Collier
+|Lab Reviewer
+
+|Rob Fisher
+|Lab Reviewer
+
 |===

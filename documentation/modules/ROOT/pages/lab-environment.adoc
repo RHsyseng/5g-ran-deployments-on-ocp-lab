@@ -129,7 +129,7 @@ You can also create the required rules in the firewall if you want, but for the 
 [root@hypervisor ~]# update-ca-trust
 [root@hypervisor ~]# podman login --authfile auth.json -u admin  infra.5g-deployment.lab:8443 -p r3dh4t1!
 -----
-NOTE: Link to additional configuration documentaion of a disconnected registry: https://docs.openshift.com/container-platform/4.11/installing/disconnected_install/installing-mirroring-disconnected.html
+NOTE: Link to additional configuration documentation of a disconnected registry: https://docs.openshift.com/container-platform/4.11/installing/disconnected_install/installing-mirroring-disconnected.html
 
 [#configure-git-server]
 === Configure Git Server

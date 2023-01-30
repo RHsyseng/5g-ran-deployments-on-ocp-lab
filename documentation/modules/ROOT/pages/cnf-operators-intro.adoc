@@ -31,7 +31,7 @@ You can read more about the SR-IOV operator https://docs.openshift.com/container
 [#ptp-operator]
 == PTP Operator
 
-Precision Time Protocol (PTP) is used to synchronize clocks in a network, as discussed https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/5g-ran-deployments-on-ocp-lab/main/5g-ran-context.html#ptp[prevously]. When used in conjunction with hardware support, PTP is capable of sub-microsecond accuracy, and is more accurate than Network Time Protocol (NTP).
+Precision Time Protocol (PTP) is used to synchronize clocks in a network, as discussed xref:5g-ran-context.adoc#ptp[previously]. When used in conjunction with hardware support, PTP is capable of sub-microsecond accuracy, and is more accurate than Network Time Protocol (NTP).
 
 The PTP Operator can be used to configure PTP on OpenShift nodes.
 
