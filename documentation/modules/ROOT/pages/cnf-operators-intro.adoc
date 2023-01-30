@@ -35,7 +35,10 @@ Precision Time Protocol (PTP) is used to synchronize clocks in a network, as dis
 
 The PTP Operator can be used to configure PTP on OpenShift nodes.
 
-You can read more about the PTP operator https://docs.openshift.com/container-platform/4.11/networking/using-ptp.html[here].
+Some extra PTP information you may find useful:
+
+* https://docs.openshift.com/container-platform/4.11/networking/using-ptp.html[PTP Operator Official Docs]
+* PTP blog posts on cloud.redhat.com https://cloud.redhat.com/blog/delivering-high-precision-clock-synchronization-for-low-latency-5g-networks-with-openshift-part-1[part 1] and https://cloud.redhat.com/blog/delivering-high-accuracy-clock-synchronization-for-5g-networks-with-openshift-part-2[part 2]
 
 [#accelerators-operators]
 == Accelerators Operators
