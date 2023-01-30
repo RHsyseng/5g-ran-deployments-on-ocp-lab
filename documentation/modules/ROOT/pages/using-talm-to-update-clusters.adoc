@@ -47,7 +47,7 @@ deployment.apps/cluster-group-upgrades-controller-manager   1/1     1           
 deployment.apps/gitops-operator-controller-manager          1/1     1            1           2d15h
 -----
 
-Finally, let's take a look at the cluster group upgrade (CGU) CRD managed by TALM. If we pay a closer look we will notice that an already completed CGU was applied to SNO2. As we mentioned in link:09-talm.html#inform-policies[inform policies] section, all policies are not enforced, the user has to create the proper CGU resource to enforce them. However, when using ZTP we want our cluster provisioned and configured automatically. This is where TALM will step through the set of created policies (inform) and will enforce them once the cluster was successfully provisioned. Therefore, the configuration stage starts without any intervention ending up with our OpenShift cluster ready to process workloads.
+Finally, let's take a look at the cluster group upgrade (CGU) CRD managed by TALM. If we pay a closer look we will notice that an already completed CGU was applied to SNO2. As we mentioned in link:talm.html#inform-policies[inform policies] section, all policies are not enforced, the user has to create the proper CGU resource to enforce them. However, when using ZTP we want our cluster provisioned and configured automatically. This is where TALM will step through the set of created policies (inform) and will enforce them once the cluster was successfully provisioned. Therefore, the configuration stage starts without any intervention ending up with our OpenShift cluster ready to process workloads.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -60,7 +60,7 @@ ztp-install   sno2   UpgradeCompleted   14h
 [#upgrade-policy-creation]
 == Creating the upgrade PGT
 
-Create an upgrade PGT in inform mode, as usual, that will applied and upgrade both SNO1 and SNO2 clusters. This file needs to be created in the ztp-repository Git repo that we have created.
+Create an upgrade PGT in inform mode, as usual, that will apply and upgrade both SNO1 and SNO2 clusters. This file needs to be created in the ztp-repository Git repo that we have created.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -94,7 +94,7 @@ spec:
 EOF
 -----
 
-Modify the kustomization.yaml inside the site-policies folder so it includes this new PGT and eventually will be applied by ArgoCD. The kustomization file should look like this:
+Modify the kustomization.yaml inside the site-policies folder, so it includes this new PGT and eventually will be applied by ArgoCD. The kustomization file should look like this:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -122,7 +122,7 @@ Then commit all the changes:
 [user@workstation ztp-repository]$ git push origin main 
 -----
 
-Once commited, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named europe-upgrade-version-411-17 has a violation. However, only one. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the label zone-europe that the PGT is targeting in its binding rule. 
+Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named europe-upgrade-version-411-17 has a violation. However, only one. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the label zone-europe that the PGT is targeting in its binding rule. 
 
 
 image::talm_upgrade_policy_01.png[TALM upgrade policy 1]
@@ -138,7 +138,7 @@ managedcluster.cluster.open-cluster-management.io/sno1 labeled
 
 Notice that now there are two violations in our upgrade policy. 
 
-IMPORTANT: There is an extra violation in the zone-europe-storage-operator since this PGT was created previously to adding the label to SNO1. That's because that policy is binded to du-zone=europe as well. However, we have the choice to apply it (enforce) or not using the TALM operator.
+IMPORTANT: There is an extra violation in the zone-europe-storage-operator since this PGT was created previously to adding the label to SNO1. That's because that policy is bound to du-zone=europe as well. However, we have the choice to apply it (enforce) or not using the TALM operator.
 
 image::talm_upgrade_policy_02.png[TALM upgrade policy 2]
 
@@ -148,7 +148,7 @@ image::talm_upgrade_policy_02.png[TALM upgrade policy 2]
 
 At this point we need to create a CGU resource that will start the upgrade process. In our case, the process will be divided into two stages:
 
-1. Run a backup prior to start the upgrade process. Once successfully TALO will pre-cache all container images required for upgrade
+1. Run a backup prior to start the upgrade process. Once successfully TALM will pre-cache all container images required for upgrade
 2. Start the upgrade process
 
 [#talm-backup-precache]
@@ -156,7 +156,7 @@ At this point we need to create a CGU resource that will start the upgrade proce
 
 Let's create the CGU. In this case, we will apply the managed policy (europe-upgrade-version-411-17) to both clusters at the same time (maxConcurrency is 2). Notice that the CGU is disabled, this is suggested if we are going to run the precaching feature. This means, that once the precaching process is done we are ready to start the upgrade process. This idea is related to the compliance of a maintenance window in an enterprise. 
 
-Remember that several gigabytes of artifacts needs to be downloaded to the spoke for a full upgrade. SNO spoke clusters may have limited bandwidth to the hub cluster hosting the registry, which will make it difficult for the upgrade to complete within the required time. In order to ensure the upgrade can fit within the maintenance window, the required artifacts need to be present on the spoke cluster prior to the upgrade. Therefore the process is splitted up into two stages as mentioned.
+Remember that several gigabytes of artifacts needs to be downloaded to the spoke for a full upgrade. SNO spoke clusters may have limited bandwidth to the hub cluster hosting the registry, which will make it difficult for the upgrade to complete within the required time. In order to ensure the upgrade can fit within the maintenance window, the required artifacts need to be present on the spoke cluster prior to the upgrade. Therefore, the process is split up into two stages as mentioned.
 
 image::timing.png[TALM maintenance window concept]
 
@@ -341,7 +341,7 @@ NAME                          STATUS   ROLES           AGE   VERSION
 node/sno2.5g-deployment.lab   Ready    master,worker   17h   v1.24.6+5157800
 -----
 
-Meanwhile the clusters are upgrading we can take a look at the multicloud console and see that there is a new policy in enforce mode
+Meanwhile, the clusters are upgrading we can take a look at the multicloud console and see that there is a new policy in enforce mode
 
 image::talm_upgrade_policy_03.png[TALM upgrade policy 3]
 
@@ -349,7 +349,7 @@ Moving to the Infrastructure -> Cluster section of the multicloud console we can
 
 image::talm_upgrade_policy_04.png[TALM upgrade policy 3]
 
-Finally our clusters are upgraded:
+Finally, our clusters are upgraded:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]

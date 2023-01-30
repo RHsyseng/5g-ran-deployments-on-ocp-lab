@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-Next lab sections rely on having a lab environment accesible in order to do the hands-on work. If you're a Red Hatter you can order a lab environment on https://insertlinktorhpdshere[RHPDS]. Otherwise keep reading to deploy your own lab environment.
+Next lab sections rely on having a lab environment accessible in order to do the hands-on work. If you're a Red Hatter you can order a lab environment on https://insertlinktorhpdshere[RHPDS]. Otherwise, keep reading to deploy your own lab environment.
 
 [#lab-requirements]
 == Lab Requirements
@@ -243,7 +243,7 @@ clusterversion.config.openshift.io/version   4.11.13   True        False        
 [#configure-access-to-cluster-apps]
 === Configure Access to Cluster Apps
 
-In order to access the hub cluster we will deploy an HAProxy that will be listeting on the public interface of the Hypervisor host.
+In order to access the hub cluster we will deploy an HAProxy that will be listening on the public interface of the Hypervisor host.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]

@@ -5,7 +5,7 @@
 [.text-center.strong]
 == Red Hat Lab - 5G RAN Deployments on OpenShift
 
-This lab will guide you throught the deployment of a RAN ready infrastructure.
+This lab will guide you through the deployment of a RAN ready infrastructure.
 
 IMPORTANT: This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
 

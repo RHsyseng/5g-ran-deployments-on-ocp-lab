@@ -19,7 +19,7 @@ IMPORTANT: The ZTP workflow starts when the site is connected to the network and
 
 Red Hat Advanced Cluster Management for Kubernetes (RHACM) provides the multicluster hub, a central management console for managing multiple Kubernetes-based clusters across data centers, public clouds, and private clouds. You can use the hub to create Red Hat OpenShift Container Platform clusters on selected providers, or import existing Kubernetes-based clusters. After the clusters are managed, you can set compliance requirements to ensure that the clusters maintain the specified security requirements. You can also deploy business applications across your clusters.
 
-From ACM 2.5 on, there has been a major re-archictecture in RHACM. Part of the functionality that was included has been moved to the Multicluster Engine (MCE), which is required piece for RHACM. Actually, when installing RHACM the MCE bits are also installed automatically.
+From ACM 2.5 on, there has been a major re-architecture in RHACM. Part of the functionality that was included has been moved to the Multicluster Engine (MCE), which is required piece for RHACM. Actually, when installing RHACM the MCE bits are also installed automatically.
 
 image::arch_acm_mce.png[ACM architecture]
 
@@ -32,7 +32,7 @@ WARNING: The new multicluster engine for Kubernetes operator will be entitled wi
 
 MCE provides most of the functionality to provision OpenShift clusters, since they include the Assisted Installer operator, Hive and the management of the Klusterlet agents installed on the managed clusters. That's why it cannot co-exist with Red Hat Advanced Cluster Management for Kubernetes on versions earlier than 2.5 because they provide some of the same management components. 
 
-It is recommended that you install multicluster engine for Kubernetes on a cluster that has never previously installed Red Hat Advanced Cluster Management. If you are using Red Hat Advanced Cluster Management for Kubernetes at version 2.5.0 or later then multicluster engine for Kubernetes will already be installed on the cluster with it.
+It is recommended that you install multicluster engine for Kubernetes on a cluster that has never previously installed Red Hat Advanced Cluster Management. If you are using Red Hat Advanced Cluster Management for Kubernetes at version 2.5.0 or later than multicluster engine for Kubernetes will already be installed on the cluster with it.
 
 [#ai]
 === Infrastructure Operator
@@ -53,7 +53,7 @@ The Assisted Service can currently install clusters with highly-available contro
 [#gitops-operator]
 == GitOps Operator
 
-Red Hat OpenShift uses Argo CD to maintain cluster resources. Argo CD is an open-source declarative tool for the continuous integration and continuous deployment (CI/CD) of applications. So, in a ZTP workflow, Argo CD is reponsible for pulling the custom resources definitions that are stored in a Git repository and apply them to the hub cluster. In ZTP, the definitions are applied into the hub cluster, where all the components defined in this section are running. Then, RHACM will be in charge of performing the necessary actions to the managed clusters and distributing those policies accordingly.
+Red Hat OpenShift uses Argo CD to maintain cluster resources. Argo CD is an open-source declarative tool for the continuous integration and continuous deployment (CI/CD) of applications. So, in a ZTP workflow, Argo CD is responsible for pulling the custom resources definitions that are stored in a Git repository and apply them to the hub cluster. In ZTP, the definitions are applied into the hub cluster, where all the components defined in this section are running. Then, RHACM will be in charge of performing the necessary actions to the managed clusters and distributing those policies accordingly.
 
 Notice that Argo CD can pull and apply any Kubernetes custom resource, however, for ZTP we are mainly focusing on `SiteConfig` and `PolicyGenTemplates` manifests, but Argo CD is not restricted to them.
 

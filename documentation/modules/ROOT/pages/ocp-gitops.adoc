@@ -9,7 +9,7 @@ GitOps is a key part of how we deploy and manage RAN infrastructure at scale, in
 
 GitOps ZTP brings proven patterns and methods of working from an IP operations workflow into management of OpenShift infrastructure. The desired state of the OpenShift infrastructure is captured within a Git repository where standard methods of change control, such as pull requests, reviews, sign-off, and merging, can be used to ensure changes are validated prior to taking effect. As with traditional source-code management, Git represents the single "source of truth" for the entire state of the system where the trail of changes to the system state are visible and auditable.
 
-Traceability of changes in GitOps is no novelty in itself as this approach is almost universally employed for the application source code. However GitOps advocates applying the same principles (reviews, pull requests, tagging, etc) to infrastructure and application configuration so that teams can benefit from the same assurance as they do for the application source code.
+Traceability of changes in GitOps is no novelty in itself as this approach is almost universally employed for the application source code. However, GitOps advocates applying the same principles (reviews, pull requests, tagging, etc.) to infrastructure and application configuration so that teams can benefit from the same assurance as they do for the application source code.
 
 Although there is no precise definition or agreed upon set of rules, the following principles are an approximation of what constitutes a GitOps practice:
 
@@ -76,7 +76,7 @@ One thing that we still need to keep in mind is that we want to have different r
 [#direct-commit-to-main]
 === Direct Commit to Main
 
-Users can tailor their operational model to their particular use case, phase of operation, etc. Typically a model where changes are directly commited to the main (active) branch is discouraged as this bypasses the merge review process and potentially exposes the clusters to incorrect/undesired changes. However, in some phases of operation such as initial development in the lab, a direct-commit to main model may be appropriate. GitOps allows for flexibility in the way users manage configuration in Git to suit their operational needs.
+Users can tailor their operational model to their particular use case, phase of operation, etc. Typically, a model where changes are directly committed to hte main (active) branch is discouraged as this bypasses the merge review process and potentially exposes the clusters to incorrect/undesired changes. However, in some phases of operation such as initial development in the lab, a direct-commit to main model may be appropriate. GitOps allows for flexibility in the way users manage configuration in Git to suit their operational needs.
 
 [#prs-review-cycles]
 === Pull Requests and Review Cycles
