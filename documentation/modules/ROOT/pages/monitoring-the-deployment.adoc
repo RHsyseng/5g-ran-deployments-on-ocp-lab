@@ -26,12 +26,14 @@ image::acm-sno2-install-completed.png[RHACM sno2 Cluster Deployment Finished]
 [#monitoring-deployment-cli]
 == Monitoring the Deployment via the CLI
 
+IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
+
 1. Access the Hub cluster as admin
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ oc login -u admin -p admin https://api.hub.5g-deployment.lab:6443
+oc login -u admin -p admin https://api.hub.5g-deployment.lab:6443
 -----
 +
 2. Check the `AgentClusterInstall` for SNO2 cluster
@@ -39,7 +41,7 @@ image::acm-sno2-install-completed.png[RHACM sno2 Cluster Deployment Finished]
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ oc -n sno2 get agentclusterinstall sno2
+oc -n sno2 get agentclusterinstall sno2
 
 NAME   CLUSTER   STATE
 sno2   sno2      finalizing

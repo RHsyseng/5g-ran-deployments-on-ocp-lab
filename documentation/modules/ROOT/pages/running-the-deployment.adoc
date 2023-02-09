@@ -6,6 +6,8 @@ As we saw in previous sections, clusters are deployed using the ZTP GitOps Pipel
 
 We already have the git repository that will be used for storing our Infrastructure as Code (IaC) and Configuration as Code (CaC). Next step is deploying the ZTP GitOps Pipeline, let's do it.
 
+IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
+
 [#deploying-ztp-gitops-pipeline]
 == Deploying the ZTP GitOps Pipeline
 
@@ -14,9 +16,9 @@ In the workstation, run the following command to extract the pipeline installati
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ mkdir -p ~/5g-deployment-lab/ztp-pipeline/
-[user@workstation ~]$ podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1!
-[user@workstation ~]$ podman run --log-driver=none --rm infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.11 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/
+mkdir -p ~/5g-deployment-lab/ztp-pipeline/
+podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1!
+podman run --log-driver=none --rm infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.11 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/
 -----
 
 Now that we extracted the pipeline content we need to get it applied to our hub cluster.
@@ -26,7 +28,7 @@ Now that we extracted the pipeline content we need to get it applied to our hub 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ oc login -u admin -p admin https://api.hub.5g-deployment.lab:6443
+oc login -u admin -p admin https://api.hub.5g-deployment.lab:6443
 -----
 +
 . Modify the ZTP GitOps Pipeline configuration to match our environment configuration
@@ -36,8 +38,8 @@ Now that we extracted the pipeline content we need to get it applied to our hub 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ sed -i "s|repoURL: .*|repoURL: http://infra.5g-deployment.lab:3000/student/ztp-repository.git|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
-[user@workstation ~]$ sed -i "s|repoURL: .*|repoURL: http://infra.5g-deployment.lab:3000/student/ztp-repository.git|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
+sed -i "s|repoURL: .*|repoURL: http://infra.5g-deployment.lab:3000/student/ztp-repository.git|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i "s|repoURL: .*|repoURL: http://infra.5g-deployment.lab:3000/student/ztp-repository.git|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
 -----
 +
 .. Change the repository path for the two ArgoApps
@@ -45,8 +47,8 @@ Now that we extracted the pipeline content we need to get it applied to our hub 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ sed -i "s|path: .*|path: site-configs|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
-[user@workstation ~]$ sed -i "s|path: .*|path: site-policies|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
+sed -i "s|path: .*|path: site-configs|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i "s|path: .*|path: site-policies|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
 -----
 +
 .. Change the repository branch for the two ArgoApps
@@ -54,8 +56,8 @@ Now that we extracted the pipeline content we need to get it applied to our hub 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
-[user@workstation ~]$ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
+sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
 -----
 +
 . Apply the ZTP GitOps Pipeline configuration
@@ -63,7 +65,7 @@ Now that we extracted the pipeline content we need to get it applied to our hub 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ oc apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/
+oc apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/
 -----
 
 [#deploying-sno-using-gitops-pipeline]

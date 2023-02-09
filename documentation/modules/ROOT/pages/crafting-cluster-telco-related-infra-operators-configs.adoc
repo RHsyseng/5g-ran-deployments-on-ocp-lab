@@ -1,10 +1,12 @@
-= Crafting the Cluster CNF Operators Configs
+= Crafting the Cluster Telco Related Infrastructure Operators Configs
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
 In the previous section we created the infrastructure as code (IaC) for our `SNO2` cluster using the `SiteConfig` object. In this section we are going to create the configuration as code (CaC) for our clusters by using the `PolicyGenTemplate` object.
 
 We described how `PolicyGenTemplate` works in detail xref:policygen-deepdive.adoc#policies-templating[here], so let's jump directly to the creation of the different templates.
+
+IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
 
 [#crafting-common-policies]
 == Crafting Common Policies
@@ -20,7 +22,7 @@ IMPORTANT: If you check the binding rules you can see that we are targeting clus
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/common-policies/common-411.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/common-policies/common-411.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
@@ -58,7 +60,7 @@ IMPORTANT: If you check the binding rules you can see that we are targeting clus
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/group-policies/group-du-sno.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/group-policies/group-du-sno.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
@@ -92,7 +94,7 @@ We are going to create some policies that apply to our clusters located in `Euro
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/zone-policies/zone-europe.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/zone-policies/zone-europe.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
@@ -130,7 +132,7 @@ We are going to create the `PerformanceProfile` and storage configurations for o
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/site-policies/site-sno2.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/site-policies/site-sno2.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
@@ -214,7 +216,7 @@ We need to create the required kustomization as we did for SiteConfigs, in this 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/policies-namespace.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/policies-namespace.yaml
 ---
 apiVersion: v1
 kind: Namespace
@@ -230,7 +232,7 @@ EOF
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/kustomization.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -249,9 +251,9 @@ EOF
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ cd ~/5g-deployment-lab/ztp-repository
-[user@workstation ztp-repository]$ git add --all
-[user@workstation ztp-repository]$ git commit -m 'Added policies information'
-[user@workstation ztp-repository]$ git push origin main
-[user@workstation ztp-repository]$ cd ~
+cd ~/5g-deployment-lab/ztp-repository
+git add --all
+git commit -m 'Added policies information'
+git push origin main
+cd ~
 -----

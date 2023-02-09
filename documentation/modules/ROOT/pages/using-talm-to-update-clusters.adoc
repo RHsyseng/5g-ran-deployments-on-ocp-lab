@@ -11,10 +11,12 @@ Let's upgrade our both clusters. First of all, let's verify the TALM operator is
 [#verify-talm]
 == Verifying the TALM state
 
+IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ oc get operators
+oc get operators
 NAME                                                   AGE
 advanced-cluster-management.open-cluster-management    2d15h
 multicluster-engine.multicluster-engine                2d15h
@@ -29,7 +31,7 @@ Next, double check there is no problem with the Pod. Notice that the name of the
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ oc get pods,sa,deployments -n openshift-operators
+oc get pods,sa,deployments -n openshift-operators
 NAME                                                           READY   STATUS    RESTARTS        AGE
 pod/cluster-group-upgrades-controller-manager-6d6fc98d-6cnf9   2/2     Running   1 (2d14h ago)   2d14h
 pod/gitops-operator-controller-manager-c6bc6db9f-5z752         1/1     Running   0               2d15h
@@ -52,7 +54,7 @@ Finally, let's take a look at the cluster group upgrade (CGU) CRD managed by TAL
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ oc get cgu -A
+oc get cgu -A
 NAMESPACE     NAME   UPGRADE STATE      AGE
 ztp-install   sno2   UpgradeCompleted   14h
 -----
@@ -65,7 +67,7 @@ Create an upgrade PGT in inform mode, as usual, that will apply and upgrade both
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/zone-policies/upgrade-411-17.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/zone-policies/upgrade-411-17.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
@@ -117,9 +119,9 @@ Then commit all the changes:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ztp-repository]$ git add site-policies/zone-policies/upgrade-411-17.yaml site-policies/kustomization.yaml
-[user@workstation ztp-repository]$ git commit -m "adds upgrade policy"
-[user@workstation ztp-repository]$ git push origin main 
+git add site-policies/zone-policies/upgrade-411-17.yaml site-policies/kustomization.yaml
+git commit -m "adds upgrade policy"
+git push origin main 
 -----
 
 Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named europe-upgrade-version-411-17 has a violation. However, only one. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the label zone-europe that the PGT is targeting in its binding rule. 
@@ -132,7 +134,7 @@ Let's add the proper label to SNO1:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation site-policies]$ oc label managedcluster sno1 du-zone=europe
+oc label managedcluster sno1 du-zone=europe
 managedcluster.cluster.open-cluster-management.io/sno1 labeled
 -----
 
@@ -165,7 +167,7 @@ Let's apply the CGU to our hub cluster:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ cat <<EOF > ~/5g-deployment-lab/cgu-upgrade-411-17.yaml
+cat <<EOF > ~/5g-deployment-lab/cgu-upgrade-411-17.yaml
 ---
 apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
@@ -191,14 +193,14 @@ EOF
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ oc apply -f ~/5g-deployment-lab/cgu-upgrade-411-17.yaml
+oc apply -f ~/5g-deployment-lab/cgu-upgrade-411-17.yaml
 -----
 
 Once applied, we can see that the status moved to BackupNotDone. This means that the first step in our process is executing the backup.
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[user@workstation ~]$ oc get cgu -A
+oc get cgu -A
 NAMESPACE      NAME        UPGRADE STATE      AGE
 ztp-install    sno2        UpgradeCompleted   16h
 ztp-policies   telco-ops   BackupNotDone      15s
@@ -351,19 +353,23 @@ image::talm_upgrade_policy_04.png[TALM upgrade policy 3]
 
 Finally, our clusters are upgraded:
 
+IMPORTANT: Commands below executed from the hypervisor host as root.
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig 
-[root@hypervisor ~]$ oc get clusterversion,nodes                                                                                                                   hypervisor: Mon Dec 12 11:49:05 2022
+oc --kubeconfig ~/sno2-kubeconfig get clusterversion,nodes                                                                                                                   hypervisor: Mon Dec 12 11:49:05 2022
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.11.17   True        False         6m41s   Cluster version is 4.11.17
 
 NAME                          STATUS   ROLES           AGE   VERSION
 node/sno2.5g-deployment.lab   Ready    master,worker   18h   v1.24.6+5658434
+-----
 
-[root@hypervisor ~]$ export KUBECONFIG=~/sno1-kubeconfig 
-[root@hypervisor site-policies]$ oc get clusterversion,nodes
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc --kubeconfig ~/sno1-kubeconfig get clusterversion,nodes
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.11.17   True        False         21m     Cluster version is 4.11.17
 

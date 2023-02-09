@@ -7,7 +7,7 @@ Next lab sections rely on having a lab environment accessible in order to do the
 [#lab-requirements]
 == Lab Requirements
 
-RHEL 8+ (or similar) box with access to the Internet. This lab relies on KVM, so a baremetal host is highly recommended. Our lab environment has the following specs:
+RHEL 8 (or similar) box with access to the Internet. This lab relies on KVM, so a baremetal host is highly recommended. Our lab environment has the following specs:
 
 * 48 CPUs
 * 200GiB Memory
@@ -23,11 +23,13 @@ IMPORTANT: All the steps in the below sections must be run as `root` user on the
 
 We use https://github.com/karmab/kcli[kcli] to do several things, like managing VMs, deploying the first OCP cluster, etc. Additional kcli documentation can be found at `https://kcli.readthedocs.io`
 
+IMPORTANT: Below commands must be executed from the hypervisor host as root if not specified otherwise.
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# dnf -y copr enable karmab/kcli
-[root@hypervisor ~]# dnf -y install kcli bash-completion vim jq tar
+dnf -y copr enable karmab/kcli
+dnf -y install kcli bash-completion vim jq tar
 -----
 
 [#install-oc-kubectl]
@@ -36,9 +38,9 @@ We use https://github.com/karmab/kcli[kcli] to do several things, like managing 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# kcli download oc -P version=stable -P tag='4.11'
-[root@hypervisor ~]# kcli download kubectl -P version=stable -P tag='4.11'
-[root@hypervisor ~]# mv kubectl oc /usr/bin/
+kcli download oc -P version=stable -P tag='4.11'
+kcli download kubectl -P version=stable -P tag='4.11'
+mv kubectl oc /usr/bin/
 -----
 
 [#configure-disconnected-network]
@@ -47,7 +49,7 @@ We use https://github.com/karmab/kcli[kcli] to do several things, like managing 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# kcli create network -c 192.168.125.0/24 --nodhcp --domain 5g-deployment.lab 5gdeploymentlab
+kcli create network -c 192.168.125.0/24 --nodhcp --domain 5g-deployment.lab 5gdeploymentlab
 -----
 
 [#configure-local-dns-dhcp-server]
@@ -56,21 +58,21 @@ We use https://github.com/karmab/kcli[kcli] to do several things, like managing 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# dnf -y install dnsmasq policycoreutils-python-utils
-[root@hypervisor ~]# mkdir -p /opt/dnsmasq/include.d/
-[root@hypervisor ~]# curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/dnsmasq.conf -o /opt/dnsmasq/dnsmasq.conf
-[root@hypervisor ~]# curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/upstream-resolv.conf -o /opt/dnsmasq/upstream-resolv.conf
-[root@hypervisor ~]# curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/hub.ipv4 -o /opt/dnsmasq/include.d/hub.ipv4
-[root@hypervisor ~]# curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/sno1.ipv4 -o /opt/dnsmasq/include.d/sno1.ipv4
-[root@hypervisor ~]# curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/sno2.ipv4 -o /opt/dnsmasq/include.d/sno2.ipv4
-[root@hypervisor ~]# curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/infrastructure-host.ipv4 -o /opt/dnsmasq/include.d/infrastructure-host.ipv4
-[root@hypervisor ~]# curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/dnsmasq-virt.service -o /etc/systemd/system/dnsmasq-virt.service
-[root@hypervisor ~]# touch /opt/dnsmasq/hosts.leases
-[root@hypervisor ~]# semanage fcontext -a -t dnsmasq_lease_t /opt/dnsmasq/hosts.leases
-[root@hypervisor ~]# restorecon /opt/dnsmasq/hosts.leases
-[root@hypervisor ~]# systemctl daemon-reload
-[root@hypervisor ~]# systemctl enable --now dnsmasq-virt
-[root@hypervisor ~]# systemctl mask dnsmasq
+dnf -y install dnsmasq policycoreutils-python-utils
+mkdir -p /opt/dnsmasq/include.d/
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/dnsmasq.conf -o /opt/dnsmasq/dnsmasq.conf
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/upstream-resolv.conf -o /opt/dnsmasq/upstream-resolv.conf
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/hub.ipv4 -o /opt/dnsmasq/include.d/hub.ipv4
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/sno1.ipv4 -o /opt/dnsmasq/include.d/sno1.ipv4
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/sno2.ipv4 -o /opt/dnsmasq/include.d/sno2.ipv4
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/infrastructure-host.ipv4 -o /opt/dnsmasq/include.d/infrastructure-host.ipv4
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/dnsmasq/dnsmasq-virt.service -o /etc/systemd/system/dnsmasq-virt.service
+touch /opt/dnsmasq/hosts.leases
+semanage fcontext -a -t dnsmasq_lease_t /opt/dnsmasq/hosts.leases
+restorecon /opt/dnsmasq/hosts.leases
+systemctl daemon-reload
+systemctl enable --now dnsmasq-virt
+systemctl mask dnsmasq
 -----
 
 [#configure-local-dns-as-primary-server]
@@ -79,10 +81,10 @@ We use https://github.com/karmab/kcli[kcli] to do several things, like managing 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# curl -L https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hypervisor/forcedns -o /etc/NetworkManager/dispatcher.d/forcedns
-[root@hypervisor ~]# chmod +x /etc/NetworkManager/dispatcher.d/forcedns
-[root@hypervisor ~]# systemctl restart NetworkManager
-[root@hypervisor ~]# /etc/NetworkManager/dispatcher.d/forcedns
+curl -L https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hypervisor/forcedns -o /etc/NetworkManager/dispatcher.d/forcedns
+chmod +x /etc/NetworkManager/dispatcher.d/forcedns
+systemctl restart NetworkManager
+/etc/NetworkManager/dispatcher.d/forcedns
 -----
 
 [#disable-firewall]
@@ -93,9 +95,9 @@ You can also create the required rules in the firewall if you want, but for the 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# systemctl disable firewalld iptables
-[root@hypervisor ~]# systemctl stop firewalld iptables
-[root@hypervisor ~]# iptables -F
+systemctl disable firewalld iptables
+systemctl stop firewalld iptables
+iptables -F
 -----
 
 [#install-sushytools]
@@ -104,9 +106,9 @@ You can also create the required rules in the firewall if you want, but for the 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# curl -L https://gist.githubusercontent.com/mvazquezc/0acb9e716c329abb9a184f1bcceed591/raw/4ae558082a3289d5d46be7d745bc2474e834e238/deploy-sushy-tools.sh -o /tmp/deploy-sushy-tools.sh
-[root@hypervisor ~]# chmod +x /tmp/deploy-sushy-tools.sh
-[root@hypervisor ~]# /tmp/deploy-sushy-tools.sh
+curl -L https://gist.githubusercontent.com/mvazquezc/0acb9e716c329abb9a184f1bcceed591/raw/4ae558082a3289d5d46be7d745bc2474e834e238/deploy-sushy-tools.sh -o /tmp/deploy-sushy-tools.sh
+chmod +x /tmp/deploy-sushy-tools.sh
+/tmp/deploy-sushy-tools.sh
 -----
 
 [#configure-disconnected-registry]
@@ -115,20 +117,21 @@ You can also create the required rules in the firewall if you want, but for the 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# dnf -y install podman httpd-tools
-[root@hypervisor ~]# REGISTRY_NAME=infra.5g-deployment.lab
-[root@hypervisor ~]# mkdir -p /opt/registry/{auth,certs,data,conf}
-[root@hypervisor ~]# curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/registry-key.pem -o /opt/registry/certs/registry-key.pem
-[root@hypervisor ~]# curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/registry-cert.pem -o /opt/registry/certs/registry-cert.pem
-[root@hypervisor ~]# htpasswd -bBc /opt/registry/auth/htpasswd admin r3dh4t1! 
-[root@hypervisor ~]# curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/config.yml -o /opt/registry/conf/config.yml
-[root@hypervisor ~]# curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/podman-registry.service -o /etc/systemd/system/podman-registry.service
-[root@hypervisor ~]# systemctl daemon-reload
-[root@hypervisor ~]# systemctl enable podman-registry --now
-[root@hypervisor ~]# cp /opt/registry/certs/registry-cert.pem /etc/pki/ca-trust/source/anchors/
-[root@hypervisor ~]# update-ca-trust
-[root@hypervisor ~]# podman login --authfile auth.json -u admin  infra.5g-deployment.lab:8443 -p r3dh4t1!
+dnf -y install podman httpd-tools
+REGISTRY_NAME=infra.5g-deployment.lab
+mkdir -p /opt/registry/{auth,certs,data,conf}
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/registry-key.pem -o /opt/registry/certs/registry-key.pem
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/registry-cert.pem -o /opt/registry/certs/registry-cert.pem
+htpasswd -bBc /opt/registry/auth/htpasswd admin r3dh4t1! 
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/config.yml -o /opt/registry/conf/config.yml
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/registry/podman-registry.service -o /etc/systemd/system/podman-registry.service
+systemctl daemon-reload
+systemctl enable podman-registry --now
+cp /opt/registry/certs/registry-cert.pem /etc/pki/ca-trust/source/anchors/
+update-ca-trust
+podman login --authfile auth.json -u admin  infra.5g-deployment.lab:8443 -p r3dh4t1!
 -----
+
 NOTE: Link to additional configuration documentation of a disconnected registry: https://docs.openshift.com/container-platform/4.11/installing/disconnected_install/installing-mirroring-disconnected.html
 
 [#configure-git-server]
@@ -137,107 +140,13 @@ NOTE: Link to additional configuration documentation of a disconnected registry:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# mkdir -p /opt/gitea/
-[root@hypervisor ~]# chown -R 1000:1000 /opt/gitea/
-[root@hypervisor ~]# curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/gitea/podman-gitea.service -o /etc/systemd/system/podman-gitea.service
-[root@hypervisor ~]# systemctl daemon-reload
-[root@hypervisor ~]# systemctl enable podman-gitea --now
-[root@hypervisor ~]# podman exec --user 1000 gitea /bin/sh -c 'gitea admin user create --username student --password student --email student@5g-deployment.lab --must-change-password=false --admin'
-[root@hypervisor ~]# curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab.git","uid":1,"repo_name":"5g-ran-deployments-on-ocp-lab"}' http://infra.5g-deployment.lab:3000/api/v1/repos/migrate
------
-
-[#create-openshift-nodes-vms]
-=== Create OpenShift Nodes VMs
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-[root@hypervisor ~]# kcli create pool -p /var/lib/libvirt/images default
-[root@hypervisor ~]# kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P numcpus=16 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:01:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0101 hub-master0
-[root@hypervisor ~]# kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P numcpus=16 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:01:02"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0102 hub-master1
-[root@hypervisor ~]# kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P numcpus=16 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:01:03"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0103 hub-master2
-[root@hypervisor ~]# kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:02:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201 sno1
-[root@hypervisor ~]# kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:03:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301 sno2
------
-
-[#deploy-openshift-hub-cluster]
-=== Deploy OpenShift Hub Cluster
-
-IMPORTANT: This step requires a valid OpenShift Pull Secret placed in /root/openshift_pull.json
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-[root@hypervisor ~]# git clone https://github.com/karmab/kcli-openshift4-baremetal.git
-[root@hypervisor ~]# curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/hub.yml -o /root/kcli-openshift4-baremetal/hub.yml
-[root@hypervisor ~]# cp /root/openshift_pull.json /root/kcli-openshift4-baremetal/openshift_pull.json
-[root@hypervisor ~]# cd /root/kcli-openshift4-baremetal/
-[root@hypervisor kcli-openshift4-baremetal]# kcli create plan --pf hub.yml --force
------
-
-This will take around 1 hour to complete, you can follow progress by running `kcli console -s`.
-
-[#configure-openshift-hub-cluster]
-=== Configure OpenShift Hub Cluster
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-[root@hypervisor kcli-openshift4-baremetal]# cd ~
-[root@hypervisor ~]# kcli ssh hub-installer -- "sudo cp /root/ocp/auth/kubeconfig /tmp/kubeconfig && sudo chmod 644 /tmp/kubeconfig"
-[root@hypervisor ~]# kcli scp hub-installer:/tmp/kubeconfig ~/hub-kubeconfig
-[root@hypervisor ~]# export KUBECONFIG=~/hub-kubeconfig
-[root@hypervisor ~]# oc apply -f https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/lvmcluster.yaml
-[root@hypervisor ~]# oc -n openshift-storage wait lvmcluster odf-lvmcluster --for=jsonpath='{.status.ready}'=true --timeout=900s
-[root@hypervisor ~]# oc patch storageclass odf-lvm-vg1 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-[root@hypervisor ~]# curl https://raw.githubusercontent.com/openshift-kni/cnf-features-deploy/master/ztp/gitops-subscriptions/argocd/deployment/argocd-openshift-gitops-patch.json -o /tmp/argopatch.json
-[root@hypervisor ~]# oc patch argocd openshift-gitops -n openshift-gitops --type=merge --patch-file /tmp/argopatch.json
-[root@hypervisor ~]# oc wait --for=condition=Ready pod -lapp.kubernetes.io/name=openshift-gitops-repo-server -n openshift-gitops
-[root@hypervisor ~]# oc -n openshift-gitops adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller
------
-
-[#deploy-openshift-hub-cluster-operators]
-=== Deploy OpenShift HUB Cluster Operators
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-[root@hypervisor ~]# oc apply -f https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml
------
-
-[#deploy-sno1-cluster-without-ztp]
-=== Deploy SNO1 Cluster (without ZTP)
-
-A SNO is deployed outside the ZTP workflow so students can import it and see how that workflow works.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-[root@hypervisor ~]# curl -L http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/main/lab-materials/lab-env-data/hypervisor/ssh-key -o /root/.ssh/snokey
-[root@hypervisor ~]# chmod 400 /root/.ssh/snokey
-[root@hypervisor ~]# oc apply -f https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml
------
-
-Once the cluster is deployed, the kubeconfig can be gathered as follows:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-[root@hypervisor ~]# oc -n sno1 get agentclusterinstall,agent
-NAME                                                    CLUSTER   STATE
-agentclusterinstall.extensions.hive.openshift.io/sno1   sno1      adding-hosts
-
-NAME                                                                    CLUSTER   APPROVED   ROLE     STAGE
-agent.agent-install.openshift.io/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201   sno1      true       master   Done
-
-[root@hypervisor ~]# oc extract secret/sno1-admin-kubeconfig --to=- -n sno1 > /root/sno1kubeconfig
-[root@hypervisor ~]# oc --kubeconfig /root/sno1kubeconfig get nodes,clusterversion
-
-NAME                      STATUS   ROLES           AGE   VERSION
-node/openshift-master-0   Ready    master,worker   46m   v1.24.6+5157800
-
-NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.11.13   True        False         22m     Cluster version is 4.11.13
+mkdir -p /opt/gitea/
+chown -R 1000:1000 /opt/gitea/
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/gitea/podman-gitea.service -o /etc/systemd/system/podman-gitea.service
+systemctl daemon-reload
+systemctl enable podman-gitea --now
+podman exec --user 1000 gitea /bin/sh -c 'gitea admin user create --username student --password student --email student@5g-deployment.lab --must-change-password=false --admin'
+curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab.git","uid":1,"repo_name":"5g-ran-deployments-on-ocp-lab"}' http://infra.5g-deployment.lab:3000/api/v1/repos/migrate
 -----
 
 [#configure-access-to-cluster-apps]
@@ -248,10 +157,10 @@ In order to access the hub cluster we will deploy an HAProxy that will be listen
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]# dnf install haproxy -y
-[root@hypervisor ~]# semanage port -a -t http_port_t -p tcp 6443
-[root@hypervisor ~]# curl -L https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/haproxy/haproxy.cfg -o /etc/haproxy/haproxy.cfg
-[root@hypervisor ~]# systemctl enable haproxy --now
+dnf install haproxy -y
+semanage port -a -t http_port_t -p tcp 6443
+curl -L https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/haproxy/haproxy.cfg -o /etc/haproxy/haproxy.cfg
+systemctl enable haproxy --now
 -----
 
 After that you need to add the following entries to your /etc/hosts file:
@@ -260,4 +169,98 @@ After that you need to add the following entries to your /etc/hosts file:
 [source,bash,subs="attributes+,+macros"]
 -----
 <HYPERVISOR_REACHABLE_IP> infra.5g-deployment.lab api.hub.5g-deployment.lab multicloud-console.apps.hub.5g-deployment.lab console-openshift-console.apps.hub.5g-deployment.lab oauth-openshift.apps.hub.5g-deployment.lab openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab
+-----
+
+[#create-openshift-nodes-vms]
+=== Create OpenShift Nodes VMs
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+kcli create pool -p /var/lib/libvirt/images default
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P numcpus=16 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:01:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0101 hub-master0
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P numcpus=16 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:01:02"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0102 hub-master1
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P numcpus=16 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:01:03"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0103 hub-master2
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:02:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201 sno1
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:03:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301 sno2
+-----
+
+[#deploy-openshift-hub-cluster]
+=== Deploy OpenShift Hub Cluster
+
+IMPORTANT: This step requires a valid OpenShift Pull Secret placed in /root/openshift_pull.json
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+git clone https://github.com/karmab/kcli-openshift4-baremetal.git
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/hub.yml -o /root/kcli-openshift4-baremetal/hub.yml
+cp /root/openshift_pull.json /root/kcli-openshift4-baremetal/openshift_pull.json
+cd /root/kcli-openshift4-baremetal/
+kcli create plan --pf hub.yml --force
+-----
+
+This will take around 1 hour to complete, you can follow progress by running `kcli console -s`.
+
+[#configure-openshift-hub-cluster]
+=== Configure OpenShift Hub Cluster
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cd ~
+kcli ssh hub-installer -- "sudo cp /root/ocp/auth/kubeconfig /tmp/kubeconfig && sudo chmod 644 /tmp/kubeconfig"
+kcli scp hub-installer:/tmp/kubeconfig ~/hub-kubeconfig
+export KUBECONFIG=~/hub-kubeconfig
+oc apply -f https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/lvmcluster.yaml
+oc -n openshift-storage wait lvmcluster odf-lvmcluster --for=jsonpath='{.status.ready}'=true --timeout=900s
+oc patch storageclass odf-lvm-vg1 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+curl https://raw.githubusercontent.com/openshift-kni/cnf-features-deploy/master/ztp/gitops-subscriptions/argocd/deployment/argocd-openshift-gitops-patch.json -o /tmp/argopatch.json
+oc patch argocd openshift-gitops -n openshift-gitops --type=merge --patch-file /tmp/argopatch.json
+oc wait --for=condition=Ready pod -lapp.kubernetes.io/name=openshift-gitops-repo-server -n openshift-gitops
+oc -n openshift-gitops adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller
+-----
+
+[#deploy-openshift-hub-cluster-operators]
+=== Deploy OpenShift HUB Cluster Operators
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc apply -f https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml
+-----
+
+[#deploy-sno1-cluster-without-ztp]
+=== Deploy SNO1 Cluster (without ZTP)
+
+A SNO is deployed outside the ZTP workflow so students can import it and see how that workflow works.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+curl -L http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/main/lab-materials/lab-env-data/hypervisor/ssh-key -o /root/.ssh/snokey
+chmod 400 /root/.ssh/snokey
+oc apply -f https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/main/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml
+-----
+
+Once the cluster is deployed, the kubeconfig can be gathered as follows:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc -n sno1 get agentclusterinstall,agent
+NAME                                                    CLUSTER   STATE
+agentclusterinstall.extensions.hive.openshift.io/sno1   sno1      adding-hosts
+
+NAME                                                                    CLUSTER   APPROVED   ROLE     STAGE
+agent.agent-install.openshift.io/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201   sno1      true       master   Done
+
+oc extract secret/sno1-admin-kubeconfig --to=- -n sno1 > /root/sno1kubeconfig
+oc --kubeconfig /root/sno1kubeconfig get nodes,clusterversion
+
+NAME                      STATUS   ROLES           AGE   VERSION
+node/openshift-master-0   Ready    master,worker   46m   v1.24.6+5157800
+
+NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
+clusterversion.config.openshift.io/version   4.11.13   True        False         22m     Cluster version is 4.11.13
 -----

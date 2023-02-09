@@ -1,4 +1,4 @@
-= Introduction to CNF Operators
+= Introduction to Telco Related Infrastructure Operators
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
