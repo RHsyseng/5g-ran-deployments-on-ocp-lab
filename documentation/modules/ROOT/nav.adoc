@@ -117,6 +117,7 @@
 *** xref:lab-environment.adoc#install-sushytools[Install Sushy Tools]
 *** xref:lab-environment.adoc#configure-disconnected-registry[Configure Disconnected Registry]
 *** xref:lab-environment.adoc#configure-git-server[Configure Git Server]
+*** xref:lab-environment.adoc#configure-ntp-server[Configure NTP Server]
 *** xref:lab-environment.adoc#configure-access-to-cluster-apps[Configure Access to Cluster Apps]
 *** xref:lab-environment.adoc#create-openshift-nodes-vms[Create OpenShift Nodes VMs]
 *** xref:lab-environment.adoc#deploy-openshift-hub-cluster[Deploy OpenShift Hub Cluster]

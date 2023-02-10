@@ -7,6 +7,8 @@ metadata:
   name: sno1
   namespace: sno1
 spec:
+  additionalNTPSources:
+    - infra.5g-deployment.lab
   clusterRef:
     name: sno1
     namespace: sno1

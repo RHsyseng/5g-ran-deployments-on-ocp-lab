@@ -211,7 +211,7 @@ spec:
     serviceNetwork:
       - "172.30.0.0/16"
     additionalNTPSources:
-      - 192.168.125.1
+      - infra.5g-deployment.lab
     holdInstallation: false
     nodes:
       - hostName: "sno2.5g-deployment.lab"
