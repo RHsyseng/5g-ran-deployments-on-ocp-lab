@@ -7,6 +7,8 @@ Once the ZTP GitOps Pipeline starts deploying our clusters we can follow the ins
 [#monitoring-deployment-webui]
 == Monitoring the Deployment via the WebUI
 
+WARNING: It may take a while for the installation to start, wait at least 10 minutes if you see `The cluster is not ready for installation` message.
+
 1. Access the https://multicloud-console.apps.hub.5g-deployment.lab/[RHACM WebUI] and login with the OpenShift credentials.
 2. Once you're in, click on `Infrastructure` -> `Clusters`. You will see a screen like the one below:
 +

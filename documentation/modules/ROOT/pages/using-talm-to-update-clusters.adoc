@@ -17,6 +17,7 @@ IMPORTANT: Below commands must be executed from the workstation host if not spec
 [source,bash,subs="attributes+,+macros"]
 -----
 oc get operators
+
 NAME                                                   AGE
 advanced-cluster-management.open-cluster-management    2d15h
 multicluster-engine.multicluster-engine                2d15h
@@ -32,6 +33,7 @@ Next, double check there is no problem with the Pod. Notice that the name of the
 [source,bash,subs="attributes+,+macros"]
 -----
 oc get pods,sa,deployments -n openshift-operators
+
 NAME                                                           READY   STATUS    RESTARTS        AGE
 pod/cluster-group-upgrades-controller-manager-6d6fc98d-6cnf9   2/2     Running   1 (2d14h ago)   2d14h
 pod/gitops-operator-controller-manager-c6bc6db9f-5z752         1/1     Running   0               2d15h
@@ -51,10 +53,13 @@ deployment.apps/gitops-operator-controller-manager          1/1     1           
 
 Finally, let's take a look at the cluster group upgrade (CGU) CRD managed by TALM. If we pay a closer look we will notice that an already completed CGU was applied to SNO2. As we mentioned in link:talm.html#inform-policies[inform policies] section, all policies are not enforced, the user has to create the proper CGU resource to enforce them. However, when using ZTP we want our cluster provisioned and configured automatically. This is where TALM will step through the set of created policies (inform) and will enforce them once the cluster was successfully provisioned. Therefore, the configuration stage starts without any intervention ending up with our OpenShift cluster ready to process workloads.
 
+WARNING: It's possible that you get `UpgradeNotCompleted`, if that's the case you need to wait for the remaining policies to be applied.
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 oc get cgu -A
+
 NAMESPACE     NAME   UPGRADE STATE      AGE
 ztp-install   sno2   UpgradeCompleted   14h
 -----
@@ -96,22 +101,12 @@ spec:
 EOF
 -----
 
-Modify the kustomization.yaml inside the site-policies folder, so it includes this new PGT and eventually will be applied by ArgoCD. The kustomization file should look like this:
+Modify the kustomization.yaml inside the site-policies folder, so it includes this new PGT and eventually will be applied by ArgoCD.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-generators:
-  - common-policies/common-411.yaml
-  - group-policies/group-du-sno.yaml
-  - zone-policies/zone-europe.yaml
-  - zone-policies/upgrade-411-17.yaml
-  - site-policies/site-sno2.yaml
-resources:
-  - policies-namespace.yaml
+sed -i "/- zone-policies\/zone-europe.yaml/a \ \ - zone-policies/upgrade-411-17.yaml" ~/5g-deployment-lab/ztp-repository/site-policies/kustomization.yaml
 -----
 
 Then commit all the changes:
@@ -119,6 +114,7 @@ Then commit all the changes:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
+cd ~/5g-deployment-lab/ztp-repository/
 git add site-policies/zone-policies/upgrade-411-17.yaml site-policies/kustomization.yaml
 git commit -m "adds upgrade policy"
 git push origin main 
@@ -135,6 +131,7 @@ Let's add the proper label to SNO1:
 [source,bash,subs="attributes+,+macros"]
 -----
 oc label managedcluster sno1 du-zone=europe
+
 managedcluster.cluster.open-cluster-management.io/sno1 labeled
 -----
 
@@ -167,7 +164,7 @@ Let's apply the CGU to our hub cluster:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/cgu-upgrade-411-17.yaml
+cat <<EOF | oc apply -f -
 ---
 apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
@@ -190,17 +187,12 @@ spec:
 EOF
 -----
 
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-oc apply -f ~/5g-deployment-lab/cgu-upgrade-411-17.yaml
------
-
 Once applied, we can see that the status moved to BackupNotDone. This means that the first step in our process is executing the backup.
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 oc get cgu -A
+
 NAMESPACE      NAME        UPGRADE STATE      AGE
 ztp-install    sno2        UpgradeCompleted   16h
 ztp-policies   telco-ops   BackupNotDone      15s
@@ -208,11 +200,13 @@ ztp-policies   telco-ops   BackupNotDone      15s
 
 Connecting to any of our spoke clusters we can see a new job being created called backup-agent.
 
+IMPORTANT: All the steps in the below section must be run as `root` user on the hypervisor host.
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-[root@hypervisor ~]$ export KUBECONFIG=~/sno2-kubeconfig 
-[root@hypervisor ~]$ oc get jobs -A
+oc --kubeconfig ~/sno1kubeconfig get jobs -A
+
 NAMESPACE                              NAME                                                              COMPLETIONS   DURATION   AGE
 assisted-installer                     assisted-installer-controller                                     1/1           42m        17h
 openshift-image-registry               image-pruner-27846720                                             1/1           13s        9h

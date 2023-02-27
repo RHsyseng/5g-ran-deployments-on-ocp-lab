@@ -13,12 +13,14 @@ IMPORTANT: Below commands must be executed from the workstation host if not spec
 
 In the workstation, run the following command to extract the pipeline installation files:
 
+WARNING: If you get `ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 65536`: newuidmap: write to uid_map failed: Operation not permitted` when running podman commands, run them with sudo.
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 mkdir -p ~/5g-deployment-lab/ztp-pipeline/
-podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1!
-podman run --log-driver=none --rm infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.11 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/
+podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
+podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.11 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/
 -----
 
 Now that we extracted the pipeline content we need to get it applied to our hub cluster.
