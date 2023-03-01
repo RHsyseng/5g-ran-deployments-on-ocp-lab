@@ -2,15 +2,15 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-A RAN deployment requires of multiple pieces of the stack being properly configured, in this section we will present the most common ones.
+A RAN deployment requires of multiple pieces of the stack being properly configured. In this section, we will present the most common ones.
 
 [#hardware-configurations]
 == Hardware configurations
 
-RAN deployments usually run on top of baremetal servers, and as such is of vital importance have a proper configuration at the hardware level to meet the required expectations of the RAN workloads.
+RAN deployments usually run on top of baremetal servers, and as such, is of vital importance to have a proper configuration at the hardware level to meet the required expectations of the RAN workloads.
 
 [#bios-settings]
-=== Bios Settings
+=== BIOS Settings
 
 NOTE: Depending on your hardware vendor the naming of the following features may vary.
 
@@ -54,7 +54,7 @@ In a future section we will cover the deployment and mirroring of the required b
 [#git-repo-structure]
 == Git Repository Structure
 
-When preparing a Git repository for running ZTP deployments we identified two potential ways of structuring the repository for GitOps, using branches or using folders. At this point, we can say that while branches have been used for structuring the different environments in the past, today, the preferred approach is using folders.
+When preparing a Git repository for running ZTP deployments we identified two potential ways of structuring the repository for GitOps: using branches or using folders. At this point, we can say that while branches have been used for structuring the different environments in the past, today, the preferred approach is using folders.
 
 In our Git repository we will have the following folder structure:
 

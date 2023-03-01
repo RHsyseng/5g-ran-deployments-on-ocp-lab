@@ -4,7 +4,7 @@ include::_attributes.adoc[]
 
 Leveraging TALM we can manage the lifecycle of thousands of clusters at scale, this is required when working on complex RAN environments.
 
-Remember that ZTP generates installation and configuration resources from manifests (`siteConfig` and `policyGenTemplates`) stored in Git. These artifacts are applied to a centralized hub cluster where a combination of OpenShift GitOps, Red Hat Advanced Cluster Management, the Assisted Service which is deployed by the Infrastructure Operator, and the Topology Aware Lifecycle Manager (TALM) use them to install and configure the cluster. See link:ztp-at-scale.html[ZTP components] chapter.
+Remember that link:ztp-workflow.html[ZTP] generates installation and configuration resources from manifests (`siteConfig` and `policyGenTemplates`) stored in Git. These artifacts are applied to a centralized hub cluster where a combination of OpenShift GitOps, Red Hat Advanced Cluster Management, the Assisted Service deployed by the Infrastructure Operator, and the Topology Aware Lifecycle Manager (TALM) use them to install and configure the cluster. See link:ztp-at-scale.html[ZTP components] chapter.
 
 The configuration phase of this ZTP process depends on TALM to orchestrate the application of the configuration custom resources to the cluster. There are several key integration points between GitOps ZTP and TALM.
 
@@ -20,7 +20,7 @@ IMPORTANT: TALM enables us to select the timing and the clusters where the confi
 [#cgu]
 == Cluster Group Upgrade (CGU)
 
-The Topology Aware Lifecycle Manager (TALM) builds the remediation plan from the `ClusterGroupUpgrade` CR for a group of clusters. You can define the following specifications in a ClusterGroupUpgrade CR. Note that this is a CGU CR that enforces a OpenShift release upgrade which was previously defined by a policy called _du-upgrade-platform-upgrade_ defined by the managedPolicies spec.
+The Topology Aware Lifecycle Manager (TALM) builds the remediation plan from the `ClusterGroupUpgrade` (CGU) custom resource for a group of clusters. You can define the following specifications in a ClusterGroupUpgrade CR. Note that this is a CGU CR that enforces an OpenShift release upgrade which was previously set by a policy called _du-upgrade-platform-upgrade_ defined in the managedPolicies spec.
 
 [console-input]
 [source,yaml,subs="attributes+,+macros"]
@@ -48,38 +48,38 @@ spec:
     timeout: 240 
 -----
 
-:WARNING: TALM does not only deal with OpenShift release upgrades, when we talk about upgrades in this section, we mean all kind of modifications to the managed clusters. Essentially, a CGU must be created everytime we want to enforce a policy.
+WARNING: TALM does not only deal with OpenShift release upgrades, when we talk about upgrades in this section, we mean all kind of modifications to the managed clusters. Essentially, a CGU must be created everytime we want to enforce a policy.
 
 [#autocreation-cgu]
 === Auto creation of CGU
 
-So far we have been talking of using TALM for our common day-2 operations. But, if a CGU must be created in order to enforce a previously applied policy,  how is it possible to run a fully automated ZTP workflow, e.g. configure and even run our CNF workloads, on the target clusters?
+So far we have been talking of using TALM for our common day-2 operations. But, if a CGU must be created in order to enforce a previously applied policy, how is it possible to run a fully automated ZTP workflow, e.g. configure and even run our CNF workloads in a streamlined way, on the target clusters?
 
-The answer is that TALM interacts with ZTP for newly created clusters. When we define one or multiple spoke clusters in telco, we do not only want to provision them, we also want to apply a specific configuration such as the validated link:policygen-deepdive#5g-ran-profile[5G RAN DU profile]. Often we also want our workloads to be running on top of them. ZTP is envisioned as a streamlined process, whereas a developer we only push manifest definitions to the proper Git repository.
+The answer is that TALM interacts with ZTP for newly created clusters. When we define one or multiple managed clusters in telco, we do not only want to provision them, we also want to apply a specific configuration such as the validated link:policygen-deepdive.html#5g-ran-profile[5G RAN DU profile]. Often, we also want our workloads run on top of them. ZTP is envisioned as a streamlined process, where as a developer we only push manifest definitions to the proper Git repository.
 
 So, once clusters are provisioned, TALM monitors their state by checking the ManagedCluster CRs on the hub cluster. Any ManagedCluster CR which does not have a *"ztp-done"* label applied, including newly created ManagedCluster CRs, will cause TALM to automatically create a ClusterGroupUpgrade CR with the following characteristics:
 
-* It is created in the ztp-install namespace
+* It is created in the ztp-install namespace.
 * It has the same name as the ManagedCluster CR, usually the name of the cluster.
-* The cluster selector includes only the cluster associated with that ManagedCluster CR
-* The set of managedPolicies includes *ALL* policies that ACM has bound to the cluster at the time the CGU is created.
-* It is enabled
-* Precaching is disabled
-* Timeout set to 4 hours (240 minutes)
+* The cluster selector includes only the cluster associated with that ManagedCluster CR.
+* The set of managedPolicies includes *ALL* policies that RHACM has bound to the cluster at the time the CGU is created.
+* It is enabled.
+* Precaching is disabled.
+* Timeout set to 4 hours (240 minutes).
 
 IMPORTANT: TALM will basically enforce all existing policies targeting a cluster that has not the label "ztp-done'. This is performed by creating automatically a proper CGU CR.
 
 [#phase-labels]
 == Phase labels
 
-The ClusterGroupUpgrade CR that is auto created for ZTP includes directives to annotate the ManagedCluster CR with labels at the start and end of the ZTP process. When ZTP configuration (post-installation) commences the ManagedCluster will have the ztp-running label applied. When all policies are remediated to the cluster (fully compliant) these directives will cause TALM to remove the ztp-running label and apply the ztp-done label.
+The ClusterGroupUpgrade CR that is auto created for ZTP includes directives to annotate the ManagedCluster CR with labels at the start and end of the ZTP process. When ZTP configuration (post-installation) commences, the ManagedCluster will have the **ztp-running** label applied. When all policies are remediated to the cluster (fully compliant) these directives will cause TALM to remove the ztp-running label and apply the **ztp-done** label.
 
 In essence, the ztp-done label will be applied when the cluster is fully ready for deployment of applications.
 
 [#waves]
 == Waves
 
-A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every link:policygen-deepdive#policies-templating[policy] generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the link:https://github.com/openshift-kni/cnf-features-deploy/blob/master/ztp/source-crs/SriovSubscriptionNS.yaml[SriovSubscriptionNS.yaml]:
+A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every link:policygen-deepdive.html#policies-templating[policy] generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the link:https://github.com/openshift-kni/cnf-features-deploy/blob/master/ztp/source-crs/SriovSubscriptionNS.yaml[SriovSubscriptionNS.yaml]:
 
 [.console-input]
 [source,yaml,subs="attributes+,+macros"]
@@ -93,20 +93,20 @@ metadata:
     ran.openshift.io/ztp-deploy-wave: "2"
 -----
 
-IMPORTANT: Detailed information on policy templates can be found in the following link:policygen-deepdive#policies-templating[PolicyGen deepdive] section.
+IMPORTANT: Detailed information on policy templates can be found in the following link:policygen-deepdive.html#policies-templating[PolicyGen deepdive] section.
 
 TALM will apply the configuration policies in the order specified by the wave annotations and will wait for each policy to be compliant before moving to the next policy. It is important to ensure that the wave annotation for each CR takes into account any pre-requisites for those CRs to be applied to the cluster. For example an operator must be installed before, or concurrently with, the configuration for the operator.
 
-WARNING: All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate.
+WARNING: All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate. Default ztp-deploy-wave value can be found on the proper https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/source-crs[source crs].
 
 [#talm-precache]
 == Precaching
 
-Clusters might have limited bandwidth to access the container image registry, which can cause a timeout before the updates are completed. This feature help us to schedule cluster upgrades to newer OCP releases in an organized manner and within the maintenance window assigned. Notice in the following picture how the upgrade can be orchestrated depending on our requirements. See that in the first maintenance window not all clusters had time to precache all container images, then the precache process was postponed to a be finished in another agreed maintenance window. Finally, a new maintenance window was requested to actually execute the platform upgrade.
+Clusters might have limited bandwidth to access the container image registry, which can cause a timeout before the updates are completed. This feature help us to schedule cluster upgrades to newer OCP releases in an organized manner and within the maintenance window assigned. Notice in the following picture, how the upgrade can be orchestrated depending on our requirements. See that in the first maintenance window not all clusters had time to precache all container images, then the precache process was postponed to be finished in another agreed maintenance window. ONce done, a new maintenance window was requested to actually execute the platform upgrade.
 
 image::talm_precache.png[ACM architecture]
 
-By enabling precache feature and disable the CGU, as shown in the following code snippet, the first thing is going to happen is pull all the container images required for the OCP release we are about to upgrade in the target cluster. So, we will have all required images already downloaded in our container-storage location before even starting the upgrade task.
+By enabling precache feature and disable the CGU, as shown in the following code snippet, the first thing is going to happen is pull all the container images required for the OCP release we are about to upgrade in the target cluster. So, we will have all required images already downloaded in our container-storage location, by default '/var/lib/containers', before even starting the upgrade task.
 
 [.console-input]
 [source,yaml,subs="attributes+,+macros"]
@@ -131,21 +131,21 @@ spec:
     timeout: 240
 -----
 
-Once the container images are precached, we can just enable the CGU by setting `enabled: true`. Then a regular platform upgrade managed by the TALM operator will start. This time the installation will be faster since the bits are now stored in the local disk.
+Once the container images are precached, we just need to enable the CGU by setting `enabled: true`. Then, a regular platform upgrade managed by the TALM operator will start. This time the update will be faster since the container images are stored locally.
 
 CAUTION: If both policy and precaching are enabled, the upgrade will be executed immediately after the precache is done successfully.
 
-A more in-detail explanation of the Backup & Recovery is covered in this https://videos.learning.redhat.com/media/OCP+TALO+precache+sequential+platform+upgrade/1_7kgh6jze/253048913[training material] "Precaching and sequential platform upgrades using TALM".
+A more in-detail explanation of the Precaching feature is covered in https://videos.learning.redhat.com/media/OCP+TALO+precache+sequential+platform+upgrade/1_7kgh6jze/253048913[training material]: "Precaching and sequential platform upgrades using TALM" recording.
 
 
 [#talm-backup]
 == Backup and Recovery
 
-Backup & Recovery feature creates a pre-upgrade backup and provides a procedure for rapid recovery of a SNO in the event of a failed upgrade. In case of an upgrade failure, this feature allows the SNO to be restored to a working state with the previous version of OCP without requiring a re-provision of the application(s).
+Backup & recovery feature creates a pre-upgrade backup and provides a procedure for rapid recovery of a SNO in the event of a failed upgrade. In such cases, this feature allows the SNO to be restored to a working state with the previous version of OCP without requiring a re-provision of the application(s).
 
-IMPORTANT: Backup & Recovery currently only targets Single Node OpenShift clusters.
+IMPORTANT: Backup & recovery currently only targets Single Node OpenShift clusters.
 
-Backup workload is a one-shot task created on each of the spoke cluster nodes to trigger backup and keep the backup and system resources in the recovery partition in order to recovery a failed upgrade. For SNO spokes it is realized as a batch/v1 job.
+Backup workload is a one-shot task created on each of the managed clusters to trigger backup and keep the backup and system resources in the recovery partition in order to recovery a failed upgrade. For SNO managed clusters it is realized as a batch/v1 job.
 
 WARNING: It is highly recommended to create a recovery partition at install time if opted to use this feature.
 
@@ -174,11 +174,11 @@ spec:
     timeout: 240
 -----
 
-The backup workload generates a utility called upgrade-recovery.sh in the recovery partition or at the recovery folder at `/var/recovery` and takes the pre-upgrade backup. In addition, the active OS deployment is pinned using ostree and the standby deployments are removed.
+The backup workload generates a utility called `upgrade-recovery.sh` in the recovery partition or at the recovery folder at `/var/recovery` and takes the pre-upgrade backup. In addition, the active OS deployment is pinned using ostree and the standby deployments are removed.
 
-In case, the upgrade failed in a spoke cluster, the TALM CGU needs to be deleted in the hub cluster and an admin needs to log in to the spoke cluster to start the recovery process. The process is detailed in the https://github.com/openshift-kni/cluster-group-upgrades-operator/tree/main/docs/backup-recovery#recovery-from-upgrade-failure[Recovery from Upgrade failure] documentation.
+In case, the upgrade failed in a manaaged cluster, the TALM CGU needs to be deleted in the hub cluster and an admin needs to log in to the spoke cluster to start the recovery process. The process is detailed in the https://github.com/openshift-kni/cluster-group-upgrades-operator/tree/main/docs/backup-recovery#recovery-from-upgrade-failure[Recovery from Upgrade failure] documentation.
 
-A more in-detail explanation of the Backup & Recovery is covered in this https://videos.learning.redhat.com/media/Upgrade%2C+backup+and+recovery+with+TALO/1_27k8gb8m/253048913[training material] "Upgrade, backup and recover your cluster with TALM".
+A more in-detail explanation of the Backup & Recovery is covered in this https://videos.learning.redhat.com/media/Upgrade%2C+backup+and+recovery+with+TALO/1_27k8gb8m/253048913[training material]: "Upgrade, backup and recover your cluster with TALM" recording.
 
 [1] You can read more about it https://docs.openshift.com/container-platform/latest/scalability_and_performance/cnf-talm-for-cluster-upgrades.html[here].
 [2] https://videos.learning.redhat.com/media/Using+TALO+to+perform+OCP+upgrades+via+RHACM/1_ozf040n9/253048913[Platform upgrades in RHACM with TALM operator]

@@ -2,18 +2,18 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-As we mentioned in the https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/blob/main/content/4.md#ztp-workflow[ZTP Workflow] section, the Red Hat Advanced Cluster Management (RHACM) for Kubernetes allows us to _provision_ and _configure_ multiple clusters in a declarative way and can be easily coupled with GitOps. ZTP makes intensive use of RHACM Policies for managing the configuration of deployed clusters. In our telco use case, creation of these `Policies` is simplified with the ZTP policyGen kustomize plugin. This plugin translates the vRAN DU profile based on `PolicyGenTemplates` into multiple `Policies` that are understood by the Hub cluster and applied to the managed clusters.
+As we mentioned in the https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/blob/main/content/4.md#ztp-workflow[ZTP Workflow] section, the Red Hat Advanced Cluster Management (RHACM) for Kubernetes allows us to _provision_ and _configure_ multiple clusters in a declarative way and can be easily coupled with GitOps. ZTP makes intensive use of RHACM Policies for managing the configuration of deployed clusters. In our telco use case, creation of these `Policies` is simplified with the ZTP policyGen kustomize plugin. This plugin translates the vRAN DU profile based on `PolicyGenTemplates` into multiple `Policies` that are understood by the hub cluster and applied to the managed clusters.
 
-In this section we provide an introduction to the concepts behind the RHACM "Governance" pillar (section). Furthermore, we are going to introduce the concept of a Policy, which is key for managing the configuration lifecycle of our managed clusters.
+In this section, we provide an introduction to the concepts behind the https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.5/html/governance/governance[RHACM "Governance" pillar]. Furthermore, we are going to introduce the concept of a policy, which is key for managing the configuration lifecycle of our fleet of clusters.
 
-In the RHACM console you can find the governance section in the bottom left part of the menu bar. As you can see in the picture, there are multiple Policies applied, some are disabled while most of them are enabled (Status) with remediation set to inform. We will get into the details later on.
+In the RHACM console you can find the governance section in the bottom left part of the menu bar. As you can see in the picture, there are multiple policies applied, some are disabled while most of them are enabled (see Status column) with remediation set to inform. We will get into the details later on.
 
 image::rhacm_section_governance.png[Governance section]
 
 [#policy-framework]
 == Policy framework
 
-Policies are comprised into the Policy framework. The policy framework provides governance capability to gain visibility, and drive remediation for various security and configuration aspects to help meet such enterprise standards. Basically, it provides an extensible policy framework for enterprises to harden security for software engineering, secure engineering, and resiliency. 
+Policies are comprised into the policy framework. The policy framework provides governance capability to gain visibility, and drive remediation for various security and configuration aspects to help meet such enterprise standards. Basically, it provides an extensible policy framework for enterprises to harden security for software engineering, secure engineering, and resiliency. 
 
 Below are the functions of the policy framework:
 
@@ -26,12 +26,12 @@ In the next picture you can see the communication flow and the multiple componen
 
 image::policy-framework-architecture-diagram.jpg[Policy framework architecture]
 
-At a glance, once we create a Policy in the hub cluster, the Governance Policy framework is responsible for propagating it to set of target managed clusters based on a set of binding rules for the Policy. Then, the policy rules are evaluated against the current state of the managed cluster. The results of this assessment are sent back to the hub cluster and depending on the needs, we can remediate the drift or just be informed.
+At a glance, once we create a policy in the hub cluster, the Governance Policy framework is responsible for propagating it to set of target managed clusters based on a set of binding rules for the policy. Then, the policy rules are evaluated against the current state of the managed cluster. The results of this assessment are sent back to the hub cluster and depending on the needs, we can remediate the drift or just be informed.
 
 [#policies]
 == Policies
 
-Policy CRs, as defined by the Policy Custom Resource Definition (CRD), are created on the hub cluster and act as a vehicle to deliver policies to managed cluster and collect results to send to the hub cluster.
+Policy CRs, as defined by the Policy CRD, are created on the hub cluster and act as a vehicle to deliver policies to managed cluster and collect results to send to the hub cluster.
 
 Each `Policy` can contain one or multiple policy rules that will be evaluated against cluster(s) that they are bound to. Policy binding is determined by the RHACM placement APIs which include the `PlacementBinding` and the `PlacementRule` CRs.
 
@@ -150,7 +150,7 @@ Policies can be enabled or disabled by setting the _disabled_ parameter value to
 [#policy-remediation]
 === Policy Remediation
 
-As we will detail in the following section [..] `PolicyGenTemplates` are by default set to generate Policies set to inform mode. 
+As we will detail in the following section link:managing-at-scale.html#inform-policies["Managing at Scale"], `PolicyGenTemplates` are by default set to generate Policies in inform mode. 
 
 Policy controllers periodically (as set by evaluationInterval) check policies against the current state of CRs on the target clusters. This check sets the Policy to either the Compliant or NonCompliant state. When the policy is set to inform, a report of the violations is created. However, when the controller is set to enforce a report is created _and_ violations are remediated as specified in the policy.
 

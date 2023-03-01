@@ -55,7 +55,7 @@ image::gitops_pattern-01.png[On-Cluster Resource Reconciller]
 
 **External Resource Reconciler (Push)**
 
-A variation of the previous pattern is that one or a number of controllers are responsible for keeping resources in sync between pairs of Git repositories and Kubernetes clusters. The difference with the previous pattern is that the controllers are not necessarily running any of the managed clusters. The Git-k8s cluster pairs are often defined as a CRD which configures the controllers on how the sync should take place. The controllers in this pattern would compare the Git repository defined in the CRD with the resources on the Kubernetes cluster that is also defined in the CRD and takes action based on the result of the comparison. OpenShift GitOps based on ArgoCD is one of the solutions that uses this pattern for GitOps implementation.
+A variation of the previous pattern is that one or a number of controllers are responsible for keeping resources in sync between pairs of Git repositories and Kubernetes clusters. The difference with the previous pattern is that the controllers are not necessarily running on any of the managed clusters. The Git-k8s cluster pairs are often defined as a CRD which configures the controllers on how the sync should take place. The controllers in this pattern would compare the Git repository defined in the CRD with the resources on the Kubernetes cluster that is also defined in the CRD and takes action based on the result of the comparison. OpenShift GitOps based on ArgoCD is one of the solutions that uses this pattern for GitOps implementation.
 
 image::gitops_pattern_02.webp[External Resource Reconciler]
 
@@ -67,7 +67,7 @@ NOTE: The GitOps ZTP methodology uses the OpenShift GitOps operator to synchroni
 When doing GitOps we need to keep in mind that using branches is an anti-pattern. We have been using branches for a long time when developing our applications, but when doing GitOps we are no longer developing an application, but defining a configuration. If we look at the different tooling around Kubernetes for managing configurations like `Helm` or `Kustomize` you will soon enough see that they know nothing about Git branches, they use just files. There are several reasons why organizing environments as directory structure in a single branch is preferred:
 
 * There is often configuration content which is common between environments. With a directory based structure this common configuration can be captured in a single place and referenced by the different environments. In a branch based model this content typically gets duplicated across the branches leading to drift.
-* In a directory model clusters (or configuration content) can be moved between environments by a simple move rather than requiring a merge.
+* In a directory model, clusters (or configuration content) can be moved between environments by a simple move rather than requiring a merge.
 * Comparing configuration between environments is simpler in a directory model.
 * Continuous deployment relies on subscriptions to the repository and branch which should be synchronized to the cluster(s). A branching model forces users to manage additional subscriptions per branch. In a directory model the user has options to use one subscription for multiple environments or multiple subscriptions.
 
@@ -76,17 +76,16 @@ One thing that we still need to keep in mind is that we want to have different r
 [#direct-commit-to-main]
 === Direct Commit to Main
 
-Users can tailor their operational model to their particular use case, phase of operation, etc. Typically, a model where changes are directly committed to hte main (active) branch is discouraged as this bypasses the merge review process and potentially exposes the clusters to incorrect/undesired changes. However, in some phases of operation such as initial development in the lab, a direct-commit to main model may be appropriate. GitOps allows for flexibility in the way users manage configuration in Git to suit their operational needs.
+Users can tailor their operational model to their particular use case, phase of operation, etc. Typically, a model where changes are directly committed to the main (active) branch is discouraged as this bypasses the merge review process and potentially exposes the clusters to incorrect/undesired changes. However, in some phases of operation such as initial development in the lab, a direct-commit to main model may be appropriate. GitOps allows for flexibility in the way users manage configuration in Git to suit their operational needs.
 
 [#prs-review-cycles]
 === Pull Requests and Review Cycles
 
-Once a user sends a PR to a specific branch we should have some automated checks to make sure that the PR is safe, some of them could be:
+Once a user sends a pull request (PR) to a specific branch we should have some automated checks to make sure that the PR is safe, some of them could be:
 
 * Commits are signed by the user.
 * No passwords/confidential information is present in the PR.
-* Commit messages (logs) should have keywords that can be used to enforce some policies like for example putting the environment name and making sure the PR only changes files for that environment.
-* etc.
+* Commit messages (logs) should have keywords that can be used to enforce some policies. For example putting the environment name and making sure the PR only changes files for that environment.
 
 Once the automatic checks have passed, we want a different user to review the content of the PR and approve it once it's ready.
 
@@ -95,7 +94,7 @@ TIP: Review cycles for commits changing non-production environments can be autom
 [#gitops-ocp]
 == GitOps on OpenShift
 
-The Red Hat OpenShift GitOps operator uses Argo CD to maintain cluster resources. Argo CD is an open-source declarative tool for the continuous integration and continuous deployment (CI/CD) of applications.
+The Red Hat OpenShift GitOps operator uses Argo CD to maintain cluster resources. https://argoproj.github.io/cd/[Argo CD] is an open-source declarative tool for the continuous integration and continuous deployment (CI/CD) of applications.
 
 Some key features:
 

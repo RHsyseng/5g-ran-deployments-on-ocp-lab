@@ -8,8 +8,8 @@ The *GitOps Zero Touch Provisioning (ZTP)* methodology is designed to provide a 
 
 ZTP is a project to deploy and deliver OpenShift 4 in a hub-and-spoke architecture (in a relation of 1-N), where a single hub cluster manages many spoke clusters. The hub and the spokes will be based on OpenShift 4 but with the difference that the hub cluster will manage, deploy and control the lifecycle of the spokes using Red Hat Advanced Cluster Management (RHACM). So, hub clusters running RHACM apply radio access network (RAN) policies from predefined custom resources (CRs) and provision and deploy the spoke clusters using multiple products. We will take a closer look at these components in link:ztp-at-scale.html[ZTP components] section.
 
-IMPORTANT: ZTP can operate in both connected and disconnected environments. In the connected case clusters have direct access to the Internet. The disconnected case, which uses a private registry accessible within the customer's network, is most common in the telecom environment and will be used in this lab.
+IMPORTANT: ZTP can operate in both connected and disconnected environments. In the connected case, clusters have direct access to the Internet. The disconnected case, which uses a private registry accessible within the customer's network, is the most common in the telecom environment, and will be used in this lab.
 
-ZTP provides support for deploying single node clusters, three-node clusters, and standard OpenShift clusters. This includes the installation of OpenShift and deployment of the distributed units (DUs) at scale. In this lab, we will focus on SNO clusters which was a topic discussed in link:sno-intro.html[Introduction to Single Node OpenShift (SNO)].
+ZTP provides support for deploying single node clusters, compact or three node clusters, and standard OpenShift clusters. This includes the installation of OpenShift and deployment of the distributed units (DUs) at scale. In this lab, we will focus on SNO clusters which was a topic discussed in link:sno-intro.html[Introduction to Single Node OpenShift (SNO)].
 
 image::ztp_edge_framework.png[ZTP Edge Framework]

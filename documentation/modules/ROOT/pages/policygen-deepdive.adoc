@@ -2,9 +2,9 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-As we saw in an earlier section of the lab, we can leverage link:rhacm-policies[RHACM policies] to get our clusters configured the way we want. We also introduced the link:ztp-at-scale#policygen[PolicyGen component] which helps us to create a set of policies based on pre-backed templates crafted by the Red Hat CNF team.
+As we saw in an earlier section of the lab, we can leverage link:rhacm-policies.html[RHACM policies] to get our clusters configured the way we want. We also introduced the link:ztp-at-scale.html#policygen[PolicyGen component] which helps us to create a set of policies based on https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/source-crs[pre-baked templates] (source-crs) crafted by the Red Hat CNF team.
 
-In this section we are going to get into the implementation details of the PolicyGen tooling.
+In this section, we are going to get into the implementation details of the PolicyGen tooling.
 
 [#policygen-implementation]
 == PolicyGen Implementation
@@ -36,7 +36,7 @@ generators:
   - common-policies/common.yaml
 -----
 
-We see that under `generators` section we have two yaml files, _generators_ tell Kustomize that some plugin needs to be run to interpret these files. They way Kustomize knows which plugin needs to be executed is by looking at the `GroupVersionKind (GVK)` of the files. Following with above example we will see the following GVKs:
+We see that under `generators` section we have two yaml files, _generators_ tell Kustomize that some plugin needs to be run to interpret these files. The way Kustomize knows which plugin needs to be executed is by looking at the `GroupVersionKind (GVK)` of the files. Following with above example we will see the following GVKs:
 
 **ztp-sno-lab.yaml**
 
@@ -58,7 +58,7 @@ kind: PolicyGenTemplate
 
 As we can see the group is `ran.openshift.io`, version is `v1` and kind are `SiteConfig` and `PolicyGenTemplate`.
 
-Earlier we talked about the Kustomzie plugins path, and how it is required to have a proper folder structure so Kustomize knows which plugin needs to be executed. Using the examples above we can explain what Kustomize will do for generating these two files.
+Earlier, we talked about the Kustomzie plugins path, and how it is required to have a proper folder structure so Kustomize knows which plugin needs to be executed. Using the examples above we can explain what Kustomize will do for generating these two files.
 
 **ztp-sno-lab.yaml**
 
@@ -78,6 +78,8 @@ The SiteConfigGenerator reads the SiteConfig manifest and uses the information p
 
 The PolicyGenerator reads the PolicyGenTemplate manifests and uses the information provided in these files to output a set of RHACM policies that will be used for different purposes, from day2ops to monitoring the cluster health. It makes use os templated policies that can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/source-crs[here].
 
+IMPORTANT: A high level view of the installation and configuration workflow can be found in the previous section link:ztp-workflow.html[ZTP workflow].
+
 [#5g-ran-profile]
 == 5G RAN Profile
 
@@ -94,35 +96,35 @@ A more in-detail explanation of the 5G RAN Profile is covered in this https://vi
 [#workload-partitioning]
 === Workload Partitioning
 
-Pins OCP platform and day2 operator pods that are part of the DU profile to the reserved cpuset.
+Pins OCP platform, operating system processes and day2 operator Pods that are part of the DU profile to the reserved cpuset.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/workload/03-workload-partitioning.yaml[Manifest]
 
 [#kubelet-tuning]
 === Kubelet Tuning
 
-Reduce frequency of kubelet housekeeping and eviction monitoring to reduce cpu usage.
+Reduce frequency of kubelet housekeeping and eviction monitoring to reduce CPU usage.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml[Manifest]
 
 [#sctp]
 === SCTP
 
-Enable SCTP which is required by RAN applications but disabled by default in RHCOS.
+Enable SCTP kernel module which is required by RAN applications but disabled by default in RHCOS.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/03-sctp-machine-config-master.yaml[Manifest]
 
 [#hide-container-mount]
 === Container Mount Hiding
 
-In order to reduce system mount scanning overhead, creates a mount namespaces for container mounts visible to kubelet/crio.
+In order to reduce system mount scanning overhead, creates a mount namespaces for container mounts visible to kubelet/CRI-O.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml[Manifest]
 
 [#recovery-optimization]
 === Recovery Optimization
 
-Systemd service which will assign additional cpus to systemd services during reboot recovery.
+Systemd service which will assign additional CPUs to systemd services during reboot recovery.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/extra-manifest/04-accelerated-container-startup-master.yaml[Manifest]
 
@@ -131,22 +133,22 @@ https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/sourc
 
 Reduce footprint of the monitoring stack by:
 
-* Reducing the prometheus retention period, metrics are already being aggregated at the RHACM Hub.
-* Disable local grafana and alertmanager 
+* Reducing the Prometheus retention period, metrics are already being aggregated at the RHACM hub.
+* Disable local Grafana and Alertmanager.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/ReduceMonitoringFootprint.yaml[Manifest]
 
 [#ocp-console]
 === Console Operator
 
-Since the DUs are being centrally managed from a RHACM Hub, disable the local console to reduce resource consumption.
+Since the DUs are being centrally managed from a RHACM hub, disable the local console to reduce resource consumption.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/ConsoleOperatorDisable.yaml[Manifest]
 
 [#networking-diags]
 === Networking Operator
 
-Disable Networking diags for SNO as it is not applicable.
+Disable networking diagnostics for SNO as it is not applicable.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/DisableSnoNetworkDiag.yaml[Manifest]
 
@@ -162,10 +164,10 @@ https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/sourc
 [#ptp-operator]
 === PTP Operator
 
-Configuration of precision time protocol. The DU can run in the following modes: 
+Configuration of the Precision Time Protocol. The DU can run in the following modes: 
 
-* Ordinary clock sync to a GM or boundary clock
-* In addition to the above optionally provide a boundary clock for RU 
+* Ordinary clock sync to a GM or boundary clock.
+* In addition to the above optionally provide a boundary clock for RU. 
 
 This also includes an optional event notification service that applications can subscribe to for ptp events.
 
@@ -193,11 +195,11 @@ https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/sourc
 
 Performance Tuning interface including:
 
-* Enables RT kernel 
-* Enables kubelet feature (cpu manager, topology manager, memory manager) 
-* Configures huge pages
-* Configures reserved and isolated cpusets
-* Additional kernel args
+* Enables RT kernel.
+* Enables kubelet feature (cpu manager, topology manager, memory manager).
+* Configures huge pages.
+* Configures reserved and isolated cpusets.
+* Additional kernel args.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/PerformanceProfile.yaml[Manifest]
 
@@ -205,7 +207,7 @@ https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/sourc
 [#local-storage]
 === Local Storage
 
-Enables creation of persistent volumes which can be consumed as pvcs by applications. This will be customer specific.
+Enables creation of Persistent Volumes which can be consumed as PVCs by applications. This will be customer specific.
 
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/StorageClass.yaml[StorageClass Manifest]
 https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/StorageLV.yaml[Storage Local Volume Manifest]
@@ -225,7 +227,7 @@ The SiteConfig templating is pretty straightforward, whatever information we put
 [#policies-templating]
 == Policies Templating
 
-Policies templating is a bit different, we have a set of policy templates that we can use. This set of policies can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/source-crs[here].
+Policies templating is a bit different, we have a set of policy templates, known as source-crs, that we can use. This set of policies can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/source-crs[here].
 
 If you access this link you will see lots of files, like for example:
 
@@ -273,12 +275,12 @@ The first template `SriovOperatorConfig.yaml` is not overriding any settings, we
 
 The second template `PerformanceProfile.yaml` is overriding some parameters in the `spec`. That means that the final policy will be configured as a merge of the https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.11/ztp/source-crs/PerformanceProfile.yaml[original template] plus the custom overrides we provided in the PolicyGenTemplate.
 
-CAUTION: Inside the templates we can often see references to what may appear variables like `$size`, `$count`, etc. These are not vars, that tells the Kustomize plugin to remove that line from the output if no value was provided as an override. The only variable that is referenced and is actually substituted is the `$mcp` variable that will be replaced with the value of the same property defined in the PolicyGenTemplate.
+CAUTION: Inside the templates we can often see references to what may appear variables like `$size`, `$count`, etc. These are not vars, that actually tells the Kustomize plugin to remove that line from the output if no value was provided as an override. The only variable that is referenced and is actually substituted is the `$mcp` variable that will be replaced with the value of the same property defined in the PolicyGenTemplate.
 
 [#kustomize-plugins-locally]
 == Running Kustomize Plugins Locally
 
-We have described how Argo CD makes use of the PolicyGenTool plugins to generate the required manifests for our 5G RAN deployments. In this section we are going to cover how to run these plugins locally which can be useful while troubleshooting or getting a preview of what the files will look like when generated via Argo CD.
+We have described how Argo CD makes use of the PolicyGenTool plugins to generate the required manifests for our 5G RAN deployments. In this section, we are going to cover how to run these plugins locally which can be useful while troubleshooting or getting a preview of what the files will look like when generated via Argo CD.
 
 By running the steps below we will get the plugins installed in our system. Kustomize should be already installed, you can get it from the https://github.com/kubernetes-sigs/kustomize/releases/[releases page].
 

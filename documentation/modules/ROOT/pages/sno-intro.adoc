@@ -20,15 +20,15 @@ One crucial detail of this use case is ensuring that this workload can be "auton
 
 Single Node OpenShift offers both control and worker node capabilities in a single server and provides users with a consistent experience across the sites where OpenShift is deployed, regardless of the size of the deployment. Keep in mind a Single Node OpenShift deployment differs from the default self-managed/highly-available cluster profile in a couple of ways:
 
-* To optimize system resource usage, many operators are configured to reduce the footprint (cpu use) of their operands when running on a Single Node OpenShift. This is even more visible when deploying the Telco 5G RAN QE validated pattern which establishes a base platform for RAN DU workloads.
-* In environments that require high availability, it is recommended that the architecture be configured in a way in which if the hardware was to fail, those workloads are transitioned to other sites or nodes while the impacted node is recovered. This is where Red Hat Advanced Cluster Management can really help us control our fleet of clusters.
+* To optimize system resource usage, many operators are configured to reduce the footprint (cpu use) of their operands when running on a Single Node OpenShift. This is even more visible when deploying the Telco 5G RAN QE validated configuration which establishes a base platform for RAN DU workloads.
+* In environments that require high availability, it is recommended that the architecture be configured in a way in which if the hardware was to fail, those workloads are transitioned to other sites or nodes while the impacted node is recovered. This is where https://www.redhat.com/en/technologies/management/advanced-cluster-management[Red Hat Advanced Cluster Management for Kubernetes](ACM) can really help us control our fleet of clusters.
 
 [#deployments]
 == Deployments
 
 OpenShift installs typically require a temporary bootstrap machine, which is usually a separate machine, but edge deployments are often performed in environments where there are no extra nodes. However, for these use-cases, the new functionality provided by OpenShift’s “Bootstrap-in-Place” option eliminates the separate bootstrap node requirement for single-node deployments. So when installing single-node OpenShift, you only need the node you wish to install onto.
 
-OpenShift Container Platform on a Single Node is a specialized installation that requires the creation of a special ignition configuration ISO. It is supported on bare metal, vSphere, Red Hat OpenStack, and Red Hat Virtualization platforms as today. When using ACM's Assisted Service for installation this ISO is automatically created as part of the installation process.
+OpenShift Container Platform on a Single Node is a specialized installation that requires the creation of a special ignition configuration ISO. It is supported on bare metal, vSphere, Red Hat OpenStack, and Red Hat Virtualization platforms as today. When using ACM's Assisted Service for installation, this ISO is automatically created as part of the installation process.
 
 IMPORTANT: The use of OpenShiftSDN with single-node OpenShift is not supported. OVN-Kubernetes is the default networking solution for single-node OpenShift deployments.
 

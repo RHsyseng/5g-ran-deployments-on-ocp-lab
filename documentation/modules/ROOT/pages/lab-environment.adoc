@@ -2,12 +2,12 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-Next lab sections rely on having a lab environment accessible in order to do the hands-on work. If you're a Red Hatter you can order a lab environment on https://insertlinktorhpdshere[RHPDS]. Otherwise, keep reading to deploy your own lab environment.
+The following lab sections rely on having a lab environment accessible in order to do the hands-on work. If you're a Red Hatter you can order a lab environment already setup for you on https://insertlinktorhpdshere[RHPDS]. Otherwise, keep reading to deploy your own lab environment.
 
 [#lab-requirements]
 == Lab Requirements
 
-RHEL 8 (or similar) box with access to the Internet. This lab relies on KVM, so a baremetal host is highly recommended. Our lab environment has the following specs:
+RHEL 8 (or similar) box with access to the Internet. This lab relies on KVM, so you need to have the proper virtualization packages already installed. It is highly remcomended to use a baremetal host. Our lab environment has the following specs:
 
 * 48 CPUs
 * 200GiB Memory

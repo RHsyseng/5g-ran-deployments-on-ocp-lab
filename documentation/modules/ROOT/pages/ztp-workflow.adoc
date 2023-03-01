@@ -6,7 +6,7 @@ As mentioned, Zero Touch Provisioning (ZTP) leverages multiple products or link:
 
 IMPORTANT: The workflow does not need any intervention, so ZTP automatically will configure the SNO once it is provisioned. However, two stages are clearly differentiated.
 
-The workflow is officially started by creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is described in a custom resource called `siteConfig`. See that in a disconnected environment, there is a need for a container registry which has been configured to deliver the required OpenShift container images required for the installation. This task can be achieved by using https://docs.openshift.com/container-platform/latest/installing/disconnected_install/installing-mirroring-disconnected.html[oc-mirror]. 
+The workflow is officially started by creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is described in a custom resource called `siteConfig`. See that in a disconnected environment, there is a need for a container registry to deliver the OpenShift container images required for the installation. This task can be achieved by using https://docs.openshift.com/container-platform/latest/installing/disconnected_install/installing-mirroring-disconnected.html[oc-mirror]. More information about disconnected environments can be found in link:deployment-considerations.html#disconnected-environments[Deployment Considerations section].
 
 WARNING: Depending on your specific environment, you might need a couple of extra services such as DHCP, DNS, NTP or HTTP. The latest will be needed for downloading the RHCOS live ISO and the rootfs image locally instead of the default http://mirror.openshift.com.
 
@@ -29,7 +29,7 @@ IMPORTANT: Notice, in the picture, how ZTP allows us to provision clusters at sc
 
 image::ztp_workflow_2.png[ZTP Workflow 2]
 
-Once the clusters are provisioned, the day-2 configuration defined in multiple `PolicyGenTemplate` (PGTs) custom resources will be automatically applied. `PolicyGenTemplate` custom resource is understood by the ZTP using a specific kustomize plugin called https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin[policy-generator]. In telco RAN DU nodes, this configuration includes the installation of the common telco operators, common configuration for RAN and specific configuration (SR-IOV or performance settings) for each site since it is very dependent on the hardware.
+Once the clusters are provisioned, the day-2 configuration defined in one or multiple `PolicyGenTemplate` (PGTs) custom resources will be automatically applied. `PolicyGenTemplate` custom resource is understood by the ZTP using a specific kustomize plugin called https://github.com/openshift-kni/cnf-features-deploy/tree/master/ztp/policygenerator-kustomize-plugin[policy-generator]. In RAN DU nodes, this configuration includes the installation of the common telco operators, common configuration for RAN and specific configuration (SR-IOV or performance settings) for each site since it is very dependent on the hardware.
 
 image::ztp_workflow_3.png[ZTP Workflow 3]
 
@@ -45,6 +45,6 @@ Summing up, the deployment of the clusters includes:
 * Creating cluster policies via `PolicyGenTemplate` and site subscriptions via `SiteConfig`
 * Leveraging a GitOps deployment topology for a develop once, deploy anywhere model.
 * Making the necessary network configurations to the server operating system.
-* Deploying profile Operators and performing any needed software-related configuration, such as performance profile, PTP, and SR-IOV.
+* Deploying profile operators and performing any needed software-related configuration, such as performance profile, PTP, and SR-IOV.
 * Downloading images needed to run workloads (CNFs).
 
