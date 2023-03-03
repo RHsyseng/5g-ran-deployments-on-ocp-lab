@@ -20,25 +20,25 @@ In order to avoid this, you should use httpProbes instead of exec probes, which 
 [#energy-saving-hw-profiles]
 == Energy Saving Hardware Profiles
 
-When running CPU exhaustive workloads we have seen from time to time a drastic decrease in terms of performance of these workloads. Most of the time the issues were caused by a hardware profile which was limiting the energy sent to the CPU. 
+When running CPU exhaustive workloads we have seen from time to time a drastic decrease in terms of performance of these workloads. Most of the time, the issues were caused by a hardware profile which was limiting the energy sent to the CPU. 
 
 Make sure your nodes do not have an energy saving profile configured.
 
 [#secure-boot-oot-unsigned-drivers]
 == Secure Boot and Unsigned OoT Drivers
 
-When working with out-of-tree drivers which are unsigned, Secure Boot cannot be enabled, otherwise the boot process will fail when those unsigned drivers are loaded. If you plan to use or test these kind of drivers remember to disable the Secure Boot.
+When working with out-of-tree drivers which are unsigned, Secure Boot cannot be enabled, otherwise the boot process will fail when those unsigned drivers are loaded. If you plan to use or test these kind of drivers remember to disable the Secure Boot .
 
 [#sriov-node-drain]
 == SR-IOV Node Drain
 
-By default, the SR-IOV Network Operator drains workloads from a node before every policy change. The Operator performs this action to ensure that there no workloads using the virtual functions before the reconfiguration.
+By default, the SR-IOV Network operator drains workloads from a node before every policy change. The operator performs this action to ensure that there are no workloads using the virtual functions before the reconfiguration. Eventually, the node waits until the workload is moved to another compute node in the cluster.
 
-For installations on a single node, there are no other nodes to receive the workloads. As a result, the Operator must be configured not to drain the workloads from the single node.
+For installations on a single node, there are no other nodes to receive the workloads. As a result, the operator must be configured not to drain the workloads from the single node.
 
-The CNF SR-IOV Policy templates already have this configuration in place.
+The CNF SR-IOV Policy templates already have this configuration in place. 
 
 [#pod-disruption-budgets]
 == Pod Disruption Budgets
 
-PDBs will not be honored in single node OpenShift installations. You can read more about it https://github.com/openshift/machine-config-operator/blob/master/docs/SingleNodeOpenShift.md[here].
+Pod Disruption Budgets (PDBs) will not be honored in Single Node OpenShift installations since applications cannot be moved to another compute node in the cluster. You can read more about it https://github.com/openshift/machine-config-operator/blob/master/docs/SingleNodeOpenShift.md[here].

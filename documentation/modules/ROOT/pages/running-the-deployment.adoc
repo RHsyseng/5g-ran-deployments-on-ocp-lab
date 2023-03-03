@@ -2,9 +2,9 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-As we saw in previous sections, clusters are deployed using the ZTP GitOps Pipeline, but before using it we need to load it into our cluster.
+As we saw in previous sections, clusters are deployed using the ZTP GitOps Pipeline, but before starting we need to load it into our hub cluster.
 
-We already have the git repository that will be used for storing our Infrastructure as Code (IaC) and Configuration as Code (CaC). Next step is deploying the ZTP GitOps Pipeline, let's do it.
+We already have the Git repository that will be used for storing our Infrastructure as Code (IaC) and Configuration as Code (CaC). Next step is deploying the ZTP GitOps Pipeline, let's do it.
 
 IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
 

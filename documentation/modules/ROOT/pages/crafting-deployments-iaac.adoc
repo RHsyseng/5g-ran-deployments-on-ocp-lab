@@ -9,11 +9,11 @@ By describing our infrastructure as code (IaC) the git repository holds declarat
 [#introduction-to-siteconfig]
 == Introduction to the SiteConfig
 
-The `SiteConfig` is an abstraction layer on top of the different components that are used to deploy an OpenShift cluster using the `Assisted Service`. For the ones familiar with the `Assisted Service` you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like `ClusterDeployment`, `InfraEnv`, `AgentClusterInstall`, etc. 
+The `SiteConfig` is an abstraction layer on top of the different components that are used to deploy an OpenShift cluster using the `Assisted Service`. For the ones familiar with the `Assisted Service`, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like `ClusterDeployment`, `InfraEnv`, `AgentClusterInstall`, etc. 
 
-The SiteConfig simplifies this process by providing a unified configuration to describe the cluster deployment configuration in a single place.
+The SiteConfig simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place.
 
-In https://github.com/openshift-kni/cnf-features-deploy/blob/master/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml[this link] you can find an example of a SiteConfig for a SNO deployment. In the next section we will create our own SiteConfig to deploy a SNO in our lab environment.
+In https://github.com/openshift-kni/cnf-features-deploy/blob/master/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml[this link] you can find an example of a SiteConfig for a SNO deployment. In the next section, we will create our own SiteConfig to deploy a SNO in our lab environment.
 
 [#crafting-our-own-siteconfig]
 == Crafting our own SiteConfig
@@ -23,10 +23,10 @@ IMPORTANT: The steps below rely on the lab environment being up and running.
 [#git-repository]
 === Git Repository
 
-We need a git repository where we will store our clusters configurations, we will create a new git repository in the Git server running on the infrastructure node.
+We need a Git repository where we will store our clusters configurations, we will create a new Git repository in the Git server running on the infrastructure node.
 
 1. Login into the http://infra.5g-deployment.lab:3000/[Git server] (use student credentials)
-2. You will see that a git repository already exist, you **must not** change that repository, instead you will create a new one.
+2. You will see that a Git repository already exist, you **must not** change that repository, instead you will create a new one.
 +
 image::gitea-repository.png[Gitea Repository]
 +
@@ -34,7 +34,7 @@ image::gitea-repository.png[Gitea Repository]
 4. Use `ztp-repository` as `Repository Name` and click on `Create Repository`
 5. You will get redirect to the new repository page
 
-Now that we have a repository ready to be used we will clone it in our workstation:
+Now that we have a repository ready to be used we will clone it to our workstation:
 
 IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
 
@@ -45,9 +45,9 @@ mkdir -p ~/5g-deployment-lab/
 git clone http://student:student@infra.5g-deployment.lab:3000/student/ztp-repository.git ~/5g-deployment-lab/ztp-repository/
 -----
 
-We're ready to start working in the git repository folder structure.
+We're ready to start working in the Git repository folder structure.
 
-As we saw in a previous section, the git repository we will be using will have the following structure:
+As we saw in a previous section, the Git repository we will be using will have the following structure:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]

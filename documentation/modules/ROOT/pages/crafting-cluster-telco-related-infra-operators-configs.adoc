@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-In the previous section we created the infrastructure as code (IaC) for our `SNO2` cluster using the `SiteConfig` object. In this section we are going to create the configuration as code (CaC) for our clusters by using the `PolicyGenTemplate` object.
+In the previous section, we created the infrastructure as code (IaC) for our `SNO2` cluster using the `SiteConfig` object. In this section, we are going to create the configuration as code (CaC) for our clusters by using multiple `PolicyGenTemplate` objects.
 
 We described how `PolicyGenTemplate` works in detail xref:policygen-deepdive.adoc#policies-templating[here], so let's jump directly to the creation of the different templates.
 
@@ -11,11 +11,11 @@ IMPORTANT: Below commands must be executed from the workstation host if not spec
 [#crafting-common-policies]
 == Crafting Common Policies
 
-The common policies apply to every cluster in our infrastructure that matches our binding rule. These policies are often used to configure things like CatalogSources, Operator Deployments, etc. that are common to all our clusters.
+The common policies apply to every cluster in our infrastructure that matches our binding rule. These policies are often used to configure things like CatalogSources, operator deployments, etc. that are common to all our clusters.
 
 These configs may vary from release to release, that's why we create a `common-411.yaml` file. We will likely have a common configuration profile for each release we deploy.
 
-IMPORTANT: If you check the binding rules you can see that we are targeting clusters labeled with `common: "ocp411"`. This label was set in the `InstallConfig` in the previous section.
+IMPORTANT: If you check the binding rules, you see that we are targeting clusters labeled with `common: "ocp411"`. This label was set in the `SiteConfig` definition in the link:crafting-deployments-iaac.html#siteconfig[previous section].
 
 1. Create the `common` PolicyGenTemplate for 4.11 SNOs:
 +
@@ -49,11 +49,11 @@ EOF
 [#crafting-group-policies]
 == Crafting Group Policies
 
-The group policies apply to a group of clusters that typically have something in common, for example they are SNOs, or they have SR-IOV cards, etc.
+The group policies apply to a group of clusters that typically have something in common, for example they are SNOs, or they have similar hardware: SR-IOV cards, number of CPUs, etc.
 
-The CNF team has prepared some common tuning configurations that should be applied on every SNO DU deployed. In this section we will be crafting these configurations.
+The CNF team has prepared some common tuning configurations that should be applied on every SNO DU deployed. In this section, we will be crafting these configurations.
 
-IMPORTANT: If you check the binding rules you can see that we are targeting clusters labeled with `group-du-sno: ""`. This label was set in the `InstallConfig` in the previous section.
+IMPORTANT: If you check the binding rules you can see that we are targeting clusters labeled with `group-du-sno: ""`. This label was set in the `SiteConfig` definition in the link:crafting-deployments-iaac.html#siteconfig[previous section].
 
 1. Create the `group` PolicyGenTemplate for SNOs:
 +
@@ -87,7 +87,7 @@ EOF
 
 Zone policies apply to a group of clusters that share a specific zone. Zone can mean multiple things to different people, it can be a region, a city, a physical location, etc.
 
-We are going to create some policies that apply to our clusters located in `Europe`. For example, all our clusters in `Europe` use the Local Storage Operator to configure their storage, let's craft that policy:
+We are going to create some policies that apply to our clusters located in `Europe`. For example, all our clusters in `Europe` use the Local Storage operator to configure their storage, let's craft that policy:
 
 1. Create the `zone` PolicyGenTemplate for clusters in Europe:
 +
@@ -209,7 +209,7 @@ EOF
 [#configure-kustomization-for-policies]
 == Configure Kustomization for Policies
 
-We need to create the required kustomization as we did for SiteConfigs, in this case policies also require a namespace where these will be created, so we will create the required namespace and the kustomization.
+We need to create the required kustomization as we did for SiteConfigs. In this case, policies also require a namespace where they will be created. Therefore, we will create the required namespace and the kustomization.
 
 1. Policies need to live in a namespace, let's add it to the repo:
 +
@@ -246,7 +246,7 @@ resources:
 EOF
 -----
 +
-4. At this point we can push the changes to the repo and continue to the next section.
+4. At this point, we can push the changes to the repo and continue to the next section.
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
