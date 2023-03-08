@@ -9,7 +9,7 @@ Once the ZTP GitOps Pipeline starts deploying our clusters we can follow the ins
 
 WARNING: It may take a while for the installation to start, wait at least 10 minutes if you see `The cluster is not ready for installation` message.
 
-1. Access the https://multicloud-console.apps.hub.5g-deployment.lab/[RHACM WebUI] and login with the OpenShift credentials.
+1. Access the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome[RHACM WebUI] and login with the OpenShift credentials.
 2. Once you're in, click on `Infrastructure` -> `Clusters`. You will see a screen like the one below:
 +
 image::acm-clusterview.png[RHACM Cluster View] 
@@ -30,26 +30,18 @@ image::acm-sno2-install-completed.png[RHACM sno2 Cluster Deployment Finished]
 
 IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
 
-1. Access the Hub cluster as admin
+1. Check the `AgentClusterInstall` for SNO2 cluster
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc login -u admin -p admin https://api.hub.5g-deployment.lab:6443
------
-+
-2. Check the `AgentClusterInstall` for SNO2 cluster
-+
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-oc -n sno2 get agentclusterinstall sno2
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get agentclusterinstall sno2
 
 NAME   CLUSTER   STATE
 sno2   sno2      finalizing
 -----
 +
-3. In case you want expanded information like we saw in the WebUI you can check the conditions of the `AgentClusterInstall` object. For example, while installing:
+2. In case you want expanded information like we saw in the WebUI you can check the conditions of the `AgentClusterInstall` object. For example, while installing:
 +
 [.console-input]
 [source,yaml,subs="attributes+,+macros"]
@@ -63,7 +55,7 @@ sno2   sno2      finalizing
   type: Completed
 -----
 +
-4. Once installed:
+3. Once installed:
 +
 [.console-input]
 [source,yaml,subs="attributes+,+macros"]

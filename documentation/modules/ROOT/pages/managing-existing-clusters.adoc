@@ -9,7 +9,7 @@ In the lab environment we have a SNO cluster `SNO1` that was deployed outside th
 [#Importcluster]
 == Import a cluster
 
-Actually, everything can be done from the Red Hat ACM multicloud console. Therefore, browse to https://multicloud-console.apps.hub.5g-deployment.lab, click on Infrastructure -> Clusters and then click on the three dots of our SNO1 cluster. Notice that the status of the cluster is **detached**. Now, click on Import cluster:
+Actually, everything can be done from the Red Hat ACM multicloud console. Therefore, browse to https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome, click on Infrastructure -> Clusters and then click on the three dots of our SNO1 cluster. Notice that the status of the cluster is **detached**. Now, click on Import cluster:
 
 image::import_cluster_sno1.png[Import Cluster]
 
