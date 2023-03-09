@@ -16,6 +16,8 @@ image::acm-sno2-ztp-done.png[RHACM SNO2 ztp-done]
 +
 3. Additionally, we can verify that all policies are compliant for our SNO cluster. On the RHACM WebUI go to `Governance` -> `Policies` and you will see the following screen where we can see all policies are green:
 +
+IMPORTANT: Applying policies on `sno2` can take up to 15 minutes after cluster has been fully deployed.
++
 image::acm-sno2-policies-done.png[RHACM SNO2 policies done]
 +
 4. At this point the SNO is ready ro tun 5G RAN workloads.
@@ -47,6 +49,8 @@ sno2   true           https://api.sno2.5g-deployment.lab:6443   True     True   
 -----
 oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get policies
 -----
++
+IMPORTANT: Applying policies on `sno2` can take up to 15 minutes after cluster has been fully deployed.
 +
 [.console-input]
 [source,bash]

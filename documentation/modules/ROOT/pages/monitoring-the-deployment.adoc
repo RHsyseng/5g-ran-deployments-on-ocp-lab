@@ -68,4 +68,6 @@ sno2   sno2      finalizing
   type: Completed
 -----
 
+IMPORTANT: `SNO2` cluster installation takes around 50 minutes to complete.
+
 While the `SNO2` cluster installs, let's move to the next section where we will learn how to add an existing cluster to RHACM and get it managed by the ZTP GitOps Pipeline.
