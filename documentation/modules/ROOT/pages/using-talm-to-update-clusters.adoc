@@ -232,6 +232,8 @@ ztp-policies   telco-ops   BackupNotDone      15s
 
 Connecting to any of our spoke clusters we can see a new job being created called backup-agent.
 
+WARNING: Backup job can take up to 5m to be created.
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -290,6 +292,8 @@ ztp-policies   telco-ops   PrecacheSpecIsWellFormed   3m46s
 
 The approach is very similar to the backup, a new job called pre-cache is created on each spoke cluster.
 
+WARNING: Pre-cache job can take up to 5m to be created.
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -333,7 +337,7 @@ Once the precache is done, the CGU state move to UpgradeNotStarted. At this mome
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc ~/5g-deployment-lab/hub-kubeconfig get cgu -A
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
 
 [.console-input]
@@ -352,7 +356,7 @@ Now, we have our backup done in case of upgrade failure and all the images requi
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc ~/5g-deployment-lab/hub-kubeconfig patch cgu telco-ops -n  ztp-policies --type merge --patch '{"spec":{"enable":true}}'
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig patch cgu telco-ops -n  ztp-policies --type merge --patch '{"spec":{"enable":true}}'
 -----
 
 Notice the CGU state moved to UpgradeNotCompleted, which means, the upgrade process has started.
@@ -360,7 +364,7 @@ Notice the CGU state moved to UpgradeNotCompleted, which means, the upgrade proc
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc ~/5g-deployment-lab/hub-kubeconfig get cgu -A
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
 
 [.console-input]
