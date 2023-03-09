@@ -17,7 +17,12 @@ Both the registry and Git repository are running in the hypervisor host as conta
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-$ podman ps
+podman ps
+-----
+
+[.console-input]
+[source,bash]
+-----
 CONTAINER ID  IMAGE                            COMMAND               CREATED       STATUS           PORTS                                         NAMES
 e7cf765660a3  quay.io/mavazque/registry:2.7.1  /etc/docker/regis...  24 hours ago  Up 24 hours ago                                                registry
 557b51f975ce  quay.io/mavazque/gitea:1.17.3    /bin/s6-svscan /e...  24 hours ago  Up 24 hours ago  0.0.0.0:2222->22/tcp, 0.0.0.0:3000->3000/tcp  gitea
@@ -31,7 +36,12 @@ In the lab we are going to provision and configure a SNO cluster named SNO2. Let
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-$ kcli list vm
+kcli list vm
+-----
+
+[.console-input]
+[source,console]
+-----
 +---------------+--------+----------------+------------------------------------------------------+-------------+---------+
 |      Name     | Status |       Ip       |                        Source                        |     Plan    | Profile |
 +---------------+--------+----------------+------------------------------------------------------+-------------+---------+
@@ -52,27 +62,58 @@ Check the status of the hub cluster.
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-$ export KUBECONFIG=hub-kubeconfig
+export KUBECONFIG=hub-kubeconfig
+oc get clusterversion
+-----
 
-$ oc get clusterversion
+[.console-input]
+[source,bash]
+-----
 NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 version   4.11.13   True        False         22h     Cluster version is 4.11.13
+-----
 
-$ oc get nodes
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc get nodes
+-----
+
+[.console-input]
+[source,bash]
+-----
 NAME           STATUS   ROLES           AGE   VERSION
 ocp-master-0   Ready    master,worker   23h   v1.24.6+5157800
 ocp-master-1   Ready    master,worker   23h   v1.24.6+5157800
 ocp-master-2   Ready    master,worker   23h   v1.24.6+5157800
+-----
 
-$ oc get operators
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc get operators
+-----
+
+[.console-input]
+[source,bash]
+-----
 NAME                                                   AGE
 advanced-cluster-management.open-cluster-management    22h
 multicluster-engine.multicluster-engine                22h
 odf-lvm-operator.openshift-storage                     22h
 openshift-gitops-operator.openshift-operators          22h
 topology-aware-lifecycle-manager.openshift-operators   22h
+-----
 
-$ oc get catalogsources -A
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc get catalogsources -A
+-----
+
+[.console-input]
+[source,bash]
+-----
 NAMESPACE               NAME                    DISPLAY   TYPE   PUBLISHER   AGE
 openshift-marketplace   redhat-operator-index             grpc               23h
 -----
@@ -85,10 +126,24 @@ Verify that the OpenShift API and the apps domain (wildcard) can be resolved.
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-$ dig +short api.hub.5g-deployment.lab
-192.168.125.10
+dig +short api.hub.5g-deployment.lab
+-----
 
-$ dig +short oauth-openshift.apps.hub.5g-deployment.lab
+[.console-input]
+[source,bash]
+-----
+192.168.125.10
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+dig +short oauth-openshift.apps.hub.5g-deployment.lab
+-----
+
+[.console-input]
+[source,bash]
+-----
 192.168.125.11
 -----
 
@@ -103,6 +158,11 @@ First, check using `oc` binary the status of all the Argo applications. You can 
 [source,bash,subs="attributes+,+macros"]
 -----
 oc get applications -A
+-----
+
+[.console-input]
+[source,bash]
+-----
 NAMESPACE          NAME                       SYNC STATUS   HEALTH STATUS
 openshift-gitops   clusters                   OutOfSync     Healthy
 openshift-gitops   hub-operators-config       Synced        Healthy
@@ -146,7 +206,12 @@ First, check if the BMC is ready so the server can be started remotely from the 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-$ curl -k https://192.168.125.1:9000/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301
+curl -k https://192.168.125.1:9000/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301
+-----
+
+[.console-input]
+[source,bash]
+-----
 {
     "@odata.type": "#ComputerSystem.v1_1_0.ComputerSystem",
     "Id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301",
@@ -170,7 +235,12 @@ If the server is up, but the installation is not progressing we may check a coup
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-$ oc get bmh -A
+oc get bmh -A
+-----
+
+[.console-input]
+[source,bash]
+-----
 NAMESPACE               NAME                     STATE                    CONSUMER             ONLINE   ERROR   AGE
 openshift-machine-api   hub-ctlplane-0           externally provisioned   hub-7tjlv-master-0   true             24h
 openshift-machine-api   hub-ctlplane-1           externally provisioned   hub-7tjlv-master-1   true             24h
@@ -184,13 +254,26 @@ Verify that the ISO image has been without errors by checking the `InfraEnv` and
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-$ oc get infraenv -A
+oc get infraenv -A
+-----
+
+[.console-input]
+[source,bash]
+-----
 NAMESPACE   NAME   ISO CREATED AT
 sno1        sno1   2023-03-01T10:08:09Z
 sno2        sno2   2023-03-02T10:26:06Z
+-----
 
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc get infraenv sno2 -n sno2 -oyaml
+-----
 
-[root@worker-1 ~]# oc get infraenv sno2 -n sno2 -oyaml
+[.console-input]
+[source,bash]
+-----
 apiVersion: agent-install.openshift.io/v1beta1
 kind: InfraEnv
 metadata:
@@ -204,7 +287,12 @@ metadata:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-$ oc get bmh sno2.5g-deployment.lab -n sno2 -oyaml
+oc get bmh sno2.5g-deployment.lab -n sno2 -o yaml
+-----
+
+[.console-input]
+[source,bash]
+-----
 apiVersion: metal3.io/v1alpha1
 kind: BareMetalHost
 metadata:
@@ -228,7 +316,12 @@ Verfiy that the policies in the hub cluster are similar to the ones shown below.
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-$ oc get policies -A
+oc get policies -A
+-----
+
+[.console-input]
+[source,bash]
+-----
 NAMESPACE      NAME                                           REMEDIATION ACTION   COMPLIANCE STATE   AGE
 sno2           ztp-policies.common-operator-catalog-411       inform                                  14m
 sno2           ztp-policies.group-du-sno-du-profile-wave1     inform                                  14m
@@ -259,7 +352,12 @@ In cases where the Governance console shows policies already assigned to SNO2, w
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-$ oc get pods -n openshift-operators
+oc get pods -n openshift-operators
+-----
+
+[.console-input]
+[source,bash]
+-----
 NAME                                                        READY   STATUS    RESTARTS      AGE
 cluster-group-upgrades-controller-manager-b757bcdb9-46xtx   2/2     Running   1 (24h ago)   24h
 gitops-operator-controller-manager-cd79b49dc-tvdp6          1/1     Running   0             25h
@@ -270,7 +368,12 @@ Next, we can verify that a `ClusterGroupUpgrade` CR was created automatically by
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-$ oc get cgu -A
+oc get cgu -A
+-----
+
+[.console-input]
+[source,bash]
+-----
 NAMESPACE     NAME   UPGRADE STATE         AGE
 ztp-install   sno2   UpgradeNotCompleted   2m27s
 -----
@@ -280,7 +383,12 @@ Describing the CGU shows a lot of information about the current status of the co
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-$ oc get cgu -n ztp-install sno2 -oyaml
+oc get cgu -n ztp-install sno2 -oyaml
+-----
+
+[.console-input]
+[source,bash]
+-----
 apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
 metadata:
@@ -316,7 +424,12 @@ Verfiy that now there are two times the number of policies in the hub cluster. T
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-$ oc get policies -A
+oc get policies -A
+-----
+
+[.console-input]
+[source,bash]
+-----
 NAMESPACE      NAME                                                    REMEDIATION ACTION   COMPLIANCE STATE   AGE
 sno2           ztp-install.sno2-common-operator-catalog-411-2rtdv      enforce              Compliant          6m8s
 sno2           ztp-install.sno2-group-du-sno-du-profile-wave1-4jrqr    enforce              Compliant          5m17s
