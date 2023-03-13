@@ -227,7 +227,7 @@ metadata:
 EOF
 -----
 +
-3. Create the required Kustomization files
+2. Create the required Kustomization files
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -246,7 +246,7 @@ resources:
 EOF
 -----
 +
-4. At this point, we can push the changes to the repo and continue to the next section.
+3. At this point, we can push the changes to the repo and continue to the next section.
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]

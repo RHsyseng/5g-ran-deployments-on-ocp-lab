@@ -9,11 +9,12 @@ site:
 content:
   sources:
     - url: ./
+      branches: [main]
       start_path: documentation
 
 asciidoc:
   attributes:
-    release-version: main
+    release-version: 4.12
     page-pagination: true
   extensions:
     - ./lib/tab-block.js
