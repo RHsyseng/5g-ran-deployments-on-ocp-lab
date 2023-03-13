@@ -1,0 +1,18 @@
+[Unit]
+Description=Podman container - webcache
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root
+TimeoutStartSec=300
+ExecStartPre=-/usr/bin/podman rm -f webcache
+ExecStart=/usr/bin/podman run --name webcache --net host -v /opt/webcache/data:/usr/local/apache2/htdocs:z quay.io/alosadag/httpd:p8080 
+ExecStop=-/usr/bin/podman rm -f webcache
+Restart=always
+RestartSec=30s
+StartLimitInterval=60s
+StartLimitBurst=99
+
+[Install]
+WantedBy=multi-user.target
