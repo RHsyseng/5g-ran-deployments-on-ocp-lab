@@ -198,6 +198,11 @@ spec:
     rootFSUrl: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.11/4.11.0/rhcos-4.11.0-x86_64-live-rootfs.x86_64.img
     url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.11/4.11.0/rhcos-4.11.0-x86_64-live.x86_64.iso
     version: 411.86.202208031059-0
+  - cpuArchitecture: x86_64
+    openshiftVersion: "4.12"
+    rootFSUrl: http://infra.5g-deployment.lab/rhcos-4.12.3-x86_64-live-rootfs.x86_64.img
+    url: http://infra.5g-deployment.lab/rhcos-4.12.3-x86_64-live.x86_64.iso
+    version: 412.86.202302091057-0
 ---
 apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
