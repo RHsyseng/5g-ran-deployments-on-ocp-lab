@@ -179,14 +179,14 @@ spec:
   mirrorRegistryRef:
     name: custom-registries
   databaseStorage:
-    storageClassName: odf-lvm-vg1
+    storageClassName: lvms-vg1
     accessModes:
     - ReadWriteOnce
     resources:
       requests:
         storage: 10Gi
   filesystemStorage:
-    storageClassName: odf-lvm-vg1
+    storageClassName: lvms-vg1
     accessModes:
     - ReadWriteOnce
     resources:
@@ -194,14 +194,9 @@ spec:
         storage: 20Gi
   osImages:
   - cpuArchitecture: x86_64
-    openshiftVersion: "4.11"
-    rootFSUrl: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.11/4.11.0/rhcos-4.11.0-x86_64-live-rootfs.x86_64.img
-    url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.11/4.11.0/rhcos-4.11.0-x86_64-live.x86_64.iso
-    version: 411.86.202208031059-0
-  - cpuArchitecture: x86_64
     openshiftVersion: "4.12"
-    rootFSUrl: http://infra.5g-deployment.lab/rhcos-4.12.3-x86_64-live-rootfs.x86_64.img
-    url: http://infra.5g-deployment.lab/rhcos-4.12.3-x86_64-live.x86_64.iso
+    rootFSUrl: http://infra.5g-deployment.lab:8080/rhcos-4.12.3-x86_64-live-rootfs.x86_64.img
+    url: http://infra.5g-deployment.lab:8080/rhcos-4.12.3-x86_64-live.x86_64.iso
     version: 412.86.202302091057-0
 ---
 apiVersion: hive.openshift.io/v1
@@ -209,15 +204,15 @@ kind: ClusterImageSet
 metadata:
   annotations:
         argocd.argoproj.io/sync-wave: "4"
-  name: openshift-v4.11.13-disconnected
+  name: openshift-v4.12.3-disconnected
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.11.13-x86_64
+  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.12.3-x86_64
 ---
 apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
 metadata:
   annotations:
         argocd.argoproj.io/sync-wave: "4"
-  name: openshift-v4.11.17-disconnected
+  name: openshift-v4.12.5-disconnected
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.11.17-x86_64
+  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.12.5-x86_64

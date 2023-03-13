@@ -12,7 +12,7 @@ spec:
   clusterDeploymentRef:
     name: sno1
   imageSetRef:
-    name: openshift-v4.11.13-disconnected
+    name: openshift-v4.12.3-disconnected
   networking:
     networkType: "OVNKubernetes"
     clusterNetwork:

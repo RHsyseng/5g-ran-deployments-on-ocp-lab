@@ -1,7 +1,7 @@
 plan: hub-cluster
 force: false
 version: stable
-tag: "4.11.13"
+tag: "4.12.3"
 provisioning_enable: false
 virtual_masters: false
 virtual_workers: false
@@ -23,13 +23,13 @@ disconnected_operators:
 - advanced-cluster-management
 - openshift-gitops-operator
 - multicluster-engine
-- odf-lvm-operator
+- lvms-operator
 - topology-aware-lifecycle-manager
 - local-storage-operator
 disconnected_extra_images:
-- registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.11
+- registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.12
 disconnected_extra_releases:
-- quay.io/openshift-release-dev/ocp-release:4.11.17-x86_64
+- quay.io/openshift-release-dev/ocp-release:4.12.5-x86_64
 installer_mac: aa:aa:aa:aa:01:06
 baremetal_bootstrap_mac: aa:aa:aa:aa:01:07
 nfs: false
@@ -40,7 +40,7 @@ bmc_password: "ADMIN"
 apps:
 - users
 - openshift-gitops-operator
-- odf-lvm-operator
+- lvms-operator
 ctlplanes:
 - redfish_address: redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0101
   provisioning_mac: aa:aa:aa:aa:01:01
