@@ -140,6 +140,14 @@ data:
 
     [[registry]]
     prefix = ""
+    location = "registry.redhat.io/lvms4"
+    mirror-by-digest-only = true
+
+    [[registry.mirror]]
+      location = "infra.5g-deployment.lab:8443/lvms4"
+
+    [[registry]]
+    prefix = ""
     location = "quay.io/openshift-release-dev/ocp-v4.0-art-dev"
     mirror-by-digest-only = true
 
