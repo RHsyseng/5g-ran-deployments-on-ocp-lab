@@ -1,7 +1,7 @@
 plan: hub-cluster
 force: false
 version: stable
-tag: "4.12.3"
+tag: "4.12.5"
 provisioning_enable: false
 virtual_masters: false
 virtual_workers: false
@@ -20,16 +20,25 @@ disconnected_user: admin
 disconnected_password: r3dh4t1!
 manifests_dir: hubmanifests
 disconnected_operators:
-- advanced-cluster-management
-- openshift-gitops-operator
-- multicluster-engine
-- lvms-operator
-- topology-aware-lifecycle-manager
-- local-storage-operator
+- name: advanced-cluster-management
+  channels:
+  - name: release-2.7
+- name: multicluster-engine
+  channels:
+  - name: stable-2.2
+- name: topology-aware-lifecycle-manager
+  channels:
+  - name: stable
+- name: openshift-gitops-operator
+  channels:
+  - name: latest
+- name: lvms-operator
+  channels:
+  - name: stable-4.12
 disconnected_extra_images:
 - registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.12
 disconnected_extra_releases:
-- quay.io/openshift-release-dev/ocp-release:4.12.5-x86_64
+- quay.io/openshift-release-dev/ocp-release:4.12.3-x86_64
 installer_mac: aa:aa:aa:aa:01:06
 baremetal_bootstrap_mac: aa:aa:aa:aa:01:07
 nfs: false
