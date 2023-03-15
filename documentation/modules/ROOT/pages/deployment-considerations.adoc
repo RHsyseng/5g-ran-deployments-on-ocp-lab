@@ -61,22 +61,37 @@ In our Git repository we will have the following folder structure:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]  
 ----
+
 .
 ├── site-configs
-│   └── pre-reqs
-│       └── ztp-sno
+│   ├── hub-1
+│   ├── ...
+│   ├── hub-n
+│   ├── pre-reqs
+│   │   └── sno2
+│   └── resources
 └── site-policies
-    ├── common-policies
-    ├── group-policies
-    ├── site-policies
-    └── zone-policies
+    ├── fleet
+    │   ├── active
+    │   └── testing
+    │   └── resources
+    └── sites
+        └── hub-1
+        └── ...
+        └── hub-n
 ----
 
+We know that a hub cluster can manage thousands of spoke clusters. This Git structure helps us to scale easily the number of hub cluster that we are managing. In the lab, as we can see in the previous figure, only a managed cluster (SNO2) is managed by one hub cluster (hub-1). This structure makes much easier knowing which clusters are being managed by each hub. 
+
 * `site-configs`: This folder is used to store the different SiteConfigs describing the environments we will deploy through ZTP.
+** `hub-1`: This folder contains all the provisioning configuration (siteConfig) for each cluster that is managed by the hub cluster called hub-1.  Notice that multiple hub clusters (hub-n) folders can be created and under each folder a siteConfig definition of a cluster managed by the hub is stored.
 ** `pre-reqs`: This folder is used to store the different configurations that are required for the deployment of the environments, things like: pull secrets, bmc credentials, etc.
 
 * `site-policies`: This folder has different sub-folders storing different sets of PolicyGenTemplates.
-** `common-policies`: This folder is used to store PolicyGenTemplates that apply to all clusters.
-** `group-policies`: This folder is used to store PolicyGenTemplates that apply to a group of clusters.
-** `site-policies`: This folder is used to store PolicyGenTemplates that apply to specific clusters.
-** `zone-policies`: This folder is used to store PolicyGenTemplates that apply to clusters in a specific zone.
+** `fleet`: This folder contains all the common configuration for all the different environments and clusters.
+*** `active`: This folder is used to store PolicyGenTemplates that apply to all clusters in the active environment.
+*** `testing`:  This folder is used to store PolicyGenTemplates that apply to all clusters in the testing environment.
+** `sites`: This folder is used to store PolicyGenTemplates that specifically apply only to a cluster.
+** `hub-1`: This folder is used to store PolicyGenTemplates that specifically apply only to a cluster managed by a particular hub. Notice that multiple hub clusters (hub-n) folders can be created and under each folder a specific configuration of a cluster managed by the hub is stored.
+
+A remarkable point with this new structure is that creating new environments and moving one or multiple clusters from one to another is very simple. In case of creating a new environment, we just need to copy the proper folder (active or testing) under the fleet folder to a new one, for instance, called qe. Then, we apply the desired changes to qe and select our managed cluster to be configured as a qe environment. This is done by adjusting the cluster or siteConfig cluster labels, concretely, one called `logicalGroup``.
