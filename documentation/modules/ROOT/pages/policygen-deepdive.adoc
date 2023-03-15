@@ -227,7 +227,7 @@ The SiteConfig templating is pretty straightforward, whatever information we put
 [#policies-templating]
 == Policies Templating
 
-Policies templating is a bit different, we have a set of policy templates, known as source-crs, that we can use. This set of policies can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.11/ztp/source-crs[here].
+Policies templating is a bit different, we have a set of policy templates, known as source-crs, that we can use. This set of policies can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/source-crs[here].
 
 If you access this link you will see lots of files, like for example:
 
@@ -237,7 +237,7 @@ If you access this link you will see lots of files, like for example:
 
 The way the templating works is a follows:
 
-We will have one or more PolicyGenTemplates where we will reference these policy templates. We can see an example https://github.com/openshift-kni/cnf-features-deploy/blob/57a05afbe836e9210ad638f6abe65f72b569148a/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml[here].
+We will have one or more PolicyGenTemplates where we will reference these policy templates. We can see an example https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml[here].
 
 Let's use the following PolicyGenTemplate as example.
 
@@ -288,7 +288,7 @@ By running the steps below we will get the plugins installed in our system. Kust
 [source,bash,subs="attributes+,+macros"]
 -----
 mkdir -p ~/.config/kustomize/plugin
-podman cp $(podman create --name policgentool --rm quay.io/openshift-kni/ztp-site-generator:4.11):/kustomize/plugin/ran.openshift.io ~/.config/kustomize/plugin/
+podman cp $(podman create --name policgentool --rm registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.12):/kustomize/plugin/ran.openshift.io ~/.config/kustomize/plugin/
 podman rm -f policgentool
 -----
 
