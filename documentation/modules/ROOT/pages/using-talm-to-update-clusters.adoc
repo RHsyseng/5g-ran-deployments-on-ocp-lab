@@ -91,36 +91,37 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 extract secret/sno2-a
 [#upgrade-policy-creation]
 == Creating the upgrade PGT
 
-Create an upgrade PGT in inform mode, as usual, that will apply and upgrade both SNO1 and SNO2 clusters. This file needs to be created in the ztp-repository Git repo that we have created.
+Create an upgrade PGT in inform mode, as usual, that will apply and upgrade the SNOs located in Europe (binding rule: `du-zone: "europe"`), SNO1 and SNO2 clusters. This file needs to be created in the ztp-repository Git repo that we have created.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/zone-policies/upgrade-411-17.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/zone-europe-upgrade-412-5.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
 metadata:
-  name: "europe-upgrade"
+  name: "europe-snos-upgrade"
   namespace: "ztp-policies"
 spec:
   bindingRules:
     du-zone: "europe"
+    logicalGroup: "active"
   mcp: "master"
   remediationAction: inform
   sourceFiles:
     - fileName: ClusterVersion.yaml
-      policyName: "version-411-17"
+      policyName: "version-412-5"
       metadata:
         name: version
       spec:
-        channel: "stable-4.11"
+        channel: "stable-4.12"
         desiredUpdate:
           force: false
-          version: "4.11.17"
+          version: "4.12.5"
       status:
         history:
-          - version: "4.11.17"
+          - version: "4.12.5"
             state: "Completed"
 EOF
 -----
@@ -130,7 +131,7 @@ Modify the kustomization.yaml inside the site-policies folder, so it includes th
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-sed -i "/- zone-policies\/zone-europe.yaml/a \ \ - zone-policies/upgrade-411-17.yaml" ~/5g-deployment-lab/ztp-repository/site-policies/kustomization.yaml
+sed -i "/- group-du-sno.yaml/a \ \ - zone-europe-upgrade-412-5.yaml" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
 -----
 
 Then commit all the changes:
@@ -139,22 +140,21 @@ Then commit all the changes:
 [source,bash,subs="attributes+,+macros"]
 -----
 cd ~/5g-deployment-lab/ztp-repository/
-git add site-policies/zone-policies/upgrade-411-17.yaml site-policies/kustomization.yaml
+git add site-policies/fleet/active/zone-europe-upgrade-412-5.yaml site-policies/fleet/active/kustomization.yaml
 git commit -m "adds upgrade policy"
 git push origin main 
 -----
 
-Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named europe-upgrade-version-411-17 has a violation. However, only one. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the label zone-europe that the PGT is targeting in its binding rule. 
-
+Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named europe-snos-upgrade-version-412-5 has a violation. However, only one. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the label zone-europe that the PGT is targeting in its binding rule. 
 
 image::talm_upgrade_policy_01.png[TALM upgrade policy 1]
 
-Let's add the proper label to SNO1:
+Let's add the proper labels to SNO1:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig label managedcluster sno1 du-zone=europe
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig label managedcluster sno1 du-zone=europe logicalGroup=active
 -----
 
 [.console-input]
@@ -181,7 +181,7 @@ At this point we need to create a CGU resource that will start the upgrade proce
 [#talm-backup-precache]
 === Backup and pre-cache
 
-Let's create the CGU. In this case, we will apply the managed policy (europe-upgrade-version-411-17) to both clusters at the same time (maxConcurrency is 2). Notice that the CGU is disabled, this is suggested if we are going to run the precaching feature. This means, that once the precaching process is done we are ready to start the upgrade process. This idea is related to the compliance of a maintenance window in an enterprise. 
+Let's create the CGU. In this case, we will apply the managed policy (europe-snos-upgrade-version-412-5) to both clusters at the same time (maxConcurrency is 2). Notice that the CGU is disabled, this is suggested if we are going to run the precaching feature. This means, that once the precaching process is done we are ready to start the upgrade process. This idea is related to the compliance of a maintenance window in an enterprise. 
 
 Remember that several gigabytes of artifacts needs to be downloaded to the spoke for a full upgrade. SNO spoke clusters may have limited bandwidth to the hub cluster hosting the registry, which will make it difficult for the upgrade to complete within the required time. In order to ensure the upgrade can fit within the maintenance window, the required artifacts need to be present on the spoke cluster prior to the upgrade. Therefore, the process is split up into two stages as mentioned.
 
@@ -208,7 +208,7 @@ spec:
   - sno2
   enable: false
   managedPolicies:
-  - europe-upgrade-version-411-17
+  - europe-snos-upgrade-version-412-5
   remediationStrategy:
     maxConcurrency: 2
     timeout: 240
