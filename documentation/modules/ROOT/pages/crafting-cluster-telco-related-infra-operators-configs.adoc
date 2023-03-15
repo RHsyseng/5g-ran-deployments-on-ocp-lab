@@ -343,6 +343,8 @@ EOF
 +
 2. Create the required Kustomization files
 +
+WARNING: You can see that we commented the `group-du-sno-validator.yaml` files in our Kustomization files. Since this is a lab environment and we don't have PTP/SRIO-V hardware the validator policies won't be able to verify our SNOs as a well-configured DU. We kept the files here so you know how a real environment should be configured.
++
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -387,7 +389,7 @@ kind: Kustomization
 generators:
   - common-412.yaml
   - group-du-sno.yaml
-  - group-du-sno-validator.yaml
+#  - group-du-sno-validator.yaml
 EOF
 cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/kustomization.yaml
 ---
@@ -396,7 +398,7 @@ kind: Kustomization
 generators:
   - common-412.yaml
   - group-du-sno.yaml
-  - group-du-sno-validator.yaml
+#  - group-du-sno-validator.yaml
 EOF
 -----
 +
