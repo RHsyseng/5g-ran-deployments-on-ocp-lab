@@ -23,11 +23,11 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get operators
 [source,bash]
 -----
 NAME                                                   AGE
-advanced-cluster-management.open-cluster-management    2d15h
-multicluster-engine.multicluster-engine                2d15h
-odf-lvm-operator.openshift-storage                     2d16h
-openshift-gitops-operator.openshift-operators          2d16h
-topology-aware-lifecycle-manager.openshift-operators   2d15h
+advanced-cluster-management.open-cluster-management    16h
+lvms-operator.openshift-storage                        16h
+multicluster-engine.multicluster-engine                16h
+openshift-gitops-operator.openshift-operators          16h
+topology-aware-lifecycle-manager.openshift-operators   16h
 -----
 
 Next, double check there is no problem with the Pod. Notice that the name of the Pod is cluster-group-upgrade-controller-manager, based on the name of the upstream project https://github.com/openshift-kni/cluster-group-upgrades-operator[Cluster Group Upgrade Operator].
@@ -72,8 +72,8 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 [.console-input]
 [source,bash]
 -----
-NAMESPACE     NAME   UPGRADE STATE      AGE
-ztp-install   sno2   UpgradeCompleted   14h
+NAMESPACE     NAME   AGE     STATE       DETAILS
+ztp-install   sno2   3h29m   Completed   All clusters are compliant with all the managed policies
 -----
 
 [#getting-snos-kubeconfigs]
@@ -119,6 +119,7 @@ spec:
         desiredUpdate:
           force: false
           version: "4.12.5"
+          image: "infra.5g-deployment.lab:8443/openshift/release-images@sha256:fd65cebce150bac3c622e30e7f762d3173575ae3541b3a7648819cb63e9b63a4"
       status:
         history:
           - version: "4.12.5"
@@ -145,7 +146,7 @@ git commit -m "adds upgrade policy"
 git push origin main 
 -----
 
-Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named europe-snos-upgrade-version-412-5 has a violation. However, only one. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the label zone-europe that the PGT is targeting in its binding rule. 
+Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named europe-snos-upgrade-version-412-5 has a violation. However, only one. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule. 
 
 image::talm_upgrade_policy_01.png[TALM upgrade policy 1]
 
@@ -163,20 +164,13 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig label managedcluster sno1 du-
 managedcluster.cluster.open-cluster-management.io/sno1 labeled
 -----
 
-Notice that now there are two violations in our upgrade policy. 
-
-IMPORTANT: There is an extra violation in the zone-europe-storage-operator since this PGT was created previously to adding the label to SNO1. That's because that policy is bound to du-zone=europe as well. However, we have the choice to apply it (enforce) or not using the TALM operator.
-
-image::talm_upgrade_policy_02.png[TALM upgrade policy 2]
-
-
 [#upgrade-cgu-creation]
 == Applying the upgrade
 
 At this point we need to create a CGU resource that will start the upgrade process. In our case, the process will be divided into two stages:
 
-1. Run a backup prior to start the upgrade process. Once successfully TALM will pre-cache all container images required for upgrade
-2. Start the upgrade process
+1. Run a pre-cache of the new OCP release prior to start the upgrade process.
+2. Before running the upgrade, a backup will be done.
 
 [#talm-backup-precache]
 === Backup and pre-cache
@@ -197,7 +191,7 @@ cat <<EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
 apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
 metadata:
-  name: telco-ops 
+  name: update-europe-snos 
   namespace: ztp-policies
 spec:
   preCaching: true
@@ -215,7 +209,7 @@ spec:
 EOF
 -----
 
-Once applied, we can see that the status moved to BackupNotDone. This means that the first step in our process is executing the backup.
+Once applied, we can see that the status moved to `PrecacheSpecIsWellFormed`. This means that the first step in our process is executing the pre-cache.
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -225,9 +219,96 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 [.console-input]
 [source,bash]
 -----
-NAMESPACE      NAME        UPGRADE STATE      AGE
-ztp-install    sno2        UpgradeCompleted   16h
-ztp-policies   telco-ops   BackupNotDone      15s
+NAMESPACE      NAME                 AGE     STATE                      DETAILS
+ztp-install    sno2                 3h40m   Completed                  All clusters are compliant with all the managed policies
+ztp-policies   update-europe-snos   10s     PrecacheSpecIsWellFormed   Precaching spec is valid and consistent
+-----
+
+Connecting to any of our spoke clusters we can see a new job being created called pre-cache.
+
+WARNING: Pre-cache job can take up to 5m to be created.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig -n openshift-talo-pre-cache get job pre-cache
+-----
+
+[.console-input]
+[source,bash]
+-----
+NAME        COMPLETIONS   DURATION   AGE
+pre-cache   0/1           64s        64s
+-----
+
+This job creates a Pod that will run the precache process. As we can see below, 183 images need to be downloaded from our local registry to mark the task as successful.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/pre-cache -n openshift-talo-pre-cache
+-----
+
+[.console-input]
+[source,bash]
+-----
+upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Release index image processing done
+58ff6e48f95bf6b444150290f481ad6fc6051e76defccf3611bdc2f9ddc1cccc
+upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Operators index is not specified. Operators won't be pre-cached
+upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:006e37a1f141eb219364a501767fb4a26210908385eef9576af00b55d8225ecb [1/183]
+upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:01b510f238c0a8ad44df44d4aba3d0d2cfa429153ce3f451095484815f5746fd [2/183]
+upgrades.pre-cache 2023-03-16T12:59:11+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:02c9c2a2ef5941156a767d40abe900a669a8237a8444a3974b360c326a21ffc3 [3/183]
+.
+.
+.
+upgrades.pre-cache 2023-03-16T13:13:37+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:fe86e187b2664371923282d88426a183ccddc75305d9ee5b6e64a082d179b596 [182/183]
+upgrades.pre-cache 2023-03-16T13:13:48+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:fec91120672f68e7671b6f1fc17becf5aee9c72e540e046874a216d68bd04ffc [183/183]
+upgrades.pre-cache 2023-03-16T13:13:48+00:00 DEBUG Image pre-cache done
+-----
+
+Once the precache is done, the CGU state moves to `NotEnabled`. At this moment, TALM is waiting for acknowledging the start of the upgrade.
+
+WARNING: It can take up to 5 minutes for the CGU to report the new state.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
+-----
+
+[.console-input]
+[source,bash]
+-----
+NAMESPACE      NAME                 AGE   STATE        DETAILS
+ztp-install    sno2                 4h    Completed    All clusters are compliant with all the managed policies
+ztp-policies   update-europe-snos   20m   NotEnabled   Not enabled
+-----
+
+[#talm-upgrade]
+=== Triggering the upgrade
+
+Now that the pre-cache is ready, we can trigger the update. As we said earlier, before the update is actually executed a backup will be done so we can rollback. In order to trigger the update we need to enable the CGU:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig patch cgu update-europe-snos -n  ztp-policies --type merge --patch '{"spec":{"enable":true}}'
+-----
+
+Notice the CGU state moved to `InProgress`, which means, the upgrade process has started. In the details you can see that the backup is in progress.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
+-----
+
+[.console-input]
+[source,bash]
+-----
+NAMESPACE      NAME                 AGE    STATE        DETAILS
+ztp-install    sno2                 4h6m   Completed    All clusters are compliant with all the managed policies
+ztp-policies   update-europe-snos   25m    InProgress   Backup in progress for 2 clusters
 -----
 
 Connecting to any of our spoke clusters we can see a new job being created called backup-agent.
@@ -244,13 +325,13 @@ oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig get jobs -A
 [source,bash]
 -----
 NAMESPACE                              NAME                                                              COMPLETIONS   DURATION   AGE
-assisted-installer                     assisted-installer-controller                                     1/1           42m        17h
-openshift-image-registry               image-pruner-27846720                                             1/1           13s        9h
-openshift-marketplace                  12904802adb548c1f898cdcb5813e10498f1bbb75e55f74e2d44c07c77566d7   1/1           33s        16h
-openshift-operator-lifecycle-manager   collect-profiles-27847275                                         1/1           18s        34m
-openshift-operator-lifecycle-manager   collect-profiles-27847290                                         1/1           13s        19m
-openshift-operator-lifecycle-manager   collect-profiles-27847305                                         1/1           9s         4m54s
-openshift-talo-backup                  backup-agent                                                      1/1           72s        112s
+assisted-installer                     assisted-installer-controller                                     1/1           38m        4h47m
+openshift-marketplace                  51f5147f46ba2fcbd47cc8cba3f7a6f28f7cc23b267e380ac5a1ee1de87d962   1/1           11s        4h2m
+openshift-operator-lifecycle-manager   collect-profiles-27982845                                         1/1           7s         39m
+openshift-operator-lifecycle-manager   collect-profiles-27982860                                         1/1           118s       24m
+openshift-operator-lifecycle-manager   collect-profiles-27982875                                         1/1           7s         9m2s
+openshift-talo-backup                  backup-agent                                                      0/1           30s        30s
+openshift-talo-pre-cache               pre-cache                                                         1/1           16m        25m
 -----
 
 This job basically runs a Pod that will execute a recovery procedure and will store all required data into the /var/recovery folder of each spoke.
@@ -264,75 +345,49 @@ oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/backup-agent -n ope
 [.console-input]
 [source,bash]
 -----
-INFO[0001] {"hash":3220959417,"revision":26628,"totalKey":13837,"totalSize":60588032} 
-INFO[0001] snapshot db and kube resources are successfully saved to /var/recovery/cluster 
-INFO[0002] Command succeeded: rsync -a /etc/ /var/recovery/etc/ 
-INFO[0002] Command succeeded: rsync -a /usr/local/ /var/recovery/usrlocal/ 
-INFO[0002] Command succeeded: rsync -a /var/lib/kubelet/ /var/recovery/kubelet/ 
-INFO[0002] ##### Wed Mar  8 19:15:04 UTC 2023: Backup complete 
-INFO[0002] ------------------------------------------------------------ 
-INFO[0002] backup has successfully finished ...
+INFO[0000] ------------------------------------------------------------ 
+INFO[0000] Cleaning up old content...                   
+INFO[0000] ------------------------------------------------------------ 
+INFO[0000] Old directories deleted with contents        
+INFO[0000] Old contents have been cleaned up            
+INFO[0004] Available disk space : 155.49 GiB; Estimated disk space required for backup: 340.63 MiB  
+INFO[0004] Sufficient disk space found to trigger backup 
+INFO[0004] Upgrade recovery script written              
+INFO[0004] Running: bash -c /var/recovery/upgrade-recovery.sh --take-backup --dir /var/recovery 
+INFO[0004] ##### Thu Mar 16 13:24:20 UTC 2023: Taking backup 
+INFO[0004] ##### Thu Mar 16 13:24:20 UTC 2023: Wiping previous deployments and pinning active 
+INFO[0005] error: Out of range deployment index 1, expected < 1 
+INFO[0005] Deployment 0 is now pinned                   
+INFO[0005] ##### Thu Mar 16 13:24:21 UTC 2023: Backing up container cluster and required files 
+INFO[0005] Certificate /etc/kubernetes/static-pod-certs/configmaps/etcd-serving-ca/ca-bundle.crt is missing. Checking in different directory 
+INFO[0005] Certificate /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-serving-ca/ca-bundle.crt found! 
+INFO[0006] found latest kube-apiserver: /etc/kubernetes/static-pod-resources/kube-apiserver-pod-6 
+INFO[0006] found latest kube-controller-manager: /etc/kubernetes/static-pod-resources/kube-controller-manager-pod-9 
+INFO[0006] found latest kube-scheduler: /etc/kubernetes/static-pod-resources/kube-scheduler-pod-8 
+INFO[0007] found latest etcd: /etc/kubernetes/static-pod-resources/etcd-pod-3 
+INFO[0009] 519d313c23c0fea1d1aed4366dd935663680a6a253bbb254ae7071ff3c66899c 
+INFO[0009] etcdctl version: 3.5.6                       
+INFO[0009] API version: 3.5                             
+INFO[0009] {"level":"info","ts":"2023-03-16T13:24:26.056Z","caller":"snapshot/v3_snapshot.go:65","msg":"created temporary db file","path":"/var/recovery/cluster/snapshot_2023-03-16_132422.db.part"} 
+INFO[0009] {"level":"info","ts":"2023-03-16T13:24:26.068Z","logger":"client","caller":"v3@v3.5.6/maintenance.go:212","msg":"opened snapshot stream; downloading"} 
+INFO[0009] {"level":"info","ts":"2023-03-16T13:24:26.068Z","caller":"snapshot/v3_snapshot.go:73","msg":"fetching snapshot","endpoint":"https://192.168.125.40:2379"} 
+INFO[0010] {"level":"info","ts":"2023-03-16T13:24:26.991Z","logger":"client","caller":"v3@v3.5.6/maintenance.go:220","msg":"completed snapshot read; closing"} 
+INFO[0011] {"level":"info","ts":"2023-03-16T13:24:27.355Z","caller":"snapshot/v3_snapshot.go:88","msg":"fetched snapshot","endpoint":"https://192.168.125.40:2379","size":"92 MB","took":"1 second ago"} 
+INFO[0011] {"level":"info","ts":"2023-03-16T13:24:27.355Z","caller":"snapshot/v3_snapshot.go:97","msg":"saved","path":"/var/recovery/cluster/snapshot_2023-03-16_132422.db"} 
+INFO[0011] Snapshot saved at /var/recovery/cluster/snapshot_2023-03-16_132422.db 
+INFO[0011] Deprecated: Use `etcdutl snapshot status` instead. 
+INFO[0011]                                              
+INFO[0011] {"hash":1194329918,"revision":85030,"totalKey":7098,"totalSize":91566080} 
+INFO[0011] snapshot db and kube resources are successfully saved to /var/recovery/cluster 
+INFO[0018] Command succeeded: rsync -a /etc/ /var/recovery/etc/ 
+INFO[0019] Command succeeded: rsync -a /usr/local/ /var/recovery/usrlocal/ 
+INFO[0023] Command succeeded: rsync -a /var/lib/kubelet/ /var/recovery/kubelet/ 
+INFO[0023] ##### Thu Mar 16 13:24:40 UTC 2023: Backup complete 
+INFO[0023] ------------------------------------------------------------ 
+INFO[0023] backup has successfully finished ...   
 -----
 
-Once done, the next step is the precache phase as we can see from the CGU status.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
------
-
-[.console-input]
-[source,bash]
------
-NAMESPACE      NAME        UPGRADE STATE              AGE
-ztp-install    sno2        UpgradeCompleted           16h
-ztp-policies   telco-ops   PrecacheSpecIsWellFormed   3m46s
------
-
-The approach is very similar to the backup, a new job called pre-cache is created on each spoke cluster.
-
-WARNING: Pre-cache job can take up to 5m to be created.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig -n openshift-talo-pre-cache get job pre-cache
------
-
-[.console-input]
-[source,bash]
------
-NAME        COMPLETIONS   DURATION   AGE
-pre-cache   0/1           5m25s      5m25s
------
-
-This job creates a Pod that will run the precache process. As we can see below, 171 images need to be downloaded from our local registry to mark the task as successful.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/pre-cache -n openshift-talo-pre-cache
------
-
-[.console-input]
-[source,bash]
------
-upgrades.pre-cache 2023-03-08T19:17:34+00:00 DEBUG Release index image processing done
-a778fa0a77a59ef64f76bc52991be761ab3abe3fa4ab29ffd3f66c0e302acbae
-upgrades.pre-cache 2023-03-08T19:17:35+00:00 DEBUG Operators index is not specified. Operators won't be pre-cached
-upgrades.pre-cache 2023-03-08T19:17:35+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:00dc61290f10ec21a547731460f067f957e845eb7a6cc9e29044c73a62a41e04 [1/171]
-upgrades.pre-cache 2023-03-08T19:17:35+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:016c908752f0535a246de11b3f21e9ca490b499cced707bf363dfabd8112b6de [2/171]
-upgrades.pre-cache 2023-03-08T19:17:35+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:01ddbff51aa6064c611510c5864b10052f9dd3f8dc5b37fd4f865ff007bc4a02 [3/171]
-.
-.
-.
-upgrades.pre-cache 2023-03-08T19:22:42+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:fdbbb76196732b94a7fd617b81cb8804e6eefbe7df608397f0c5375b7e54ad5f [170/171]
-upgrades.pre-cache 2023-03-08T19:22:50+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ff21bff3c3c9943caa1bf6f48a629bc25f6cf55769709b80a3dc7b14f3e9c60a [171/171]
-upgrades.pre-cache 2023-03-08T19:22:50+00:00 DEBUG Image pre-cache done
------
-
-Once the precache is done, the CGU state move to UpgradeNotStarted. At this moment, TALM is waiting for acknowledging the start of the upgrade.
+Once backups are finished for all clusters, the CGU state will move to `BackupCompleted`:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -343,39 +398,12 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 [.console-input]
 [source,bash]
 -----
-NAMESPACE      NAME        UPGRADE STATE       AGE
-ztp-install    sno2        UpgradeCompleted    17h
-ztp-policies   telco-ops   UpgradeNotStarted   37m
+NAMESPACE      NAME                 AGE    STATE             DETAILS
+ztp-install    sno2                 4h9m   Completed         All clusters are compliant with all the managed policies
+ztp-policies   update-europe-snos   28m    BackupCompleted   Backup is completed for all clusters
 -----
 
-[#talm-upgrade]
-=== Triggering the upgrade
-
-Now, we have our backup done in case of upgrade failure and all the images required to perform the upgrade process locally store to each spoke cluster. Notice that this will improve the time needed to fulfill the process, since there is no need to pull down all the gigabytes of container images again. Let's start the upgrade process by enabling the CGU:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig patch cgu telco-ops -n  ztp-policies --type merge --patch '{"spec":{"enable":true}}'
------
-
-Notice the CGU state moved to UpgradeNotCompleted, which means, the upgrade process has started.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
------
-
-[.console-input]
-[source,bash]
------
-NAMESPACE      NAME        UPGRADE STATE         AGE
-ztp-install    sno2        UpgradeCompleted	 17h
-ztp-policies   telco-ops   UpgradeNotCompleted   50m
------
-
-If we connect to any of our spoke clusters we can see that the upgrade process is actually taking place.
+At this point, if we connect to any of our spoke clusters we can see that the upgrade process is actually taking place.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -387,10 +415,10 @@ oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig get clusterversion,nodes
 [source,bash]
 -----
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.11.13   True        True          11s	 Working towards 4.11.17: 9 of 803 done (1% complete)
+clusterversion.config.openshift.io/version   4.12.3    True        True          4m2s    Working towards 4.12.5: 213 of 829 done (25% complete), waiting on config-operator, machine-api
 
-NAME                          STATUS   ROLES           AGE   VERSION
-node/sno2.5g-deployment.lab   Ready    master,worker   17h   v1.24.6+5157800
+NAME                          STATUS   ROLES                         AGE    VERSION
+node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   5h7m   v1.25.4+a34b9e9
 -----
 
 Meanwhile, the clusters are upgrading we can take a look at the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/governance/policies[multicloud console] and see that there is a new policy in enforce mode
@@ -413,10 +441,10 @@ oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig get clusterversion,nodes
 [source,bash]
 -----
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.11.17   True        False         6m41s   Cluster version is 4.11.17
+clusterversion.config.openshift.io/version   4.12.5    True        False         9m13s   Cluster version is 4.12.5
 
-NAME                          STATUS   ROLES           AGE   VERSION
-node/sno2.5g-deployment.lab   Ready    master,worker   18h   v1.24.6+5658434
+NAME                          STATUS   ROLES                         AGE     VERSION
+node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   5h56m   v1.25.4+a34b9e9
 -----
 
 [.console-input]
@@ -429,12 +457,26 @@ oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig get clusterversion,nodes
 [source,bash]
 -----
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.11.17   True        False         21m     Cluster version is 4.11.17
+clusterversion.config.openshift.io/version   4.12.5    True        False         33m     Cluster version is 4.12.5
 
-NAME                      STATUS   ROLES           AGE     VERSION
-node/openshift-master-0   Ready    master,worker   2d18h   v1.24.6+5658434
+NAME                      STATUS   ROLES                         AGE   VERSION
+node/openshift-master-0   Ready    control-plane,master,worker   18h   v1.25.4+a34b9e9
 -----
 
-Notice that now the upgrade policy (europe-upgrade-version-411-17) is now compliant on both clusters. See that the enforce policy is removed once the CGU is successfully applied and the non-compliant policy (zone-europe-storage-operator) is still in the same state since we do not remediate it in our CGU.
+Notice that now the upgrade policy (europe-snos-upgrade-version-412-5) is now compliant on both clusters. See that the enforce policy is removed once the CGU is successfully applied. And finally, the CGU will be `Completed`:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
+-----
+
+[.console-input]
+[source,bash]
+-----
+NAMESPACE      NAME                 AGE     STATE       DETAILS
+ztp-install    sno2                 5h26m   Completed   All clusters are compliant with all the managed policies
+ztp-policies   update-europe-snos   106m    Completed   All clusters are compliant with all the managed policies
+-----
 
 image::talm_upgrade_policy_05.png[TALM upgrade policy 5]
