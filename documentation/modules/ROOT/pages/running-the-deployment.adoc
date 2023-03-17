@@ -20,7 +20,7 @@ WARNING: If you get `ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100
 -----
 mkdir -p ~/5g-deployment-lab/ztp-pipeline/
 podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
-podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.11 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/
+podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.12 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/
 -----
 
 Now that we extracted the pipeline content we need to get it applied to our hub cluster.
