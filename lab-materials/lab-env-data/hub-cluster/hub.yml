@@ -46,6 +46,10 @@ disk_size: 200
 installer_disk_size: 200
 bmc_user: ADMIN
 bmc_password: "ADMIN"
+users_dev: developer
+users_devpassword: CHANGE_DEV_PWD
+users_admin: admin
+users_adminpassword: CHANGE_ADMIN_PWD
 apps:
 - users
 - openshift-gitops-operator
