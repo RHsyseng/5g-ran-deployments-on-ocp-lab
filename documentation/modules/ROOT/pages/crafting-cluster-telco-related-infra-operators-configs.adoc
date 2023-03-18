@@ -229,7 +229,7 @@ EOF
 [#crafting-testing-policies]
 == Crafting testing Policies
 
-Testing policies before applying them to our production clusters is a must, in order to do that we will create a set of testing policies (which usually will be very similar to the production ones) and these policies will target clusters labeled with `logicalGroup: "testing"`. We won't go over every file, if you check the files that will be created those are the same as in `production` but with different names and binding policies.
+Testing policies before applying them to our production clusters is a must, in order to do that we will create a set of testing policies (which usually will be very similar to the production ones) and these policies will target clusters labeled with `logicalGroup: "testing"`. We won't go over every file, if you check the files that will be created those are the same as in `active`, also known as `production`, but with different names and binding policies.
 
 1. Create the `common` testing PolicyGenTemplate for 4.12 SNOs:
 +
@@ -318,7 +318,7 @@ spec:
 EOF
 -----
 
-At this point policies are the same as in production, in the future you want to use testing policies before promoting changes to production.
+At this point, policies are the same as in production (active). In the future, you prior want to apply these groups of testing policies for the clusters running in your test environment before promoting changes to production (active).
 
 [#configure-kustomization-for-policies]
 == Configure Kustomization for Policies

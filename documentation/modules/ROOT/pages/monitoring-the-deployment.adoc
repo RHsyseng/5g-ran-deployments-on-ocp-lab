@@ -50,10 +50,11 @@ sno2   sno2      finalizing
 [.console-input]
 [source,yaml,subs="attributes+,+macros"]
 -----
-- lastProbeTime: "2022-12-01T17:53:42Z"
-  lastTransitionTime: "2022-12-01T17:53:42Z"
-  message: 'The installation is in progress: Finalizing cluster installation.
-    Cluster version status: available, message: Done applying 4.11.13'
+- lastProbeTime: "2023-03-18T16:18:20Z"
+  lastTransitionTime: "2023-03-18T16:18:20Z"
+  message: 'The installation is in progress: Finalizing cluster installation. Cluster
+    version status: progressing, message: Working towards 4.12.3: 523 of 829 done
+    (63% complete)'
   reason: InstallationInProgress
   status: "False"
   type: Completed
@@ -64,8 +65,8 @@ sno2   sno2      finalizing
 [.console-input]
 [source,yaml,subs="attributes+,+macros"]
 -----
-- lastProbeTime: "2022-12-01T18:00:00Z"
-  lastTransitionTime: "2022-12-01T18:00:00Z"
+- lastProbeTime: "2023-03-18T17:05:20Z"
+  lastTransitionTime: "2023-03-18T17:05:20Z"
   message: 'The installation has completed: Cluster is installed'
   reason: InstallationCompleted
   status: "True"

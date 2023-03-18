@@ -34,4 +34,5 @@ An OpenShift cluster is running on the infrastructure host, you can reach it out
 Credentials for the OCP cluster (htpassidp provider):
 
 * Username: `admin` 
-* Password: `admin`
+* Password: The password is randomly generated for each environment, and can be found in the following path: `/root/cred-admin.txt` in your hypervisor host or in the e-mail you received when the lab was ready.
+

@@ -6,6 +6,7 @@ In RAN environments we will be managing thousands of Single Node OpenShift (SNO)
 
 By describing our infrastructure as code (IaC) the git repository holds declarative state of the fleet. 
 
+
 [#introduction-to-siteconfig]
 == Introduction to the SiteConfig
 
@@ -17,6 +18,8 @@ In https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/gi
 
 [#crafting-our-own-siteconfig]
 == Crafting our own SiteConfig
+
+WARNING: In the e-mail you received with the credentials to access the lab, do not forget to add the line included to your workstation’s /etc/hosts for accessing the lab environment.
 
 IMPORTANT: The steps below rely on the lab environment being up and running.
 
