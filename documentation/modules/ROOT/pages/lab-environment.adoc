@@ -15,6 +15,17 @@ RHEL 8 (or similar) box with access to the Internet. This lab relies on KVM, so 
 * 200GiB Memory
 * 1 TiB storage
 
+These are the steps to install the required packages on a RHEL 8 (or similar) server:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+yum -y install libvirt libvirt-daemon-driver-qemu qemu-kvm
+usermod -aG qemu,libvirt $(id -un)
+newgrp libvirt
+systemctl enable --now libvirtd
+-----
+
 [#lab-deployment]
 == Lab Deployment
 
@@ -31,7 +42,7 @@ IMPORTANT: Below commands must be executed from the hypervisor host as root if n
 [source,bash,subs="attributes+,+macros"]
 -----
 dnf -y copr enable karmab/kcli
-dnf -y install kcli bash-completion vim jq tar
+dnf -y install kcli bash-completion vim jq tar git ipcalc
 -----
 
 [#install-oc-kubectl]
@@ -165,6 +176,8 @@ systemctl enable podman-gitea --now
 podman exec --user 1000 gitea /bin/sh -c 'gitea admin user create --username student --password student --email student@5g-deployment.lab --must-change-password=false --admin'
 curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab.git","uid":1,"repo_name":"5g-ran-deployments-on-ocp-lab"}' http://infra.5g-deployment.lab:3000/api/v1/repos/migrate
 -----
+
+WARNING: It could be possible that the last two commands do not work at the first time since the registry container image is being pulled and then started. If that's the case, try them once again after a couple of seconds.
 
 [#configure-ntp-server]
 === Configure NTP Server
