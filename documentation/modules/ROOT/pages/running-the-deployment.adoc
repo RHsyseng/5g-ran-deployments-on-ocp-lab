@@ -25,9 +25,9 @@ podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:844
 
 Now that we extracted the pipeline content we need to get it applied to our hub cluster.
 
-. Login into the hub cluster
-
-WARNING: Use the OpenShift admin password provided in the e-mail you received when the lab was ready.
+1. Login into the hub cluster.
++
+CAUTION: The command below must be changed to use the OpenShift admin password provided in the e-mail you received when the lab was ready.
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -35,9 +35,8 @@ WARNING: Use the OpenShift admin password provided in the e-mail you received wh
 oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig login -u admin -p <admin_password> https://api.hub.5g-deployment.lab:6443 --insecure-skip-tls-verify=true
 -----
 +
-. Modify the ZTP GitOps Pipeline configuration to match our environment configuration
-+
-.. Change the repository url for the two ArgoApps
+2. Modify the ZTP GitOps Pipeline configuration to match our environment configuration.
+.. Change the repository url for the two ArgoApps:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -46,7 +45,7 @@ sed -i "s|repoURL: .*|repoURL: http://infra.5g-deployment.lab:3000/student/ztp-r
 sed -i "s|repoURL: .*|repoURL: http://infra.5g-deployment.lab:3000/student/ztp-repository.git|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
 -----
 +
-.. Change the repository path for the two ArgoApps
+.. Change the repository path for the two ArgoApps:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -55,7 +54,7 @@ sed -i "s|path: .*|path: site-configs|" ~/5g-deployment-lab/ztp-pipeline/argocd/
 sed -i "s|path: .*|path: site-policies|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
 -----
 +
-.. Change the repository branch for the two ArgoApps
+.. Change the repository branch for the two ArgoApps:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -64,7 +63,7 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
 -----
 +
-.. Allow `ClusterImageSet` resource to the list of allowed resources
+3. Allow `ClusterImageSet` resource to the list of allowed resources:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -72,7 +71,7 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 sed -i "/clusterResourceWhitelist:/a \ \ - group: \'hive.openshift.io\'\n \ \ \ kind: ClusterImageSet" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/app-project.yaml
 -----
 +
-. Apply the ZTP GitOps Pipeline configuration
+4. Apply the ZTP GitOps Pipeline configuration:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -87,7 +86,7 @@ When we applied the ZTP GitOps Pipeline configuration in the last section, that 
 
 Since the apps have been created, ArgoCD started doing its magic which means that the cluster deployment should already be running, let's see what happened in Argo CD.
 
-1. Login into https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab/[Argo CD] using OpenShift credentials
+1. Login into https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab/[Argo CD] using OpenShift credentials.
 2. You will see the follow applications:
 +
 image::argocd-apps.png[ArgoCD Apps]

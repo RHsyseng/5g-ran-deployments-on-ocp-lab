@@ -2,7 +2,9 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-The following lab sections rely on having a lab environment accessible in order to do the hands-on work. If you're a Red Hatter you can order a lab environment already setup for you on https://insertlinktorhpdshere[RHPDS]. Otherwise, keep reading to deploy your own lab environment.
+The following lab sections rely on having a lab environment accessible in order to do the hands-on work. If you're a Red Hatter you can order a lab environment already setup for you on the https://demo.redhat.com[Red Hat Demo Platform]. You just need to order the lab named `5G RAN Deployment on OpenShift`.
+
+Otherwise, keep reading to deploy your own lab environment.
 
 [#lab-requirements]
 == Lab Requirements
@@ -296,9 +298,9 @@ agent.agent-install.openshift.io/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201   sno1    
 oc extract secret/sno1-admin-kubeconfig --to=- -n sno1 > /root/sno1kubeconfig
 oc --kubeconfig /root/sno1kubeconfig get nodes,clusterversion
 
-NAME                      STATUS   ROLES           AGE   VERSION
-node/openshift-master-0   Ready    master,worker   46m   v1.24.6+5157800
+NAME                      STATUS   ROLES                         AGE     VERSION
+node/openshift-master-0   Ready    control-plane,master,worker   46m     v1.25.4+a34b9e9
 
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.12.3   True        False         22m     Cluster version is 4.12.3
+clusterversion.config.openshift.io/version   4.12.3    True        False         22m     Cluster version is 4.12.3
 -----

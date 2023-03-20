@@ -7,21 +7,26 @@ Once the ZTP GitOps Pipeline starts deploying our clusters we can follow the ins
 [#monitoring-deployment-webui]
 == Monitoring the Deployment via the WebUI
 
-WARNING: It may take a while for the installation to start, wait at least 10 minutes if you see `The cluster is not ready for installation` message.
+WARNING: It may take a while for the installation to start, wait at least 10 minutes if you see `The cluster is not ready for installation` message or the `SNO2` cluster shows up as `draft`.
 
 1. Access the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome[RHACM WebUI] and login with the OpenShift credentials.
-2. Once you're in, click on `Infrastructure` -> `Clusters`. You will see a screen like the one below:
+2. Once you're in, click on `Infrastructure` -> `Clusters`. You will see a screen like the one below if the deployment has not yet started:
 +
-image::acm-clusterview.png[RHACM Cluster View] 
+image::acm-clusterview-draft.png[RHACM Cluster View Draft]
 +
-3. In order to check the deployment status of the `sno2` cluster, click on `sno2` and you will get presented this screen:
+3. Eventually, the `SNO2` cluster will start its deployment:
++
+image::acm-clusterview.png[RHACM Cluster View]
++
+4. In order to check the deployment status of the `sno2` cluster, click on `sno2` and you will get presented this screen:
 +
 image::acm-sno2-view.png[RHACM sno2 Cluster View]
 +
-4. You can follow the progress here, if you want to get extra details you can click on `View Cluster Events` and you should see more information:
+5. You can follow the progress here, if you want to get extra details you can click on `View Cluster Events` and you should see more information:
 +
 image::acm-sno2-clusterevents.png[RHACM sno2 Cluster Events]
-5. Deployment will eventually finish:
++
+6. Deployment will eventually finish:
 +
 image::acm-sno2-install-completed.png[RHACM sno2 Cluster Deployment Finished]
 
