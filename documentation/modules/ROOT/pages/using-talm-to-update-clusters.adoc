@@ -81,7 +81,7 @@ ztp-install   sno2   3h29m   Completed   All clusters are compliant with all the
 [#getting-snos-kubeconfigs]
 == Getting the SNO clusters kubeconfigs
 
-In the previous sections we have deployed the `sno2` cluster and attached the `sno1` cluster. Before we continue with TALM, let's grab the kubeconfigs for both cluster since we will need them for the next sections. The following commands need to be only executed in the hypervisor as the root user.
+In the previous sections we have deployed the `sno2` cluster and attached the `sno1` cluster. Before we continue with TALM, let's grab the kubeconfigs for both cluster since we will need them for the next sections.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -148,7 +148,7 @@ git commit -m "adds upgrade policy"
 git push origin main 
 -----
 
-Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named europe-snos-upgrade-version-412-5 has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule. 
+Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named `europe-snos-upgrade-version-412-5` has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule. 
 
 WARNING: Notice in the following picture that there are policies not applying to any cluster. Those are policies targeting the test environment. This is expected since we do not have any clusters in the test environment, e.g, no clusters are labeled with the proper label for testing: logicalGroup=test.
 
@@ -424,11 +424,11 @@ NAME                          STATUS   ROLES                         AGE    VERS
 node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   5h7m   v1.25.4+a34b9e9
 -----
 
-Meanwhile, the clusters are upgrading we can take a look at the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/governance/policies[multicloud console] and see that there is a new policy in enforce mode
+Meanwhile, the clusters are upgrading we can take a look at the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/governance/policies[multicloud console] and see that there is a new policy in enforce mode:
 
 image::talm_upgrade_policy_03.png[TALM upgrade policy 3]
 
-Moving to the Infrastructure -> Cluster section of the multicloud console we can also graphically see the upgrading of both clusters
+Moving to the Infrastructure -> Cluster section of the multicloud console we can also graphically see the upgrading of both clusters:
 
 image::talm_upgrade_policy_04.png[TALM upgrade policy 3]
 
@@ -466,7 +466,9 @@ NAME                      STATUS   ROLES                         AGE   VERSION
 node/openshift-master-0   Ready    control-plane,master,worker   18h   v1.25.4+a34b9e9
 -----
 
-Notice that now the upgrade policy (europe-snos-upgrade-version-412-5) is now compliant on both clusters. See that, in order to save resources, the enforce policy is removed once the CGU is successfully applied. And finally, the CGU will be `Completed`:
+Notice that now the upgrade policy `europe-snos-upgrade-version-412-5` is now compliant on both clusters. See that, in order to save resources, the enforce policy is removed once the CGU is successfully applied. 
+
+And finally, the CGU will be `Completed`:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
