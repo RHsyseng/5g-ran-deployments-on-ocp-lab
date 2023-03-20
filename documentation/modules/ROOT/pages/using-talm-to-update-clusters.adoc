@@ -83,13 +83,11 @@ ztp-install   sno2   3h29m   Completed   All clusters are compliant with all the
 
 In the previous sections we have deployed the `sno2` cluster and attached the `sno1` cluster. Before we continue with TALM, let's grab the kubeconfigs for both cluster since we will need them for the next sections. The following commands need to be only executed in the hypervisor as the root user.
 
-WARNING: Be sure you are executing the following commands after becoming root in the hypervisor. Notice that when becoming root you can connect to the hub cluster using the `oc` binary.
-
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/hub-kubeconfig -n sno1 extract secret/sno1-admin-kubeconfig --to=- > ~/sno1-kubeconfig
-oc --kubeconfig ~/hub-kubeconfig -n sno2 extract secret/sno2-admin-kubeconfig --to=- > ~/sno2-kubeconfig
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno1 extract secret/sno1-admin-kubeconfig --to=- > ~/5g-deployment-lab/sno1-kubeconfig
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 extract secret/sno2-admin-kubeconfig --to=- > ~/5g-deployment-lab/sno2-kubeconfig
 -----
 
 [#upgrade-policy-creation]
@@ -218,7 +216,7 @@ Once applied, we can see that the status moved to `PrecacheSpecIsWellFormed`. Th
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/hub-kubeconfig get cgu -A
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
 
 [.console-input]
@@ -231,12 +229,12 @@ ztp-policies   update-europe-snos   10s     PrecacheSpecIsWellFormed   Precachin
 
 Connecting to any of our spoke clusters we can see a new job being created called pre-cache.
 
-WARNING: Be sure you are executing the following commands in the hypervisor. Notice that pre-cache job can take up to 5m to be created.
+WARNING: Notice that pre-cache job can take up to 5m to be created.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno2-kubeconfig -n openshift-talo-pre-cache get job pre-cache
+oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig -n openshift-talo-pre-cache get job pre-cache
 -----
 
 [.console-input]
@@ -251,7 +249,7 @@ This job creates a Pod that will run the precache process. As we can see below, 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno2-kubeconfig logs job/pre-cache -n openshift-talo-pre-cache -f
+oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/pre-cache -n openshift-talo-pre-cache -f
 -----
 
 [.console-input]
@@ -277,10 +275,6 @@ WARNING: It can take up to 5 minutes for the CGU to report the new state.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
-
-
-WARNING: The following commands are executed from the workstation. 
-
 -----
 oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
@@ -322,12 +316,12 @@ ztp-policies   update-europe-snos   25m    InProgress   Backup in progress for 2
 
 Connecting to any of our spoke clusters we can see a new job being created called backup-agent.
 
-WARNING: Be sure you are executing the following commands in the hypervisor. Notice that backup job can take up to 5m to be created.
+WARNING: Notice that backup job can take up to 5m to be created.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno1-kubeconfig get jobs -A
+oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig get jobs -A
 -----
 
 [.console-input]
@@ -348,7 +342,7 @@ This job basically runs a Pod that will execute a recovery procedure and will st
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno2-kubeconfig logs job/backup-agent -n openshift-talo-backup -f
+oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/backup-agent -n openshift-talo-backup -f
 -----
 
 [.console-input]
@@ -398,8 +392,6 @@ INFO[0023] backup has successfully finished ...
 
 Once backups are finished for all clusters, the CGU state will move to `BackupCompleted`:
 
-WARNING: The following command is executed from your laptop or workstation. 
-
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -416,12 +408,10 @@ ztp-policies   update-europe-snos   28m    BackupCompleted   Backup is completed
 
 At this point, if we connect to any of our spoke clusters we can see that the upgrade process is actually taking place.
 
-WARNING: Be sure you are executing the following commands in the hypervisor.
-
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno2-kubeconfig get clusterversion,nodes
+oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig get clusterversion,nodes
 -----
 
 [.console-input]
@@ -447,7 +437,7 @@ Finally, our clusters are upgraded:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno2-kubeconfig get clusterversion,nodes
+oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig get clusterversion,nodes
 -----
 
 [.console-input]
@@ -463,7 +453,7 @@ node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   5h56m   v1.
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno1-kubeconfig get clusterversion,nodes
+oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig get clusterversion,nodes
 -----
 
 [.console-input]
@@ -477,8 +467,6 @@ node/openshift-master-0   Ready    control-plane,master,worker   18h   v1.25.4+a
 -----
 
 Notice that now the upgrade policy (europe-snos-upgrade-version-412-5) is now compliant on both clusters. See that, in order to save resources, the enforce policy is removed once the CGU is successfully applied. And finally, the CGU will be `Completed`:
-
-WARNING: The following command is executed from your laptop or workstation. 
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]

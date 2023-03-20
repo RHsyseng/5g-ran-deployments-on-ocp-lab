@@ -219,7 +219,7 @@ After that you need to add the following entries to your /etc/hosts file:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-<HYPERVISOR_REACHABLE_IP> infra.5g-deployment.lab api.hub.5g-deployment.lab multicloud-console.apps.hub.5g-deployment.lab console-openshift-console.apps.hub.5g-deployment.lab oauth-openshift.apps.hub.5g-deployment.lab openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab
+<HYPERVISOR_REACHABLE_IP> infra.5g-deployment.lab api.hub.5g-deployment.lab multicloud-console.apps.hub.5g-deployment.lab console-openshift-console.apps.hub.5g-deployment.lab oauth-openshift.apps.hub.5g-deployment.lab openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab api.sno1.5g-deployment.lab api.sno2.5g-deployment.lab
 -----
 
 [#create-openshift-nodes-vms]
