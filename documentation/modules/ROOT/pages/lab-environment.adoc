@@ -49,7 +49,7 @@ mv kubectl oc /usr/bin/
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-kcli create network -c 192.168.125.0/24 --nodhcp --dolab-4.12 5g-deployment.lab 5gdeploymentlab
+kcli create network -c 192.168.125.0/24 --nodhcp --domain 5g-deployment.lab 5gdeploymentlab
 -----
 
 [#configure-local-dns-dhcp-server]
@@ -107,7 +107,7 @@ iptables -F
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-curl -L https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{{ lab_version }}/lab-materials/lab-env-data/webcache/podman-webcache.service -o /etc/systemd/system/podman-webcache.service
+curl -L https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.12/lab-materials/lab-env-data/webcache/podman-webcache.service -o /etc/systemd/system/podman-webcache.service
 mkdir -p /opt/webcache/data
 curl -L https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.12/4.12.3/rhcos-4.12.3-x86_64-live-rootfs.x86_64.img -o /opt/webcache/data/rhcos-4.12.3-x86_64-live-rootfs.x86_64.img
 curl -L https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.12/4.12.3/rhcos-4.12.3-x86_64-live.x86_64.iso -o /opt/webcache/data/rhcos-4.12.3-x86_64-live.x86_64.iso
