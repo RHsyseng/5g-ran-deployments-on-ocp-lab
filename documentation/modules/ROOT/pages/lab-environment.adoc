@@ -125,7 +125,7 @@ mkdir -p /opt/webcache/data
 curl -L https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.12/4.12.3/rhcos-4.12.3-x86_64-live-rootfs.x86_64.img -o /opt/webcache/data/rhcos-4.12.3-x86_64-live-rootfs.x86_64.img
 curl -L https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.12/4.12.3/rhcos-4.12.3-x86_64-live.x86_64.iso -o /opt/webcache/data/rhcos-4.12.3-x86_64-live.x86_64.iso
 systemctl daemon-reload
-systemctl start podman-webcache
+systemctl enable podman-webcache --now
 -----
 
 [#install-sushytools]
@@ -266,9 +266,9 @@ kcli ssh hub-installer -- "sudo cp /root/ocp/auth/kubeconfig /tmp/kubeconfig && 
 kcli scp hub-installer:/tmp/kubeconfig ~/hub-kubeconfig
 export KUBECONFIG=~/hub-kubeconfig
 oc apply -f https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.12/lab-materials/lab-env-data/hub-cluster/lvmcluster.yaml
-oc -n openshift-storage wait lvmcluster odf-lvmcluster --for=jsonpath='{.status.ready}'=true --timeout=900s
-oc patch storageclass odf-lvm-vg1 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-curl https://raw.githubusercontent.com/openshift-kni/cnf-features-deploy/master/ztp/gitops-subscriptions/argocd/deployment/argocd-openshift-gitops-patch.json -o /tmp/argopatch.json
+oc -n openshift-storage wait lvmcluster odf-lvmcluster --for=jsonpath='{.status.state}'=Ready --timeout=900s
+oc patch storageclass lvms-vg1 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
+curl https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.12/lab-materials/lab-env-data/hub-cluster/argocd-patch.json -o /tmp/argopatch.json
 oc patch argocd openshift-gitops -n openshift-gitops --type=merge --patch-file /tmp/argopatch.json
 oc wait --for=condition=Ready pod -lapp.kubernetes.io/name=openshift-gitops-repo-server -n openshift-gitops
 oc -n openshift-gitops adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller
