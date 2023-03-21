@@ -3,7 +3,7 @@ runtime:
 
 site:
   title: LAB - 5G RAN Deployments on OpenShift
-  url: https://pages.sysdeseng.com/5g-ran-deployments-on-ocp-lab/
+  url: https://labs.sysdeseng.com/5g-ran-deployments-on-ocp-lab/
   start_page: 5g-ran-deployments-on-ocp-lab::index.adoc
 
 content:
