@@ -22,7 +22,7 @@ IMPORTANT: TALM enables us to select the timing and the clusters where the confi
 
 The Topology Aware Lifecycle Manager (TALM) builds the remediation plan from the `ClusterGroupUpgrade` (CGU) custom resource for a group of clusters. You can define the following specifications in a ClusterGroupUpgrade CR. Note that this is a CGU CR that enforces an OpenShift release upgrade which was previously set by a policy called _du-upgrade-platform-upgrade_ defined in the managedPolicies spec.
 
-[console-input]
+[.console-input]
 [source,yaml,subs="attributes+,+macros"]
 -----
 apiVersion: ran.openshift.io/v1alpha1
