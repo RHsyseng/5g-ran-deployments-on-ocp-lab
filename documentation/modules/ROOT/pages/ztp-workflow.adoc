@@ -42,7 +42,7 @@ Summing up, the deployment of the clusters includes:
 
 * Installing the host operating system (RHCOS) on a blank server.
 * Deploying OpenShift Container Platform.
-* Creating cluster policies via `PolicyGenTemplate` and site subscriptions via `SiteConfig`
+* Creating cluster policies via `PolicyGenTemplate` and site subscriptions via `SiteConfig`.
 * Leveraging a GitOps deployment topology for a develop once, deploy anywhere model.
 * Making the necessary network configurations to the server operating system.
 * Deploying profile operators and performing any needed software-related configuration, such as performance profile, PTP, and SR-IOV.

@@ -11,9 +11,9 @@ Otherwise, keep reading to deploy your own lab environment.
 
 RHEL 8 (or similar) box with access to the Internet. This lab relies on KVM, so you need to have the proper virtualization packages already installed. It is highly remcomended to use a baremetal host. Our lab environment has the following specs:
 
-* 48 CPUs
-* 200GiB Memory
-* 1 TiB storage
+* 48 CPUs.
+* 200GiB Memory.
+* 1 TiB storage.
 
 These are the steps to install the required packages on a RHEL 8 (or similar) server:
 

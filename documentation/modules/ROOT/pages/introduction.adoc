@@ -11,16 +11,16 @@ The first part of this lab is an introduction to the required concepts that one 
 
 The lab is aimed to technical profiles working with OpenShift who are interested in any of these areas:
 
-* Interested in GitOps management of a fleet of clusters
-* Working with telecom customers/partners in projects involving RAN workloads
+* Interested in GitOps management of a fleet of clusters.
+* Working with telecom customers/partners in projects involving RAN workloads.
 
 [#lab-software-versions]
 == Lab Software Versions
 
 The lab is based on the following software versions.
 
-* HUB Cluster OpenShift v4.12.5
-* SNO Cluster OpenShift v4.12.3 and v4.12.5
-* RHACM v2.7
-* MCE v2.2
-* PolicyGenTool v4.12
+* HUB Cluster OpenShift v4.12.5.
+* SNO Cluster OpenShift v4.12.3 and v4.12.5.
+* RHACM v2.7.
+* MCE v2.2.
+* PolicyGenTool v4.12.

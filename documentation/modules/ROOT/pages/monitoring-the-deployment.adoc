@@ -43,8 +43,8 @@ IMPORTANT: Below commands must be executed from the workstation host if not spec
 oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get agentclusterinstall sno2
 -----
 +
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
+[console-input]
+[source,console,subs="attributes+,+macros"]
 -----
 NAME   CLUSTER   STATE
 sno2   sno2      finalizing
@@ -52,8 +52,8 @@ sno2   sno2      finalizing
 +
 2. In case you want expanded information like we saw in the WebUI you can check the conditions of the `AgentClusterInstall` object. For example, while installing:
 +
-[.console-input]
-[source,yaml,subs="attributes+,+macros"]
+[console-input]
+[source,console,subs="attributes+,+macros"]
 -----
 - lastProbeTime: "2023-03-18T16:18:20Z"
   lastTransitionTime: "2023-03-18T16:18:20Z"
@@ -67,8 +67,8 @@ sno2   sno2      finalizing
 +
 3. Once installed:
 +
-[.console-input]
-[source,yaml,subs="attributes+,+macros"]
+[console-input]
+[source,console,subs="attributes+,+macros"]
 -----
 - lastProbeTime: "2023-03-18T17:05:20Z"
   lastTransitionTime: "2023-03-18T17:05:20Z"

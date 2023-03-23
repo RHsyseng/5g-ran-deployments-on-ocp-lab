@@ -66,15 +66,15 @@ In order to use both plugins we need to modify the OpenShift GitOps operator, sp
 
 The siteConfig generator kustomize plugin consume the siteconfig-generator library as a kustomize plugin. The siteconfig-generator library makes cluster deployment easier by generating the following CRs based on a SiteConfig CR instance;
 
-* AgentClusterInstall
-* ClusterDeployment
-* NMStateConfig
-* KlusterletAddonConfig
-* ManagedCluster
-* InfraEnv
-* BareMetalHost
-* HostFirmwareSettings
-* ConfigMap for extra-manifest configurations
+* AgentClusterInstall.
+* ClusterDeployment.
+* NMStateConfig.
+* KlusterletAddonConfig.
+* ManagedCluster.
+* InfraEnv.
+* BareMetalHost.
+* HostFirmwareSettings.
+* ConfigMap for extra-manifest configurations.
 
 IMPORTANT: The SiteConfig is a custom resource definition (CRD) created to facilitate the creation of the previous CRs and avoid repeating the configuration names.
 
@@ -84,9 +84,9 @@ IMPORTANT: The SiteConfig is a custom resource definition (CRD) created to facil
 
 The policy generator kustomize plugin consumes the policygenerator library and PolicyGenTemplate as a kustomize plugin. The PolicyGen library is used to facilitate creating RHACM policies based on a set of provided source CRs (custom resources) and PolicyGenTemplates. Each PGT describes how to customize those source CRs. The plugin helps to generate the following RHACM resources:
 
-* Policy
-* PlacementRule
-* PlacementBinding
+* Policy.
+* PlacementRule.
+* PlacementBinding.
 
 
 [#talm]
@@ -100,11 +100,11 @@ IMPORTANT: Topology Aware Lifecycle Manager is a Technology Preview feature only
 
 TALM manages the deployment of Red Hat Advanced Cluster Management (RHACM) policies for one or more OpenShift Container Platform clusters. Using TALM in a large network of clusters allows the phased rollout of policies to the clusters in limited batches. This helps to minimize possible service disruptions when updating. With TALM, you can control the following actions:
 
-* The timing of the update
-* The number of RHACM-managed clusters
-* The subset of managed clusters to apply the policies to
-* The update order of the clusters
-* The set of policies remediated to the cluster
-* The order of policies remediated to the cluster
+* The timing of the update.
+* The number of RHACM-managed clusters.
+* The subset of managed clusters to apply the policies to.
+* The update order of the clusters.
+* The set of policies remediated to the cluster.
+* The order of policies remediated to the cluster.
 
 TALM supports the orchestration of the OpenShift Container Platform y-stream and z-stream updates, and day-two operations on y-streams and z-streams.

@@ -37,7 +37,7 @@ Each `Policy` can contain one or multiple policy rules that will be evaluated ag
 
 Note that the PlacementBinding connects the Policy to the PlacementRule, and the PlacementRule defines where (on what clusters) the Policy should be active. View the following example specification of a Policy object:
 
-[.console-input]
+[console-input]
 [source,yaml,subs="attributes+,+macros"]
 -----
 apiVersion: policy.open-cluster-management.io/v1
@@ -102,7 +102,7 @@ spec:
 
 The PlacementBinding CRD is used to bind the Policy with a PlacementRule. Only a bound Policy is distributed to a managed cluster by the policy framework. View the following example specification of a PlacementBinding object:
 
-[.console-input]
+[console-input]
 [source,yaml,subs="attributes+,+macros"]
 -----
 apiVersion: policy.open-cluster-management.io/v1
@@ -122,7 +122,7 @@ subjects:
 
 The PlacementRule CRD is used to determine the target clusters to distribute policies to. The PlacementRule can match clusters based on labels applied to the ManagedCluster CR on the hub cluster. Each target (spoke) cluster under management by RHACM on the hub cluster will have a corresponding ManagedCluster CR. View the following example specification of a PlacementRule object:
 
-[.console-input]
+[console-input]
 [source,yaml,subs="attributes+,+macros"]
 -----
 apiVersion: apps.open-cluster-management.io/v1
@@ -161,6 +161,6 @@ The difference in behavior between inform and enforce is used by the GitOps ZTP 
 
 With that, we have covered the basics of what a Policy in RHACM is, and how it works.
 
-A more in-detail explanation of the RHACM policies is covered in this training recording https://videos.learning.redhat.com/media/GitOps%20and%20policy%20manifests%20-%20How%20policies%20work/1_pi42cmgb[GitOps and policy manifests - How policies work]
+A more in-detail explanation of the RHACM policies is covered in this training recording https://videos.learning.redhat.com/media/GitOps%20and%20policy%20manifests%20-%20How%20policies%20work/1_pi42cmgb[GitOps and policy manifests - How policies work].
 
 [1] https://github.com/stolostron/policy-collection
