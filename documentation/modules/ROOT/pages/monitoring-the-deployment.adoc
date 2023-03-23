@@ -35,7 +35,7 @@ image::acm-sno2-install-completed.png[RHACM sno2 Cluster Deployment Finished]
 
 IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
 
-1. Check the `AgentClusterInstall` for SNO2 cluster
+1. Check the `AgentClusterInstall` for SNO2 cluster:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]

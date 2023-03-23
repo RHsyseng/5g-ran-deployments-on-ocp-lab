@@ -94,7 +94,7 @@ The policy generator kustomize plugin consumes the policygenerator library and P
 
 Topology Aware Lifecycle Manager operator is a Kubernetes operator that facilitates software lifecycle management of fleets of clusters. It uses Red Hat Advanced Cluster Management (RHACM) for performing changes on target clusters, in particular by using RHACM policies. TALM Operator uses the following CRDs:
 
-* ClusterGroupUpgrade
+* ClusterGroupUpgrade.
 
 IMPORTANT: Topology Aware Lifecycle Manager is a Technology Preview feature only.
 

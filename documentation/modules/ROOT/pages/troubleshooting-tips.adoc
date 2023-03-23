@@ -290,7 +290,7 @@ metadata:
 oc get bmh sno2.5g-deployment.lab -n sno2 -o yaml
 -----
 
-[.console-input]
+[console-input]
 [source,yaml]
 -----
 apiVersion: metal3.io/v1alpha1
@@ -319,7 +319,7 @@ Verfiy that the policies in the hub cluster are similar to the ones shown below.
 oc get policies -A
 -----
 
-[.console-input]
+[console-input]
 [source,console]
 -----
 NAMESPACE      NAME                                           REMEDIATION ACTION   COMPLIANCE STATE   AGE
