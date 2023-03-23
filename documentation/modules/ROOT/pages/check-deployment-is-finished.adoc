@@ -10,11 +10,11 @@ We say that the SNO deployment finished when the SNO cluster has been deployed *
 == Check SNO Deployment has Finished via the WebUI
 
 1. Access the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome[RHACM WebUI] and login with the OpenShift credentials.
-2. Once you're in, click on `Infrastructure` -> `Clusters`. You will see a screen like the one below, notice how there is a label saying `ztp-done` (that means ztp pipeline has finished):
+2. Once you're in, click on `Infrastructure` -> `Clusters`. You will see a screen like the one below, check at the SNO2 cluster if there is a label saying `ztp-done` (that will indicate that ztp pipeline has finished):
 +
 image::acm-sno2-ztp-done.png[RHACM SNO2 ztp-done]
 +
-3. Additionally, we can verify that all policies are compliant for our SNO cluster. On the RHACM WebUI go to `Governance` -> `Policies` and you will see the following screen where we can see all policies are green:
+3. Additionally, we can verify that all policies are compliant for our SNO cluster. On the RHACM WebUI go to `Governance` -> `Policies` and you will see the following screen where we can see that all the policies are green:
 +
 IMPORTANT: Applying policies on `sno2` can take up to 15 minutes after cluster has been fully deployed.
 +
