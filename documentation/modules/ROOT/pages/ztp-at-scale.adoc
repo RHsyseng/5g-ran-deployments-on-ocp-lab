@@ -1,12 +1,12 @@
-= ZTP Components
+= Hub Management Components
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-*Zero Touch Provisioning* is built by different independent components that work together to provide an automate workflow to provision and configure remote OpenShift clusters. In the following picture we can see the different moving pieces involved:
+The deployment (ZTP), configuration, and lifecycle management solution is built by different independent components that work together to provide an automate workflow to provision and configure remote OpenShift clusters. In the following picture we can see the different moving pieces involved:
 
 * A *Git repository* that declares the `SiteConfig` resource, e.g. how the cluster is provisioned, and one or multiple `PolicyGenTemplates` (PGT) resources that defines how the cluster is configured. This includes, the operators that are going to be installed, the configuration to be applied and the applications to be deployed. Notice that a Git repository is a must in any GitOps methodology.
 * *Red Hat Advanced Cluster Management* installed on the hub cluster, at the heart of the architecture.
-* The *OpenShift GitOps* operator which needs to be patched to include a couple of required kustomize plugins: `siteconfig-generator` and `policy-generator` .
+* The *Red Hat OpenShift GitOps* operator which is extended with a couple of required kustomize plugins: `siteconfig-generator` and `policy-generator` .
 * The *Assisted Service* operator, now called Infrastructure operator. In previous releases it was required to be installed indidually, but now it is part of the Multicluster Engine operator which is a prerequisite for RHACM.
 * The *Topology Aware Lifecycle Manager* (TALM) responsible for managing the software lifecycle of the managed clusters.
 
@@ -39,7 +39,7 @@ It is recommended that you install Multicluster Engine for Kubernetes on a clust
 
 The Infrastructure operator for Red Hat OpenShift, formerly known as Assisted Service operator, is responsible for managing the deployment of the Assisted Service. Assisted Service is used to orchestrate baremetal OpenShift installations. Basically, it is the piece that will help us to automatically provision OpenShift clusters in a declarative manner. Notice that it exposes a UI and a REST API for creating new clusters.
 
-A high overview of the basic flow is as follows:
+A high overview of the basic flow is as follows. Note that in the solution presented in this lab these steps are automated and derive from the declarative configuration in git which provides a "zero touch" deployment of clusters.
 
 * Create a new `Cluster` resource with the minimal required properties.
 * Generate and download a bootable image which is customized for that cluster. This image is based on RHCOS and is customized to automatically run an agent upon boot.
@@ -53,18 +53,18 @@ The Assisted Service can currently install clusters with highly-available contro
 [#gitops-operator]
 == GitOps Operator
 
-Red Hat OpenShift uses Argo CD to maintain cluster resources. Argo CD is an open-source declarative tool for the continuous integration and continuous deployment (CI/CD) of applications. So, in a ZTP workflow, Argo CD is responsible for pulling the custom resources definitions that are stored in a Git repository and apply them to the hub cluster. In ZTP, **the definitions are applied into the hub cluster**, where all the components described in this section are running. It is RHACM in charge of performing the necessary actions to the managed clusters and distributing those policies accordingly.
+Red Hat OpenShift uses Argo CD to maintain cluster resources. Argo CD is an open-source declarative tool for the continuous integration and continuous deployment (CI/CD) of applications. So, in a ZTP workflow, Argo CD is responsible for pulling the custom resources definitions that are stored in a Git repository and apply them to the hub cluster. In the solution presented here, **the definitions are applied into the hub cluster**, where all the components described in this section are running. It is RHACM in charge of performing the necessary actions to the managed clusters and distributing those policies accordingly.
 
 IMPORTANT: Argo CD can pull and apply any Kubernetes custom resource, however, for ZTP we are mainly focusing on `SiteConfig` and `PolicyGenTemplates` manifests, but Argo CD is not restricted to them.
 
 We have been talking during this lab how a siteConfig manifest describes the way OpenShift cluster is going to be provisioned. While one or multiples policyGenTemplates describe/s the configuration that will be applied to the provisioned cluster. However, certainly, both are high level manifests that are not understood by the hub cluster. There is something in between that will translate those high level definitions into something that RHACM (including MCE) recognizes. We are referring to a couple of kustomize plugins called https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/siteconfig-generator-kustomize-plugin[SiteConfig generator kustomize plugin] and https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/policygenerator-kustomize-plugin[Policy generator kustomize plugin].
 
-In order to use both plugins we need to modify the OpenShift GitOps operator, specifically the openshift-gitops-repo-server deployment. The procedure is https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/gitops-subscriptions/argocd#preparation-of-hub-cluster-for-ztp[fully documented here]. Basically, it modifies the openshift-gitops-repo-server deployment to include an initContainer that will load both kustomize plugins. Then, everytime a SiteConfig or PolicyGenTemplate is pulled from a Git repo the proper kustomize plugin will be used and transform the manifest into the proper custom resources.
+In order to make both plugins available they are installed into the OpenShift GitOps operator during the initial setup/configuration of the hub cluster. The procedure is https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/gitops-subscriptions/argocd#preparation-of-hub-cluster-for-ztp[fully documented here]. Basically, it modifies the openshift-gitops-repo-server deployment to include an initContainer that will load both kustomize plugins. Then, everytime a SiteConfig or PolicyGenTemplate is pulled from a Git repo the proper kustomize plugin will be used and transform the manifest into the proper custom resources.
 
 [#sitegen]
 === SiteGen
 
-The siteConfig generator kustomize plugin consume the siteconfig-generator library as a kustomize plugin. The siteconfig-generator library makes cluster deployment easier by generating the following CRs based on a SiteConfig CR instance;
+The siteConfig generator kustomize plugin consumes SiteConfig CRs found in the git repository and generates the following CRson the hub cluster:
 
 * AgentClusterInstall.
 * ClusterDeployment.
@@ -76,13 +76,13 @@ The siteConfig generator kustomize plugin consume the siteconfig-generator libra
 * HostFirmwareSettings.
 * ConfigMap for extra-manifest configurations.
 
-IMPORTANT: The SiteConfig is a custom resource definition (CRD) created to facilitate the creation of the previous CRs and avoid repeating the configuration names.
+IMPORTANT: The SiteConfig is a custom resource definition (CRD) created to facilitate the creation of the previous CRs and ensure that they contain the correct references.
 
 
 [#policygen]
 === PolicyGen
 
-The policy generator kustomize plugin consumes the policygenerator library and PolicyGenTemplate as a kustomize plugin. The PolicyGen library is used to facilitate creating RHACM policies based on a set of provided source CRs (custom resources) and PolicyGenTemplates. Each PGT describes how to customize those source CRs. The plugin helps to generate the following RHACM resources:
+The policy generator kustomize plugin is used to facilitate creating RHACM policies based on a set of provided source CRs (custom resources) and PolicyGenTemplates. Each PGT describes how to customize those source CRs. The plugin helps to generate the following RHACM resources:
 
 * Policy.
 * PlacementRule.
@@ -107,4 +107,4 @@ TALM manages the deployment of Red Hat Advanced Cluster Management (RHACM) polic
 * The set of policies remediated to the cluster.
 * The order of policies remediated to the cluster.
 
-TALM supports the orchestration of the OpenShift Container Platform y-stream and z-stream updates, and day-two operations on y-streams and z-streams.
+TALM supports the orchestration of the OpenShift Container Platform y-stream and z-stream updates, day-two operator y-stream and z-stream updates, and configuration updates.

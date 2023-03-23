@@ -14,11 +14,26 @@ RAN deployments usually run on top of baremetal servers, and as such, is of vita
 
 NOTE: Depending on your hardware vendor the naming of the following features may vary.
 
+* HyperTransport `Enabled`
+* UEFI `Enabled`
 * CPU Power and Performance Policy must be set to `Performance`.
-* Energy efficiency settings must be set to `Disabled`.
+* Uncore Frequency Scaling `Disabled`
+* Uncore Frequency `maximum`
+* Performance P-limit `Disabled`
+* Enhanced Intel(r) SpeedStep Tech `Enabled`
+* Intel(r) Turbo Boost Technology `Enabled`
+* Intel(r) Configurable TDP `Enabled`
+* Configurable TDP Level `Level 2`
+* Energy Efficient Turbo `Disabled`
+* Hardware P-States `Enabled` or `Disabled`. Enable P-state to allow power saving. Disable to optimize for performance.
+* Package C-State `C0/C1 state`
+* C1E `Disabled`
+* Processor C6 `Disabled`
+* Sub-NUMA Clustering `Disabled`.
 * SR-IOV and VT-D must be set to `Enabled`.
-* Boot Mode must be set to `UEFI`.
 * Storage should be configured with a `RAID1` at least.
+
+https://docs.openshift.com/container-platform/4.12/scalability_and_performance/ztp_far_edge/ztp-vdu-validating-cluster-tuning.html#ztp-du-firmware-config-reference_vdu-config-ref[Reference 4.12 documentation]
 
 [#networking]
 == Networking
@@ -65,33 +80,39 @@ In our Git repository we will have the following folder structure:
 .
 ├── site-configs
 │   ├── hub-1
+│   │   └── pre-reqs
+│   │       └── sno2
 │   ├── ...
 │   ├── hub-n
-│   ├── pre-reqs
-│   │   └── sno2
 │   └── resources
 └── site-policies
     ├── fleet
     │   ├── active
-    │   └── testing
+    │   │   ├── common.yaml
+    │   │   └── group.yaml
+    │   ├── testing
+    │   │   ├── common.yaml
+    │   │   └── group.yaml
     │   └── resources
+    │       └── ns.yaml
     └── sites
         └── hub-1
         └── ...
         └── hub-n
 ----
 
-We know that a hub cluster can manage thousands of spoke clusters. This Git structure helps us to scale easily the number of hub cluster that we are managing. In the lab, as we can see in the previous figure, only a managed cluster (SNO2) is managed by one hub cluster (hub-1). This structure makes much easier knowing which clusters are being managed by each hub. 
+We know that a hub cluster can manage thousands of spoke clusters. This Git structure helps us to scale easily the number of hub cluster that we are managing. In the lab, as we can see in the previous figure, only a managed cluster (SNO2) is managed by one hub cluster (hub-1). This structure makes much easier knowing which clusters are being managed by each hub and simplifies the subscriptions needed on each hub cluster.
 
 * `site-configs`: This folder is used to store the different SiteConfigs describing the environments we will deploy through ZTP.
-** `hub-1`: This folder contains all the provisioning configuration (siteConfig) for each cluster that is managed by the hub cluster called hub-1.  Notice that multiple hub clusters (hub-n) folders can be created and under each folder a siteConfig definition of a cluster managed by the hub is stored.
+** `hub-1`: This folder contains all the provisioning configuration (siteConfig) for each cluster that is managed by the hub cluster called hub-1.  Notice that multiple hub clusters (hub-n) folders can be created and under each folder a siteConfig definition of a cluster managed by the hub is stored. The organization of files under the hub-n directory is up to the user. SiteConfig and pre-req (pull secrets, bmc credentials, etc) can be grouped into sub-directories if/as needed.
 ** `pre-reqs`: This folder is used to store the different configurations that are required for the deployment of the environments, things like: pull secrets, bmc credentials, etc.
 
-* `site-policies`: This folder has different sub-folders storing different sets of PolicyGenTemplates.
-** `fleet`: This folder contains all the common configuration for all the different environments and clusters.
+* `site-policies`: This folder has different sub-folders storing different sets of PolicyGenTemplates. The naming of the sub-folders is flexible and should reflect meaningful "sets" of configuration for the fleet of clusters.
+** `fleet`: This folder contains all configuration that applies to more than one cluster for all the different environments.
 *** `active`: This folder is used to store PolicyGenTemplates that apply to all clusters in the active environment.
 *** `testing`:  This folder is used to store PolicyGenTemplates that apply to all clusters in the testing environment.
 ** `sites`: This folder is used to store PolicyGenTemplates that specifically apply only to a cluster.
 ** `hub-1`: This folder is used to store PolicyGenTemplates that specifically apply only to a cluster managed by a particular hub. Notice that multiple hub clusters (hub-n) folders can be created and under each folder a specific configuration of a cluster managed by the hub is stored.
+Note that instead of using "active" and "testing" these directories may represent multiple versions of a customer's solution, with half the fleet bound to version-A and the other half bound to version-B.
 
 A remarkable point with this new structure is that creating new environments and moving one or multiple clusters from one to another is very simple. In case of creating a new environment, we just need to copy the proper folder (active or testing) under the fleet folder to a new one, for instance, called qe. Then, we apply the desired changes to qe and select our managed cluster to be configured as a qe environment. This is done by adjusting the cluster or siteConfig cluster labels, concretely, one called `logicalGroup``.

@@ -22,6 +22,8 @@ There are two Kustomize plugins, we refer to them as PolicyGenTool, but each has
 
 As we already said, PolicyGenTool is a collection of Kustomize plugins. Kustomize plugins work as described below.
 
+IMPORTANT: When installing these tools in ArgoCD running on a hub cluster the configuration described in this section is handled automatically. The ArgoCD operator will find the plugin binaries and use them to generate CRs from SiteConfig and PolicyGenTemplates. This section is provided as background/reference.
+
 The user has a path configured in Kustomize for plugins (defaults to `~/.config/kustomize/plugin/`), inside this path different folders are configured in a way that Kustomize can understand what plugin needs to be executed under which situation. Let's explain this.
 
 If we look at this `kustomization.yaml`:
@@ -85,7 +87,7 @@ IMPORTANT: A high level view of the installation and configuration workflow can 
 
 The Red Hat CNF team has crafted specific configurations to improve the performance on clusters running RAN workloads. All the configurations described below are expected to be present in a cluster where RAN workloads are expected to run.
 
-TIP: Some of these configurations are configured at install time (through the use of extra-manifests during the installation) and others are configured as a day2ops automatically after the cluster joins the RHACM Hub.
+TIP: Some of these configurations are configured at install time (through the use of extra-manifests during the installation) and others are configured through Policy automatically after the cluster joins the RHACM Hub.
 
 image::pgt_ran_du_profile.png[validated vRAN DU profile]
 
@@ -222,12 +224,12 @@ https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/sourc
 [#siteconfig-templating]
 == SiteConfig Templating
 
-The SiteConfig templating is pretty straightforward, whatever information we put into our SiteConfig manifest will be translated to the required manifests to quick off the cluster installation. You can find a SiteConfig example https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml[here].
+The SiteConfig templating is pretty straightforward, whatever information we put into our SiteConfig manifest will be translated to the required manifests to initiate the cluster installation. You can find a SiteConfig example https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml[here].
 
 [#policies-templating]
 == Policies Templating
 
-Policies templating is a bit different, we have a set of policy templates, known as source-crs, that we can use. This set of policies can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/source-crs[here].
+Policies templating is a bit different, we have a set of base configuration CRs, known as source-crs, that we can use. This set of CRs can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/source-crs[here].
 
 If you access this link you will see lots of files, like for example:
 
@@ -235,9 +237,9 @@ If you access this link you will see lots of files, like for example:
 * AmqInstance.yaml
 * etc.
 
-The way the templating works is a follows:
+These CRs are referenced (by filename) from the PolicyGenTemplate CRs in git. The PolicyGenTemplate CRs act as a manifest of which configuration CRs should be included and how they should be combined into Policy CRs. In addition the PolicyGenTemplate can contain an "overlay" (or patch) that is applied to the CR before it is wrapped into the Policy.
 
-We will have one or more PolicyGenTemplates where we will reference these policy templates. We can see an example https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml[here].
+The way this works is a follows. We will have one or more PolicyGenTemplates where we will reference these base configuration CRs. We can see an example https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml[here].
 
 Let's use the following PolicyGenTemplate as example.
 
@@ -269,13 +271,13 @@ spec:
               count: 32
 ----
 
-We can see that the PolicyGenTemplate is targeting two policy templates: `SriovOperatorConfig.yaml` and `PerformanceProfile.yaml`.
+We can see that the PolicyGenTemplate is targeting two base configuration CRs: `SriovOperatorConfig.yaml` and `PerformanceProfile.yaml`.
 
-The first template `SriovOperatorConfig.yaml` is not overriding any settings, we can tell this because we don't have a `spec` or `metadata` section below the `policyName`. That means that the final policy will be configured as the https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/SriovOperatorConfig.yaml[source template file].
+The first source CR, `SriovOperatorConfig.yaml`, is not overriding any settings, we can tell this because we don't have a `spec` or `metadata` section below the `policyName`. That means that the final policy will include the configuration CR without modification ( https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/SriovOperatorConfig.yaml[base SriovOperatorConfig configuration CR]).
 
-The second template `PerformanceProfile.yaml` is overriding some parameters in the `spec`. That means that the final policy will be configured as a merge of the https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/PerformanceProfile.yaml[original template] plus the custom overrides we provided in the PolicyGenTemplate.
+The second source CR, `PerformanceProfile.yaml`, is overriding some parameters in the `spec`. That means that the final policy will be configured as a merge of the https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/PerformanceProfile.yaml[original CR] plus the custom overrides we provided in the PolicyGenTemplate.
 
-CAUTION: Inside the templates we can often see references to what may appear variables like `$size`, `$count`, etc. These are not vars, that actually tells the Kustomize plugin to remove that line from the output if no value was provided as an override. The only variable that is referenced and is actually substituted is the `$mcp` variable that will be replaced with the value of the same property defined in the PolicyGenTemplate.
+CAUTION: Inside the templates we can often see references to what may appear variables like `$size`, `$count`, etc. These are not vars, that actually tells the policyGen plugin to remove that line from the output if no value was provided as an override. The only variable that is referenced and is actually substituted is the `$mcp` variable that will be replaced with the value of the same property defined in the PolicyGenTemplate.
 
 [#kustomize-plugins-locally]
 == Running Kustomize Plugins Locally

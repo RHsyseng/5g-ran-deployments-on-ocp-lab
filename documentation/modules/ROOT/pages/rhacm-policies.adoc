@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-As we mentioned in the link:ztp-workflow.html[ZTP Workflow] section, the Red Hat Advanced Cluster Management (RHACM) for Kubernetes allows us to _provision_ and _configure_ multiple clusters in a declarative way and can be easily coupled with GitOps. ZTP makes intensive use of RHACM Policies for managing the configuration of deployed clusters. In our telco use case, creation of these `Policies` is simplified with the ZTP policyGen kustomize plugin. This plugin translates the vRAN DU profile based on `PolicyGenTemplates` into multiple `Policies` that are understood by the hub cluster and applied to the managed clusters.
+As we mentioned in the link:ztp-workflow.html[ZTP Workflow] section, the Red Hat Advanced Cluster Management (RHACM) for Kubernetes allows us to _provision_ and _configure_ multiple clusters in a declarative way and can be easily coupled with GitOps. ZTP and ongoing configuration updates makes intensive use of RHACM Policies for managing the configuration of deployed clusters. In our telco use case, creation of these `Policies` is simplified with the policyGen kustomize plugin. This plugin translates the vRAN DU profile based on `PolicyGenTemplates` into multiple `Policies` that are understood by the hub cluster and applied to the managed clusters.
 
 In this section, we provide an introduction to the concepts behind the https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.7/html/governance/governance[RHACM "Governance" pillar]. Furthermore, we are going to introduce the concept of a policy, which is key for managing the configuration lifecycle of our fleet of clusters.
 
@@ -13,7 +13,7 @@ image::rhacm_section_governance.png[Governance section]
 [#policy-framework]
 == Policy framework
 
-Policies are comprised into the policy framework. The policy framework provides governance capability to gain visibility, and drive remediation for various security and configuration aspects to help meet such enterprise standards. Basically, it provides an extensible policy framework for enterprises to harden security for software engineering, secure engineering, and resiliency. 
+Policies are comprised into the policy framework. The policy framework provides governance capability to gain visibility, and drive remediation for various security and configuration aspects to help meet such enterprise standards. Basically, it provides an extensible policy framework for enterprises to harden security for software engineering, secure engineering, and resiliency.
 
 Below are the functions of the policy framework:
 
@@ -26,7 +26,7 @@ In the next picture you can see the communication flow and the multiple componen
 
 image::policy-framework-architecture-diagram.jpg[Policy framework architecture]
 
-At a glance, once we create a policy in the hub cluster, the Governance Policy framework is responsible for propagating it to set of target managed clusters based on a set of binding rules for the policy. Then, the policy rules are evaluated against the current state of the managed cluster. The results of this assessment are sent back to the hub cluster and depending on the needs, we can remediate the drift or just be informed.
+At a glance, once we create a policy in the hub cluster, the Governance Policy framework is responsible for propagating it to the set of target managed clusters based on a set of binding rules for the policy. Then, the policy rules are evaluated against the current state of the managed cluster. The results of this assessment are sent back to the hub cluster and depending on the needs, we can remediate the drift or just be informed.
 
 [#policies]
 == Policies
@@ -150,7 +150,7 @@ Policies can be enabled or disabled by setting the _disabled_ parameter value to
 [#policy-remediation]
 === Policy Remediation
 
-As we will detail in the following section link:managing-at-scale.html#inform-policies["Managing at Scale"], `PolicyGenTemplates` are by default set to generate Policies in inform mode. 
+As we will detail in the following section link:managing-at-scale.html#inform-policies["Managing at Scale"], for the solution presented in this lab the`PolicyGenTemplates` are by default set to generate Policies in inform mode.
 
 Policy controllers periodically (as set by evaluationInterval) check policies against the current state of CRs on the target clusters. This check sets the Policy to either the Compliant or NonCompliant state. When the policy is set to inform, a report of the violations is created. However, when the controller is set to enforce a report is created _and_ violations are remediated as specified in the policy.
 
