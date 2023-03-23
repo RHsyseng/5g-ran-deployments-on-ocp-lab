@@ -14,8 +14,8 @@ Traceability of changes in GitOps is no novelty in itself as this approach is al
 Although there is no precise definition or agreed upon set of rules, the following principles are an approximation of what constitutes a GitOps practice:
 
 * Declarative description of the system is stored in Git (cluster definition, configuration, tuning, etc).
-* Changes to the state are made via pull requests and reviewed before merging
-* Continuous integration reconciles "Git push" content in the Git repository with the state of the running system
+* Changes to the state are made via pull requests and reviewed before merging.
+* Continuous integration reconciles "Git push" content in the Git repository with the state of the running system.
 
 [#gitops-principles]
 === GitOps Principles

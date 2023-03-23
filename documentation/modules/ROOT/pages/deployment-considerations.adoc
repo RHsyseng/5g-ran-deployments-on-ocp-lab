@@ -58,8 +58,8 @@ When preparing a Git repository for running ZTP deployments we identified two po
 
 In our Git repository we will have the following folder structure:
 
-[.console-input]
-[source,bash,subs="attributes+,+macros"]  
+[console-input]
+[source,console,subs="attributes+,+macros"]  
 ----
 
 .

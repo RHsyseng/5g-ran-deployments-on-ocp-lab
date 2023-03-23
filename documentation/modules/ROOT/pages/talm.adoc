@@ -22,7 +22,7 @@ IMPORTANT: TALM enables us to select the timing and the clusters where the confi
 
 The Topology Aware Lifecycle Manager (TALM) builds the remediation plan from the `ClusterGroupUpgrade` (CGU) custom resource for a group of clusters. You can define the following specifications in a ClusterGroupUpgrade CR. Note that this is a CGU CR that enforces an OpenShift release upgrade which was previously set by a policy called _du-upgrade-platform-upgrade_ defined in the managedPolicies spec.
 
-[.console-input]
+[console-input]
 [source,yaml,subs="attributes+,+macros"]
 -----
 apiVersion: ran.openshift.io/v1alpha1
@@ -81,7 +81,7 @@ In essence, the ztp-done label will be applied when the cluster is fully ready f
 
 A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every link:policygen-deepdive.html#policies-templating[policy] generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the link:https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/SriovSubscriptionNS.yaml[SriovSubscriptionNS.yaml]:
 
-[.console-input]
+[console-input]
 [source,yaml,subs="attributes+,+macros"]
 -----
 apiVersion: v1
@@ -108,7 +108,7 @@ image::talm_precache.png[ACM architecture]
 
 By enabling precache feature and disable the CGU, as shown in the following code snippet, the first thing is going to happen is pull all the container images required for the OCP release we are about to upgrade in the target cluster. So, we will have all required images already downloaded in our container-storage location, by default '/var/lib/containers', before even starting the upgrade task.
 
-[.console-input]
+[console-input]
 [source,yaml,subs="attributes+,+macros"]
 -----
 apiVersion: ran.openshift.io/v1alpha1
@@ -151,7 +151,7 @@ WARNING: It is highly recommended to create a recovery partition at install time
 
 Below we can see the same CGU shown in the previous section, but this time the CGU is enabled. So, if the CGU and backup specs are enabled, then backup task is executed prior to the platform upgrade. If the backup finishes successfully, the upgrade task is started.
 
-[.console-input]
+[console-input]
 [source,yaml,subs="attributes+,+macros"]
 -----
 apiVersion: ran.openshift.io/v1alpha1

@@ -20,8 +20,8 @@ Both the registry and Git repository are running in the hypervisor host as conta
 podman ps
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 CONTAINER ID  IMAGE                            COMMAND               CREATED       STATUS           PORTS                                         NAMES
 e7cf765660a3  quay.io/mavazque/registry:2.7.1  /etc/docker/regis...  24 hours ago  Up 24 hours ago                                                registry
@@ -39,7 +39,7 @@ In the lab we are going to provision and configure a SNO cluster named SNO2. Let
 kcli list vm
 -----
 
-[.console-input]
+[console-input]
 [source,console]
 -----
 +---------------+--------+----------------+------------------------------------------------------+-------------+---------+
@@ -66,8 +66,8 @@ export KUBECONFIG=hub-kubeconfig
 oc get clusterversion
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 version   4.11.13   True        False         22h     Cluster version is 4.11.13
@@ -79,8 +79,8 @@ version   4.11.13   True        False         22h     Cluster version is 4.11.13
 oc get nodes
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 NAME           STATUS   ROLES           AGE   VERSION
 ocp-master-0   Ready    master,worker   23h   v1.24.6+5157800
@@ -94,8 +94,8 @@ ocp-master-2   Ready    master,worker   23h   v1.24.6+5157800
 oc get operators
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 NAME                                                   AGE
 advanced-cluster-management.open-cluster-management    22h
@@ -111,8 +111,8 @@ topology-aware-lifecycle-manager.openshift-operators   22h
 oc get catalogsources -A
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 NAMESPACE               NAME                    DISPLAY   TYPE   PUBLISHER   AGE
 openshift-marketplace   redhat-operator-index             grpc               23h
@@ -129,8 +129,8 @@ Verify that the OpenShift API and the apps domain (wildcard) can be resolved.
 dig +short api.hub.5g-deployment.lab
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 192.168.125.10
 -----
@@ -141,8 +141,8 @@ dig +short api.hub.5g-deployment.lab
 dig +short oauth-openshift.apps.hub.5g-deployment.lab
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 192.168.125.11
 -----
@@ -160,8 +160,8 @@ First, check using `oc` binary the status of all the Argo applications. You can 
 oc get applications -A
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 NAMESPACE          NAME                       SYNC STATUS   HEALTH STATUS
 openshift-gitops   clusters                   OutOfSync     Healthy
@@ -209,8 +209,8 @@ First, check if the BMC is ready so the server can be started remotely from the 
 curl -k https://192.168.125.1:9000/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 {
     "@odata.type": "#ComputerSystem.v1_1_0.ComputerSystem",
@@ -238,8 +238,8 @@ If the server is up, but the installation is not progressing we may check a coup
 oc get bmh -A
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 NAMESPACE               NAME                     STATE                    CONSUMER             ONLINE   ERROR   AGE
 openshift-machine-api   hub-ctlplane-0           externally provisioned   hub-7tjlv-master-0   true             24h
@@ -257,8 +257,8 @@ Verify that the ISO image has been without errors by checking the `InfraEnv` and
 oc get infraenv -A
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 NAMESPACE   NAME   ISO CREATED AT
 sno1        sno1   2023-03-01T10:08:09Z
@@ -271,8 +271,8 @@ sno2        sno2   2023-03-02T10:26:06Z
 oc get infraenv sno2 -n sno2 -oyaml
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,yaml]
 -----
 apiVersion: agent-install.openshift.io/v1beta1
 kind: InfraEnv
@@ -291,7 +291,7 @@ oc get bmh sno2.5g-deployment.lab -n sno2 -o yaml
 -----
 
 [.console-input]
-[source,bash]
+[source,yaml]
 -----
 apiVersion: metal3.io/v1alpha1
 kind: BareMetalHost
@@ -320,7 +320,7 @@ oc get policies -A
 -----
 
 [.console-input]
-[source,bash]
+[source,console]
 -----
 NAMESPACE      NAME                                           REMEDIATION ACTION   COMPLIANCE STATE   AGE
 sno2           ztp-policies.common-operator-catalog-411       inform                                  14m
@@ -355,8 +355,8 @@ In cases where the Governance console shows policies already assigned to SNO2, w
 oc get pods -n openshift-operators
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 NAME                                                        READY   STATUS    RESTARTS      AGE
 cluster-group-upgrades-controller-manager-b757bcdb9-46xtx   2/2     Running   1 (24h ago)   24h
@@ -371,8 +371,8 @@ Next, we can verify that a `ClusterGroupUpgrade` CR was created automatically by
 oc get cgu -A
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 NAMESPACE     NAME   UPGRADE STATE         AGE
 ztp-install   sno2   UpgradeNotCompleted   2m27s
@@ -386,8 +386,8 @@ Describing the CGU shows a lot of information about the current status of the co
 oc get cgu -n ztp-install sno2 -oyaml
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,yaml]
 -----
 apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
@@ -427,8 +427,8 @@ Verfiy that now there are two times the number of policies in the hub cluster. T
 oc get policies -A
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 NAMESPACE      NAME                                                    REMEDIATION ACTION   COMPLIANCE STATE   AGE
 sno2           ztp-install.sno2-common-operator-catalog-411-2rtdv      enforce              Compliant          6m8s

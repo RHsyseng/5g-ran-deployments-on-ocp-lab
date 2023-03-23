@@ -21,7 +21,7 @@ IMPORTANT: Below commands must be executed from the workstation host if not spec
 oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get operators
 -----
 
-[.console-input]
+[console-input]
 [source,bash]
 -----
 NAME                                                   AGE
@@ -41,7 +41,7 @@ Next, double check there is no problem with the Pod. Notice that the name of the
 oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get pods,sa,deployments -n openshift-operators
 -----
 
-[.console-input]
+[console-input]
 [source,bash]
 -----
 NAME                                                           READY   STATUS    RESTARTS        AGE
@@ -71,7 +71,7 @@ WARNING: It's possible that you get `UpgradeNotCompleted`, if that's the case yo
 oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
 
-[.console-input]
+[console-input]
 [source,bash]
 -----
 NAMESPACE     NAME   AGE     STATE       DETAILS
@@ -162,7 +162,7 @@ Let's add the proper labels to the production cluster SNO1:
 oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig label managedcluster sno1 du-zone=europe logicalGroup=active
 -----
 
-[.console-input]
+[console-input]
 [source,bash]
 -----
 managedcluster.cluster.open-cluster-management.io/sno1 labeled
@@ -219,7 +219,7 @@ Once applied, we can see that the status moved to `PrecacheSpecIsWellFormed`. Th
 oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
 
-[.console-input]
+[console-input]
 [source,bash]
 -----
 NAMESPACE      NAME                 AGE     STATE                      DETAILS
@@ -237,7 +237,7 @@ WARNING: Notice that pre-cache job can take up to 5m to be created.
 oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig -n openshift-talo-pre-cache get job pre-cache
 -----
 
-[.console-input]
+[console-input]
 [source,bash]
 -----
 NAME        COMPLETIONS   DURATION   AGE
@@ -252,7 +252,7 @@ This job creates a Pod that will run the precache process. As we can see below, 
 oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/pre-cache -n openshift-talo-pre-cache -f
 -----
 
-[.console-input]
+[console-input]
 [source,bash]
 -----
 upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Release index image processing done
@@ -279,7 +279,7 @@ WARNING: It can take up to 5 minutes for the CGU to report the new state.
 oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
 
-[.console-input]
+[console-input]
 [source,bash]
 -----
 NAMESPACE      NAME                 AGE   STATE        DETAILS
@@ -306,7 +306,7 @@ Notice the CGU state moved to `InProgress`, which means, the upgrade process has
 oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
 
-[.console-input]
+[console-input]
 [source,bash]
 -----
 NAMESPACE      NAME                 AGE    STATE        DETAILS
@@ -324,7 +324,7 @@ WARNING: Notice that backup job can take up to 5m to be created.
 oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig get jobs -A
 -----
 
-[.console-input]
+[console-input]
 [source,bash]
 -----
 NAMESPACE                              NAME                                                              COMPLETIONS   DURATION   AGE
@@ -345,7 +345,7 @@ This job basically runs a Pod that will execute a recovery procedure and will st
 oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/backup-agent -n openshift-talo-backup -f
 -----
 
-[.console-input]
+[console-input]
 [source,bash]
 -----
 INFO[0000] ------------------------------------------------------------ 
@@ -398,7 +398,7 @@ Once backups are finished for all clusters, the CGU state will move to `BackupCo
 oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
 
-[.console-input]
+[console-input]
 [source,bash]
 -----
 NAMESPACE      NAME                 AGE    STATE             DETAILS
@@ -414,7 +414,7 @@ At this point, if we connect to any of our spoke clusters we can see that the up
 oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig get clusterversion,nodes
 -----
 
-[.console-input]
+[console-input]
 [source,bash]
 -----
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
@@ -440,8 +440,8 @@ Finally, our clusters are upgraded:
 oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig get clusterversion,nodes
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.12.5    True        False         9m13s   Cluster version is 4.12.5
@@ -456,8 +456,8 @@ node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   5h56m   v1.
 oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig get clusterversion,nodes
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.12.5    True        False         33m     Cluster version is 4.12.5
@@ -476,8 +476,8 @@ And finally, the CGU will be `Completed`:
 oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
 
-[.console-input]
-[source,bash]
+[console-input]
+[source,console]
 -----
 NAMESPACE      NAME                 AGE     STATE       DETAILS
 ztp-install    sno2                 5h26m   Completed   All clusters are compliant with all the managed policies
