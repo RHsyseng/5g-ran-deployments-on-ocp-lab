@@ -6,7 +6,7 @@ include::_attributes.adoc[]
 
 * A *Git repository* that declares the `SiteConfig` resource, e.g. how the cluster is provisioned, and one or multiple `PolicyGenTemplates` (PGT) resources that defines how the cluster is configured. This includes, the operators that are going to be installed, the configuration to be applied and the applications to be deployed. Notice that a Git repository is a must in any GitOps methodology.
 * *Red Hat Advanced Cluster Management* installed on the hub cluster, at the heart of the architecture.
-* The *OpenShift GitOps* operator which needs to be patched to include a couple of required kustomize plugins: `siteconfig-generator` and `policy-generator` .
+* The *OpenShift GitOps* operator which needs to be patched to include a couple of required kustomize plugins: `siteconfig-generator` and `policy-generator`.
 * The *Assisted Service* operator, now called Infrastructure operator. In previous releases it was required to be installed indidually, but now it is part of the Multicluster Engine operator which is a prerequisite for RHACM.
 * The *Topology Aware Lifecycle Manager* (TALM) responsible for managing the software lifecycle of the managed clusters.
 
@@ -94,7 +94,7 @@ The policy generator kustomize plugin consumes the policygenerator library and P
 
 Topology Aware Lifecycle Manager operator is a Kubernetes operator that facilitates software lifecycle management of fleets of clusters. It uses Red Hat Advanced Cluster Management (RHACM) for performing changes on target clusters, in particular by using RHACM policies. TALM Operator uses the following CRDs:
 
-* ClusterGroupUpgrade
+* ClusterGroupUpgrade.
 
 IMPORTANT: Topology Aware Lifecycle Manager is a Technology Preview feature only.
 

@@ -10,23 +10,23 @@ Once the ZTP GitOps Pipeline starts deploying our clusters we can follow the ins
 WARNING: It may take a while for the installation to start, wait at least 10 minutes if you see `The cluster is not ready for installation` message or the `SNO2` cluster shows up as `draft`.
 
 1. Access the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome[RHACM WebUI] and login with the OpenShift credentials.
-2. Once you're in, click on `Infrastructure` -> `Clusters`. You will see a screen like the one below if the deployment has not yet started:
+2. Once you're in, click on `Infrastructure` -> `Clusters`. You will see a screen like the one below if the deployment has not yet started.
 +
 image::acm-clusterview-draft.png[RHACM Cluster View Draft]
 +
-3. Eventually, the `SNO2` cluster will start its deployment:
+3. Eventually, the `SNO2` cluster will start its deployment.
 +
 image::acm-clusterview.png[RHACM Cluster View]
 +
-4. In order to check the deployment status of the `sno2` cluster, click on `sno2` and you will get presented this screen:
+4. In order to check the deployment status of the `sno2` cluster, click on `sno2` and you will get presented this screen.
 +
 image::acm-sno2-view.png[RHACM sno2 Cluster View]
 +
-5. You can follow the progress here, if you want to get extra details you can click on `View Cluster Events` and you should see more information:
+5. You can follow the progress here, if you want to get extra details you can click on `View Cluster Events` and you should see more information.
 +
 image::acm-sno2-clusterevents.png[RHACM sno2 Cluster Events]
 +
-6. Deployment will eventually finish:
+6. Deployment will eventually finish.
 +
 image::acm-sno2-install-completed.png[RHACM sno2 Cluster Deployment Finished]
 
@@ -35,7 +35,7 @@ image::acm-sno2-install-completed.png[RHACM sno2 Cluster Deployment Finished]
 
 IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
 
-1. Check the `AgentClusterInstall` for SNO2 cluster
+1. Check the `AgentClusterInstall` for SNO2 cluster.
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -50,7 +50,7 @@ NAME   CLUSTER   STATE
 sno2   sno2      finalizing
 -----
 +
-2. In case you want expanded information like we saw in the WebUI you can check the conditions of the `AgentClusterInstall` object. For example, while installing:
+2. In case you want expanded information like we saw in the WebUI you can check the conditions of the `AgentClusterInstall` object. For example, while installing.
 +
 [console-input]
 [source,console,subs="attributes+,+macros"]
@@ -65,7 +65,7 @@ sno2   sno2      finalizing
   type: Completed
 -----
 +
-3. Once installed:
+3. Once installed.
 +
 [console-input]
 [source,console,subs="attributes+,+macros"]

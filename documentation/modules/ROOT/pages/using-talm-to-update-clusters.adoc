@@ -22,7 +22,7 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get operators
 -----
 
 [console-input]
-[source,bash]
+[source,console]
 -----
 NAME                                                   AGE
 advanced-cluster-management.open-cluster-management    16h
@@ -42,7 +42,7 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get pods,sa,deployments -n op
 -----
 
 [console-input]
-[source,bash]
+[source,console]
 -----
 NAME                                                           READY   STATUS    RESTARTS        AGE
 pod/cluster-group-upgrades-controller-manager-6d6fc98d-6cnf9   2/2     Running   1 (2d14h ago)   2d14h
@@ -72,7 +72,7 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
 
 [console-input]
-[source,bash]
+[source,console]
 -----
 NAMESPACE     NAME   AGE     STATE       DETAILS
 ztp-install   sno2   3h29m   Completed   All clusters are compliant with all the managed policies
@@ -154,7 +154,7 @@ WARNING: Notice in the following picture that there are policies not applying to
 
 image::talm_upgrade_policy_01.png[TALM upgrade policy 1]
 
-Let's add the proper labels to the production cluster SNO1:
+Let's add the proper labels to the production cluster SNO1.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -163,7 +163,7 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig label managedcluster sno1 du-
 -----
 
 [console-input]
-[source,bash]
+[source,console]
 -----
 managedcluster.cluster.open-cluster-management.io/sno1 labeled
 -----
@@ -220,7 +220,7 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
 
 [console-input]
-[source,bash]
+[source,console]
 -----
 NAMESPACE      NAME                 AGE     STATE                      DETAILS
 ztp-install    sno2                 3h40m   Completed                  All clusters are compliant with all the managed policies
@@ -238,7 +238,7 @@ oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig -n openshift-talo-pre-cache 
 -----
 
 [console-input]
-[source,bash]
+[source,console]
 -----
 NAME        COMPLETIONS   DURATION   AGE
 pre-cache   0/1           64s        64s
@@ -253,7 +253,7 @@ oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/pre-cache -n opensh
 -----
 
 [console-input]
-[source,bash]
+[source,console]
 -----
 upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Release index image processing done
 58ff6e48f95bf6b444150290f481ad6fc6051e76defccf3611bdc2f9ddc1cccc
@@ -280,7 +280,7 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
 
 [console-input]
-[source,bash]
+[source,console]
 -----
 NAMESPACE      NAME                 AGE   STATE        DETAILS
 ztp-install    sno2                 4h    Completed    All clusters are compliant with all the managed policies
@@ -307,7 +307,7 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
 
 [console-input]
-[source,bash]
+[source,console]
 -----
 NAMESPACE      NAME                 AGE    STATE        DETAILS
 ztp-install    sno2                 4h6m   Completed    All clusters are compliant with all the managed policies
@@ -325,7 +325,7 @@ oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig get jobs -A
 -----
 
 [console-input]
-[source,bash]
+[source,console]
 -----
 NAMESPACE                              NAME                                                              COMPLETIONS   DURATION   AGE
 assisted-installer                     assisted-installer-controller                                     1/1           38m        4h47m
@@ -346,7 +346,7 @@ oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/backup-agent -n ope
 -----
 
 [console-input]
-[source,bash]
+[source,console]
 -----
 INFO[0000] ------------------------------------------------------------ 
 INFO[0000] Cleaning up old content...                   
@@ -399,7 +399,7 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A
 -----
 
 [console-input]
-[source,bash]
+[source,console]
 -----
 NAMESPACE      NAME                 AGE    STATE             DETAILS
 ztp-install    sno2                 4h9m   Completed         All clusters are compliant with all the managed policies
@@ -415,7 +415,7 @@ oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig get clusterversion,nodes
 -----
 
 [console-input]
-[source,bash]
+[source,console]
 -----
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.12.3    True        True          4m2s    Working towards 4.12.5: 213 of 829 done (25% complete), waiting on config-operator, machine-api

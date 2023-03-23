@@ -46,8 +46,8 @@ Connected through proxy environments do not require extra infrastructure compone
 
 When there is no connection to the Internet we need to mirror the required artifacts to run an OpenShift installation in our infrastructure. The required infrastructure components will be:
 
-* HTTP Server to store RHCOS artifacts (images, rootfs, etc.)
-* Container Registry to store OCP and OLM images
+* HTTP Server to store RHCOS artifacts (images, rootfs, etc).
+* Container Registry to store OCP and OLM images.
 
 In a future section we will cover the deployment and mirroring of the required bits.
 
