@@ -6,7 +6,7 @@ The deployment (ZTP), configuration, and lifecycle management solution is built 
 
 * A *Git repository* that declares the `SiteConfig` resource, e.g. how the cluster is provisioned, and one or multiple `PolicyGenTemplates` (PGT) resources that defines how the cluster is configured. This includes, the operators that are going to be installed, the configuration to be applied and the applications to be deployed. Notice that a Git repository is a must in any GitOps methodology.
 * *Red Hat Advanced Cluster Management* installed on the hub cluster, at the heart of the architecture.
-* The *Red Hat OpenShift GitOps* operator which is extended with a couple of required kustomize plugins: `siteconfig-generator` and `policy-generator` .
+* The *Red Hat OpenShift GitOps* operator which is extended with a couple of required kustomize plugins: `siteconfig-generator` and `policy-generator`.
 * The *Assisted Service* operator, now called Infrastructure operator. In previous releases it was required to be installed indidually, but now it is part of the Multicluster Engine operator which is a prerequisite for RHACM.
 * The *Topology Aware Lifecycle Manager* (TALM) responsible for managing the software lifecycle of the managed clusters.
 
