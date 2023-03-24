@@ -16,7 +16,7 @@ In Edge deployments where potentially disruptive events must be carefully manage
 [#olm-subscriptions]
 == OLM Subscriptions
 
-Additional functionality for OpenShift clusters can be provided through use of optional operators installed on the cluster. These operators are installed and managed through use of an OLM Subscription CR. Operators are stored in a registry which is periodically updated with new versions of the operator. The Subscription CR may be set to automatically install new versions as they become available, or to a _manual_ mode which requires approval before new versions are installed.
+Additional functionality for OpenShift clusters can be provided through use of optional (day-two) operators installed on the cluster. These operators are installed and managed through use of an OLM Subscription CR. Operators are stored in a registry which is periodically updated with new versions of the operator. The Subscription CR may be set to automatically install new versions as they become available, or to a _manual_ mode which requires approval before new versions are installed.
 
 For the same reasons described earlier, the reference configurations for RAN 5G deployments sets Subscription CRs to _manual_ mode to ensure that operator updates occur only when cluster administrators explicitly allow them. Similar to the way in which Policies can be scheduled for enforcement, TALM gives cluster administrators the tools to automatically approve operator updates on selected clusters at specified times.
 

@@ -40,7 +40,7 @@
 *** xref:ocp-gitops.adoc#prs-review-cycles[Pull Requests and review cycles]
 ** xref:ocp-gitops.adoc#gitops-ocp[GitOps on OpenShift]
 
-* xref:ztp-at-scale.adoc[ZTP Components]
+* xref:ztp-at-scale.adoc[Hub Management Components]
 ** xref:ztp-at-scale.adoc#rhacm[Red Hat Advanced Cluster Management]
 *** xref:ztp-at-scale.adoc#mce[Multicluster Engine]
 *** xref:ztp-at-scale.adoc#ai[Infrastructure Operator]
