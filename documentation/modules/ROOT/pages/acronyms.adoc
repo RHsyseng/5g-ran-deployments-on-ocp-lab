@@ -1,0 +1,60 @@
+= Acronyms used in the lab
+include::_attributes.adoc[]
+:profile: 5g-ran-lab
+
+[cols="1,1"]
+|===
+|Acronym |Concept
+
+|BMC
+|Baseboard Management Controller
+
+|CNF
+|Cloud-native Network Functions
+
+|DPDK
+|Data Plane Development Kit
+
+|DU
+|Distributed Unit
+
+|FEC
+|Forward Error correction
+
+|GVK
+|Group Version Kind
+
+|MCE
+|Multicluster Engine for Kubernetes
+
+|NTO
+|Node Tuning Operator
+
+|PGT
+|PolicyGenTemplates
+
+|PMD
+|Poll Mode Driver
+
+|PTP
+|Precision Time Protocol
+
+|RAN
+|Radio Access Network
+
+|RU
+|Radio Units
+
+|SR-IOV
+|Single Root I/O Virtualization
+
+|TALM
+|Topology Aware Lifecycle Manager
+
+|VFs
+|Virtual Functions
+
+|vRAN
+|Virtualized Radio Access Networks
+
+|===

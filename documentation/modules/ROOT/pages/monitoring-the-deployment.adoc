@@ -29,6 +29,8 @@ image::acm-sno2-clusterevents.png[RHACM sno2 Cluster Events]
 +
 7. Deployment will eventually finish:
 +
+IMPORTANT: `SNO2` cluster installation takes around 50 minutes to complete.
++
 image::acm-sno2-install-completed.png[RHACM sno2 Cluster Deployment Finished]
 
 [#monitoring-deployment-cli]

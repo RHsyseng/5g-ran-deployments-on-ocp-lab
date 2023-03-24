@@ -5,6 +5,8 @@
 ** xref:introduction.adoc#lab-aim[Who is this lab aimed at? ]
 ** xref:introduction.adoc#lab-software-versions[Lab Software Versions]
 
+* xref:acronyms.adoc[Acronyms used in the lab]
+
 * xref:5g-ran-context.adoc[5G Ran Context]
 ** xref:5g-ran-context.adoc#low-latency[Low Latency]
 ** xref:5g-ran-context.adoc#numa-nodes[NUMA Nodes]

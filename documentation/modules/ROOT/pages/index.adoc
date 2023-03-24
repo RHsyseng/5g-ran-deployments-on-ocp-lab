@@ -37,7 +37,7 @@ IMPORTANT: This is not an official Red Hat Training. Please, contact with your R
 |Federico Ferrando
 |Lab Reviewer
 
-|Daniel Munne
+|Daniel Munné
 |Lab Reviewer
 
 |===

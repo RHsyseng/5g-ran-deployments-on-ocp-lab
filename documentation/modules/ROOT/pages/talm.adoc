@@ -28,7 +28,7 @@ The Topology Aware Lifecycle Manager (TALM) builds the remediation plan from the
 apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
 metadata:
-  name: ocp411-3
+  name: ocp-upgrade
   namespace: ztp-group-du-sno
 spec:
   preCaching: true #precache enabled before upgrade
@@ -118,7 +118,7 @@ By enabling precache feature without enabling the CGU, as shown in the following
 apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
 metadata:
-  name: du-upgrade-41018
+  name: du-upgrade
   namespace: ztp-group-du-sno
 spec:
   preCaching: true #precache configuration
@@ -161,7 +161,7 @@ Below we can see the same CGU shown in the previous section, but this time the C
 apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
 metadata:
-  name: du-upgrade-41018
+  name: du-upgrade
   namespace: ztp-group-du-sno
 spec:
   preCaching: true #precache was done

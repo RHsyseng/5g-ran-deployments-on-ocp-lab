@@ -57,12 +57,22 @@ kcli list vm
 [#hub]
 === Hub cluster
 
+Before working with `oc` commands you can enable command auto-completion by running:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+source <(oc completion bash)
+# Make it persistent
+oc completion bash >> /etc/bash_completion.d/oc_completion
+-----
+
 Check the status of the hub cluster.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-export KUBECONFIG=hub-kubeconfig
+export KUBECONFIG=~/hub-kubeconfig
 oc get clusterversion
 -----
 
@@ -122,6 +132,8 @@ openshift-marketplace   redhat-operator-index             grpc               23h
 === DNS resolution
 
 Verify that the OpenShift API and the apps domain (wildcard) can be resolved.
+
+IMPORTANT: `dig` command is not part of the standard linux utilities (you may need to install it), in RHEL-based systems is part of the `bind-utils` package.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
