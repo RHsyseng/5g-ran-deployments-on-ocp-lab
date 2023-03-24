@@ -10,7 +10,7 @@ Once the ZTP GitOps Pipeline starts deploying our clusters we can follow the ins
 WARNING: It may take a while for the installation to start, wait at least 10 minutes if you see `The cluster is not ready for installation` message or the `SNO2` cluster shows up as `draft`.
 
 1. Access the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome[RHACM WebUI] and login with the OpenShift credentials.
-2. On the top left corner click on `local-cluster` and choose `All Clusters` to enter the RHACM Console
+2. On the top left corner click on `local-cluster` and choose `All Clusters` to enter the RHACM Console.
 3. Once you're in, click on `Infrastructure` -> `Clusters`. You will see a screen like the one below if the deployment has not yet started:
 +
 image::acm-clusterview-draft.png[RHACM Cluster View Draft]
