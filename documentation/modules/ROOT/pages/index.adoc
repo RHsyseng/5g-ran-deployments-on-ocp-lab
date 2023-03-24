@@ -34,4 +34,10 @@ IMPORTANT: This is not an official Red Hat Training. Please, contact with your R
 |Rob Fisher
 |Lab Reviewer
 
+|Federico Ferrando
+|Lab Reviewer
+
+|Daniel Munne
+|Lab Reviewer
+
 |===

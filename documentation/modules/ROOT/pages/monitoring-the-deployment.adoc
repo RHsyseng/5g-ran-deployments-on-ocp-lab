@@ -10,23 +10,24 @@ Once the ZTP GitOps Pipeline starts deploying our clusters we can follow the ins
 WARNING: It may take a while for the installation to start, wait at least 10 minutes if you see `The cluster is not ready for installation` message or the `SNO2` cluster shows up as `draft`.
 
 1. Access the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome[RHACM WebUI] and login with the OpenShift credentials.
-2. Once you're in, click on `Infrastructure` -> `Clusters`. You will see a screen like the one below if the deployment has not yet started:
+2. On the top left corner click on `local-cluster` and choose `All Clusters` to enter the RHACM Console
+3. Once you're in, click on `Infrastructure` -> `Clusters`. You will see a screen like the one below if the deployment has not yet started:
 +
 image::acm-clusterview-draft.png[RHACM Cluster View Draft]
 +
-3. Eventually, the `SNO2` cluster will start its deployment:
+4. Eventually, the `SNO2` cluster will start its deployment:
 +
 image::acm-clusterview.png[RHACM Cluster View]
 +
-4. In order to check the deployment status of the `sno2` cluster, click on `sno2` and you will get presented this screen:
+5. In order to check the deployment status of the `sno2` cluster, click on `sno2` and you will get presented this screen:
 +
 image::acm-sno2-view.png[RHACM sno2 Cluster View]
 +
-5. You can follow the progress here, if you want to get extra details you can click on `View Cluster Events` and you should see more information:
+6. You can follow the progress here, if you want to get extra details you can click on `View Cluster Events` and you should see more information:
 +
 image::acm-sno2-clusterevents.png[RHACM sno2 Cluster Events]
 +
-6. Deployment will eventually finish:
+7. Deployment will eventually finish:
 +
 image::acm-sno2-install-completed.png[RHACM sno2 Cluster Deployment Finished]
 
@@ -51,6 +52,12 @@ sno2   sno2      finalizing
 -----
 +
 2. In case you want expanded information like we saw in the WebUI you can check the conditions of the `AgentClusterInstall` object. For example, while installing:
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get agentclusterinstall sno2 -o yaml
+-----
 +
 [console-input]
 [source,console,subs="attributes+,+macros"]

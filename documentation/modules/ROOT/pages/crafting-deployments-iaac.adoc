@@ -28,7 +28,7 @@ IMPORTANT: The steps below rely on the lab environment being up and running.
 
 We need a Git repository where we will store our clusters configurations, we will create a new Git repository in the Git server running on the infrastructure node.
 
-1. Login into the http://infra.5g-deployment.lab:3000/[Git server] (use student credentials).
+1. Login into the http://infra.5g-deployment.lab:3000/[Git server] (user: student, password: student).
 2. You will see that a Git repository already exist, you **must not** change that repository, instead you will create a new one.
 +
 image::gitea-repository.png[Gitea Repository]

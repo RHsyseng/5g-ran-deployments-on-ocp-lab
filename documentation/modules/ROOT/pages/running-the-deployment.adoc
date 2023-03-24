@@ -8,6 +8,11 @@ We already have the Git repository that will be used for storing our Infrastruct
 
 IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
 
+Before continuing, make sure you have the following tooling installed in your workstation:
+
+* https://docs.openshift.com/container-platform/4.12/cli_reference/openshift_cli/getting-started-cli.html[oc client]
+* https://podman.io/getting-started/installation[podman]
+
 [#deploying-ztp-gitops-pipeline]
 == Deploying the ZTP GitOps Pipeline
 
@@ -86,17 +91,18 @@ When we applied the ZTP GitOps Pipeline configuration in the last section, that 
 
 Since the apps have been created, ArgoCD started doing its magic which means that the cluster deployment should already be running, let's see what happened in Argo CD.
 
-1. Login into https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab/[Argo CD] using OpenShift credentials.
-2. You will see the follow applications:
+1. Login into https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab/[Argo CD].
+2. When accessing choose `Logging with OpenShift`, on the next screen use the OpenShift Console Admin credentials.
+3. You will see the follow applications:
 +
 image::argocd-apps.png[ArgoCD Apps]
 +
-3. From all these apps, the ones related to the ZTP GitOps Pipeline are `clusters` and `policies`. If we click on `clusters` we will see the following screen:
+4. From all these apps, the ones related to the ZTP GitOps Pipeline are `clusters` and `policies`. If we click on `clusters` we will see the following screen:
 +
 image::argocd-clusters-app.png[ArgoCD Clusters App]
 +
-4. You can see how the pipeline created all the required objects to get our site deployed.
-5. If we check the `policies` app this is what we will see:
+5. You can see how the pipeline created all the required objects to get our site deployed.
+6. If we check the `policies` app this is what we will see:
 +
 image::argocd-policies-app.png[ArgoCD Policies App]
 +

@@ -2,7 +2,11 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-Before jumping into the hands-on sections let's get familiar with the lab environment we have deployed.
+Before jumping into the hands-on sections let's get familiar with the lab environment we have available.
+
+CAUTION: The following lab sections rely on having a lab environment accessible in order to do the hands-on work. If you're a Red Hatter you can order a lab environment already setup for you on the https://demo.redhat.com[Red Hat Demo Platform]. You just need to order the lab named `5G RAN Deployment on OpenShift`.
+
+If you still need to deploy a lab environment, follow the guide available xref:lab-environment.adoc[here].
 
 [#git-server]
 == Git Server

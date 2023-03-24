@@ -2,9 +2,9 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-The following lab sections rely on having a lab environment accessible in order to do the hands-on work. If you're a Red Hatter you can order a lab environment already setup for you on the https://demo.redhat.com[Red Hat Demo Platform]. You just need to order the lab named `5G RAN Deployment on OpenShift`.
+This section describes how to deploy your own lab environment.
 
-Otherwise, keep reading to deploy your own lab environment.
+CAUTION: If you are a Red Hatter, you can order a lab environment on the https://demo.redhat.com[Red Hat Demo Platform]. You just need to order the lab named `5G RAN Deployment on OpenShift`.
 
 [#lab-requirements]
 == Lab Requirements
