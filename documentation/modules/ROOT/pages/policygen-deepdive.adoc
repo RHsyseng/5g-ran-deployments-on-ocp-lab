@@ -237,7 +237,7 @@ If you access this link you will see lots of files, like for example:
 * AmqInstance.yaml
 * etc.
 
-These CRs are referenced (by filename) from the PolicyGenTemplate CRs in git. The PolicyGenTemplate CRs act as a manifest of which configuration CRs should be included and how they should be combined into Policy CRs. In addition the PolicyGenTemplate can contain an "overlay" (or patch) that is applied to the CR before it is wrapped into the Policy.
+These CRs are referenced (by filename) from the PolicyGenTemplate CRs in Git. The PolicyGenTemplate CRs act as a manifest of which configuration CRs should be included and how they should be combined into Policy CRs. In addition, the PolicyGenTemplate can contain an "overlay" (or patch) that is applied to the CR before it is wrapped into the Policy.
 
 The way this works is a follows. We will have one or more PolicyGenTemplates where we will reference these base configuration CRs. We can see an example https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml[here].
 

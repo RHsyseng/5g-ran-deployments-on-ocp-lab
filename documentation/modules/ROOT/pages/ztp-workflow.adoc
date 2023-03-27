@@ -25,15 +25,15 @@ image::ztp_workflow_1.png[ZTP Workflow 1]
 
 The provisioning process includes installing the host operating system (RHCOS) on a blank server and deploying OpenShift Container Platform. This stage is managed mainly by the Infrastructure Operator. In the previous link:ztp-at-scale.html#ai[Infrastructure operator] section there is detailed information of the workflow controlled by this piece of software.
 
-IMPORTANT: Notice, in the picture, how ZTP allows us to provision clusters at scale. Multiple SiteConfig CRs can be committed to git simultaneously, or over time, to deploy multiple clusters.
+IMPORTANT: Notice, in the picture, how ZTP allows us to provision clusters at scale. Multiple SiteConfig CRs can be committed to Git simultaneously, or over time, to deploy multiple clusters.
 
 image::ztp_workflow_2.png[ZTP Workflow 2]
 
-Once the clusters are provisioned, the day-2 configuration defined in one or multiple `PolicyGenTemplate` (PGTs) custom resources will be automatically applied. `PolicyGenTemplate` custom resource is understood by the ZTP using a specific kustomize plugin called https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/policygenerator-kustomize-plugin[policy-generator]. These templates generate Policy CRs on the hub cluster which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform level configuration.
+Once the clusters are provisioned, the day-2 configuration defined in one or multiple `PolicyGenTemplate` (PGTs) custom resources will be automatically applied. `PolicyGenTemplate` custom resource is understood by the ZTP using a specific kustomize plugin called https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/policygenerator-kustomize-plugin[policy-generator]. These templates generate Policy CRs on the hub cluster which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes, these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform level configuration.
 
 image::ztp_workflow_3.png[ZTP Workflow 3]
 
-Notice that if, later on, you want to apply a new configuration or replace an existing configuration you can update the PolicyGenTemplate in git which will automatically propagate to the Policy CRs on the hub cluster.
+Notice that if, later on, you want to apply a new configuration or replace an existing configuration you can update the PolicyGenTemplate in Git which will automatically propagate to the Policy CRs on the hub cluster.
 
 [#takeaways]
 == Takeaways

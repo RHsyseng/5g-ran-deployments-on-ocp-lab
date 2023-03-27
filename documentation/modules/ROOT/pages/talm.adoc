@@ -104,7 +104,7 @@ WARNING: All CRs in the same policy must have the same setting for the ztp-deplo
 [#talm-precache]
 == Precaching
 
-Clusters might have limited bandwidth to access the container image registry, which can cause a timeout before the updates are completed. This feature help us to schedule cluster upgrades to newer OCP releases in an organized manner and within the maintenance window assigned. Notice in the following picture, how the upgrade can be orchestrated depending on our requirements. See that prior to the maintenance window in which the upgrade will occur TALM was configured to initiate pre-caching of the all the artifacts needed for the upgrade. When the precaching status shows complete the actual upgrade can be enabled during a subsequent maintenance window.
+Clusters might have limited bandwidth to access the container image registry, which can cause a timeout before the updates are completed. This feature help us to schedule cluster upgrades to newer OCP releases in an organized manner and within the maintenance window assigned. Notice in the following picture, how the upgrade can be orchestrated depending on our requirements. See that prior to the maintenance window in which the upgrade will occur, TALM was configured to initiate pre-caching of all the artifacts needed for the upgrade. When the precaching status shows complete the actual upgrade can be enabled during a subsequent maintenance window.
 
 image::talm_precache.png[ACM architecture]
 

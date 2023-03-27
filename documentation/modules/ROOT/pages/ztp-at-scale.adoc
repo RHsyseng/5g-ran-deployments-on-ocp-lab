@@ -39,7 +39,7 @@ It is recommended that you install Multicluster Engine for Kubernetes on a clust
 
 The Infrastructure operator for Red Hat OpenShift, formerly known as Assisted Service operator, is responsible for managing the deployment of the Assisted Service. Assisted Service is used to orchestrate baremetal OpenShift installations. Basically, it is the piece that will help us to automatically provision OpenShift clusters in a declarative manner. Notice that it exposes a UI and a REST API for creating new clusters.
 
-A high overview of the basic flow is as follows. Note that in the solution presented in this lab these steps are automated and derive from the declarative configuration in git which provides a "zero touch" deployment of clusters.
+A high overview of the basic flow is as follows. Note that in the solution presented in this lab these steps are automated and derive from the declarative configuration in Git which provides a "zero touch" deployment of clusters.
 
 * Create a new `Cluster` resource with the minimal required properties.
 * Generate and download a bootable image which is customized for that cluster. This image is based on RHCOS and is customized to automatically run an agent upon boot.
@@ -64,7 +64,7 @@ In order to make both plugins available they are installed into the OpenShift Gi
 [#sitegen]
 === SiteGen
 
-The siteConfig generator kustomize plugin consumes SiteConfig CRs found in the git repository and generates the following CRson the hub cluster:
+The siteConfig generator kustomize plugin consumes SiteConfig CRs found in the Git repository and generates the following CRson the hub cluster:
 
 * AgentClusterInstall.
 * ClusterDeployment.

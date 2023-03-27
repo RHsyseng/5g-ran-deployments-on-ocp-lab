@@ -101,7 +101,7 @@ In our Git repository we will have the following folder structure:
         └── hub-n
 ----
 
-We know that a hub cluster can manage thousands of spoke clusters. This Git structure helps us to scale easily the number of hub cluster that we are managing. In the lab, as we can see in the previous figure, only a managed cluster (SNO2) is managed by one hub cluster (hub-1). This structure makes much easier knowing which clusters are being managed by each hub and simplifies the subscriptions needed on each hub cluster.
+We know that a hub cluster can manage thousands of spoke clusters. This Git structure helps us to scale easily the number of hub clusters that we are managing. In the lab, as we can see in the previous figure, only a managed cluster (SNO2) is managed by one hub cluster (hub-1). This structure makes much easier knowing which clusters are being managed by each hub and simplifies the subscriptions needed on each hub cluster.
 
 * `site-configs`: This folder is used to store the different SiteConfigs describing the environments we will deploy through ZTP.
 ** `hub-1`: This folder contains all the provisioning configuration (siteConfig) for each cluster that is managed by the hub cluster called hub-1.  Notice that multiple hub clusters (hub-n) folders can be created and under each folder a siteConfig definition of a cluster managed by the hub is stored. The organization of files under the hub-n directory is up to the user. SiteConfig and pre-req (pull secrets, bmc credentials, etc) can be grouped into sub-directories if/as needed.
