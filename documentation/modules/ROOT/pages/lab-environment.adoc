@@ -9,13 +9,15 @@ CAUTION: If you are a Red Hatter, you can order a lab environment on the https:/
 [#lab-requirements]
 == Lab Requirements
 
-RHEL 8 (or similar) box with access to the Internet. This lab relies on KVM, so you need to have the proper virtualization packages already installed. It is highly remcomended to use a baremetal host. Our lab environment has the following specs:
+RHEL 8.X box with access to the Internet. This lab relies on KVM, so you need to have the proper virtualization packages already installed. It is highly recommended to use a bare-metal host. Our lab environment has the following specs:
 
 * 48 CPUs.
 * 200GiB Memory.
 * 1 TiB storage.
 
-These are the steps to install the required packages on a RHEL 8 (or similar) server:
+IMPORTANT: These instructions have been tested in RHEL 8.X, we cannot guarantee that other operating systems (even RHEL-based) will work. We won't be providing support out of RHEL 8.X.
+
+These are the steps to install the required packages on a RHEL 8.X server:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
