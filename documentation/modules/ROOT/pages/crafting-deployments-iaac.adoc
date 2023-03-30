@@ -243,7 +243,6 @@ spec:
               - name: enp1s0
                 type: ethernet
                 state: up
-                macAddress: "AA:AA:AA:AA:03:01"
                 ipv4:
                   enabled: true
                   dhcp: true

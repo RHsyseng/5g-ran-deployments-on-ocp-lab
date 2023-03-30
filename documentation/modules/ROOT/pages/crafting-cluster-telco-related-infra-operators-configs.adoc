@@ -8,6 +8,8 @@ We described how `PolicyGenTemplate` works in detail xref:policygen-deepdive.ado
 
 IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
 
+NOTE: The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in xref:telco-related-infra-operators-intro.adoc[Introduction to Telco Related Infrastructure Operators]. This is for clarity and tailored to the lab environment. A full production environment would have additional configuration not included here.
+
 [#crafting-common-policies]
 == Crafting Common Policies
 
@@ -165,11 +167,6 @@ spec:
              "systemReserved": {"memory": "3Gi"}
             }
       spec:
-        additionalKernelArgs:
-        - "firmware_class.path=/var/lib/firmware/"
-        - 'nohz_full={{hub fromConfigMap "" "hub1-sites-data" (printf "%s-isolated-cpus" .ManagedClusterName) hub}}'
-        - "crashkernel=1024M"
-        - "efi=runtime"
         cpu:
           isolated: '{{hub fromConfigMap "" "hub1-sites-data" (printf "%s-isolated-cpus" .ManagedClusterName) hub}}'
           reserved: '{{hub fromConfigMap "" "hub1-sites-data" (printf "%s-reserved-cpus" .ManagedClusterName) hub}}'
