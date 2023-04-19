@@ -1,6 +1,8 @@
-name: 5g-ran-deployments-on-ocp-lab
+#name: 5g-ran-deployments-on-ocp-lab
+name: 4.12
 title: LAB - 5G RAN Deployments on OpenShift
-version: 4.12
+#version: 4.12
+version: ~
 nav:
   - modules/ROOT/nav.adoc
 
