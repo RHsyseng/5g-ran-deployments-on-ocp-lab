@@ -6,7 +6,6 @@ In RAN environments we will be managing thousands of Single Node OpenShift (SNO)
 
 By describing our infrastructure as code (IaC) the git repository holds declarative state of the fleet. 
 
-
 [#introduction-to-siteconfig]
 == Introduction to the SiteConfig
 
