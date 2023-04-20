@@ -112,7 +112,7 @@
 ** xref:lab-environment-introduction.adoc#container-registry[Container Registry]
 ** xref:lab-environment-introduction.adoc#openshift-hub-cluster[OpenShift Hub Cluster]
 
-* xref:crafting-deployments-iaac.adoc[Crafting Deployment's IaaC] 
+* xref:crafting-deployments-iaac.adoc[Crafting Deployment's IaC] 
 ** xref:crafting-deployments-iaac.adoc#introduction-to-siteconfig[Introduction to the SiteConfig]
 ** xref:crafting-deployments-iaac.adoc#crafting-our-own-siteconfig[Crafting our own SiteConfig]
 *** xref:crafting-deployments-iaac.adoc#git-repository[Git Repository]
