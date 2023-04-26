@@ -44,7 +44,7 @@ spec:
       metadata:
         name: redhat-operator-index
       spec:
-        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.12
+        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.12-1677697786
       policyName: config-policies
     - fileName: ReduceMonitoringFootprint.yaml
       policyName: config-policies
