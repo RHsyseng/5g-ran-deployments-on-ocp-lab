@@ -74,5 +74,5 @@ export { _clean as clean };
 const _default = series(_clean, build, serve, siteWatch);
 export { _default as default };
 //build workshop docs
-const _wsite = series(_clean, workshopSite);
-export { _wsite as workshopSite };
+//const _wsite = series(_clean, workshopSite);
+//export { _wsite as workshopSite };
