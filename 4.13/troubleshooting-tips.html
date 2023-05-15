@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Troubleshooting Tips :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://labs.sysdeseng.com/4.13/troubleshooting-tips.html">
+    <link rel="prev" href="using-talm-to-update-clusters.html">
+    <link rel="next" href="common-pitfalls.html">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com/en/solutions/telecommunications" target="_blank"><img src="../_/img/Logo-Red_Hat-A-Reverse-RGB.png" height="40px" alt="Red Hat Telco Solutions"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://labs.sysdeseng.com">LAB - 5G RAN Deployments on OpenShift</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="4.13" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="index.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="index.html">Welcome</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="index.html#contributors">Contributors</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="introduction.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#lab-aim">Who is this lab aimed at? </a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#lab-software-versions">Lab Software Versions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="acronyms.html">Acronyms used in the lab</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="5g-ran-context.html">5G Ran Context</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#low-latency">Low Latency</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#numa-nodes">NUMA Nodes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#huge-pages">Huge Pages</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#cpu-pinning">CPU Pinning</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#irq-load-balancing">IRQ Load Balancing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#dpdk">DPDK</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#oot-drivers">OoT Drivers</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#cpu-reduction-tuning">Tuning for CPU Reduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#vran-accelerators">vRAN Dedicated Accelerators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#ptp">PTP</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="sno-intro.html">Introduction to Single Node OpenShift (SNO)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="sno-intro.html#5g-ran">5G Radio Access Network</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="sno-intro.html#things-keep-mind">Things to keep in mind</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="sno-intro.html#deployments">Deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="sno-intro.html#extra-information">Extra information</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html">Introduction to Telco Related Infrastructure Operators</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#node-tuning-operator">Node Tuning Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#sriov-operator">SR-IOV Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#ptp-operator">PTP Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="ztp-intro.html">Introduction to Zero Touch Provisioning (ZTP)</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ocp-gitops.html">OpenShift GitOps</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ocp-gitops.html#gitops">GitOps</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#gitops-principles">GitOps Principles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#gitops-patterns-ocp">GitOps Patterns on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#directories-vs-branches">Directories vs Branches</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#direct-commit-to-main">Direct commit to main</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#prs-review-cycles">Pull Requests and review cycles</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ocp-gitops.html#gitops-ocp">GitOps on OpenShift</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-at-scale.html">Hub Management Components</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-at-scale.html#rhacm">Red Hat Advanced Cluster Management</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#mce">Multicluster Engine</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#ai">Infrastructure Operator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-at-scale.html#gitops-operator">GitOps Operator</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#sitegen">SiteGen</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#policygen">PolicyGen</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ztp-at-scale.html#talm">Topology Aware Lifecycle Manager</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-workflow.html">ZTP Workflow</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ztp-workflow.html#takeaways">Takeaways</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rhacm-policies.html">RHACM Policies</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rhacm-policies.html#policy-framework">Policy Framework</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rhacm-policies.html#policies">Policies</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="rhacm-policies.html#policy-status">Policy Status</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="rhacm-policies.html#policy-remediation">Policy Remediation</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="managing-at-scale.html">Managing at Scale</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="managing-at-scale.html#inform-policies">Inform Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="managing-at-scale.html#olm-subscriptions">OLM Subscriptions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="managing-at-scale.html#cluster-policies">Cluster Policies</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="talm.html">Topology Aware Lifecycle Manager (TALM)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#inform-policies">Default Inform Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="talm.html#cgu">Cluster Group Upgrade</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="talm.html#autocreation-cgu">Auto Creation of CGUs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#phase-labels">Phase labels</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#waves">Policy Waves</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#talm-precache">Precaching</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#talm-backup">Backup &amp; Recovery</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="policygen-deepdive.html">PolicyGen Deepdive</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="policygen-deepdive.html#policygen-implementation">PolicyGen Implementation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="policygen-deepdive.html#kustomize-plugins">Kustomize Plugins</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#siteconfig-generator">SiteConfigGenerator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#policy-generator">Policy Generator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="policygen-deepdive.html#5g-ran-profile">5G RAN Profile</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#workload-partitioning">Workload Partitioning</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#kubelet-tuning">Kubelet Tuning</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#sctp">SCTP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#hide-container-mount">Container Mount Hiding</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#recovery-optimization">Recovery Optimization</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#monitoring-footprint">Monitoring Operator Config</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#ocp-console">Console Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#networking-diags">Networking Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#operatorhub">OperatorHub</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#ptp-operator">PTP Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#sr-iov">SR-IOV</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#nto">Node Tuning Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#local-storage">Local Storage</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#logs">Log Collector and Forwarder</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="policygen-deepdive.html#siteconfig-templating">SiteConfig Templating</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="policygen-deepdive.html#policies-templating">Policies Templating</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="policygen-deepdive.html#kustomize-plugins-locally">Running Kustomize Plugins Locally</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="deployment-considerations.html#hardware-configurations">Hardware configurations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="deployment-considerations.html#bios-settings">Bios Settings</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="deployment-considerations.html#networking">Networking</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="deployment-considerations.html#disconnected-environments">Disconnected Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="deployment-considerations.html#connected-proxy">Connected through proxy</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="deployment-considerations.html#fully-disconnected">Fully disconnected</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="deployment-considerations.html#git-repo-structure">Git Repository Structure</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lab-environment-introduction.html">Introduction to the Lab Environment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#git-server">Git Server</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#container-registry">Container Registry</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#openshift-hub-cluster">OpenShift Hub Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="crafting-deployments-iac.html">Crafting Deployment&#8217;s IaC</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-deployments-iac.html#introduction-to-siteconfig">Introduction to the SiteConfig</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="crafting-deployments-iac.html#crafting-our-own-siteconfig">Crafting our own SiteConfig</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="crafting-deployments-iac.html#git-repository">Git Repository</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="crafting-deployments-iac.html#baremetal-node-details">Bare Metal Node Details</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="crafting-deployments-iac.html#pre-reqs">Deployment Prerequesites</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="crafting-deployments-iac.html#siteconfig">SiteConfig</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-zone-policies">Crafting Zone Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-testing-policies">Crafting testing Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="running-the-deployment.html">Running the Deployment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="running-the-deployment.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="running-the-deployment.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="monitoring-the-deployment.html">Monitoring the Deployment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="monitoring-the-deployment.html#monitoring-deployment-webui">Monitoring the Deployment via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="monitoring-the-deployment.html#monitoring-deployment-cli">Monitoring the Deployment via the CLI</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="managing-existing-clusters.html">Managing Existing Clusters</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="check-deployment-is-finished.html">Check SNO Deployment is finished</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-webui">Check SNO Deployment has Finished via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="using-talm-to-update-clusters.html">Using TALM to update clusters</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifying the TALM state</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the upgrade PGT</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-cgu-creation">Applying the upgrade</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#talm-backup-precache">Backup and pre-cache</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#talm-upgrade">Triggering the upgrade</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="troubleshooting-tips.html">Troubleshooting Tips</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#verification-lab">Verification of the lab status</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#git-registry">Git repository and registry</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#sno2">SNO2 virtual machine</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#hub">Hub cluster</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#dns">DNS resolution</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#argocd-red">ArgoCD sync not working</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#sno2-down">SNO2 is down after syncing Argo applications</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#policies-blank">Policies not showing in the Governance console</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#policies-not-applied">Policies not applied</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="common-pitfalls.html">Common Pitfalls</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#exec-probes-cpu-pinning">Exec Probes and CPU Pinning</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#energy-saving-hw-profiles">Energy Saving Hardware Profiles</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#secure-boot-oot-unsigned-drivers">Secure Boot and Unsigned OoT Drivers</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#sriov-node-drain">SR-IOV Node Drain</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#pod-disruption-budgets">Pod Disruption Budgets</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="closing-thoughts.html">Closing Thoughts</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lab-environment.html">Lab Environment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment.html#lab-requirements">Lab Requirements</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lab-environment.html#lab-deployment">Lab Deployment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#install-kcli">Install kcli</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#install-oc-kubectl">Install oc/kubectl CLIs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-disconnected-network">Configure Disconnected Network</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-local-dns-dhcp-server">Configure Local DNS/DHCP Server</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-local-dns-as-primary-server">Configure Local DNS as Primary Server</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#disable-firewall">Disable Firewall</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#install-sushytools">Install Sushy Tools</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-disconnected-registry">Configure Disconnected Registry</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-git-server">Configure Git Server</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-ntp-server">Configure NTP Server</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-access-to-cluster-apps">Configure Access to Cluster Apps</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#create-openshift-nodes-vms">Create OpenShift Nodes VMs</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#deploy-openshift-hub-cluster">Deploy OpenShift Hub Cluster</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-openshift-hub-cluster">Configure OpenShift Hub Cluster</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#deploy-openshift-hub-cluster-operators">Deploy OpenShift HUB Cluster Operators</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
+    <li><a href="troubleshooting-tips.html">Troubleshooting Tips</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/lab-4.13/documentation/modules/ROOT/pages/troubleshooting-tips.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Troubleshooting Tips</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this section, we will provide some useful tips to troubleshoot any issue that can arise during the execution of this lab.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Below commands must be executed from the hypervisor host as root if not specified otherwise.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="verification-lab"><a class="anchor" href="#verification-lab"></a>Verification of the lab status</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="git-registry"><a class="anchor" href="#git-registry"></a>Git repository and registry</h3>
+<div class="paragraph">
+<p>Both the registry and Git repository are running in the hypervisor host as containers:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman ps</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">CONTAINER ID  IMAGE                            COMMAND               CREATED       STATUS           PORTS                                         NAMES
+e7cf765660a3  quay.io/mavazque/registry:2.7.1  /etc/docker/regis...  24 hours ago  Up 24 hours ago                                                registry
+557b51f975ce  quay.io/mavazque/gitea:1.17.3    /bin/s6-svscan /e...  24 hours ago  Up 24 hours ago  0.0.0.0:2222-&gt;22/tcp, 0.0.0.0:3000-&gt;3000/tcp  gitea</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="sno2"><a class="anchor" href="#sno2"></a>SNO2 virtual machine</h3>
+<div class="paragraph">
+<p>In the lab we are going to provision and configure a SNO cluster named SNO2. Let&#8217;s double check that the virtual machine exists and it is stopped.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli list vm</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">+---------------+--------+----------------+------------------------------------------------------+-------------+---------+
+|      Name     | Status |       Ip       |                        Source                        |     Plan    | Profile |
++---------------+--------+----------------+------------------------------------------------------+-------------+---------+
+| hub-installer |   up   | 192.168.125.25 | CentOS-Stream-GenericCloud-8-20210603.0.x86_64.qcow2 | hub-cluster |  kvirt  |
+|  hub-master0  |   up   | 192.168.125.20 |                                                      |     hub     |  kvirt  |
+|  hub-master1  |   up   | 192.168.125.21 |                                                      |     hub     |  kvirt  |
+|  hub-master2  |   up   | 192.168.125.22 |                                                      |     hub     |  kvirt  |
+|      sno1     |   up   | 192.168.125.30 |                                                      |     hub     |  kvirt  |
+|      sno2     |  down  |                |                                                      |     hub     |  kvirt  |
++---------------+--------+----------------+------------------------------------------------------+-------------+---------+</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="hub"><a class="anchor" href="#hub"></a>Hub cluster</h3>
+<div class="paragraph">
+<p>Before working with <code>oc</code> commands you can enable command auto-completion by running:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">source &lt;(oc completion bash)
+# Make it persistent
+oc completion bash &gt;&gt; /etc/bash_completion.d/oc_completion</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check the status of the hub cluster.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export KUBECONFIG=~/hub-kubeconfig
+oc get clusterversion</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
+version   4.11.13   True        False         22h     Cluster version is 4.11.13</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get nodes</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME           STATUS   ROLES           AGE   VERSION
+ocp-master-0   Ready    master,worker   23h   v1.24.6+5157800
+ocp-master-1   Ready    master,worker   23h   v1.24.6+5157800
+ocp-master-2   Ready    master,worker   23h   v1.24.6+5157800</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get operators</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                                   AGE
+advanced-cluster-management.open-cluster-management    22h
+multicluster-engine.multicluster-engine                22h
+odf-lvm-operator.openshift-storage                     22h
+openshift-gitops-operator.openshift-operators          22h
+topology-aware-lifecycle-manager.openshift-operators   22h</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get catalogsources -A</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE               NAME                    DISPLAY   TYPE   PUBLISHER   AGE
+openshift-marketplace   redhat-operator-index             grpc               23h</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="dns"><a class="anchor" href="#dns"></a>DNS resolution</h3>
+<div class="paragraph">
+<p>Verify that the OpenShift API and the apps domain (wildcard) can be resolved.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<code>dig</code> command is not part of the standard linux utilities (you may need to install it), in RHEL-based systems is part of the <code>bind-utils</code> package.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dig +short api.hub.5g-deployment.lab</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">192.168.125.10</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dig +short oauth-openshift.apps.hub.5g-deployment.lab</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">192.168.125.11</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="argocd-red"><a class="anchor" href="#argocd-red"></a>ArgoCD sync not working</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There could be that one or both Argo applications  (clusters or policies) are kept synchronizing or that their status is set to <code>OutOfSync</code>. In such cases we can double check the following:</p>
+</div>
+<div class="paragraph">
+<p>First, check using <code>oc</code> binary the status of all the Argo applications. You can describe or show the full yaml definition of the failed application.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get applications -A</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE          NAME                       SYNC STATUS   HEALTH STATUS
+openshift-gitops   clusters                   OutOfSync     Healthy
+openshift-gitops   hub-operators-config       Synced        Healthy
+openshift-gitops   hub-operators-deployment   Synced        Healthy
+openshift-gitops   policies                   Synced        Healthy
+openshift-gitops   sno1-deployment            Synced        Healthy</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We can also connect to the OpenShift GitOps console and see there the error. In this case, there is a missing value in the <code>SiteConfig</code> because we did not copy and paste it properly.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/trbst-argo-not-sync.png" alt="Argo app not syncing">
+</div>
+</div>
+<div class="paragraph">
+<p>There are also cases that we need to synchronize manually the application because we modified the different manifests. For instance, as detailed in the previous example where we wrongly copy and paste the SiteConfig defnition. In those cases, we can workaround the issue by accessing the GitOps console using the local admin user and password.</p>
+</div>
+<div class="paragraph">
+<p>This is the permission denied error shown in the console:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/trbsht-sync-denied.png" alt="Argo sync denied">
+</div>
+</div>
+<div class="paragraph">
+<p>Execute this command connected to the hub cluster to obtain the local admin password. Then, logout and access again by typing <code>admin</code> as username and the password the one stored as a secret in the hub cluster:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc extract secret/openshift-gitops-cluster -n openshift-gitops  --to=-</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/trbst-login-local.png" alt="Argo local login">
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+More information about monitoring the status of the deployment can be found in the <a href="monitoring-the-deployment.html">monitoring section</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="sno2-down"><a class="anchor" href="#sno2-down"></a>SNO2 is down after syncing Argo applications</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>So, we have synced the cluster and policies applications in Argo successfully, e.g. everything is in green. If after 5 minutes we do not see the SNO2 virtual machine being booted we can make use of the following troubleshooting commands:</p>
+</div>
+<div class="paragraph">
+<p>First, check if the BMC is ready so the server can be started remotely from the hub using Redfish commands.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -k <a href="https://192.168.125.1:9000/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301" class="bare">https://192.168.125.1:9000/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301</a></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">{
+    "@odata.type": "#ComputerSystem.v1_1_0.ComputerSystem",
+    "Id": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301",
+    "Name": "sno2",
+    "UUID": "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301",
+    "Manufacturer": "Sushy Emulator",
+    "Status": {
+        "State": "Enabled",
+        "Health": "OK",
+        "HealthRollUp": "OK"
+    },
+    "PowerState": "Off",
+... REDACTED ...
+    "@odata.context": "/redfish/v1/$metadata#ComputerSystem.ComputerSystem",
+    "@odata.id": "/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301",
+    "@Redfish.Copyright": "Copyright 2014-2016 Distributed Management Task Force, Inc. (DMTF). For the full DMTF copyright policy, see http://www.dmtf.org/about/policies/copyright."</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If the server is up, but the installation is not progressing we may check a couple of things. First, let&#8217;s verify the <strong>sno2.5g-deployment.lab</strong> <code>BaremetalHost</code> CR is created and in provisioned status in the hub cluster.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get bmh -A</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE               NAME                     STATE                    CONSUMER             ONLINE   ERROR   AGE
+openshift-machine-api   hub-ctlplane-0           externally provisioned   hub-7tjlv-master-0   true             24h
+openshift-machine-api   hub-ctlplane-1           externally provisioned   hub-7tjlv-master-1   true             24h
+openshift-machine-api   hub-ctlplane-2           externally provisioned   hub-7tjlv-master-2   true             24h
+sno1                    sno1                     provisioned                                   true             24h
+sno2                    sno2.5g-deployment.lab   provisioned                                   true             112s</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Verify that the ISO image has been without errors by checking the <code>InfraEnv</code> and <code>BaremetalHost</code> custom resources:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get infraenv -A</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE   NAME   ISO CREATED AT
+sno1        sno1   2023-03-01T10:08:09Z
+sno2        sno2   2023-03-02T10:26:06Z</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get infraenv sno2 -n sno2 -oyaml</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: agent-install.openshift.io/v1beta1
+kind: InfraEnv
+metadata:
+... REDACTED ...
+  debugInfo:
+    eventsURL: https://assisted-service-multicluster-engine.apps.hub.5g-deployment.lab/api/assisted-install/v2/events?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiI2YWEzZGUxNS1hOTQ1LTRjNTgtODljOS02MDBkYzJmNWRmNTkifQ.fG3voLHggbgtCW9fQH1Y2vP5DSCOpo-t2pgDwvEe6Q7nE_Qp9-7BMKudpXiSTTYZCeWVE3s6nsAllP4IkK1ljA&amp;infra_env_id=6aa3de15-a945-4c58-89c9-600dc2f5df59
+  isoDownloadURL: https://assisted-image-service-multicluster-engine.apps.hub.5g-deployment.lab/images/6aa3de15-a945-4c58-89c9-600dc2f5df59?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiI2YWEzZGUxNS1hOTQ1LTRjNTgtODljOS02MDBkYzJmNWRmNTkifQ.AFhkv4UPH0R0kGpBdZ8cqo8iNSH7z-CRsHsYbwQ6cVzjcnxnDRIEiout29UJOyt-lcCPPsOLW1YPKDh5GJ1Tqg&amp;arch=x86_64&amp;type=minimal-iso&amp;version=4.11</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get bmh sno2.5g-deployment.lab -n sno2 -o yaml</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+... REDACTED ...
+  image:
+    format: live-iso
+    url: https://assisted-image-service-multicluster-engine.apps.hub.5g-deployment.lab/images/6aa3de15-a945-4c58-89c9-600dc2f5df59?api_key=eyJhbGciOiJFUzI1NiIsInR5cCI6IkpXVCJ9.eyJpbmZyYV9lbnZfaWQiOiI2YWEzZGUxNS1hOTQ1LTRjNTgtODljOS02MDBkYzJmNWRmNTkifQ.AFhkv4UPH0R0kGpBdZ8cqo8iNSH7z-CRsHsYbwQ6cVzjcnxnDRIEiout29UJOyt-lcCPPsOLW1YPKDh5GJ1Tqg&amp;arch=x86_64&amp;type=minimal-iso&amp;version=4.11
+  online: true</code></pre>
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+More information about monitoring the status of the deployment can be found in the <a href="monitoring-the-deployment.html">monitoring section</a>.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="policies-blank"><a class="anchor" href="#policies-blank"></a>Policies not showing in the Governance console</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In cases where the policies are not shown in the Governance section of the Multicloud console we have to check first, if the <strong>policies</strong> Argo application was synced successfully. If not, repeat the steps detailed in <a href="troubleshooting-tips.html#argocd-red">the previous section</a></p>
+</div>
+<div class="paragraph">
+<p>Verfiy that the policies in the hub cluster are similar to the ones shown below. Remember that <strong>inform</strong> as remediation is correct.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get policies -A</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE      NAME                                           REMEDIATION ACTION   COMPLIANCE STATE   AGE
+sno2           ztp-policies.common-operator-catalog-411       inform                                  14m
+sno2           ztp-policies.group-du-sno-du-profile-wave1     inform                                  14m
+sno2           ztp-policies.group-du-sno-du-profile-wave10    inform                                  14m
+sno2           ztp-policies.site-sno2-performance-policy      inform                                  14m
+sno2           ztp-policies.site-sno2-storage-configuration   inform                                  14m
+sno2           ztp-policies.site-sno2-tuned-policy            inform                                  14m
+sno2           ztp-policies.zone-europe-storage-operator      inform                                  14m
+ztp-policies   common-operator-catalog-411                    inform                                  35m
+ztp-policies   group-du-sno-du-profile-wave1                  inform                                  35m
+ztp-policies   group-du-sno-du-profile-wave10                 inform                                  35m
+ztp-policies   site-sno2-performance-policy                   inform                                  35m
+ztp-policies   site-sno2-storage-configuration                inform                                  35m
+ztp-policies   site-sno2-tuned-policy                         inform                                  35m
+ztp-policies   zone-europe-storage-operator                   inform                                  35m</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="policies-not-applied"><a class="anchor" href="#policies-not-applied"></a>Policies not applied</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In such cases it can be because of multiple errors. First, let&#8217;s check that the policies are shown in the <a href="troubleshooting-tips.html#policies-blank">Governance console</a>.</p>
+</div>
+<div class="paragraph">
+<p>If the policies show a warning message in the Cluster violations section, it is because the SNO2 server is still being provisioned. You can double check the status of the provisioning in the Infrastructure &#8594; Clusters section. Verify that there is not ztp-running label added yet.</p>
+</div>
+<div class="paragraph">
+<p>In cases where the Governance console shows policies already assigned to SNO2, we should check the status of the TALM operator. Remember, that it is responsible of moving the policies from inform to enforce, so they are eventually applied. Check the status of the cluster-group-upgrades-controller-manager Pod and its logs:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n openshift-operators</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                                        READY   STATUS    RESTARTS      AGE
+cluster-group-upgrades-controller-manager-b757bcdb9-46xtx   2/2     Running   1 (24h ago)   24h
+gitops-operator-controller-manager-cd79b49dc-tvdp6          1/1     Running   0             25h</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, we can verify that a <code>ClusterGroupUpgrade</code> CR was created automatically by the TALM operator. If it is not created, it means that either the label is not set yet in the cluster or the operator is having issues. In the latest case, check the logs as explained previously.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get cgu -A</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE     NAME   UPGRADE STATE         AGE
+ztp-install   sno2   UpgradeNotCompleted   2m27s</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Describing the CGU shows a lot of information about the current status of the configuration:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get cgu -n ztp-install sno2 -oyaml</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ran.openshift.io/v1alpha1
+kind: ClusterGroupUpgrade
+metadata:
+... REDACTED ...
+status:
+  computedMaxConcurrency: 1
+  conditions:
+  - lastTransitionTime: "2023-03-02T11:16:09Z"
+    message: The ClusterGroupUpgrade CR has upgrade policies that are still non compliant
+    reason: UpgradeNotCompleted
+    status: "False"
+    type: Ready
+  copiedPolicies:
+  - sno2-common-operator-catalog-411-2rtdv
+  - sno2-group-du-sno-du-profile-wave1-4jrqr
+  - sno2-group-du-sno-du-profile-wave10-xbbsz
+  - sno2-site-sno2-performance-policy-gbpns
+  - sno2-site-sno2-storage-configuration-7wwv4
+  - sno2-site-sno2-tuned-policy-969jx
+  - sno2-zone-europe-storage-operator-q2bfh
+... REDACTED ...
+    currentBatch: 1
+    currentBatchRemediationProgress:
+      sno2:
+        policyIndex: 2
+        state: InProgress
+    currentBatchStartedAt: "2023-03-02T11:16:09Z"
+    startedAt: "2023-03-02T11:16:09Z"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Verfiy that now there are two times the number of policies in the hub cluster. That&#8217;s because a enforce copy of each one of them was created.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get policies -A</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE      NAME                                                    REMEDIATION ACTION   COMPLIANCE STATE   AGE
+sno2           ztp-install.sno2-common-operator-catalog-411-2rtdv      enforce              Compliant          6m8s
+sno2           ztp-install.sno2-group-du-sno-du-profile-wave1-4jrqr    enforce              Compliant          5m17s
+sno2           ztp-install.sno2-group-du-sno-du-profile-wave10-xbbsz   enforce              Compliant          2m38s
+sno2           ztp-install.sno2-site-sno2-performance-policy-gbpns     enforce              NonCompliant       68s
+sno2           ztp-install.sno2-zone-europe-storage-operator-q2bfh     enforce              Compliant          4m59s
+sno2           ztp-policies.common-operator-catalog-411                inform               Compliant          56m
+sno2           ztp-policies.group-du-sno-du-profile-wave1              inform               Compliant          56m
+sno2           ztp-policies.group-du-sno-du-profile-wave10             inform               Compliant          56m
+sno2           ztp-policies.site-sno2-performance-policy               inform               NonCompliant       56m
+sno2           ztp-policies.site-sno2-storage-configuration            inform               NonCompliant       56m
+sno2           ztp-policies.site-sno2-tuned-policy                     inform               NonCompliant       56m
+sno2           ztp-policies.zone-europe-storage-operator               inform               Compliant          56m
+ztp-install    sno2-common-operator-catalog-411-2rtdv                  enforce              Compliant          6m8s
+ztp-install    sno2-group-du-sno-du-profile-wave1-4jrqr                enforce              Compliant          6m8s
+ztp-install    sno2-group-du-sno-du-profile-wave10-xbbsz               enforce              Compliant          6m8s
+ztp-install    sno2-site-sno2-performance-policy-gbpns                 enforce              NonCompliant       6m8s
+ztp-install    sno2-site-sno2-storage-configuration-7wwv4              enforce                                 6m8s
+ztp-install    sno2-site-sno2-tuned-policy-969jx                       enforce                                 6m8s
+ztp-install    sno2-zone-europe-storage-operator-q2bfh                 enforce              Compliant          6m8s
+ztp-policies   common-operator-catalog-411                             inform               Compliant          77m
+ztp-policies   group-du-sno-du-profile-wave1                           inform               Compliant          77m
+ztp-policies   group-du-sno-du-profile-wave10                          inform               Compliant          77m
+ztp-policies   site-sno2-performance-policy                            inform               NonCompliant       77m
+ztp-policies   site-sno2-storage-configuration                         inform               NonCompliant       77m
+ztp-policies   site-sno2-tuned-policy                                  inform               NonCompliant       77m
+ztp-policies   zone-europe-storage-operator                            inform               Compliant          77m</code></pre>
+</div>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Each enforce policy is being applied one by one. There can be cases where the Cluster violations or the Compliance status is not set for the enforced cluster. It takes time to move to the next one depending on the changes applied to the target cluster.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="using-talm-to-update-clusters.html">Using TALM to update clusters</a></span>
+  <span class="next"><a href="common-pitfalls.html">Common Pitfalls</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://redhat.com" target="_blank"></div>
+</footer>
+<script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
