@@ -3,7 +3,8 @@ name: docs
 on:
   push:
     branches:
-      - main
+      - 'main'
+      - 'lab-4.12'
 env:
   SITE_DIR: "gh-pages"
 jobs:
