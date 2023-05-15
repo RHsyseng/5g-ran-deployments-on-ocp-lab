@@ -10,12 +10,12 @@ content:
   sources:
     - url: ./
       branches:
-      - 'lab-4.12'
+      - 'lab-4.13'
       start_path: documentation
 
 asciidoc:
   attributes:
-    release-version: 4.12
+    release-version: 4.13
     page-pagination: true
   extensions:
     - ./lib/tab-block.js

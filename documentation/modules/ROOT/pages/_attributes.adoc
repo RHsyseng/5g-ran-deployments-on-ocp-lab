@@ -1,6 +1,6 @@
 :experimental:
 :source-highlighter: highlightjs
-:branch: lab-4.12
+:branch: lab-4.13
 :github-repo: https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/blob/{branch}
 :profile: 5g-ran-lab
-:openshift-release: v4.12
+:openshift-release: v4.13
