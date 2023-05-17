@@ -698,30 +698,20 @@ If you are a Red Hatter, you can order a lab environment on the <a href="https:/
 <div class="ulist">
 <ul>
 <li>
-<p>48 CPUs.</p>
+<p>64 CPUs (with or without hyperthreading)</p>
 </li>
 <li>
 <p>200GiB Memory.</p>
 </li>
 <li>
-<p>1 TiB storage.</p>
+<p>1 TiB storage.
++-
+IMPORTANT: These instructions have been tested in a RHEL 8.7, we cannot guarantee that other operating systems (even RHEL-based) will work. We won&#8217;t be providing support out of RHEL 8.</p>
 </li>
 </ul>
 </div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-These instructions have been tested in RHEL 8.X, we cannot guarantee that other operating systems (even RHEL-based) will work. We won&#8217;t be providing support out of RHEL 8.X.
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
-<p>These are the steps to install the required packages on a RHEL 8.X server:</p>
+<p>These are the steps to install the required packages on a RHEL 8.7 server:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -815,6 +805,9 @@ systemctl mask dnsmasq</code></pre>
 </div>
 <div class="sect2">
 <h3 id="configure-local-dns-as-primary-server"><a class="anchor" href="#configure-local-dns-as-primary-server"></a>Configure Local DNS as Primary Server</h3>
+<div class="paragraph">
+<p>The default upstream DNS is set to 1.1.1.1 in <code>/opt/dnsmasq/upstream-resolv.conf</code>. There might be cases in your local environment where the hypervisor may not reach it. So, notice that you must change it to a different DNS that allows you to resolve public hostnames. Once changed, remember to restart the dnsmasq-virt service.</p>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.12/lab-materials/lab-env-data/hypervisor/forcedns" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.12/lab-materials/lab-env-data/hypervisor/forcedns</a> -o /etc/NetworkManager/dispatcher.d/forcedns
@@ -962,6 +955,9 @@ systemctl enable haproxy --now</code></pre>
 </div>
 <div class="sect2">
 <h3 id="create-openshift-nodes-vms"><a class="anchor" href="#create-openshift-nodes-vms"></a>Create OpenShift Nodes VMs</h3>
+<div class="paragraph">
+<p>Before running the following commands, make sure you have generated a SSH key pair in your default location <code>~/.ssh/</code>. That SSH key will allow you to connect to the VMs you are about to create:</p>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli create pool -p /var/lib/libvirt/images default
@@ -970,6 +966,14 @@ kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P
 kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P numcpus=16 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:01:03"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0103 -P name=hub-master2
 kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:02:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201 -P name=sno1
 kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:03:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301 -P name=sno2</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you need or want to connect to any of the VMs you can do so by just executing:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli ssh &lt;VM_name&gt;</code></pre>
 </div>
 </div>
 </div>
@@ -1000,6 +1004,33 @@ kcli create plan --pf hub.yml --force</code></pre>
 </div>
 <div class="paragraph">
 <p>This will take around 1 hour to complete, you can follow progress by running <code>kcli console -s</code>.</p>
+</div>
+<div class="paragraph">
+<p>If the installation fails for whatever reason, you will need to delete all the VMs that were created and execute the same procedure again. So, first remove the plans, which actually will remove all VMs:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># kcli list plan
+------------------------------------------------------------+
+|     Plan    |                      Vms                      |
+------------------------------------------------------------+
+| hub-cluster |                 hub-installer                 |
+|     hub     | hub-master0,hub-master1,hub-master2,sno1,sno2 |
+------------------------------------------------------------+
+
+# kcli delete plan hub-cluster hub -y
+hub-installer deleted on local!
+Plan hub-cluster deleted!
+hub-master0 deleted on local!
+hub-master1 deleted on local!
+hub-master2 deleted on local!
+sno1 deleted on local!
+sno2 deleted on local!
+Plan hub deleted!</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>And then create the VMs again as explained in the previous section <a href="lab-environment.html#create-openshift-nodes-vms">Deploy OpenShift Hub Cluster</a>.</p>
 </div>
 </div>
 <div class="sect2">
