@@ -11,13 +11,13 @@ CAUTION: If you are a Red Hatter, you can order a lab environment on the https:/
 
 RHEL 8.X box with access to the Internet. This lab relies on KVM, so you need to have the proper virtualization packages already installed. It is highly recommended to use a bare-metal host. Our lab environment has the following specs:
 
-* 48 CPUs.
+* 64 CPUs (with or without hyperthreading)
 * 200GiB Memory.
 * 1 TiB storage.
++-
+IMPORTANT: These instructions have been tested in a RHEL 8.7, we cannot guarantee that other operating systems (even RHEL-based) will work. We won't be providing support out of RHEL 8.
 
-IMPORTANT: These instructions have been tested in RHEL 8.X, we cannot guarantee that other operating systems (even RHEL-based) will work. We won't be providing support out of RHEL 8.X.
-
-These are the steps to install the required packages on a RHEL 8.X server:
+These are the steps to install the required packages on a RHEL 8.7 server:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -93,6 +93,8 @@ systemctl mask dnsmasq
 
 [#configure-local-dns-as-primary-server]
 === Configure Local DNS as Primary Server
+
+The default upstream DNS is set to 1.1.1.1 in `/opt/dnsmasq/upstream-resolv.conf`. There might be cases in your local environment where the hypervisor may not reach it. So, notice that you must change it to a different DNS that allows you to resolve public hostnames. Once changed, remember to restart the dnsmasq-virt service.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -227,6 +229,8 @@ After that you need to add the following entries to your /etc/hosts file:
 [#create-openshift-nodes-vms]
 === Create OpenShift Nodes VMs
 
+Before running the following commands, make sure you have generated a SSH key pair in your default location `~/.ssh/`. That SSH key will allow you to connect to the VMs you are about to create:
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -237,6 +241,15 @@ kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=48000 -P
 kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:02:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201 -P name=sno1
 kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:03:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301 -P name=sno2
 -----
+
+If you need or want to connect to any of the VMs you can do so by just executing:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+kcli ssh <VM_name>
+-----
+
 
 [#deploy-openshift-hub-cluster]
 === Deploy OpenShift Hub Cluster
@@ -256,6 +269,34 @@ kcli create plan --pf hub.yml --force
 -----
 
 This will take around 1 hour to complete, you can follow progress by running `kcli console -s`.
+
+If the installation fails for whatever reason, you will need to delete all the VMs that were created and execute the same procedure again. So, first remove the plans, which actually will remove all VMs:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+
+# kcli list plan
++-------------+-----------------------------------------------+
+|     Plan    |                      Vms                      |
++-------------+-----------------------------------------------+
+| hub-cluster |                 hub-installer                 |
+|     hub     | hub-master0,hub-master1,hub-master2,sno1,sno2 |
++-------------+-----------------------------------------------+
+
+# kcli delete plan hub-cluster hub -y
+hub-installer deleted on local!
+Plan hub-cluster deleted!
+hub-master0 deleted on local!
+hub-master1 deleted on local!
+hub-master2 deleted on local!
+sno1 deleted on local!
+sno2 deleted on local!
+Plan hub deleted!
+-----
+
+And then create the VMs again as explained in the previous section link:lab-environment.html#create-openshift-nodes-vms[Deploy OpenShift Hub Cluster].
+
 
 [#configure-openshift-hub-cluster]
 === Configure OpenShift Hub Cluster
