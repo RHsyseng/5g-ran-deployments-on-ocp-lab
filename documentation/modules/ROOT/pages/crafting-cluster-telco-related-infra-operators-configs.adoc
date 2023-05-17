@@ -6,7 +6,7 @@ In the previous section, we created the infrastructure as code (IaC) for our `SN
 
 We described how `PolicyGenTemplate` works in detail xref:policygen-deepdive.adoc#policies-templating[here], so let's jump directly to the creation of the different templates.
 
-NOTE: The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in xref:telco-related-infra-operators-intro.adoc[Introduction to Telco Related Infrastructure Operators]. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the https://docs.google.com/presentation/d/18C8uWeZBA1hnsuLVwIfz9YDIzA6BRJjmu4STojDWyeI/[Telco-5G-RAN 4.12 - QE Validated Reference Configuration] slide deck.
+NOTE: The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in xref:telco-related-infra-operators-intro.adoc[Introduction to Telco Related Infrastructure Operators]. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the https://docs.google.com/presentation/d/18C8uWeZBA1hnsuLVwIfz9YDIzA6BRJjmu4STojDWyeI/[Telco-5G-RAN 4.12 - QE Validated Reference Configuration] #TODO slide deck.
 
 IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
 
@@ -15,16 +15,16 @@ IMPORTANT: Below commands must be executed from the workstation host if not spec
 
 The common policies apply to every cluster in our infrastructure that matches our binding rule. These policies are often used to configure things like CatalogSources, operator deployments, etc. that are common to all our clusters.
 
-These configs may vary from release to release, that's why we create a `common-412.yaml` file. We will likely have a common configuration profile for each release we deploy.
+These configs may vary from release to release, that's why we create a `common-413.yaml` file. We will likely have a common configuration profile for each release we deploy.
 
-IMPORTANT: If you check the binding rules, you see that we are targeting clusters labeled with `common: "ocp412"` and `logicalGroup: "active"`. These labels were set in the `SiteConfig` definition in the link:crafting-deployments-iaac.html#siteconfig[previous section].
+IMPORTANT: If you check the binding rules, you see that we are targeting clusters labeled with `common: "ocp413"` and `logicalGroup: "active"`. These labels were set in the `SiteConfig` definition in the link:crafting-deployments-iaac.html#siteconfig[previous section].
 
-1. Create the `common` PolicyGenTemplate for 4.12 SNOs:
+1. Create the `common` PolicyGenTemplate for 4.13 SNOs:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/common-412.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/common-413.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
@@ -33,7 +33,7 @@ metadata:
   namespace: "ztp-policies"
 spec:
   bindingRules:
-    common: "ocp412"
+    common: "ocp413"
     logicalGroup: "active"
   mcp: master
   remediationAction: inform
@@ -44,7 +44,7 @@ spec:
       metadata:
         name: redhat-operator-index
       spec:
-        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.12-1677697786
+        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.12-1677697786 #TODO
       policyName: config-policies
     - fileName: ReduceMonitoringFootprint.yaml
       policyName: config-policies
@@ -55,7 +55,7 @@ spec:
     - fileName: StorageLVMOSubscription.yaml
       spec:
         name: lvms-operator
-        channel: stable-4.12
+        channel: stable-4.13
         source: redhat-operator-index
       policyName: subscription-policies          
 EOF
@@ -228,12 +228,12 @@ EOF
 
 Testing policies before applying them to our production clusters is a must, in order to do that we will create a set of testing policies (which usually will be very similar to the production ones) and these policies will target clusters labeled with `logicalGroup: "testing"`. We won't go over every file, if you check the files that will be created those are the same as in `active`, also known as `production`, but with different names and binding policies.
 
-1. Create the `common` testing PolicyGenTemplate for 4.12 SNOs:
+1. Create the `common` testing PolicyGenTemplate for 4.13 SNOs:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/common-412.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/common-413.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
@@ -242,7 +242,7 @@ metadata:
   namespace: "ztp-policies"
 spec:
   bindingRules:
-    common: "ocp412"
+    common: "ocp413"
     logicalGroup: "testing"
   mcp: master
   remediationAction: inform
@@ -253,7 +253,7 @@ spec:
       metadata:
         name: redhat-operator-index
       spec:
-        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.12
+        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.13
       policyName: config-policies
     - fileName: ReduceMonitoringFootprint.yaml
       policyName: config-policies
@@ -264,7 +264,7 @@ spec:
     - fileName: StorageLVMOSubscription.yaml
       spec:
         name: lvms-operator
-        channel: stable-4.12
+        channel: stable-4.13
         source: redhat-operator-index
       policyName: subscription-policies    
 EOF
@@ -384,7 +384,7 @@ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustom
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 generators:
-  - common-412.yaml
+  - common-413.yaml
   - group-du-sno.yaml
 #  - group-du-sno-validator.yaml
 EOF
@@ -393,7 +393,7 @@ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/kusto
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 generators:
-  - common-412.yaml
+  - common-413.yaml
   - group-du-sno.yaml
 #  - group-du-sno-validator.yaml
 EOF
