@@ -6,6 +6,8 @@ Welcome to this 5G RAN Deployments on OpenShift Lab.
 
 The first part of this lab is an introduction to the required concepts that one needs to know when planning and running a 5G RAN Deployment on OpenShift. The second part is a practical scenario where we will run RAN-enabled OCP deployments by using the ZTP deployment technologies and methodologies.
 
+The second part of this lab requires a lab environment, we recommend ordering the lab before starting the first part of this lab so by the time you end the first part of the lab, the environment should be ready. If you are a Red Hatter you can order a lab environment already setup for you on the https://demo.redhat.com[Red Hat Demo Platform]. You just need to order the lab named `5G RAN Deployment on OpenShift`. Notice that it has a cost of ~ $56 to run through the lab. When the lab is launched, by default you will have 12 hours to complete it before it is destroyed. The estimated time to finish the lab might look like 12 hours total (2h provisioning time, 5h lab work, 5h margin). If you need further time, it can be manually extended up to 24h in total. If you don't have access to the demo platform but still need to deploy a lab environment, follow the guide available xref:lab-environment.adoc[here].
+
 [#lab-aim]
 == Who is this lab aimed at? 
 
