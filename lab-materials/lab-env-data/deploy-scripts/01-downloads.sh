@@ -10,7 +10,7 @@ kcli download oc -P version=stable -P tag='4.11'
 kcli download kubectl -P version=stable -P tag='4.11'
 mv kubectl oc /usr/bin/
 
-curl -L https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest-4.11/openshift-client-linux.tar.gz -o openshift-client-linux.tar.gz
+curl -L https://mirror.openshift.com/pub/openshift-v4/x86_64/clients/ocp/latest-4.13/openshift-client-linux.tar.gz -o openshift-client-linux.tar.gz
 tar xvfz openshift-client-linux.tar.gz
 mv kubectl oc /usr/bin/
 rm -f openshift-client-linux.tar.gz README.md
