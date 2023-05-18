@@ -691,7 +691,7 @@
 <p>The SiteConfig simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place.</p>
 </div>
 <div class="paragraph">
-<p>In this <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml">link</a> you can find an example of a SiteConfig for a SNO deployment. In the next section, we will create our own SiteConfig to deploy a SNO in our lab environment.</p>
+<p>In this <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml">link</a> you can find an example of a SiteConfig for a SNO deployment. In the next section, we will create our own SiteConfig to deploy a SNO in our lab environment.</p>
 </div>
 </div>
 </div>
@@ -967,7 +967,7 @@ spec:
     networkType: "OVNKubernetes"
     # Cluster labels (this will be used by RHACM)
     clusterLabels:
-      common: "ocp412"
+      common: "ocp413"
       logicalGroup: "active"
       group-du-sno: ""
       du-site: "sno2"
@@ -1028,7 +1028,7 @@ kind: ClusterImageSet
 metadata:
   name: active-ocp-version
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.12.3-x86_64
+  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.12.3-x86_64 #TODO
 EOF</code></pre>
 </div>
 </div>
