@@ -1,0 +1,20 @@
+[allowlist]
+  description = "Global Allowlist"
+
+  # Ignore based on any subset of the file path
+  paths = [
+    # Ignore all example certs
+    #'''\/example.*\.pem$''',
+                
+    # Ignore anything with the word funkymonkey anywhere in the path
+    #'''funkymonkey''',
+
+    # Ignore some long path
+    #'''examples\/some\/long\/path\/server.key$''',
+  ]
+        
+  # Ignore based on any subset of the line
+  regexes = [
+    # Ignore lines containing student:student
+    '''student:student''',
+  ]
