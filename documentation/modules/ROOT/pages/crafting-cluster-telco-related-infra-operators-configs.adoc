@@ -180,6 +180,11 @@ spec:
         realTimeKernel:
           enabled: false
         globallyDisableIrqLoadBalancing: false
+        # WorkloadHints defines the set of upper level flags for different type of workloads.
+        workloadHints:
+          realTime: true
+          highPowerConsumption: false
+          perPodPowerManagement: false
     - fileName: TunedPerformancePatch.yaml
       policyName: "site-policies"
       spec:
