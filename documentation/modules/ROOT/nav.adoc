@@ -159,6 +159,7 @@
 ** xref:troubleshooting-tips.adoc#sno2-down[SNO2 is down after syncing Argo applications]
 ** xref:troubleshooting-tips.adoc#policies-blank[Policies not showing in the Governance console]
 ** xref:troubleshooting-tips.adoc#policies-not-applied[Policies not applied]
+** xref:troubleshooting-tips.adoc#olm-bug[OLM Bug]
 
 * xref:common-pitfalls.adoc[Common Pitfalls]
 ** xref:common-pitfalls.adoc#exec-probes-cpu-pinning[Exec Probes and CPU Pinning]
