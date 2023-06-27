@@ -19,14 +19,16 @@ disconnected_url: infra.5g-deployment.lab:8443
 disconnected_user: admin
 disconnected_password: r3dh4t1!
 manifests_dir: hubmanifests
-disconnected_operators_version: v4.12-1677697786
+disconnected_operators_version: v4.12-1687863175
 disconnected_operators:
 - name: advanced-cluster-management
   channels:
   - name: release-2.7
+  - name: release-2.8
 - name: multicluster-engine
   channels:
   - name: stable-2.2
+  - name: stable-2.3
 - name: topology-aware-lifecycle-manager
   channels:
   - name: stable
