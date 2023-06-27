@@ -731,7 +731,7 @@ If you get <code>ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/5g-deployment-lab/ztp-pipeline/
 podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
-podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.12 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/</code></pre>
+podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.12.3-3 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/</code></pre>
 </div>
 </div>
 <div class="paragraph">
