@@ -39,7 +39,7 @@ disconnected_operators:
   channels:
   - name: stable-4.12
 disconnected_extra_images:
-- registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.12
+- registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.12.3-3
 disconnected_extra_releases:
 - quay.io/openshift-release-dev/ocp-release:4.12.3-x86_64
 installer_mac: aa:aa:aa:aa:01:06

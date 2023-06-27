@@ -290,7 +290,7 @@ By running the steps below we will get the plugins installed in our system. Kust
 [source,bash,subs="attributes+,+macros"]
 -----
 mkdir -p ~/.config/kustomize/plugin
-podman cp $(podman create --name policgentool --rm registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.12):/kustomize/plugin/ran.openshift.io ~/.config/kustomize/plugin/
+podman cp $(podman create --name policgentool --rm registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.12.3-3):/kustomize/plugin/ran.openshift.io ~/.config/kustomize/plugin/
 podman rm -f policgentool
 -----
 
