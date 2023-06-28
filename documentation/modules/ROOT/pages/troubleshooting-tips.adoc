@@ -490,12 +490,12 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 extract secret/sno2-a
 
 Probably your subscriptions are stuck and are showing a message like the one below:
 
-IMPORTANT: Command below checks sno1, you may want to check both SNOs.
+IMPORTANT: Command below checks sno2, you may want to check the SNO where policies are stuck.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig -n openshift-storage get subscriptions.operators.coreos.com odf-lvm-operator -o yaml 
+oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig -n openshift-storage get subscriptions.operators.coreos.com odf-lvm-operator -o yaml 
 -----
 
 [console-input]
