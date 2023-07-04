@@ -19,7 +19,7 @@ disconnected_url: infra.5g-deployment.lab:8443
 disconnected_user: admin
 disconnected_password: r3dh4t1!
 manifests_dir: hubmanifests
-#disconnected_operators_version: v4.13-1684409960
+disconnected_operators_version: v4.13-1688429207
 disconnected_operators:
 - name: advanced-cluster-management
   channels:
@@ -32,14 +32,12 @@ disconnected_operators:
   - name: stable
 - name: openshift-gitops-operator
   channels:
-  - name: latest
-  channels:
-  - name: latest
+  - name: latest 
 - name: lvms-operator
   channels:
   - name: stable-4.13
 disconnected_extra_images:
-- registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.13
+- registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.13.1-3
 disconnected_extra_releases:
 - quay.io/openshift-release-dev/ocp-release:4.13.3-x86_64
 installer_mac: aa:aa:aa:aa:01:06

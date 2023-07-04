@@ -164,7 +164,7 @@ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/kustomizati
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-bases:
+resources:
   - sno2/
 EOF
 -----
@@ -277,6 +277,24 @@ spec:
 EOF
 -----
 
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-configs/hub-1/sno2-extra-manifest/enable-crun-worker.yaml
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: ContainerRuntimeConfig
+metadata:
+ name: enable-crun-worker
+spec:
+ machineConfigPoolSelector:
+   matchLabels:
+     pools.operator.machineconfiguration.openshift.io/worker: ""
+ containerRuntimeConfig:
+   defaultRuntime: crun
+EOF
+-----
+
 In our site, we defined `clusterImageSetNameRef: "active-ocp-version"` as for the release to use to deploy our site. This reference will point to the `active` release we are deploying our sites with. Let's create the `ClusterImageSet` in the repo:
 
 [.console-input]
@@ -289,7 +307,7 @@ kind: ClusterImageSet
 metadata:
   name: active-ocp-version
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.12.3-x86_64 #TODO
+  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.13.2-x86_64
 EOF
 -----
 
@@ -316,10 +334,11 @@ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-configs/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-bases:
+resources:
   - pre-reqs/
   - resources/
-  - hub-1/
+generators:
+  - hub-1/5glab.yaml
 EOF
 -----
 
