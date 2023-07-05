@@ -739,21 +739,21 @@ topology-aware-lifecycle-manager.openshift-operators   16h</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                                           READY   STATUS    RESTARTS        AGE
-pod/cluster-group-upgrades-controller-manager-6d6fc98d-6cnf9   2/2     Running   1 (2d14h ago)   2d14h
-pod/gitops-operator-controller-manager-c6bc6db9f-5z752         1/1     Running   0               2d15h
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                                             READY   STATUS    RESTARTS   AGE
+pod/cluster-group-upgrades-controller-manager-75b967b749-qlzn8   2/2     Running   0          3h3m
+pod/gitops-operator-controller-manager-7b6b8967b8-4f8rx          1/1     Running   0          3h6m
 
 NAME                                                                SECRETS   AGE
-serviceaccount/builder                                              1         2d16h
-serviceaccount/cluster-group-upgrades-controller-manager            1         2d14h
-serviceaccount/cluster-group-upgrades-operator-controller-manager   1         2d14h
-serviceaccount/default                                              1         2d16h
-serviceaccount/deployer                                             1         2d16h
-serviceaccount/gitops-operator-controller-manager                   1         2d15h
+serviceaccount/builder                                              1         3h17m
+serviceaccount/cluster-group-upgrades-controller-manager            1         3h3m
+serviceaccount/cluster-group-upgrades-operator-controller-manager   1         3h3m
+serviceaccount/default                                              1         3h43m
+serviceaccount/deployer                                             1         3h17m
+serviceaccount/gitops-operator-controller-manager                   1         3h6m
 
 NAME                                                        READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/cluster-group-upgrades-controller-manager   1/1     1            1           2d14h
-deployment.apps/gitops-operator-controller-manager          1/1     1            1           2d15h</code></pre>
+deployment.apps/cluster-group-upgrades-controller-manager   1/1     1            1           3h3m
+deployment.apps/gitops-operator-controller-manager          1/1     1            1           3h6m</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -773,13 +773,13 @@ It&#8217;s possible that you get <code>UpgradeNotCompleted</code>, if that&#8217
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu sno2 -n ztp-install</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE     NAME   AGE     STATE       DETAILS
-ztp-install   sno2   3h29m   Completed   All clusters are compliant with all the managed policies</code></pre>
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE     NAME            AGE     STATE       DETAILS
+ztp-install   sno2            79m     Completed   All clusters are compliant with all the managed policies</code></pre>
 </div>
 </div>
 </div>
@@ -806,7 +806,7 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 extract secret/sno2-a
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/zone-europe-upgrade-412-5.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/zone-europe-upgrade-413-3.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
@@ -821,18 +821,18 @@ spec:
   remediationAction: inform
   sourceFiles:
     - fileName: ClusterVersion.yaml
-      policyName: "version-412-5"
+      policyName: "version-413-3"
       metadata:
         name: version
       spec:
-        channel: "stable-4.12"
+        channel: "stable-4.13"
         desiredUpdate:
           force: false
-          version: "4.12.5"
-          image: "infra.5g-deployment.lab:8443/openshift/release-images@sha256:fd65cebce150bac3c622e30e7f762d3173575ae3541b3a7648819cb63e9b63a4"
+          version: "4.13.3"
+          image: "infra.5g-deployment.lab:8443/openshift/release-images@sha256:bc9835804046aa844c874d2cc37387ec95fe7e87d8ce96129fba78d465c932fa"
       status:
         history:
-          - version: "4.12.5"
+          - version: "4.13.3"
             state: "Completed"
 EOF</code></pre>
 </div>
@@ -842,7 +842,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "/- group-du-sno.yaml/a \ \ - zone-europe-upgrade-412-5.yaml" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "/- group-du-sno.yaml/a \ \ - zone-europe-upgrade-413-3.yaml" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -851,13 +851,13 @@ EOF</code></pre>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository/
-git add site-policies/fleet/active/zone-europe-upgrade-412-5.yaml site-policies/fleet/active/kustomization.yaml
+git add site-policies/fleet/active/zone-europe-upgrade-413-3.yaml site-policies/fleet/active/kustomization.yaml
 git commit -m "adds upgrade policy"
 git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named <code>europe-snos-upgrade-version-412-5</code> has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That&#8217;s because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule.</p>
+<p>Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named <code>europe-snos-upgrade-version-413-3`</code> has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That&#8217;s because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -910,7 +910,7 @@ Notice in the following picture that there are policies not applying to any clus
 <div class="sect2">
 <h3 id="talm-backup-precache"><a class="anchor" href="#talm-backup-precache"></a>Backup and pre-cache</h3>
 <div class="paragraph">
-<p>Let&#8217;s create the CGU. In this case, we will apply the managed policy (europe-snos-upgrade-version-412-5) to both clusters at the same time (maxConcurrency is 2). Notice that the CGU is disabled, this is suggested if we are going to run the precaching feature. This means, that once the precaching process is done we are ready to start the upgrade process by enabling the CGU. This idea is related to the compliance of a maintenance window in an enterprise.</p>
+<p>Let&#8217;s create the CGU. In this case, we will apply the managed policy (europe-snos-upgrade-version-413-3) to both clusters at the same time (maxConcurrency is 2). Notice that the CGU is disabled, this is suggested if we are going to run the precaching feature. This means, that once the precaching process is done we are ready to start the upgrade process by enabling the CGU. This idea is related to the compliance of a maintenance window in an enterprise.</p>
 </div>
 <div class="paragraph">
 <p>Remember that several gigabytes of artifacts needs to be downloaded to the spoke for a full upgrade. SNO spoke clusters may have limited bandwidth to the hub cluster hosting the registry, which will make it difficult for the upgrade to complete within the required time. In order to ensure the upgrade can fit within the maintenance window, the required artifacts need to be present on the spoke cluster prior to the upgrade. Therefore, the process is split up into two stages as mentioned.</p>
@@ -940,7 +940,7 @@ spec:
   - sno2
   enable: false
   managedPolicies:
-  - europe-snos-upgrade-version-412-5
+  - europe-snos-upgrade-version-413-3
   remediationStrategy:
     maxConcurrency: 2
     timeout: 240
@@ -948,7 +948,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Once applied, we can see that the status moved to <code>PrecacheSpecIsWellFormed</code>. This means that the first step in our process is executing the pre-cache.</p>
+<p>Once applied, we can see that the status moved to <code>InProgress</code> with a message detailing that the precaching process is in progress for both SNOs. This means that the first step in our process is executing the pre-cache.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -957,9 +957,11 @@ EOF</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE      NAME                 AGE     STATE                      DETAILS
-ztp-install    sno2                 3h40m   Completed                  All clusters are compliant with all the managed policies
-ztp-policies   update-europe-snos   10s     PrecacheSpecIsWellFormed   Precaching spec is valid and consistent</code></pre>
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE      NAME                 AGE    STATE        DETAILS
+ztp-install    local-cluster        3h8m   Completed    All clusters already compliant with the specified managed policies
+ztp-install    sno1                 15m    Completed    All clusters already compliant with the specified managed policies
+ztp-install    sno2                 86m    Completed    All clusters are compliant with all the managed policies
+ztp-policies   update-europe-snos   20s    InProgress   Precaching in progress for 2 clusters</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -998,22 +1000,23 @@ pre-cache   0/1           64s        64s</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Release index image processing done
-58ff6e48f95bf6b444150290f481ad6fc6051e76defccf3611bdc2f9ddc1cccc
-upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Operators index is not specified. Operators will not be pre-cached
-upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:006e37a1f141eb219364a501767fb4a26210908385eef9576af00b55d8225ecb [1/183]
-upgrades.pre-cache 2023-03-16T12:59:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:01b510f238c0a8ad44df44d4aba3d0d2cfa429153ce3f451095484815f5746fd [2/183]
-upgrades.pre-cache 2023-03-16T12:59:11+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:02c9c2a2ef5941156a767d40abe900a669a8237a8444a3974b360c326a21ffc3 [3/183]
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">highThresholdPercent: 85 diskSize:209124332 used:17648032
+upgrades.pre-cache 2023-07-04T10:55:10+00:00 DEBUG Release index image processing done
+7df5fe3b5fb7352b870735c7d7bd898d0959a9a49558d2ffb42dcd269e01752f
+upgrades.pre-cache 2023-07-04T10:55:10+00:00 DEBUG Operators index is not specified. Operators won't be pre-cached
+upgrades.pre-cache 2023-07-04T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:00162a72c1ae283977f0191ee216e15fe696838b6d7addd8250ff8c5b474cc61 [1/183]
+upgrades.pre-cache 2023-07-04T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:00eaf204536112ed09a10e4c70f9a8dc6827726bf9bc34f279a9156b881a7a2a [2/183]
+upgrades.pre-cache 2023-07-04T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:02d61dfc59ac70096dffadda38a52829cd61c9c016e54d2b6d78eb5182d2b19a [3/183]
 .
 .
 .
-upgrades.pre-cache 2023-03-16T13:13:37+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:fe86e187b2664371923282d88426a183ccddc75305d9ee5b6e64a082d179b596 [182/183]
-upgrades.pre-cache 2023-03-16T13:13:48+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:fec91120672f68e7671b6f1fc17becf5aee9c72e540e046874a216d68bd04ffc [183/183]
-upgrades.pre-cache 2023-03-16T13:13:48+00:00 DEBUG Image pre-cache done</code></pre>
+upgrades.pre-cache 2023-07-04T11:00:48+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ff7cfeec16898c293222ac1422841440cdeffefa7d489757e71999d5305425f8 [182/183]
+upgrades.pre-cache 2023-07-04T11:00:48+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ff88f1a78dac067bb93d98818bcee9bed36de0b2a74f3ed42d15ad816a16f624 [183/183]
+upgrades.pre-cache 2023-07-04T11:00:48+00:00 DEBUG Image pre-cache done</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Once the precache is done, the CGU state moves to <code>NotEnabled</code>. At this moment, TALM is waiting for acknowledging the start of the upgrade.</p>
+<p>Once the precache is done, the CGU state moves to <code>NotEnabled</code> and the Pod running the pre-cache task in both SNO clusters is deleted. At this moment, TALM is waiting for acknowledging the start of the upgrade.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1029,14 +1032,13 @@ It can take up to 5 minutes for the CGU to report the new state.
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -n ztp-policies update-europe-snos</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE      NAME                 AGE   STATE        DETAILS
-ztp-install    sno2                 4h    Completed    All clusters are compliant with all the managed policies
-ztp-policies   update-europe-snos   20m   NotEnabled   Not enabled</code></pre>
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE      NAME                 AGE     STATE        DETAILS
+ztp-policies   update-europe-snos   29m     NotEnabled   Not enabled</code></pre>
 </div>
 </div>
 </div>
@@ -1055,14 +1057,13 @@ ztp-policies   update-europe-snos   20m   NotEnabled   Not enabled</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -n ztp-policies update-europe-snos</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE      NAME                 AGE    STATE        DETAILS
-ztp-install    sno2                 4h6m   Completed    All clusters are compliant with all the managed policies
-ztp-policies   update-europe-snos   25m    InProgress   Backup in progress for 2 clusters</code></pre>
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE      NAME                 AGE     STATE        DETAILS
+ztp-policies   update-europe-snos   30m     InProgress   Backup in progress for 2 clusters</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1087,14 +1088,13 @@ Notice that backup job can take up to 5m to be created.
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE                              NAME                                                              COMPLETIONS   DURATION   AGE
-assisted-installer                     assisted-installer-controller                                     1/1           38m        4h47m
-openshift-marketplace                  51f5147f46ba2fcbd47cc8cba3f7a6f28f7cc23b267e380ac5a1ee1de87d962   1/1           11s        4h2m
-openshift-operator-lifecycle-manager   collect-profiles-27982845                                         1/1           7s         39m
-openshift-operator-lifecycle-manager   collect-profiles-27982860                                         1/1           118s       24m
-openshift-operator-lifecycle-manager   collect-profiles-27982875                                         1/1           7s         9m2s
-openshift-talo-backup                  backup-agent                                                      0/1           30s        30s
-openshift-talo-pre-cache               pre-cache                                                         1/1           16m        25m</code></pre>
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE                              NAME                            COMPLETIONS   DURATION   AGE
+assisted-installer                     assisted-installer-controller   1/1           26m        21h
+openshift-image-registry               image-pruner-28140480           1/1           5s         11h
+openshift-operator-lifecycle-manager   collect-profiles-28141110       1/1           5s         34m
+openshift-operator-lifecycle-manager   collect-profiles-28141125       1/1           4s         19m
+openshift-operator-lifecycle-manager   collect-profiles-28141140       1/1           4s         4m50s
+openshift-talo-backup                  backup-agent                    0/1           7s         7s</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1112,45 +1112,45 @@ INFO[0000] Cleaning up old content...
 INFO[0000] ------------------------------------------------------------
 INFO[0000] Old directories deleted with contents
 INFO[0000] Old contents have been cleaned up
-INFO[0004] Available disk space : 155.49 GiB; Estimated disk space required for backup: 340.63 MiB
-INFO[0004] Sufficient disk space found to trigger backup
-INFO[0004] Upgrade recovery script written
-INFO[0004] Running: bash -c /var/recovery/upgrade-recovery.sh --take-backup --dir /var/recovery
-INFO[0004] ##### Thu Mar 16 13:24:20 UTC 2023: Taking backup
-INFO[0004] ##### Thu Mar 16 13:24:20 UTC 2023: Wiping previous deployments and pinning active
-INFO[0005] error: Out of range deployment index 1, expected &lt; 1
-INFO[0005] Deployment 0 is now pinned
-INFO[0005] ##### Thu Mar 16 13:24:21 UTC 2023: Backing up container cluster and required files
-INFO[0005] Certificate /etc/kubernetes/static-pod-certs/configmaps/etcd-serving-ca/ca-bundle.crt is missing. Checking in different directory
-INFO[0005] Certificate /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-serving-ca/ca-bundle.crt found!
-INFO[0006] found latest kube-apiserver: /etc/kubernetes/static-pod-resources/kube-apiserver-pod-6
-INFO[0006] found latest kube-controller-manager: /etc/kubernetes/static-pod-resources/kube-controller-manager-pod-9
-INFO[0006] found latest kube-scheduler: /etc/kubernetes/static-pod-resources/kube-scheduler-pod-8
-INFO[0007] found latest etcd: /etc/kubernetes/static-pod-resources/etcd-pod-3
-INFO[0009] 519d313c23c0fea1d1aed4366dd935663680a6a253bbb254ae7071ff3c66899c
-INFO[0009] etcdctl version: 3.5.6
-INFO[0009] API version: 3.5
-INFO[0009] {"level":"info","ts":"2023-03-16T13:24:26.056Z","caller":"snapshot/v3_snapshot.go:65","msg":"created temporary db file","path":"/var/recovery/cluster/snapshot_2023-03-16_132422.db.part"}
-INFO[0009] {"level":"info","ts":"2023-03-16T13:24:26.068Z","logger":"client","caller":"v3@v3.5.6/maintenance.go:212","msg":"opened snapshot stream; downloading"}
-INFO[0009] {"level":"info","ts":"2023-03-16T13:24:26.068Z","caller":"snapshot/v3_snapshot.go:73","msg":"fetching snapshot","endpoint":"https://192.168.125.40:2379"}
-INFO[0010] {"level":"info","ts":"2023-03-16T13:24:26.991Z","logger":"client","caller":"v3@v3.5.6/maintenance.go:220","msg":"completed snapshot read; closing"}
-INFO[0011] {"level":"info","ts":"2023-03-16T13:24:27.355Z","caller":"snapshot/v3_snapshot.go:88","msg":"fetched snapshot","endpoint":"https://192.168.125.40:2379","size":"92 MB","took":"1 second ago"}
-INFO[0011] {"level":"info","ts":"2023-03-16T13:24:27.355Z","caller":"snapshot/v3_snapshot.go:97","msg":"saved","path":"/var/recovery/cluster/snapshot_2023-03-16_132422.db"}
-INFO[0011] Snapshot saved at /var/recovery/cluster/snapshot_2023-03-16_132422.db
-INFO[0011] Deprecated: Use `etcdutl snapshot status` instead.
-INFO[0011]
-INFO[0011] {"hash":1194329918,"revision":85030,"totalKey":7098,"totalSize":91566080}
-INFO[0011] snapshot db and kube resources are successfully saved to /var/recovery/cluster
-INFO[0018] Command succeeded: rsync -a /etc/ /var/recovery/etc/
-INFO[0019] Command succeeded: rsync -a /usr/local/ /var/recovery/usrlocal/
-INFO[0023] Command succeeded: rsync -a /var/lib/kubelet/ /var/recovery/kubelet/
-INFO[0023] ##### Thu Mar 16 13:24:40 UTC 2023: Backup complete
-INFO[0023] ------------------------------------------------------------
-INFO[0023] backup has successfully finished ...</code></pre>
+INFO[0000] Available disk space : 154.98 GiB; Estimated disk space required for backup: 276.55 MiB
+INFO[0000] Sufficient disk space found to trigger backup
+INFO[0000] Upgrade recovery script written
+INFO[0000] Running: bash -c /var/recovery/upgrade-recovery.sh --take-backup --dir /var/recovery
+INFO[0000] ##### Wed Jul  5 10:57:53 UTC 2023: Taking backup
+INFO[0000] ##### Wed Jul  5 10:57:53 UTC 2023: Wiping previous deployments and pinning active
+INFO[0000] error: Out of range deployment index 1, expected &lt; 1
+INFO[0000] Deployment 0 is now pinned
+INFO[0000] ##### Wed Jul  5 10:57:54 UTC 2023: Backing up container cluster and required files
+INFO[0000] Certificate /etc/kubernetes/static-pod-certs/configmaps/etcd-serving-ca/ca-bundle.crt is missing. Checking in different directory
+INFO[0000] Certificate /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-serving-ca/ca-bundle.crt found!
+INFO[0000] found latest kube-apiserver: /etc/kubernetes/static-pod-resources/kube-apiserver-pod-7
+INFO[0000] found latest kube-controller-manager: /etc/kubernetes/static-pod-resources/kube-controller-manager-pod-11
+INFO[0000] found latest kube-scheduler: /etc/kubernetes/static-pod-resources/kube-scheduler-pod-8
+INFO[0000] found latest etcd: /etc/kubernetes/static-pod-resources/etcd-pod-3
+INFO[0000] aa91d2b9d4ac8ef60ea81f11643fdaad14717e21a7a4f82b57f59667a02c92af
+INFO[0000] etcdctl version: 3.5.6
+INFO[0000] API version: 3.5
+INFO[0000] {"level":"info","ts":"2023-07-05T10:57:54.421Z","caller":"snapshot/v3_snapshot.go:65","msg":"created temporary db file","path":"/var/recovery/cluster/snapshot_2023-07-05_105754__POSSIBLY_DIRTY__.db.part"}
+INFO[0000] {"level":"info","ts":"2023-07-05T10:57:54.434Z","logger":"client","caller":"v3@v3.5.6/maintenance.go:212","msg":"opened snapshot stream; downloading"}
+INFO[0000] {"level":"info","ts":"2023-07-05T10:57:54.434Z","caller":"snapshot/v3_snapshot.go:73","msg":"fetching snapshot","endpoint":"https://192.168.125.40:2379"}
+INFO[0001] {"level":"info","ts":"2023-07-05T10:57:55.204Z","logger":"client","caller":"v3@v3.5.6/maintenance.go:220","msg":"completed snapshot read; closing"}
+INFO[0001] {"level":"info","ts":"2023-07-05T10:57:55.290Z","caller":"snapshot/v3_snapshot.go:88","msg":"fetched snapshot","endpoint":"https://192.168.125.40:2379","size":"84 MB","took":"now"}
+INFO[0001] {"level":"info","ts":"2023-07-05T10:57:55.290Z","caller":"snapshot/v3_snapshot.go:97","msg":"saved","path":"/var/recovery/cluster/snapshot_2023-07-05_105754__POSSIBLY_DIRTY__.db"}
+INFO[0001] Snapshot saved at /var/recovery/cluster/snapshot_2023-07-05_105754__POSSIBLY_DIRTY__.db
+INFO[0001] Deprecated: Use `etcdutl snapshot status` instead.
+INFO[0001]
+INFO[0001] {"hash":1007949646,"revision":43716,"totalKey":10582,"totalSize":83578880}
+INFO[0001] snapshot db and kube resources are successfully saved to /var/recovery/cluster
+INFO[0002] Command succeeded: cp -Ra /etc/ /var/recovery/etc/
+INFO[0002] Command succeeded: cp -Ra /usr/local/ /var/recovery/usrlocal/
+INFO[0002] Command succeeded: cp -Ra /var/lib/kubelet/ /var/recovery/kubelet/
+INFO[0002] ##### Wed Jul  5 10:57:55 UTC 2023: Backup complete
+INFO[0002] ------------------------------------------------------------
+INFO[0002] backup has successfully finished ...</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Once backups are finished for all clusters, the CGU state will move to <code>BackupCompleted</code>:</p>
+<p>Once backups are finished for all clusters, the CGU state will move to <code>BackupCompleted</code> and then quickly move to <code>InProgress</code>:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1175,10 +1175,10 @@ ztp-policies   update-europe-snos   28m    BackupCompleted   Backup is completed
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.12.3    True        True          4m2s    Working towards 4.12.5: 213 of 829 done (25% complete), waiting on config-operator, machine-api
+clusterversion.config.openshift.io/version   4.13.2    True        True          30s     Working towards 4.13.3: 101 of 842 done (11% complete), waiting on kube-apiserver
 
 NAME                          STATUS   ROLES                         AGE    VERSION
-node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   5h7m   v1.25.4+a34b9e9</code></pre>
+node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   156m   v1.26.5+0001a21</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1208,10 +1208,10 @@ node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   5h7m   v1.2
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.12.5    True        False         9m13s   Cluster version is 4.12.5
+clusterversion.config.openshift.io/version   4.13.3    True        False         6m8s    Cluster version is 4.13.3
 
 NAME                          STATUS   ROLES                         AGE     VERSION
-node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   5h56m   v1.25.4+a34b9e9</code></pre>
+node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   3h26m   v1.26.5+7a891f0</code></pre>
 </div>
 </div>
 <div class="listingblock console-input">
@@ -1222,14 +1222,14 @@ node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   5h56m   v1.
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.12.5    True        False         33m     Cluster version is 4.12.5
+clusterversion.config.openshift.io/version   4.13.3    True        False         9m12s   Cluster version is 4.13.3
 
 NAME                      STATUS   ROLES                         AGE   VERSION
-node/openshift-master-0   Ready    control-plane,master,worker   18h   v1.25.4+a34b9e9</code></pre>
+node/openshift-master-0   Ready    control-plane,master,worker   22h   v1.26.5+7a891f0</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that now the upgrade policy <code>europe-snos-upgrade-version-412-5</code> is now compliant on both clusters. See that, in order to save resources, the enforce policy is removed once the CGU is successfully applied.</p>
+<p>Notice that now the upgrade policy <code>europe-snos-upgrade-version-413-3</code> is now compliant on both clusters. See that, in order to save resources, the enforce policy is removed once the CGU is successfully applied.</p>
 </div>
 <div class="paragraph">
 <p>And finally, the CGU will be <code>Completed</code>:</p>
@@ -1241,9 +1241,11 @@ node/openshift-master-0   Ready    control-plane,master,worker   18h   v1.25.4+a
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE      NAME                 AGE     STATE       DETAILS
-ztp-install    sno2                 5h26m   Completed   All clusters are compliant with all the managed policies
-ztp-policies   update-europe-snos   106m    Completed   All clusters are compliant with all the managed policies</code></pre>
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE      NAME                 AGE    STATE       DETAILS
+ztp-install    local-cluster        23h    Completed   All clusters already compliant with the specified managed policies
+ztp-install    sno1                 67m    Completed   All clusters already compliant with the specified managed policies
+ztp-install    sno2                 3h5m   Completed   All clusters are compliant with all the managed policies
+ztp-policies   update-europe-snos   63m    Completed   All clusters are compliant with all the managed policies</code></pre>
 </div>
 </div>
 <div class="imageblock">
