@@ -6,7 +6,7 @@ In the previous section, we created the infrastructure as code (IaC) for our `SN
 
 We described how `PolicyGenTemplate` works in detail xref:policygen-deepdive.adoc#policies-templating[here], so let's jump directly to the creation of the different templates.
 
-NOTE: The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in xref:telco-related-infra-operators-intro.adoc[Introduction to Telco Related Infrastructure Operators]. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the https://docs.google.com/presentation/d/18C8uWeZBA1hnsuLVwIfz9YDIzA6BRJjmu4STojDWyeI/[Telco-5G-RAN 4.12 - QE Validated Reference Configuration] #TODO slide deck.
+NOTE: The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in xref:telco-related-infra-operators-intro.adoc[Introduction to Telco Related Infrastructure Operators]. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the https://docs.google.com/presentation/d/1WcP0Zkytz4YFYynFgWuWHwNTEVJBmL5ULFUdN5i-spc/[Telco-5G-RAN 4.13 - QE Validated Reference Configuration] slide deck.
 
 IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
 
@@ -44,11 +44,14 @@ spec:
       metadata:
         name: redhat-operator-index
       spec:
-        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.12-1677697786 #TODO
+        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.13-1688429207
       policyName: config-policies
     - fileName: ReduceMonitoringFootprint.yaml
       policyName: config-policies
     - fileName: StorageLVMOSubscriptionNS.yaml
+      metadata:
+        annotations:
+          workload.openshift.io/allowed: management
       policyName: subscription-policies
     - fileName: StorageLVMOSubscriptionOperGroup.yaml
       policyName: subscription-policies
@@ -180,6 +183,11 @@ spec:
         realTimeKernel:
           enabled: false
         globallyDisableIrqLoadBalancing: false
+        # WorkloadHints defines the set of upper level flags for different type of workloads.
+        workloadHints:
+          realTime: true
+          highPowerConsumption: false
+          perPodPowerManagement: false
     - fileName: TunedPerformancePatch.yaml
       policyName: "site-policies"
       spec:
@@ -253,11 +261,14 @@ spec:
       metadata:
         name: redhat-operator-index
       spec:
-        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.13
+        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.13-1688429207
       policyName: config-policies
     - fileName: ReduceMonitoringFootprint.yaml
       policyName: config-policies
     - fileName: StorageLVMOSubscriptionNS.yaml
+      metadata:
+        annotations:
+          workload.openshift.io/allowed: management
       policyName: subscription-policies
     - fileName: StorageLVMOSubscriptionOperGroup.yaml
       policyName: subscription-policies

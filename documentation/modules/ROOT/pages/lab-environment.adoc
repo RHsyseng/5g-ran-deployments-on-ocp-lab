@@ -11,10 +11,10 @@ CAUTION: If you are a Red Hatter, you can order a lab environment on the https:/
 
 RHEL 8.X box with access to the Internet. This lab relies on KVM, so you need to have the proper virtualization packages already installed. It is highly recommended to use a bare-metal host. Our lab environment has the following specs:
 
-* 64 CPUs (with or without hyperthreading)
+* 64 cores in total, with or without hyperthreading enabled.
 * 200GiB Memory.
 * 1 TiB storage.
-+-
+
 IMPORTANT: These instructions have been tested in a RHEL 8.7, we cannot guarantee that other operating systems (even RHEL-based) will work. We won't be providing support out of RHEL 8.
 
 These are the steps to install the required packages on a RHEL 8.7 server:
@@ -120,6 +120,8 @@ iptables -F
 
 [#configure-webcache]
 === Configure Webcache
+
+The webcache is basically an Apache httpd container serving the RHCOS live ISO and rootfs images locally. They are required for provisioning OCP clusters.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]

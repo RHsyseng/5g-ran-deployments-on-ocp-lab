@@ -56,6 +56,7 @@ As we saw in a previous section, the Git repository we will be using will have t
 -----
 ├── site-configs
 │   ├── hub-1
+|   |   └── sno2-extra-manifest
 │   ├── pre-reqs
 │   │   └── sno2
 │   └── resources
@@ -75,7 +76,7 @@ IMPORTANT: The cluster name for the SNO that we will be deploying in the lab wil
 [source,bash,subs="attributes+,+macros"]
 -----
 cd ~/5g-deployment-lab/ztp-repository/
-mkdir -p site-configs/{hub-1,resources,pre-reqs/sno2}
+mkdir -p site-configs/{hub-1,resources,pre-reqs/sno2,hub-1/sno2-extra-manifest}
 mkdir -p site-policies/{fleet/active,fleet/testing,sites/hub-1}
 touch site-configs/{hub-1,resources,pre-reqs/sno2}/.gitkeep
 touch site-policies/{fleet/active,fleet/testing,sites/hub-1}/.gitkeep
@@ -163,7 +164,7 @@ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/kustomizati
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-bases:
+resources:
   - sno2/
 EOF
 -----
@@ -172,6 +173,8 @@ EOF
 === SiteConfig
 
 Now that we have the pre-reqs, let's jump into the SiteConfig.
+
+IMPORTANT: In 4.13 release a couple of noticeable changes in provisioning are included. Improvements such as the chance to use crun as the container runtime or leverage Composable OpenShift feature to reduce the platform footprint.
 
 Copy the command below and refer to the comments in the code for explanations.
 
@@ -199,6 +202,10 @@ spec:
   - clusterName: "sno2"
     # The sdn plugin that will be used
     networkType: "OVNKubernetes"
+    # All Composable capabilities removed except required for telco
+    installConfigOverrides:  "{\"capabilities\":{\"baselineCapabilitySet\": \"None\", \"additionalEnabledCapabilities\": [ \"marketplace\", \"NodeTuning\" ] }}"
+    # It is strongly recommended to include crun manifests as part of the additional install-time manifests for 4.13+.
+    extraManifestPath: hub-1/sno2-extra-manifest
     # Cluster labels (this will be used by RHACM)
     clusterLabels:
       common: "ocp413"
@@ -250,6 +257,44 @@ spec:
 EOF
 -----
 
+It is strongly recommended to include crun manifests as part of the additional install-time manifests for 4.13+. So let's create proper machine configuration in the extra manifests folder:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-configs/hub-1/sno2-extra-manifest/enable-crun-master.yaml
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: ContainerRuntimeConfig
+metadata:
+ name: enable-crun-master
+spec:
+ machineConfigPoolSelector:
+   matchLabels:
+     pools.operator.machineconfiguration.openshift.io/master: ""
+ containerRuntimeConfig:
+   defaultRuntime: crun
+EOF
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-configs/hub-1/sno2-extra-manifest/enable-crun-worker.yaml
+---
+apiVersion: machineconfiguration.openshift.io/v1
+kind: ContainerRuntimeConfig
+metadata:
+ name: enable-crun-worker
+spec:
+ machineConfigPoolSelector:
+   matchLabels:
+     pools.operator.machineconfiguration.openshift.io/worker: ""
+ containerRuntimeConfig:
+   defaultRuntime: crun
+EOF
+-----
+
 In our site, we defined `clusterImageSetNameRef: "active-ocp-version"` as for the release to use to deploy our site. This reference will point to the `active` release we are deploying our sites with. Let's create the `ClusterImageSet` in the repo:
 
 [.console-input]
@@ -262,7 +307,7 @@ kind: ClusterImageSet
 metadata:
   name: active-ocp-version
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.12.3-x86_64 #TODO
+  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.13.2-x86_64
 EOF
 -----
 
@@ -289,10 +334,11 @@ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-configs/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-bases:
+resources:
   - pre-reqs/
   - resources/
-  - hub-1/
+generators:
+  - hub-1/5glab.yaml
 EOF
 -----
 

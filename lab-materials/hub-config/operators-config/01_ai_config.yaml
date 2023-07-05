@@ -212,9 +212,9 @@ kind: ClusterImageSet
 metadata:
   annotations:
         argocd.argoproj.io/sync-wave: "4"
-  name: openshift-v4.13.0-disconnected
+  name: openshift-v4.13.2-disconnected
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.13.0-x86_64
+  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.13.2-x86_64
 ---
 apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
