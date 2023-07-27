@@ -30,6 +30,6 @@ spec:
   rootDeviceHints:
     deviceName: /dev/vda
   bmc:
-    address: redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201
+    address: redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno1
     credentialsName: sno1
     disableCertificateVerification: true
