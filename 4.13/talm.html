@@ -619,7 +619,7 @@
     <a class="nav-link" href="lab-environment.html#disable-firewall">Disable Firewall</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-environment.html#install-sushytools">Install Sushy Tools</a>
+    <a class="nav-link" href="lab-environment.html#install-ksushytools">Install Ksushy Tool</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#configure-disconnected-registry">Configure Disconnected Registry</a>
@@ -819,7 +819,7 @@ TALM will basically enforce all existing policies that are bound to a cluster th
 <h2 id="waves"><a class="anchor" href="#waves"></a>Waves</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every <a href="policygen-deepdive.html#policies-templating">policy</a> generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/SriovSubscriptionNS.yaml">SriovSubscriptionNS.yaml</a>:</p>
+<p>A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every <a href="policygen-deepdive.html#policies-templating">policy</a> generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/SriovSubscriptionNS.yaml">SriovSubscriptionNS.yaml</a>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -857,7 +857,7 @@ Detailed information on policy templates can be found in the following <a href="
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate. Default ztp-deploy-wave value can be found on the proper <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/source-crs">source crs</a>.
+All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate. Default ztp-deploy-wave value can be found on the proper <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.13/ztp/source-crs">source crs</a>.
 </td>
 </tr>
 </table>

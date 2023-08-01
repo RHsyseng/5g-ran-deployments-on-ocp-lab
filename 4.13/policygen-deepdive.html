@@ -619,7 +619,7 @@
     <a class="nav-link" href="lab-environment.html#disable-firewall">Disable Firewall</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-environment.html#install-sushytools">Install Sushy Tools</a>
+    <a class="nav-link" href="lab-environment.html#install-ksushytools">Install Ksushy Tool</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#configure-disconnected-registry">Configure Disconnected Registry</a>
@@ -677,7 +677,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>As we saw in an earlier section of the lab, we can leverage <a href="rhacm-policies.html">RHACM policies</a> to get our clusters configured the way we want. We also introduced the <a href="ztp-at-scale.html#policygen">PolicyGen component</a> which helps us to create a set of policies based on <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/source-crs">pre-baked templates</a> (source-crs) crafted by the Red Hat CNF team.</p>
+<p>As we saw in an earlier section of the lab, we can leverage <a href="rhacm-policies.html">RHACM policies</a> to get our clusters configured the way we want. We also introduced the <a href="ztp-at-scale.html#policygen">PolicyGen component</a> which helps us to create a set of policies based on <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.13/ztp/source-crs">pre-baked templates</a> (source-crs) crafted by the Red Hat CNF team.</p>
 </div>
 <div class="paragraph">
 <p>In this section, we are going to get into the implementation details of the PolicyGen tooling.</p>
@@ -696,10 +696,10 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>SiteConfig Generator</strong>. Reads the SiteConfig manifest and generates the required Kubernetes manifests to run a RAN-enabled OpenShift deployment using RHACM. Code is located <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/siteconfig-generator">here</a>.</p>
+<p><strong>SiteConfig Generator</strong>. Reads the SiteConfig manifest and generates the required Kubernetes manifests to run a RAN-enabled OpenShift deployment using RHACM. Code is located <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.13/ztp/siteconfig-generator">here</a>.</p>
 </li>
 <li>
-<p><strong>Policy Generator</strong>. Reads the PolicyGenTemplate manifest and generates the required Kubernetes manifest to configure an RHACM Policy targeting a set of clusters. Code is located <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/policygenerator">here</a>.</p>
+<p><strong>Policy Generator</strong>. Reads the PolicyGenTemplate manifest and generates the required Kubernetes manifest to configure an RHACM Policy targeting a set of clusters. Code is located <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.13/ztp/policygenerator">here</a>.</p>
 </li>
 </ul>
 </div>
@@ -780,13 +780,13 @@ kind: PolicyGenTemplate</code></pre>
 <div class="sect2">
 <h3 id="siteconfig-generator"><a class="anchor" href="#siteconfig-generator"></a>SiteConfigGenerator</h3>
 <div class="paragraph">
-<p>The SiteConfigGenerator reads the SiteConfig manifest and uses the information provided in that file to output a set of manifests that will be used for running a cluster installation. The manifests templates can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/siteconfig-generator/siteConfig/clusterCRs.go">here</a>.</p>
+<p>The SiteConfigGenerator reads the SiteConfig manifest and uses the information provided in that file to output a set of manifests that will be used for running a cluster installation. The manifests templates can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/siteconfig-generator/siteConfig/clusterCRs.go">here</a>.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="policy-generator"><a class="anchor" href="#policy-generator"></a>Policy Generator</h3>
 <div class="paragraph">
-<p>The PolicyGenerator reads the PolicyGenTemplate manifests and uses the information provided in these files to output a set of RHACM policies that will be used for different purposes, from day2ops to monitoring the cluster health. It makes use os templated policies that can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/source-crs">here</a>.</p>
+<p>The PolicyGenerator reads the PolicyGenTemplate manifests and uses the information provided in these files to output a set of RHACM policies that will be used for different purposes, from day2ops to monitoring the cluster health. It makes use os templated policies that can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.13/ztp/source-crs">here</a>.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -838,7 +838,7 @@ Some of these configurations are configured at install time (through the use of 
 <p>Pins OCP platform, operating system processes and day2 operator Pods that are part of the DU profile to the reserved cpuset.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/extra-manifest/workload/03-workload-partitioning.yaml">Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/extra-manifest/workload/03-workload-partitioning.yaml">Manifest</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -847,7 +847,7 @@ Some of these configurations are configured at install time (through the use of 
 <p>Reduce frequency of kubelet housekeeping and eviction monitoring to reduce CPU usage.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml">Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml">Manifest</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -856,7 +856,7 @@ Some of these configurations are configured at install time (through the use of 
 <p>Enable SCTP kernel module which is required by RAN applications but disabled by default in RHCOS.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/extra-manifest/03-sctp-machine-config-master.yaml">Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/extra-manifest/03-sctp-machine-config-master.yaml">Manifest</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -865,7 +865,7 @@ Some of these configurations are configured at install time (through the use of 
 <p>In order to reduce system mount scanning overhead, creates a mount namespaces for container mounts visible to kubelet/CRI-O.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml">Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml">Manifest</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -874,7 +874,7 @@ Some of these configurations are configured at install time (through the use of 
 <p>Systemd service which will assign additional CPUs to systemd services during reboot recovery.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/extra-manifest/04-accelerated-container-startup-master.yaml">Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/extra-manifest/04-accelerated-container-startup-master.yaml">Manifest</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -893,7 +893,7 @@ Some of these configurations are configured at install time (through the use of 
 </ul>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/ReduceMonitoringFootprint.yaml">Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/ReduceMonitoringFootprint.yaml">Manifest</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -902,7 +902,7 @@ Some of these configurations are configured at install time (through the use of 
 <p>Since the DUs are being centrally managed from a RHACM hub, disable the local console to reduce resource consumption.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/ConsoleOperatorDisable.yaml">Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/ConsoleOperatorDisable.yaml">Manifest</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -911,7 +911,7 @@ Some of these configurations are configured at install time (through the use of 
 <p>Disable networking diagnostics for SNO as it is not applicable.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/DisableSnoNetworkDiag.yaml">Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/DisableSnoNetworkDiag.yaml">Manifest</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -920,10 +920,10 @@ Some of these configurations are configured at install time (through the use of 
 <p>A single catalog source is recommended that contains only the operators required for a RAN DU deployment.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/OperatorHub.yaml">Manifest 1</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/OperatorHub.yaml">Manifest 1</a></p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/DefaultCatsrc.yaml">Manifest 2</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/DefaultCatsrc.yaml">Manifest 2</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -945,13 +945,13 @@ Some of these configurations are configured at install time (through the use of 
 <p>This also includes an optional event notification service that applications can subscribe to for ptp events.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/PtpConfigSlave.yaml">Ordinary Clock Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/PtpConfigSlave.yaml">Ordinary Clock Manifest</a></p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/PtpConfigMaster.yaml">Boundary Clock Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/PtpConfigMaster.yaml">Boundary Clock Manifest</a></p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/PtpOperatorConfigForEvent.yaml">Event Notification Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/PtpOperatorConfigForEvent.yaml">Event Notification Manifest</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -963,13 +963,13 @@ Some of these configurations are configured at install time (through the use of 
 <p>This will be customer specific.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/SriovOperatorConfig.yaml">Operator Config Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/SriovOperatorConfig.yaml">Operator Config Manifest</a></p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/SriovNetworkNodePolicy.yaml">SriovNetworkPolicy Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/SriovNetworkNodePolicy.yaml">SriovNetworkPolicy Manifest</a></p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/SriovNetwork.yaml">SriovNetwork Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/SriovNetwork.yaml">SriovNetwork Manifest</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -997,7 +997,7 @@ Some of these configurations are configured at install time (through the use of 
 </ul>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/PerformanceProfile.yaml">Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/PerformanceProfile.yaml">Manifest</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -1006,8 +1006,9 @@ Some of these configurations are configured at install time (through the use of 
 <p>Enables creation of Persistent Volumes which can be consumed as PVCs by applications. This will be customer specific.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/StorageClass.yaml">StorageClass Manifest</a>
-<a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/StorageLV.yaml">Storage Local Volume Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/StorageClass.yaml">StorageClass Manifest</a>
+<a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/StorageLV.yaml">Storage Local Volume Manifest</a>
+<a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/StorageLVMCluster.yaml">Storage Local Volume Manifest Dynamic Provisioning</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -1016,7 +1017,7 @@ Some of these configurations are configured at install time (through the use of 
 <p>Enables collection and shipping of logs off the edge node for remote analysis.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/ClusterLogForwarder.yaml">Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/ClusterLogForwarder.yaml">Manifest</a></p>
 </div>
 </div>
 </div>
@@ -1025,7 +1026,7 @@ Some of these configurations are configured at install time (through the use of 
 <h2 id="siteconfig-templating"><a class="anchor" href="#siteconfig-templating"></a>SiteConfig Templating</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The SiteConfig templating is pretty straightforward, whatever information we put into our SiteConfig manifest will be translated to the required manifests to initiate the cluster installation. You can find a SiteConfig example <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml">here</a>.</p>
+<p>The SiteConfig templating is pretty straightforward, whatever information we put into our SiteConfig manifest will be translated to the required manifests to initiate the cluster installation. You can find a SiteConfig example <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml">here</a>.</p>
 </div>
 </div>
 </div>
@@ -1033,7 +1034,7 @@ Some of these configurations are configured at install time (through the use of 
 <h2 id="policies-templating"><a class="anchor" href="#policies-templating"></a>Policies Templating</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Policies templating is a bit different, we have a set of base configuration CRs, known as source-crs, that we can use. This set of CRs can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/source-crs">here</a>.</p>
+<p>Policies templating is a bit different, we have a set of base configuration CRs, known as source-crs, that we can use. This set of CRs can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.13/ztp/source-crs">here</a>.</p>
 </div>
 <div class="paragraph">
 <p>If you access this link you will see lots of files, like for example:</p>
@@ -1055,7 +1056,7 @@ Some of these configurations are configured at install time (through the use of 
 <p>These CRs are referenced (by filename) from the PolicyGenTemplate CRs in Git. The PolicyGenTemplate CRs act as a manifest of which configuration CRs should be included and how they should be combined into Policy CRs. In addition, the PolicyGenTemplate can contain an "overlay" (or patch) that is applied to the CR before it is wrapped into the Policy.</p>
 </div>
 <div class="paragraph">
-<p>The way this works is a follows. We will have one or more PolicyGenTemplates where we will reference these base configuration CRs. We can see an example <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml">here</a>.</p>
+<p>The way this works is a follows. We will have one or more PolicyGenTemplates where we will reference these base configuration CRs. We can see an example <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml">here</a>.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s use the following PolicyGenTemplate as example.</p>
@@ -1091,10 +1092,10 @@ spec:
 <p>We can see that the PolicyGenTemplate is targeting two base configuration CRs: <code>SriovOperatorConfig.yaml</code> and <code>PerformanceProfile.yaml</code>.</p>
 </div>
 <div class="paragraph">
-<p>The first source CR, <code>SriovOperatorConfig.yaml</code>, is not overriding any settings, we can tell this because we don&#8217;t have a <code>spec</code> or <code>metadata</code> section below the <code>policyName</code>. That means that the final policy will include the configuration CR without modification ( <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/SriovOperatorConfig.yaml">base SriovOperatorConfig configuration CR</a>).</p>
+<p>The first source CR, <code>SriovOperatorConfig.yaml</code>, is not overriding any settings, we can tell this because we don&#8217;t have a <code>spec</code> or <code>metadata</code> section below the <code>policyName</code>. That means that the final policy will include the configuration CR without modification ( <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/SriovOperatorConfig.yaml">base SriovOperatorConfig configuration CR</a>).</p>
 </div>
 <div class="paragraph">
-<p>The second source CR, <code>PerformanceProfile.yaml</code>, is overriding some parameters in the <code>spec</code>. That means that the final policy will be configured as a merge of the <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/PerformanceProfile.yaml">original CR</a> plus the custom overrides we provided in the PolicyGenTemplate.</p>
+<p>The second source CR, <code>PerformanceProfile.yaml</code>, is overriding some parameters in the <code>spec</code>. That means that the final policy will be configured as a merge of the <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/PerformanceProfile.yaml">original CR</a> plus the custom overrides we provided in the PolicyGenTemplate.</p>
 </div>
 <div class="admonitionblock caution">
 <table>
@@ -1122,7 +1123,7 @@ Inside the templates we can often see references to what may appear variables li
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/.config/kustomize/plugin
-podman cp $(podman create --name policgentool --rm registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.12):/kustomize/plugin/ran.openshift.io ~/.config/kustomize/plugin/
+podman cp $(podman create --name policgentool --rm registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.13):/kustomize/plugin/ran.openshift.io ~/.config/kustomize/plugin/
 podman rm -f policgentool</code></pre>
 </div>
 </div>
