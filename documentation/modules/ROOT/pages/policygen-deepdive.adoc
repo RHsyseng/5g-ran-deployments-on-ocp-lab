@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-As we saw in an earlier section of the lab, we can leverage link:rhacm-policies.html[RHACM policies] to get our clusters configured the way we want. We also introduced the link:ztp-at-scale.html#policygen[PolicyGen component] which helps us to create a set of policies based on https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/source-crs[pre-baked templates] (source-crs) crafted by the Red Hat CNF team.
+As we saw in an earlier section of the lab, we can leverage link:rhacm-policies.html[RHACM policies] to get our clusters configured the way we want. We also introduced the link:ztp-at-scale.html#policygen[PolicyGen component] which helps us to create a set of policies based on https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.13/ztp/source-crs[pre-baked templates] (source-crs) crafted by the Red Hat CNF team.
 
 In this section, we are going to get into the implementation details of the PolicyGen tooling.
 
@@ -13,8 +13,8 @@ The policy generator is implemented as a Kustomize generator plugin. This allows
 
 There are two Kustomize plugins, we refer to them as PolicyGenTool, but each has its own name and mission:
 
-* **SiteConfig Generator**. Reads the SiteConfig manifest and generates the required Kubernetes manifests to run a RAN-enabled OpenShift deployment using RHACM. Code is located https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/siteconfig-generator[here].
-* **Policy Generator**. Reads the PolicyGenTemplate manifest and generates the required Kubernetes manifest to configure an RHACM Policy targeting a set of clusters. Code is located https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/policygenerator[here].
+* **SiteConfig Generator**. Reads the SiteConfig manifest and generates the required Kubernetes manifests to run a RAN-enabled OpenShift deployment using RHACM. Code is located https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.13/ztp/siteconfig-generator[here].
+* **Policy Generator**. Reads the PolicyGenTemplate manifest and generates the required Kubernetes manifest to configure an RHACM Policy targeting a set of clusters. Code is located https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.13/ztp/policygenerator[here].
 
 
 [#kustomize-plugins]
@@ -73,12 +73,12 @@ Kustomize will get the GVK and after that will go to the plugins path and execut
 [#siteconfig-generator]
 === SiteConfigGenerator
 
-The SiteConfigGenerator reads the SiteConfig manifest and uses the information provided in that file to output a set of manifests that will be used for running a cluster installation. The manifests templates can be found https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/siteconfig-generator/siteConfig/clusterCRs.go[here].
+The SiteConfigGenerator reads the SiteConfig manifest and uses the information provided in that file to output a set of manifests that will be used for running a cluster installation. The manifests templates can be found https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/siteconfig-generator/siteConfig/clusterCRs.go[here].
 
 [#policy-generator]
 === Policy Generator
 
-The PolicyGenerator reads the PolicyGenTemplate manifests and uses the information provided in these files to output a set of RHACM policies that will be used for different purposes, from day2ops to monitoring the cluster health. It makes use os templated policies that can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/source-crs[here].
+The PolicyGenerator reads the PolicyGenTemplate manifests and uses the information provided in these files to output a set of RHACM policies that will be used for different purposes, from day2ops to monitoring the cluster health. It makes use os templated policies that can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.13/ztp/source-crs[here].
 
 IMPORTANT: A high level view of the installation and configuration workflow can be found in the previous section link:ztp-workflow.html[ZTP workflow].
 
@@ -100,35 +100,35 @@ A more in-detail explanation of the 5G RAN Profile is covered in this https://vi
 
 Pins OCP platform, operating system processes and day2 operator Pods that are part of the DU profile to the reserved cpuset.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/extra-manifest/workload/03-workload-partitioning.yaml[Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/extra-manifest/workload/03-workload-partitioning.yaml[Manifest]
 
 [#kubelet-tuning]
 === Kubelet Tuning
 
 Reduce frequency of kubelet housekeeping and eviction monitoring to reduce CPU usage.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml[Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml[Manifest]
 
 [#sctp]
 === SCTP
 
 Enable SCTP kernel module which is required by RAN applications but disabled by default in RHCOS.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/extra-manifest/03-sctp-machine-config-master.yaml[Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/extra-manifest/03-sctp-machine-config-master.yaml[Manifest]
 
 [#hide-container-mount]
 === Container Mount Hiding
 
 In order to reduce system mount scanning overhead, creates a mount namespaces for container mounts visible to kubelet/CRI-O.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml[Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml[Manifest]
 
 [#recovery-optimization]
 === Recovery Optimization
 
 Systemd service which will assign additional CPUs to systemd services during reboot recovery.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/extra-manifest/04-accelerated-container-startup-master.yaml[Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/extra-manifest/04-accelerated-container-startup-master.yaml[Manifest]
 
 [#monitoring-footprint]
 === Monitoring Operator Config
@@ -138,30 +138,30 @@ Reduce footprint of the monitoring stack by:
 * Reducing the Prometheus retention period, metrics are already being aggregated at the RHACM hub.
 * Disable local Grafana and Alertmanager.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/ReduceMonitoringFootprint.yaml[Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/ReduceMonitoringFootprint.yaml[Manifest]
 
 [#ocp-console]
 === Console Operator
 
 Since the DUs are being centrally managed from a RHACM hub, disable the local console to reduce resource consumption.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/ConsoleOperatorDisable.yaml[Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/ConsoleOperatorDisable.yaml[Manifest]
 
 [#networking-diags]
 === Networking Operator
 
 Disable networking diagnostics for SNO as it is not applicable.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/DisableSnoNetworkDiag.yaml[Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/DisableSnoNetworkDiag.yaml[Manifest]
 
 [#operatorhub]
 === OperatorHub
 
 A single catalog source is recommended that contains only the operators required for a RAN DU deployment.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/OperatorHub.yaml[Manifest 1]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/OperatorHub.yaml[Manifest 1]
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/DefaultCatsrc.yaml[Manifest 2]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/DefaultCatsrc.yaml[Manifest 2]
 
 [#ptp-operator]
 === PTP Operator
@@ -173,11 +173,11 @@ Configuration of the Precision Time Protocol. The DU can run in the following mo
 
 This also includes an optional event notification service that applications can subscribe to for ptp events.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/PtpConfigSlave.yaml[Ordinary Clock Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/PtpConfigSlave.yaml[Ordinary Clock Manifest]
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/PtpConfigMaster.yaml[Boundary Clock Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/PtpConfigMaster.yaml[Boundary Clock Manifest]
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/PtpOperatorConfigForEvent.yaml[Event Notification Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/PtpOperatorConfigForEvent.yaml[Event Notification Manifest]
 
 [#sr-iov]
 === SR-IOV
@@ -186,11 +186,11 @@ Provision and configure the SR-IOV CNI and device plugin. Both netdevice (kernel
 
 This will be customer specific.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/SriovOperatorConfig.yaml[Operator Config Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/SriovOperatorConfig.yaml[Operator Config Manifest]
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/SriovNetworkNodePolicy.yaml[SriovNetworkPolicy Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/SriovNetworkNodePolicy.yaml[SriovNetworkPolicy Manifest]
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/SriovNetwork.yaml[SriovNetwork Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/SriovNetwork.yaml[SriovNetwork Manifest]
 
 [#nto]
 === Node Tuning Operator
@@ -203,7 +203,7 @@ Performance Tuning interface including:
 * Configures reserved and isolated cpusets.
 * Additional kernel args.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/PerformanceProfile.yaml[Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/PerformanceProfile.yaml[Manifest]
 
 
 [#local-storage]
@@ -211,25 +211,26 @@ https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/sourc
 
 Enables creation of Persistent Volumes which can be consumed as PVCs by applications. This will be customer specific.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/StorageClass.yaml[StorageClass Manifest]
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/StorageLV.yaml[Storage Local Volume Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/StorageClass.yaml[StorageClass Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/StorageLV.yaml[Storage Local Volume Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/StorageLVMCluster.yaml[Storage Local Volume Manifest Dynamic Provisioning]
 
 [#logs]
 === Log Collector and Forwarder
 
 Enables collection and shipping of logs off the edge node for remote analysis.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/ClusterLogForwarder.yaml[Manifest]
+https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/ClusterLogForwarder.yaml[Manifest]
 
 [#siteconfig-templating]
 == SiteConfig Templating
 
-The SiteConfig templating is pretty straightforward, whatever information we put into our SiteConfig manifest will be translated to the required manifests to initiate the cluster installation. You can find a SiteConfig example https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml[here].
+The SiteConfig templating is pretty straightforward, whatever information we put into our SiteConfig manifest will be translated to the required manifests to initiate the cluster installation. You can find a SiteConfig example https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml[here].
 
 [#policies-templating]
 == Policies Templating
 
-Policies templating is a bit different, we have a set of base configuration CRs, known as source-crs, that we can use. This set of CRs can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.12/ztp/source-crs[here].
+Policies templating is a bit different, we have a set of base configuration CRs, known as source-crs, that we can use. This set of CRs can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.13/ztp/source-crs[here].
 
 If you access this link you will see lots of files, like for example:
 
@@ -239,7 +240,7 @@ If you access this link you will see lots of files, like for example:
 
 These CRs are referenced (by filename) from the PolicyGenTemplate CRs in Git. The PolicyGenTemplate CRs act as a manifest of which configuration CRs should be included and how they should be combined into Policy CRs. In addition, the PolicyGenTemplate can contain an "overlay" (or patch) that is applied to the CR before it is wrapped into the Policy.
 
-The way this works is a follows. We will have one or more PolicyGenTemplates where we will reference these base configuration CRs. We can see an example https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml[here].
+The way this works is a follows. We will have one or more PolicyGenTemplates where we will reference these base configuration CRs. We can see an example https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml[here].
 
 Let's use the following PolicyGenTemplate as example.
 
@@ -273,9 +274,9 @@ spec:
 
 We can see that the PolicyGenTemplate is targeting two base configuration CRs: `SriovOperatorConfig.yaml` and `PerformanceProfile.yaml`.
 
-The first source CR, `SriovOperatorConfig.yaml`, is not overriding any settings, we can tell this because we don't have a `spec` or `metadata` section below the `policyName`. That means that the final policy will include the configuration CR without modification ( https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/SriovOperatorConfig.yaml[base SriovOperatorConfig configuration CR]).
+The first source CR, `SriovOperatorConfig.yaml`, is not overriding any settings, we can tell this because we don't have a `spec` or `metadata` section below the `policyName`. That means that the final policy will include the configuration CR without modification ( https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/SriovOperatorConfig.yaml[base SriovOperatorConfig configuration CR]).
 
-The second source CR, `PerformanceProfile.yaml`, is overriding some parameters in the `spec`. That means that the final policy will be configured as a merge of the https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.12/ztp/source-crs/PerformanceProfile.yaml[original CR] plus the custom overrides we provided in the PolicyGenTemplate.
+The second source CR, `PerformanceProfile.yaml`, is overriding some parameters in the `spec`. That means that the final policy will be configured as a merge of the https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/PerformanceProfile.yaml[original CR] plus the custom overrides we provided in the PolicyGenTemplate.
 
 CAUTION: Inside the templates we can often see references to what may appear variables like `$size`, `$count`, etc. These are not vars, that actually tells the policyGen plugin to remove that line from the output if no value was provided as an override. The only variable that is referenced and is actually substituted is the `$mcp` variable that will be replaced with the value of the same property defined in the PolicyGenTemplate.
 
@@ -290,7 +291,7 @@ By running the steps below we will get the plugins installed in our system. Kust
 [source,bash,subs="attributes+,+macros"]
 -----
 mkdir -p ~/.config/kustomize/plugin
-podman cp $(podman create --name policgentool --rm registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.12):/kustomize/plugin/ran.openshift.io ~/.config/kustomize/plugin/
+podman cp $(podman create --name policgentool --rm registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.13):/kustomize/plugin/ran.openshift.io ~/.config/kustomize/plugin/
 podman rm -f policgentool
 -----
 

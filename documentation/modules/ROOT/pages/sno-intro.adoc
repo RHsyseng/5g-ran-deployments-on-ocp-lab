@@ -37,7 +37,7 @@ Requirements for SNO are:
 * Single-node OpenShift requires the following minimum host resources: vCPU: 8, VirtualRAM: 16 GB, Storage: 120 GB. 
 * Single-node OpenShift isn’t highly-available. It explicitly does not assume zero downtime of the Kubernetes API.
 * The server must have access to the internet or access to a local (disconnected) registry if it is not connected to an externally routable network.
-* The server must have a DHCP reservation or a static IP address for the Kubernetes API, ingress route, and cluster node domain names. You must also configure the proper DNS records to resolve the previous reservations. More information with regards to the DNS records that must be configured can be found in the official documentation, specifically at https://docs.openshift.com/container-platform/4.12/installing/installing_sno/install-sno-preparing-to-install-sno.html#install-sno-requirements-for-installing-on-a-single-node_install-sno-preparing[Requirements for installing OpenShift on a single node] section. Notice that all the DNS records must be subdomains of the same base domain.
+* The server must have a DHCP reservation or a static IP address for the Kubernetes API, ingress route, and cluster node domain names. You must also configure the proper DNS records to resolve the previous reservations. More information with regards to the DNS records that must be configured can be found in the official documentation, specifically at https://docs.openshift.com/container-platform/4.13/installing/installing_sno/install-sno-preparing-to-install-sno.html#install-sno-requirements-for-installing-on-a-single-node_install-sno-preparing[Requirements for installing OpenShift on a single node] section. Notice that all the DNS records must be subdomains of the same base domain.
 
 IMPORTANT: Starting at OpenShift 4.11, you can now add workers to a Single-Node OpenShift (SNO).
 
@@ -55,4 +55,4 @@ There is plenty of information about SNO, here you have some interesting referen
 * https://cloud.redhat.com/blog/deploy-openshift-at-the-edge-with-single-node-openshift[Using web-based Assisted Installer] and a https://www.youtube.com/watch?v=QFf0yVAHQKc[recording].
 * https://cloud.redhat.com/blog/telco-5g-zero-touch-provisioning-ztp[Telco 5G Zero Touch Provisioning].
 * https://www.redhat.com/en/blog/meet-single-node-openshift-our-smallest-openshift-footprint-edge-architectures[Meet single node OpenShift: Our newest small OpenShift footprint for edge architectures].
-* https://docs.openshift.com/container-platform/4.12/installing/installing_sno/install-sno-preparing-to-install-sno.html[Preparing to install on a single node] in the official documentation.
+* https://docs.openshift.com/container-platform/4.13/installing/installing_sno/install-sno-preparing-to-install-sno.html[Preparing to install on a single node] in the official documentation.

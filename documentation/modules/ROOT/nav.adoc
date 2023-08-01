@@ -179,7 +179,7 @@
 *** xref:lab-environment.adoc#configure-local-dns-dhcp-server[Configure Local DNS/DHCP Server]
 *** xref:lab-environment.adoc#configure-local-dns-as-primary-server[Configure Local DNS as Primary Server]
 *** xref:lab-environment.adoc#disable-firewall[Disable Firewall]
-*** xref:lab-environment.adoc#install-sushytools[Install Sushy Tools]
+*** xref:lab-environment.adoc#install-ksushytools[Install Ksushy Tool]
 *** xref:lab-environment.adoc#configure-disconnected-registry[Configure Disconnected Registry]
 *** xref:lab-environment.adoc#configure-git-server[Configure Git Server]
 *** xref:lab-environment.adoc#configure-ntp-server[Configure NTP Server]
