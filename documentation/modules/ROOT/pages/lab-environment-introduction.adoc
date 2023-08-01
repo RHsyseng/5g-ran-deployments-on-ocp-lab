@@ -19,7 +19,7 @@ Credentials for the git server:
 [#container-registry]
 == Container Registry
 
-A https://docs.openshift.com/container-platform/4.12/installing/disconnected_install/installing-mirroring-creating-registry.html[container registry] is running on the infrastructure host, you can reach it out at https://infra.5g-deployment.lab:8443/.
+A https://docs.openshift.com/container-platform/4.13/installing/disconnected_install/installing-mirroring-creating-registry.html[container registry] is running on the infrastructure host, you can reach it out at https://infra.5g-deployment.lab:8443/.
 
 Credentials for the container registry:
 

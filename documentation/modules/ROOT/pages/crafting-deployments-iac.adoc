@@ -70,6 +70,8 @@ As we saw in a previous section, the Git repository we will be using will have t
 
 Let's replicate it:
 
+WARNING: If it is the first time that you are using `git` in your machine, a message requiring you to setup a Git Username and Email may be shown.
+
 IMPORTANT: The cluster name for the SNO that we will be deploying in the lab will be sno2, that's why that folder exists in the repository structure that we are creating.
 
 [.console-input]
@@ -90,7 +92,7 @@ git push origin main
 
 The details for our baremetal node that we want to provision as SNO2 are the ones below:
 
-* RedFish Endpoint: `redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301`
+* RedFish Endpoint: `redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno2`
 * MAC Address: `aa:aa:aa:aa:03:01`
 * Primary disk: `/dev/vda`
 * BMC User: `admin`
@@ -229,7 +231,7 @@ spec:
     nodes:
       - hostName: "sno2.5g-deployment.lab"
         role: "master"
-        bmcAddress: "redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301"
+        bmcAddress: "redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno2"
         # The secret name of the secret containing the bmc credentials for our bare metal node
         bmcCredentialsName:
           name: "sno2-bmc-credentials"
