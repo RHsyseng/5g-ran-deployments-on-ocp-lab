@@ -7,3 +7,4 @@ resources:
   - 01_ai_config.yaml
   - 02_patch_provisioning.yaml
   - 03_mce_config.yaml 
+  - 04_aap_config.yaml
