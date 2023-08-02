@@ -108,7 +108,7 @@
 *** xref:integration-with-aap.adoc#aap-operator[AAP Operator]
 *** xref:integration-with-aap.adoc#automation-hub[Automation Hub]
 *** xref:integration-with-aap.adoc#automation-controller[Automation Controller]
-*** xref:integration-with-aap.adoc#acm-integration-components[ACM Components Necessary for Integration]
+*** xref:integration-with-aap.adoc#mch-addons[MultiClusterHub Add-Ons]
 *** xref:integration-with-aap.adoc#acm-hooks-toward-aap[ACM Hooks Toward AAP]
 ** xref:integration-with-aap.adoc#workflow-overview[Workflow Overview]
 *** xref:integration-with-aap.adoc#general-workflow[General AAP Integration Workflow]
@@ -144,9 +144,18 @@
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#crafting-testing-policies[Crafting testing Policies]
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#configure-kustomization-for-policies[Configure Kustomization for Policies]
 
+* xref:configuring-aap.adoc[Configuring AAP]
+** xref:configuring-aap.adoc#configuring-automation-controller[Configuring Automation Controller]
+** xref:configuring-aap.adoc#installing-mch-addons[Installing MultiClusterHub Add-Ons]
+** xref:configuring-aap.adoc#adding-necessary-objects[Adding Necessary Objects]
+
 * xref:running-the-deployment.adoc[Running the Deployment]
 ** xref:running-the-deployment.adoc#deploying-ztp-gitops-pipeline[Deploying the ZTP GitOps Pipeline]
 ** xref:running-the-deployment.adoc#deploying-sno-using-gitops-pipeline[Deploying the SNO Cluster using the ZTP GitOps Pipeline]
+
+* xref:adding-automation.adoc[Adding Policy-Based AAP Automation to the Deployment]
+** xref:adding-automation.adoc#enabling-managedserviceaccount[Enabling the ManagedServiceAccount Add-On]
+** xref:adding-automation.adoc#creating-governance-hook[Crafting a Governance Hook into AAP]
 
 * xref:monitoring-the-deployment.adoc[Monitoring the Deployment]
 ** xref:monitoring-the-deployment.adoc#monitoring-deployment-webui[Monitoring the Deployment via the WebUI]
@@ -157,6 +166,7 @@
 * xref:check-deployment-is-finished.adoc[Check SNO Deployment is finished]
 ** xref:check-deployment-is-finished.adoc#check-sno-deployment-webui[Check SNO Deployment has Finished via the WebUI]
 ** xref:check-deployment-is-finished.adoc#check-sno-deployment-cli[Check SNO Deployment has Finished via the CLI]
+** xref:check-deployment-is-finished.adoc#ensure-automation-ran-successfully[Ensure AAP Automation Ran Successfully]
 
 * xref:using-talm-to-update-clusters.adoc[Using TALM to update clusters]
 ** xref:using-talm-to-update-clusters.adoc#verify-talm[Verifying the TALM state]
