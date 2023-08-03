@@ -67,3 +67,6 @@ ztp-policies.sno2-site-policies             inform               Compliant      
 -----
 +
 3. At this point the SNO is ready ro tun 5G RAN workloads.
+
+[#ensure-automation-ran-successfully]
+== Ensure AAP Automation Ran Successfully

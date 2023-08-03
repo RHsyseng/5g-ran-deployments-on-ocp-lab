@@ -1,0 +1,10 @@
+= Adding Policy-Based AAP Automation to the Deployment
+include::_attributes.adoc[]
+:profile: 5g-ran-lab
+
+[#enabling-managedserviceaccount]
+== Enabling the ManagedServiceAccount Add-On
+
+[#creating-governance-hook]
+== Crafting a Governance Hook into AAP
+

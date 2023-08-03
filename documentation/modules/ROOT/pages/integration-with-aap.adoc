@@ -1,1 +1,41 @@
+= Integration with Ansible Automation Platform (AAP)
+include::_attributes.adoc[]
+:profile: 5g-ran-lab
+
+
+[#aap-overview]
+== AAP Overview
+
+[#intro-to-aap]
+=== Introduction to AAP
+
+[#declarative-vs-imperative-configuration]
+=== Declarative vs Imperative Configuration
+
+[#augmenting-openshift]
+=== Augmenting Openshift with Ansible Automation
+
+[#aap-components]
+== Defining AAP Components
+
+[#automation-hub]
+=== Automation Hub
+
+[#automation-controller]
+=== Automation Controller
+
+[#mch-addons]
+=== MultiClusterHub Add-Ons
+
+[#acm-hooks-toward-aap]
+=== ACM Hooks Toward AAP
+
+[#workflow-overview]
+== Workflow Overview
+
+[#general-workflow]
+=== General AAP Integration Workflow
+
+[#lab-workflow]
+=== This Lab's AAP Integration Workflow
 

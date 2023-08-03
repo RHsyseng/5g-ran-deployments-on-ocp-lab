@@ -1,0 +1,13 @@
+= Configuring Ansible Automation Platform
+include::_attributes.adoc[]
+:profile: 5g-ran-lab
+
+[#configuring-automation-controller]
+== Configuring Automation Controller
+
+[#installing-mch-addons]
+== Installing MultiClusterHub Add-Ons
+
+[#adding-necessary-objects]
+== Adding Necessary Objects
+
