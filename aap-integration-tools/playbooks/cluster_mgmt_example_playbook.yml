@@ -1,0 +1,19 @@
+- name: "Manage Clusters"
+  hosts: "{{ target_clusters }}"
+  connection: local
+  gather_facts: false
+  tasks:
+    - block: 
+        - include_tasks: ../roles/k8s-cluster-access/tasks/get-temp-access.yml
+          vars:
+            rbac_template: ../k8s-rbac/namespace-mgmt
+            serviceaccount_generate_name: "cluster-mgmt-"
+            ttl: 60
+        - include_role: 
+            name: ../roles/create-namespace
+          vars:
+            namespace_name: "{{ namespace_to_add }}"
+            state: "{{ state }}"
+      always:
+        - include_tasks: ../roles/k8s-cluster-access/tasks/remove-access.yml
+          ignore_errors: true

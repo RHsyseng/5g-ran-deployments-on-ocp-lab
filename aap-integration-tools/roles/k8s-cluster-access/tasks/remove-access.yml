@@ -1,0 +1,9 @@
+  - name: "Removing managed ServiceAccount"
+    stolostron.core.managed_serviceaccount:
+      state: absent
+      hub_kubeconfig: "{{ lookup('env', 'K8S_AUTH_KUBECONFIG') }}"
+      managed_cluster: "{{ hostvars[inventory_hostname].cluster_name }}"
+      name: "{{ managed_serviceaccount.name }}"
+      wait: yes
+      timeout: 60
+    when: managed_serviceaccount is defined

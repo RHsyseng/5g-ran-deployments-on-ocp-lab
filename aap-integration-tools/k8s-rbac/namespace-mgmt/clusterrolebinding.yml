@@ -1,0 +1,8 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: namespace-mgmt
+roleRef:
+  apiGroup: ""
+  kind: ClusterRole
+  name: namespace-mgmt
