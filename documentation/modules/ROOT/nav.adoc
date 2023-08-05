@@ -214,3 +214,4 @@
 *** xref:lab-environment.adoc#configure-openshift-hub-cluster[Configure OpenShift Hub Cluster]
 *** xref:lab-environment.adoc#deploy-openshift-hub-cluster-operators[Deploy OpenShift HUB Cluster Operators]
 *** xref:lab-environment.adoc#deploy-sno1-cluster-without-ztp[Deploy SNO1 Cluster (without ZTP)]
+*** xref:lab-environment.adoc#upload-collections-to-aap-hub[Upload Necessary Collections to AAP Hub]

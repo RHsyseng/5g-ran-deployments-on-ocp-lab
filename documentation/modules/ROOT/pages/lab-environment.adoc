@@ -350,3 +350,6 @@ node/openshift-master-0   Ready    control-plane,master,worker   94m   v1.26.5+0
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.13.2    True        False         75m     Cluster version is 4.13.2
 -----
+
+[#upload-collections-to-aap-hub]
+=== Upload Necessary Ansible Collections to AAP Hub
