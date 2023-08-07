@@ -899,10 +899,10 @@ Some of these configurations are configured at install time (through the use of 
 <div class="sect2">
 <h3 id="ocp-console"><a class="anchor" href="#ocp-console"></a>Console Operator</h3>
 <div class="paragraph">
-<p>Since the DUs are being centrally managed from a RHACM hub, disable the local console to reduce resource consumption.</p>
+<p>As part of the composable OpenShift Settings the Console Operator can be enabled-disabled. The <code>SiteConfig</code> CR allows to define these settings via the <code>installConfigOverrides</code>.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/ConsoleOperatorDisable.yaml">Manifest</a></p>
+<p>Since the DUs are being centrally managed from a RHACM hub, the local console will be disabled to reduce resource consumption.</p>
 </div>
 </div>
 <div class="sect2">
