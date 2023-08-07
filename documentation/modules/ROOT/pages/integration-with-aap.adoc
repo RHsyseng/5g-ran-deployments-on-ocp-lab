@@ -74,7 +74,7 @@ Now that we are familiar with AAP in OpenShift and the necessary components for 
 At a high level, the steps to AAP integration with 5G RAN ZTP deployments are as follows:
 
 * Mirror AAP operator to disconnected registry (outside the scope of this lab, see the _Ansible Automation Platform mirroring_ section of this link:https://www.ansible.com/blog/openshift-and-ansible-bridging-the-automation-gap-for-5g-and-beyond-networks-part-1[blog])
-* Install AAP operator, deploy AutomationHub and AutomationController (already running on OpenShift cluster, see the _Ansible Automation Platform operator installation_ section of this link:https://www.ansible.com/blog/openshift-and-ansible-bridging-the-automation-gap-for-5g-and-beyond-networks-part-1[blog] and the CRD examples for link:integration-with-aap.html#automation-hub[AutomationHub] and link:integration-with-aap.htmlautomation-controller[AutomationController])
+* Install AAP operator, deploy AutomationHub and AutomationController (already running on OpenShift cluster, see the _Ansible Automation Platform operator installation_ section of this link:https://www.ansible.com/blog/openshift-and-ansible-bridging-the-automation-gap-for-5g-and-beyond-networks-part-1[blog] and the CRD examples for link:integration-with-aap.html#automation-hub[AutomationHub] and link:integration-with-aap.html#automation-controller[AutomationController])
 * Upload necessary Ansible collections to Automation Hub (already uploaded, see uploaded collections at automation-hub-aap.apps.hub.5g-deployment.lab and instructions for this process in the link:lab-environment.html#upload-collections-to-aap-hub[Lab Environment] section)
 * Configure Automation Controller with Ansible automation resources
 * Install MultiClusterHub add-ons
