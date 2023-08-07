@@ -3,19 +3,19 @@ runtime:
 
 site:
   title: LAB - 5G RAN Deployments on OpenShift
-  url: https://labs.sysdeseng.com/
+  url: http://localhost:3000
   start_page: 5g-ran-deployments-on-ocp-lab::index.adoc
 
 content:
   sources:
     - url: ./
       branches:
-      - 'lab-4.13'
+      - 'aap-integration-updates'
       start_path: documentation
 
 asciidoc:
   attributes:
-    release-version: 4.13
+    release-version: 4.13.1
     page-pagination: true
   extensions:
     - ./lib/tab-block.js

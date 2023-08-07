@@ -108,6 +108,3 @@ TALM manages the deployment of Red Hat Advanced Cluster Management (RHACM) polic
 * The order of policies remediated to the cluster.
 
 TALM supports the orchestration of the OpenShift Container Platform y-stream and z-stream updates, day-two operator y-stream and z-stream updates, and configuration updates.
-
-[#aap]
-== Ansible Automation Platform Operator

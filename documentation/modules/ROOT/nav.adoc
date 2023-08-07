@@ -50,7 +50,6 @@
 *** xref:ztp-at-scale.adoc#sitegen[SiteGen]
 *** xref:ztp-at-scale.adoc#policygen[PolicyGen]
 ** xref:ztp-at-scale.adoc#talm[Topology Aware Lifecycle Manager]
-** xref:ztp-at-scale.adoc#aap[Ansible Automation Platform Operator]
 
 * xref:ztp-workflow.adoc[ZTP Workflow]
 ** xref:ztp-workflow.adoc#takeaways[Takeaways]
