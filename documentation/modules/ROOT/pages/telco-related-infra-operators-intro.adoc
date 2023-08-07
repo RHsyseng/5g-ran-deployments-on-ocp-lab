@@ -14,6 +14,7 @@ In RAN environments we will leverage the PerformanceProfile API in order to:
 * Update the kernel to kernel-rt.
 * Configure CPUs for housekeeping (reserved CPUs).
 * Configure CPUs for running workloads (isolated CPUs).
+* Configure workloadHints to enable tuning of power savings vs performance. https://docs.openshift.com/container-platform/4.13/scalability_and_performance/cnf-low-latency-tuning.html#cnf-understanding-workload-hints_cnf-master[More here].
 
 The Node Tuning Operator is part of the standard OpenShift installation.
 
