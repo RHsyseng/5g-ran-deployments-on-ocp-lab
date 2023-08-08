@@ -12,7 +12,7 @@ for path in ${DIR}/*.tar.gz; do
     readarray -d "-" -t filearray <<< "$filename"
     NAMESPACE=${filearray[0]}
     COLLECTION=${filearray[1]}
-    VERSION=$(cat ${filearray[2]} | tr -d '\n')
+    VERSION=$(echo "${filearray[2]}" | tr -d '\n')
     echo "Uploading ${NAMESPACE}-${COLLECTION}-${VERSION}"
     #create namespace
     curl -sku ${GALAXY_NG_USER}:"${GALAXY_NG_PASSWORD}" -X POST -H 'Content-Type: application/json' -d '{"name":"'${NAMESPACE}'","groups":[]}' ${GALAXY_NG_URL}/api/galaxy/_ui/v1/namespaces/ | jq
