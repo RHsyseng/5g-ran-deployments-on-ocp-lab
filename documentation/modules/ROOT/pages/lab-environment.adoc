@@ -465,9 +465,9 @@ chmod u+x ~/collections_to_hub.bash
 ~/collections_to_hub.bash
 -----
 
-After running this script, if we head to automation-hub-aap.apps.hub.5g-deployment.lab and click on the "Collections" tab, we will see the collections we have just uploaded.
+After running this script, if we head to automation-hub-aap.apps.hub.5g-deployment.lab and click on the "Collections" tab, we will see the collections we have just uploaded. Note that the `amazon.aws` collection has been included, which is a listed dependency of `stolostron.core` that `ansible-galaxy` has taken care of.
 
-<Insert picture>
+image::aap-hub-collections.png[AAP Hub Collections]
 
 
 
