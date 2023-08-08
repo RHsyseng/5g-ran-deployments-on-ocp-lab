@@ -48,10 +48,17 @@ Credentials for Automation Hub:
 * Username: `admin`
 * Password: Retrieve the password by running `oc -n aap get secret automation-hub-admin-password -o jsonpath='{.data.password}' | base64 -d`
 
-The Automation Controller can be reached at https://automation-aap.apps.hub.5g-deployment.lab/
+The Automation Controller can be reached at https://automation-aap.apps.hub.5g-deployment.lab
  
 Credentials for Automation Controller:
  
 * Username: `admin`
 * Password: Retrieve the password by running `oc -n aap get secret automation-admin-password     -o jsonpath='{.data.password}' | base64 -d`
+
+NOTE: If the above URLs are not reachable, add the following entry to your `/etc/hosts`:
+
+[source,bash]
+-----
+<hypervisor_ip> automation-hub-aap.apps.hub.5g-deployment.lab automation-aap.apps.hub.5g-deployment.lab
+-----
 

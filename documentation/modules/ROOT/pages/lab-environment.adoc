@@ -425,9 +425,9 @@ curl -sku ${GALAXY_NG_USER}:"${GALAXY_NG_PASSWORD}" -X POST -H 'Content-Type: ap
 This process is easily automatable with a simple bash script:
 
 [.console-input]
-[source,bash]
+[source,bash,subs="attributes+,+macros"]
 -----
-curl https://raw.githubusercontent.com/ewsiegel/5g-ran-deployments-on-ocp-lab/aap-integration-updates/aap-integration-tools/collections/collections_to_hub.bash -o ~/collections_to_hub.bash
+curl https://raw.githubusercontent.com/{gh-user}/5g-ran-deployments-on-ocp-lab/{gh-branch}/aap-integration-tools/collections/collections_to_hub.bash -o ~/collections_to_hub.bash
 -----
 
 [source,bash]

@@ -144,6 +144,8 @@
 
 * xref:configuring-aap.adoc[Configuring AAP]
 ** xref:configuring-aap.adoc#configuring-automation-controller[Configuring Automation Controller]
+*** xref:configuring-aap.adoc#controller-config-setup[Setup]
+*** xref:configuring-aap.adoc#creating-controller-automation-templates[Creating Controller Automation Templates]
 ** xref:configuring-aap.adoc#installing-mch-addons[Installing MultiClusterHub Add-Ons]
 ** xref:configuring-aap.adoc#adding-supporting-objects[Adding Supporting Objects]
 
