@@ -361,6 +361,7 @@ First, retrieve Automation Hub URL and credentials, and generate an authenticati
 [.console-input]
 [source,bash]
 -----
+export KUBECONFIG=~/.kcli/clusters/hub/auth/kubeconfig
 export GALAXY_NG_USER="admin"
 export GALAXY_NG_PASSWORD=$(oc -n aap get secret automation-hub-admin-password -o jsonpath='{.data.password}' | base64 -d)
 export GALAXY_NG_URL="https://$(oc -n aap get route automation-hub -o jsonpath='{.spec.host}')"
