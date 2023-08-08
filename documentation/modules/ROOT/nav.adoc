@@ -124,6 +124,7 @@
 ** xref:lab-environment-introduction.adoc#git-server[Git Server]
 ** xref:lab-environment-introduction.adoc#container-registry[Container Registry]
 ** xref:lab-environment-introduction.adoc#openshift-hub-cluster[OpenShift Hub Cluster]
+** xref:lab-environment-introduction.adoc#automation-hub-and-controller[AAP Automation Hub and Automation Controller]
 
 * xref:crafting-deployments-iac.adoc[Crafting Deployment's IaC] 
 ** xref:crafting-deployments-iac.adoc#introduction-to-siteconfig[Introduction to the SiteConfig]

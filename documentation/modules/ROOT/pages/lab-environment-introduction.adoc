@@ -38,3 +38,20 @@ Credentials for the OCP cluster (htpassidp provider):
 * Username: `admin` 
 * Password: The password is randomly generated for each environment, and can be found in the following path: `/root/cred-admin.txt` in your hypervisor host or in the e-mail you received when the lab was ready.
 
+[#automation-hub-and-controller]
+== AAP Automation Hub and Controller
+
+The Automation Hub can be reached at https://automation-hub-aap.apps.hub.5g-deployment.lab
+
+Credentials for Automation Hub:
+
+* Username: `admin`
+* Password: Retrieve the password by running `oc -n aap get secret automation-hub-admin-password -o jsonpath='{.data.password}' | base64 -d`
+
+The Automation Controller can be reached at https://automation-aap.apps.hub.5g-deployment.lab/
+ 
+Credentials for Automation Controller:
+ 
+* Username: `admin`
+* Password: Retrieve the password by running `oc -n aap get secret automation-admin-password     -o jsonpath='{.data.password}' | base64 -d`
+
