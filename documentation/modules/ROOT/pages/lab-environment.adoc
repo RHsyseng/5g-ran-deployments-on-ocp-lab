@@ -408,7 +408,7 @@ Now for each downloaded collection, we create a namespace for the collection, pu
 
 Given a downloaded ansible collection in the ansible-collections directory with namespace NAMESPACE, collection name COLLECTION, and version VERSION, the process is as follows:
 
-[.console-input]
+//[.console-input]
 [source,bash]
 -----
 # create namespace and get API response
