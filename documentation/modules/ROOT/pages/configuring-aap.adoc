@@ -8,6 +8,6 @@ include::_attributes.adoc[]
 [#installing-mch-addons]
 == Installing MultiClusterHub Add-Ons
 
-[#adding-necessary-objects]
-== Adding Necessary Objects
+[#adding-supporting-objects]
+== Adding Supporting Objects
 

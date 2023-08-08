@@ -145,7 +145,7 @@
 * xref:configuring-aap.adoc[Configuring AAP]
 ** xref:configuring-aap.adoc#configuring-automation-controller[Configuring Automation Controller]
 ** xref:configuring-aap.adoc#installing-mch-addons[Installing MultiClusterHub Add-Ons]
-** xref:configuring-aap.adoc#adding-necessary-objects[Adding Necessary Objects]
+** xref:configuring-aap.adoc#adding-supporting-objects[Adding Supporting Objects]
 
 * xref:running-the-deployment.adoc[Running the Deployment]
 ** xref:running-the-deployment.adoc#deploying-ztp-gitops-pipeline[Deploying the ZTP GitOps Pipeline]
