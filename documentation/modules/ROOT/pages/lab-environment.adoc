@@ -396,6 +396,8 @@ For each collection specified in requirements.yml, we need to download the colle
 
 First, let's download all required collection tarballs to a directory called ansible-collections.
 
+NOTE: If the `ansible-galaxy` can not be found, run `python3 -m pip install --user ansible` and add `~/.local/bin` to your PATH.
+
 [.console-input]
 [source,bash]
 -----
