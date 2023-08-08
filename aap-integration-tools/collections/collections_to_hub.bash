@@ -1,6 +1,6 @@
 #!/bin/bash
 
-$DIR=~/ansible-collections
+DIR=~/ansible-collections
 
 for path in $DIR/*.tar.gz; do
     filename=$(basename ${path} .tar.gz)
