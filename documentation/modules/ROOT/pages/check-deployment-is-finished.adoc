@@ -70,3 +70,21 @@ ztp-policies.sno2-site-policies             inform               Compliant      
 
 [#ensure-automation-ran-successfully]
 == Ensure AAP Automation Ran Successfully
+
+Now that SNO deployment is finished, automation should run as soon as the cluster is marked with the `ztp-done` label. We can easily check the labels on our `sno2` cluster via the command line or OpenShift web console.
+
+<cli example>
+
+<ocp console example>
+
+If the `ztp-done` label is present, we can check to see whether our AAP automation ran successfully by monitoring the `sno2` cluster's policy governance. If the `monitor-ztp-done` policy is applied to `sno2` and marked as compliant, then we know that our automation has run successfully.
+
+Again, we can monitor policy compliance from either the command line or web console.
+
+<cli example>
+
+<ocp console example>
+
+Lastly, to view status and logs for the actual Ansible Controller job that ran, we can navigate to automation-aap.apps.hub.5g-deployment.lab, click on the "Jobs" tab, and view the latest job that ran.
+
+<image>

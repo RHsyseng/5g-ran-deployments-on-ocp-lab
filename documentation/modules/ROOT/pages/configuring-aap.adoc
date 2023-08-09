@@ -146,7 +146,7 @@ oc patch mch multiclusterhub -n open-cluster-management --type=json -p='[{"op": 
 [#adding-supporting-objects]
 == Adding Supporting Objects
 
-Lastly, we will add some supporting OpenShift resources for automation. We will add a namespace `ztp-day2-automation` which our automation Policy and PolicyAutomation will belong to, along with a Secret configuring ACM's authorization to access the AAP Controller through the controller's auth token.
+Lastly, we will add some supporting OpenShift resources for automation. We will add a namespace `ran-lab-automation` which our automation Policy and PolicyAutomation will belong to, along with a Secret configuring ACM's authorization to access the AAP Controller through the controller's auth token.
 
 [.console-input]
 [source,bash]
@@ -155,16 +155,16 @@ cat << EOF | oc apply -f -
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: ztp-day2-automation
+  name: ran-lab-automation
 EOF
 
-cat << EOF | oc -n ztp-day2-automation apply -f -
+cat << EOF | oc -n ran-lab-automation apply -f -
 apiVersion: v1
 kind: Secret
 type: Opaque
 metadata:
   name: aap-controller-token
-  namespace: ztp-day2-automation
+  namespace: ran-lab-automation
   labels:
     cluster.open-cluster-management.io/type: ans
     cluster.open-cluster-management.io/credentials: ""

@@ -2,9 +2,142 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
+Now that our SNO cluster has began the ZTP deployment process, we can configure the last couple steps of post-install automation. 
+
 [#enabling-managedserviceaccount]
 == Enabling the ManagedServiceAccount Add-On
+
+We have already installed ManagedServiceAccount to our MultiClusterHub, but we must still enable and deploy a unique ManagedServiceAccount on each spoke cluster that we wish to run automation on. We accomplish this through the follow OpenShift CRDs. Notice these resources exist in the `sno2` namespace.
+
+[.console-input]
+[source,bash]
+-----
+cat << EOF | oc apply -f -
+apiVersion: addon.open-cluster-management.io/v1alpha1
+kind: ManagedClusterAddOn
+metadata:
+  name: sno2-managed-cluster-addon
+  namespace: sno2
+spec:
+  installNamespace: open-cluster-management-agent-addon
+EOF
+
+cat << EOF | oc apply -f -
+apiVersion: authentication.open-cluster-management.io/v1alpha1
+kind: ManagedServiceAccount
+metadata:
+  name: sno2-managed-serviceaccount
+  namespace: sno2
+spec:
+  rotation: {}
+EOF
+-----
 
 [#creating-governance-hook]
 == Crafting a Governance Hook into AAP
 
+In order to create our governance hook, we will need to first create a Policy that will monitor for the `ztp-done` label and trigger an Ansible job in the AAP Controller. This Policy should stay in a violating status until the automation job completes successfully and the `ztp-day2-automation` namespace is created on our `sno2` cluster. In order for this Policy to bind to clusters with the `ztp-done` label, we must also create the relevant PlacementRule and a PlacementBinding to bind the Policy to this PlacementRule. Notice these resources exist in the `ran-lab-automation` namespace.
+
+[.console-input]
+[source,bash]
+-----
+cat << EOF | oc -n ran-lab-automation apply -f -
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: monitor-ztp-done
+  namespace: ran-lab-automation
+  annotations:
+    policy.open-cluster-management.io/standards: NIST 800-53
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+spec:
+  disabled: false
+  remediationAction: enforce
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: monitor-ztp-done
+        spec:
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                data:
+                  clusterid: '{{ fromClusterClaim "id.openshift.io" }} '
+                  clustername: '{{ fromClusterClaim "name" }}'
+                  ocpversion: '{{ fromClusterClaim "version.openshift.io" }}'
+                  platform: '{{ fromClusterClaim "platform.open-cluster-management.io" }}'
+                  product: '{{ fromClusterClaim "product.open-cluster-management.io" }}'
+                kind: ConfigMap
+                metadata:
+                  name: '{{ fromClusterClaim "name" }}'
+                  namespace: ztp-day2-automation
+          remediationAction: inform
+          severity: low
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: monitor-ztp-done-placement
+  namespace: ran-lab-automation
+placementRef:
+  apiGroup: apps.open-cluster-management.io
+  kind: PlacementRule
+  name: monitor-ztp-done-placement
+subjects:
+  - apiGroup: policy.open-cluster-management.io
+    kind: Policy
+    name: monitor-ztp-done
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: monitor-ztp-done-placement
+  namespace: ran-lab-automation
+spec:
+  clusterConditions:
+    - status: "True"
+      type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - {key: ztp-done, operator: Exists}
+EOF
+-----
+
+Lastly, in order to actually trigger the Ansible job, we create an AnsibleJob based PolicyAutomation resource also in the `ran-lab-automation` namespace alongside our defined Policy. When the Ansible job is triggered, RHACM automatically injects an extra variable `target_clusters`, which is a list of clusters to run automation on based on our policy's PlacementRule.
+
+[.console-input]
+[source,bash]
+-----
+cat << EOF | oc -n ran-lab-automation apply -f -
+apiVersion: policy.open-cluster-management.io/v1beta1
+kind: PolicyAutomation
+metadata:
+  name: ran-lab-day2-automation
+  namespace: ran-lab-automation
+spec:
+  policyRef: monitor-ztp-done
+  mode: once
+  automationDef:
+    name: ztp-day2-automation-template
+    secret: aap-controller-token
+    type: AnsibleJob
+EOF
+-----
+
+For reference, here is a visual representation of the extra variable RHACM adds:
+[source,bash]
+-----
+...
+  automationDef:
+    name: ztp-day2-automation-template
+    secret: aap-controller-token
+    type: AnsibleJob
+#    extra_vars:
+#      target_clusters: {{ list.of.clusters }}     <-- array provided by ACM with an entry for each managed cluster that is affected
+-----
+
+We have now successfully configured and deployed our AAP automation, integrated with the ZTP workflow.
