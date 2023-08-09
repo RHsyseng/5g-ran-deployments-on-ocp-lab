@@ -134,7 +134,7 @@ Modify the kustomization.yaml inside the site-policies folder, so it includes th
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-sed -i "/- group-du-sno.yaml/a \ \ - zone-europe-upgrade-413-3.yaml" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
+sed -i'' -e "/- group-du-sno.yaml/a \ \ - zone-europe-upgrade-413-3.yaml" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
 -----
 
 Then commit all the changes:

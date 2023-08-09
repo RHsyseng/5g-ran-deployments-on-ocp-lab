@@ -46,8 +46,8 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig login -u admin -p <admin_pass
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-sed -i "s|repoURL: .*|repoURL: http://infra.5g-deployment.lab:3000/student/ztp-repository.git|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
-sed -i "s|repoURL: .*|repoURL: http://infra.5g-deployment.lab:3000/student/ztp-repository.git|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
+sed -i'' -e "s|repoURL: .*|repoURL: http://infra.5g-deployment.lab:3000/student/ztp-repository.git|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i'' -e "s|repoURL: .*|repoURL: http://infra.5g-deployment.lab:3000/student/ztp-repository.git|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
 -----
 +
 .. Change the repository path for the two ArgoApps:
@@ -55,8 +55,8 @@ sed -i "s|repoURL: .*|repoURL: http://infra.5g-deployment.lab:3000/student/ztp-r
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-sed -i "s|path: .*|path: site-configs|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
-sed -i "s|path: .*|path: site-policies|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
+sed -i'' -e "s|path: .*|path: site-configs|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i'' -e "s|path: .*|path: site-policies|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
 -----
 +
 .. Change the repository branch for the two ArgoApps:
@@ -64,8 +64,8 @@ sed -i "s|path: .*|path: site-policies|" ~/5g-deployment-lab/ztp-pipeline/argocd
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
-sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
+sed -i'' -e "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i'' -e "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
 -----
 +
 3. Allow `ClusterImageSet` resource to the list of allowed resources:
@@ -73,7 +73,7 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-sed -i "/clusterResourceWhitelist:/a \ \ - group: \'hive.openshift.io\'\n \ \ \ kind: ClusterImageSet" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/app-project.yaml
+sed -i'' -e "/clusterResourceWhitelist:/a \ \ - group: \'hive.openshift.io\'\n \ \ \ kind: ClusterImageSet" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/app-project.yaml
 -----
 +
 4. Apply the ZTP GitOps Pipeline configuration:
