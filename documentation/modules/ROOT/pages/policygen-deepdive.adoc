@@ -143,9 +143,9 @@ https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/sourc
 [#ocp-console]
 === Console Operator
 
-Since the DUs are being centrally managed from a RHACM hub, disable the local console to reduce resource consumption.
+As part of the composable OpenShift Settings the Console Operator can be enabled-disabled. The `SiteConfig` CR allows to define these settings via the `installConfigOverrides`.
 
-https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/ConsoleOperatorDisable.yaml[Manifest]
+Since the DUs are being centrally managed from a RHACM hub, the local console will be disabled to reduce resource consumption.
 
 [#networking-diags]
 === Networking Operator
