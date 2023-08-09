@@ -1,0 +1,110 @@
+= Integration with Ansible Automation Platform (AAP)
+include::_attributes.adoc[]
+:profile: 5g-ran-lab
+
+
+[#aap-overview]
+== AAP Overview
+
+link:https://www.redhat.com/en/technologies/management/ansible[Red Hat Ansible Automation Platform] allows for the configuration and management of systems at scale through simple IT automation. If unfamiliar with AAP, see the link:https://docs.ansible.com/ansible/latest/index.html[AAP Docs]. In this section, we will discuss the need for AAP integration with 5G RAN deployments on OpenShift.
+
+[#augmenting-openshift]
+=== Augmenting Openshift with Ansible Automation
+
+As discussed in previous sections, we leverage RHACM and Openshift to configure our clusters through custom resource definitions and policy based governance. These definitions define the desired state of the clusters, and upon deployment and beyond, Openshift works to bring the clusters to compliance with our policies. This is known as a _declarative_ model of configuration, and alongside GitOps and our ZTP workflow, allows for simplicity and flexibility when managing a large number clusters at scale.
+
+Often times in our declarative configuration worflow, there comes a need to configure important non-declarative components of a system such as bare metal servers, network infrastructure, or legacy systems. In these cases, we can leverage Ansible Automation Platform to manage these components through automated _imperative_ configuration. Utilizing hooks into Ansible, we can invoke Ansible Playbooks upon deployment of a cluster, when changes in policy compliance are detected, or at other significant moments in the lifecycle of clusters. This allows for efficient and automated management of both the declarative and non-declarative components of 5G infrastructure.
+
+For a deeper dive, see link:https://www.ansible.com/blog/openshift-and-ansible-bridging-the-automation-gap-for-5g-and-beyond-networks-part-1[OpenShift and Ansible: Bridging the Automation Gap for 5G and Beyond Networks - Part 1] on the Ansible blog.
+
+[#intro-to-aap-operator]
+=== Introduction to the AAP Operator
+
+The AAP operator provides us with the necessary components to host both Ansible collections (through the Automation Hub) to leverage Ansible's diverse distribution platform and Ansible automation objects (through the Automation Controller) natively through Openshift. The operator offers the custom resources definitions AutomationHub and AutomationController, whose functions are defined below.
+
+[#aap-components]
+== Defining AAP Components
+
+[#automation-hub]
+=== Automation Hub
+
+The OpenShift AAP operator's Automation Hub, defined by the custom resource definition AutomationHub, is a downstream version of link:https://github.com/ansible/galaxy_ng[Galaxy NG] which allows for the hosting of Ansible collections on a private distribution server. Collections are a distribution format for Ansible objects including playbooks, roles, modules, and plugins. We store all necessary Ansible collections through an Automation Hub deployed on OpenShift, allowing all dependencies to be hosted and managed through our local cluster. We can upload collections, manage collections, and interact with the Automation Hub through API or through its web UI deployed at automation-hub-aap.apps.hub.5g-deployment.lab.
+
+<CRD image>
+
+[#automation-controller]
+=== Automation Controller
+
+The Openshift AAP operator's Automation Controller, defined by the custom resource definition AutomationController, deploys an Ansible Automation Controller (formerly Ansible Tower) in our OpenShift cluster. Downstream of the link:https://github.com/ansible/awx[AWX Project] in link:https://github.com/ansible/awx-operator[operator form], our deployed Automation Controller provides a user interface, REST API, and task engine for executing Ansible jobs. The Automation Controller's functionality includes managing Ansible automation objects including projects, inventories, playbooks, roles, credentials, and job templates, as well as the responsibility of invoking and monitoring the execution of Ansible jobs. 
+
+Details of the contents of an Ansible job will be covered as we craft our automation template. At a high level, an Ansible _job_ is a running instance of a _job template_, which contains a logical collection of Ansible _playbooks_ in the form of a _project_, a list of managed hosts in the form of an _inventory_, and any extra variables we want to pass to the job. 
+
+<CRD image>
+
+[#mch-addons]
+=== MultiClusterHub Add-Ons
+
+In order for Ansible to access and configure deployed spoke clusters, we must patch the RHACM MultiClusterHub resource with ClusterProxyAddon and ManagedServiceAccount add on. These components ae necessary for proper imperative configuration of spoke clusters through AAP.
+
+link:https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.5/html-single/install/index#cluster-proxy-addon[ClusterProxyAddon] enables our ACM hub to access the kube-api server of managed spoke clusters.
+
+link:https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.5/html/install/installing#serviceaccount-addon-intro[ManagedServiceAccount] enables ACM to create a service account on a spoke cluster, providing identity and credentials for authentication purposes on-demand. A new ManagedServiceAccount will be created for each managed cluster we wish to access and configure.
+
+<CRD image>
+
+[#acm-hooks-toward-aap]
+=== ACM Hooks Toward AAP
+
+This section will provide a high level overview of a governance-based ACM hook toward AAP automation. This process involves the Policy, PlacementBinding, and PlacementRule CRDs discussed in link:rhacm-policies.html#policies[RHACM Policies], as well as the CRDs PolicyAutomation and AnsibleJob.
+
+First, a Policy is created detailing the necessary state of the cluster after AAP automation is complete, along with a PlacementRule defining which clusters this policy applies to and a PlacementBinding the Policy to the PlacementRule. This governance structure ensures that a cluster will not be compliant until our automation has successfully run and the desired end state of imperative configuration is met. 
+
+Next, we create our PolicyAutomation in the form of an AnsibleJob, binding it to our defined Policy. Upon our Policy binding to a spoke cluster, RHACM will trigger our PolicyAutomation defined AnsibleJob, which starts an automation job on the Automation Controller, passing a list of targeted clusters (the clusters PlacementRule has bound to) as an extra variable. 
+
+Now, the same Policy that triggered the Ansible job also checks for the necessary cluster state seeking to be achieved by the completion of the job. Only when the job completes successfully and the cluster reaches a compliant state does the automation policy reach a compliant status.
+
+[#workflow-overview]
+== Workflow Overview
+
+Now that we are familiar with AAP in OpenShift and the necessary components for integration, let's walk through an Ansible integration workflow.
+
+[#general-workflow]
+=== General AAP Integration Workflow
+
+At a high level, the steps to AAP integration with 5G RAN ZTP deployments are as follows:
+
+* Mirror AAP operator to disconnected registry (outside the scope of this lab, see the _Ansible Automation Platform mirroring_ section of this link:https://www.ansible.com/blog/openshift-and-ansible-bridging-the-automation-gap-for-5g-and-beyond-networks-part-1[blog])
+* Install AAP operator, deploy AutomationHub and AutomationController (already running on OpenShift cluster, see the _Ansible Automation Platform operator installation_ section of this link:https://www.ansible.com/blog/openshift-and-ansible-bridging-the-automation-gap-for-5g-and-beyond-networks-part-1[blog] and the CRD examples for link:integration-with-aap.html#automation-hub[AutomationHub] and link:integration-with-aap.html#automation-controller[AutomationController])
+* Upload necessary Ansible collections to Automation Hub (already uploaded, see uploaded collections at automation-hub-aap.apps.hub.5g-deployment.lab and instructions for this process in the link:lab-environment.html#upload-collections-to-aap-hub[Lab Environment] section)
+* Configure Automation Controller with Ansible automation resources
+* Install MultiClusterHub add-ons
+* Deploy spoke clusters
+* Deploy ManagedServiceAccount, Policy, PlacementBinding, PlacementRule, and PolicyAutomation for a governance-based hook into AAP
+* Spoke cluster(s) reach state where Policy applies, Ansible job is triggered by PolicyAutomation on each cluster, Ansible job completes successfully, Policy moves to compliant for that cluster
+
+This lab will cover the process starting with configuring the Automation Controller and ending with a successful Ansible job and a compliant automation Policy for a deployed cluster.
+
+[#lab-workflow]
+=== This Lab's AAP Integration Workflow
+
+This section will overview our example AAP integration workflow in this lab. If unfamiliar with the general AAP integration worflow, see the link:integration-with-aap.html#general-workflow[above section].
+
+In this lab, we will deploy a SNO cluster through the ZTP pipeline and await the completion of the SNO deployment, which will mark the SNO cluster with the _ztp-done_ label. The _ztp-done_ label will trigger an Ansible job that creates the namespace _ztp-day2-automation_ within our deployed SNO cluster. Assuming AAP is installed and deployed, and the necessary collections exist in our deployed Automation Hub, the steps to configure this integration is as follows:
+
+* *Configure Automation Controller with Ansible automation resources*
+** set up credentials, authorization, and organization
+** configure Ansible Controller project with git-based source control management
+** create Ansible Controller job template including defined playbooks and inventories
+* *Install MultiClusterHub add-ons*
+* *Deploy SNO2 cluster via ZTP workflow*
+* *Deploy OpenShift objects for governance-based hook into AAP*
+** deploy ManagedServiceAccount in the sno2 namespace
+** craft Policy awaiting the creation of the _ztp-day2_automation_ namespace, PlacementRule monitoring for clusters with the _ztp-done_ label, and PlacementBinding to bind our Policy to the Placement Rule
+** create a PolicyAutomation that invokes our Ansible job template via an AnsibleJob CRD
+* *Wait for the SNO2 deployment to complete*
+* *Automation triggered upon deployment completion*
+* *Confirm automation has completed successfully*
+** Ensure governance policy has moved to compliant
+** Monitor Ansible job via Automation Controller's web UI
+
+Look out for these steps in action throughout our ZTP deployment as we move through the lab.

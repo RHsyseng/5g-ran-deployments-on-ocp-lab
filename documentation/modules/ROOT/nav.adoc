@@ -98,6 +98,19 @@
 ** xref:policygen-deepdive.adoc#policies-templating[Policies Templating]
 ** xref:policygen-deepdive.adoc#kustomize-plugins-locally[Running Kustomize Plugins Locally]
 
+* xref:integration-with-aap.adoc[Integration with Ansible Automation Platform]
+** xref:integration-with-aap.adoc#aap-overview[AAP Overview]
+*** xref:integration-with-aap.adoc#augmenting-openshift[Augmenting Openshift with Ansible Automation]
+*** xref:integration-with-aap.adoc#intro-to-aap-operator[Introduction to the AAP Operator]
+** xref:integration-with-aap.adoc#aap-components[Defining Components]
+*** xref:integration-with-aap.adoc#automation-hub[Automation Hub]
+*** xref:integration-with-aap.adoc#automation-controller[Automation Controller]
+*** xref:integration-with-aap.adoc#mch-addons[MultiClusterHub Add-Ons]
+*** xref:integration-with-aap.adoc#acm-hooks-toward-aap[ACM Hooks Toward AAP]
+** xref:integration-with-aap.adoc#workflow-overview[Workflow Overview]
+*** xref:integration-with-aap.adoc#general-workflow[General AAP Integration Workflow]
+*** xref:integration-with-aap.adoc#lab-workflow[Lab AAP Integration Workflow]
+
 * xref:deployment-considerations.adoc[Deployment Considerations]
 ** xref:deployment-considerations.adoc#hardware-configurations[Hardware configurations]
 *** xref:deployment-considerations.adoc#bios-settings[Bios Settings]
@@ -111,6 +124,7 @@
 ** xref:lab-environment-introduction.adoc#git-server[Git Server]
 ** xref:lab-environment-introduction.adoc#container-registry[Container Registry]
 ** xref:lab-environment-introduction.adoc#openshift-hub-cluster[OpenShift Hub Cluster]
+** xref:lab-environment-introduction.adoc#automation-hub-and-controller[AAP Automation Hub and Automation Controller]
 
 * xref:crafting-deployments-iac.adoc[Crafting Deployment's IaC] 
 ** xref:crafting-deployments-iac.adoc#introduction-to-siteconfig[Introduction to the SiteConfig]
@@ -128,9 +142,20 @@
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#crafting-testing-policies[Crafting testing Policies]
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#configure-kustomization-for-policies[Configure Kustomization for Policies]
 
+* xref:configuring-aap.adoc[Configuring AAP]
+** xref:configuring-aap.adoc#configuring-automation-controller[Configuring Automation Controller]
+*** xref:configuring-aap.adoc#controller-config-setup[Setup]
+*** xref:configuring-aap.adoc#creating-controller-automation-templates[Creating Controller Automation Templates]
+** xref:configuring-aap.adoc#installing-mch-addons[Installing MultiClusterHub Add-Ons]
+** xref:configuring-aap.adoc#adding-supporting-objects[Adding Supporting Objects]
+
 * xref:running-the-deployment.adoc[Running the Deployment]
 ** xref:running-the-deployment.adoc#deploying-ztp-gitops-pipeline[Deploying the ZTP GitOps Pipeline]
 ** xref:running-the-deployment.adoc#deploying-sno-using-gitops-pipeline[Deploying the SNO Cluster using the ZTP GitOps Pipeline]
+
+* xref:adding-automation.adoc[Adding Policy-Based Automation]
+** xref:adding-automation.adoc#enabling-managedserviceaccount[Enabling the ManagedServiceAccount Add-On]
+** xref:adding-automation.adoc#creating-governance-hook[Crafting a Governance Hook into AAP]
 
 * xref:monitoring-the-deployment.adoc[Monitoring the Deployment]
 ** xref:monitoring-the-deployment.adoc#monitoring-deployment-webui[Monitoring the Deployment via the WebUI]
@@ -141,6 +166,7 @@
 * xref:check-deployment-is-finished.adoc[Check SNO Deployment is finished]
 ** xref:check-deployment-is-finished.adoc#check-sno-deployment-webui[Check SNO Deployment has Finished via the WebUI]
 ** xref:check-deployment-is-finished.adoc#check-sno-deployment-cli[Check SNO Deployment has Finished via the CLI]
+** xref:check-deployment-is-finished.adoc#ensure-automation-ran-successfully[Ensure AAP Automation Ran Successfully]
 
 * xref:using-talm-to-update-clusters.adoc[Using TALM to update clusters]
 ** xref:using-talm-to-update-clusters.adoc#verify-talm[Verifying the TALM state]
@@ -189,3 +215,4 @@
 *** xref:lab-environment.adoc#configure-openshift-hub-cluster[Configure OpenShift Hub Cluster]
 *** xref:lab-environment.adoc#deploy-openshift-hub-cluster-operators[Deploy OpenShift HUB Cluster Operators]
 *** xref:lab-environment.adoc#deploy-sno1-cluster-without-ztp[Deploy SNO1 Cluster (without ZTP)]
+*** xref:lab-environment.adoc#upload-collections-to-aap-hub[Upload Necessary Collections to AAP Hub]

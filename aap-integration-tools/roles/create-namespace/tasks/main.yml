@@ -1,0 +1,11 @@
+  - name: "Creating namespace {{ namespace_name }}"
+    kubernetes.core.k8s:
+      state: "{{ state }}"
+      host: "{{ cluster_proxy.cluster_url }}"
+      validate_certs: no
+      api_key: "{{managed_serviceaccount.token}}"
+      definition:
+        apiVersion: v1
+        kind: Namespace
+        metadata:
+          name: "{{ namespace_name }}"

@@ -350,3 +350,129 @@ node/openshift-master-0   Ready    control-plane,master,worker   94m   v1.26.5+0
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.13.2    True        False         75m     Cluster version is 4.13.2
 -----
+
+[#upload-collections-to-aap-hub]
+=== Upload Necessary Ansible Collections to AAP Hub
+
+An AutomationHub, a private Ansible Galaxy server for storing Ansible collections, is deployed on our OpenShift cluster. AutomationHub is a downstream version of link:https://github.com/ansible/galaxy_ng[Galaxy NG]. We need to upload the collections we will use in this lab.
+
+First, retrieve Automation Hub URL and credentials, and generate an authentication token via the Automation Hub's API.
+
+[.console-input]
+[source,bash]
+-----
+export KUBECONFIG=~/.kcli/clusters/hub/auth/kubeconfig
+export GALAXY_NG_USER="admin"
+export GALAXY_NG_PASSWORD=$(oc -n aap get secret automation-hub-admin-password -o jsonpath='{.data.password}' | base64 -d)
+export GALAXY_NG_URL="https://$(oc -n aap get route automation-hub -o jsonpath='{.spec.host}')"
+curl -sku ${GALAXY_NG_USER}:"${GALAXY_NG_PASSWORD}" -X POST ${GALAXY_NG_URL}/api/galaxy/v3/auth/token/ | jq -r .token > /opt/galaxy_token
+-----
+
+We will also need to add the following entry to /etc/hosts:
+
+[.console-input]
+[source,bash]
+-----
+<HYPERVISOR_REACHABLE_IP> automation-hub-aap.apps.hub.5g-deployment.lab automation-aap.apps.hub.5g-deployment.lab
+-----
+
+We will create a requirements.yml file that holds the names and versions for each Ansible collection needed for this lab.
+
+[.console-input]
+[source,bash]
+-----
+cat << EOF > ~/requirements.yml -
+collections:
+- name: kubernetes.core
+  version: 2.4.0
+- name: awx.awx
+  version: 22.5.0
+- name: stolostron.core
+  version: 0.0.2
+EOF
+-----
+
+For each collection specified in requirements.yml, we need to download the collection and its dependencies as a tarball from link:https://galaxy.ansible.com[Ansible Galaxy], create a namespace on our private Automation Hub to host the collection, upload the collection to the hub, then approve the collection for use by external components. We can accomplish this via the ansible-galaxy command (part of Ansible's set of CLI tools) and the API exposed by the Automation Hub.
+
+First, let's download all required collection tarballs to a directory called ansible-collections.
+
+NOTE: If the `ansible-galaxy` can not be found, run `python3 -m pip install --user ansible` and add `~/.local/bin` to your PATH.
+
+[.console-input]
+[source,bash]
+-----
+ansible-galaxy collection download -r ~/requirements.yml -p ~/ansible-collections
+-----
+
+Now for each downloaded collection, we create a namespace for the collection, publish the collection to the Automation Hub, then approve the collection.
+
+Given a downloaded ansible collection in the ansible-collections directory with namespace NAMESPACE, collection name COLLECTION, and version VERSION, the process is as follows:
+
+//[.console-input]
+[source,bash]
+-----
+# create namespace and get API response
+curl -sku ${GALAXY_NG_USER}:"${GALAXY_NG_PASSWORD}" -X POST -H 'Content-Type: application/json' -d '{"name":"'$NAMESPACE'","groups":[]}' ${GALAXY_NG_URL}/api/galaxy/_ui/v1/namespaces/ | jq
+
+# publish collection using ansible-galaxy command
+# -s flag points ansible-galaxy to our private Automation Hub, --token flag specifies our Automation Hub token
+ansible-galaxy collection publish "~/ansible-collections/${NAMESPACE}-${COLLECTION}-${VERSION}.tar.gz" -s ${GALAXY_NG_URL}/api/galaxy/ --token $(cat /opt/galaxy_token) --ignore-certs
+
+# approve collection and get API response
+curl -sku ${GALAXY_NG_USER}:"${GALAXY_NG_PASSWORD}" -X POST -H 'Content-Type: application/json' "${GALAXY_NG_URL}"/api/galaxy/v3/collections/"${NAMESPACE}"/"${COLLECTION}"/versions/"${VERSION}"/move/staging/published/ | jq
+-----
+
+This process is easily automatable with a simple bash script:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+curl https://raw.githubusercontent.com/{gh-user}/5g-ran-deployments-on-ocp-lab/{gh-branch}/aap-integration-tools/collections/collections_to_hub.bash -o ~/collections_to_hub.bash
+-----
+
+[source,bash]
+-----
+> cat ~/collections_to_hub.bash
+#!/bin/bash
+
+[ -z "$GALAXY_NG_USER" ] && echo "GALAXY_NG_USER is not set"
+[ -z "$GALAXY_NG_PASSWORD" ] && echo "GALAXY_NG_PASSWORD is not set"
+[ -z "$GALAXY_NG_URL" ] && echo "GALAXY_NG_URL is not set"
+[ ! -f "/opt/galaxy_token" ] && echo "Expected galaxy token at /opt/galaxy_token"
+
+DIR=~/ansible-collections
+
+for path in ${DIR}/*.tar.gz; do
+    filename=$(basename ${path} .tar.gz)
+    readarray -d "-" -t filearray <<< "$filename"
+    NAMESPACE=${filearray[0]}
+    COLLECTION=${filearray[1]}
+    VERSION=$(echo "${filearray[2]}" | tr -d '\n')
+    echo "Uploading ${NAMESPACE}-${COLLECTION}-${VERSION}"
+    #create namespace
+    curl -sku ${GALAXY_NG_USER}:"${GALAXY_NG_PASSWORD}" -X POST -H 'Content-Type: application/json' -d '{"name":"'${NAMESPACE}'","groups":[]}' ${GALAXY_NG_URL}/api/galaxy/_ui/v1/namespaces/ | jq
+    #publish collection
+    ansible-galaxy collection publish "${DIR}/${NAMESPACE}-${COLLECTION}-${VERSION}.tar.gz" -s ${GALAXY_NG_URL}/api/galaxy/ --token $(cat /opt/galaxy_token) --ignore-certs
+    #approve collection
+    curl -sku ${GALAXY_NG_USER}:"${GALAXY_NG_PASSWORD}" -X POST -H 'Content-Type: application/json' "${GALAXY_NG_URL}"/api/galaxy/v3/collections/"${NAMESPACE}"/"${COLLECTION}"/versions/"${VERSION}"/move/staging/published/ | jq
+done
+-----
+
+[.console-input]
+[source,bash]
+-----
+chmod u+x ~/collections_to_hub.bash
+~/collections_to_hub.bash
+-----
+
+After running this script, if we head to automation-hub-aap.apps.hub.5g-deployment.lab and click on the "Collections" tab, we will see the collections we have just uploaded. Note that the `amazon.aws` collection has been included, which is a listed dependency of `stolostron.core` that `ansible-galaxy` has taken care of.
+
+image::aap-hub-collections.png[AAP Hub Collections]
+
+
+
+
+
+
+
+ 

@@ -1,0 +1,24 @@
+plugin: stolostron.core.ocm_managedcluster
+cluster_groups:
+- name: amazon
+  label_selectors:
+  - cloud=Amazon
+  - name!=local-cluster
+- name: azure
+  label_selectors:
+  - cloud=Azure
+  - name!=local-cluster
+- name: vmware
+  label_selectors:
+  - cloud=VMWare
+  - name!=local-cluster
+- name: baremetal
+  label_selectors:
+  - cloud=BareMetal
+  - name!=local-cluster
+- name: kind-clusters
+  label_selectors:
+  - name=kind-cluster
+- name: all-managed-clusters
+  label_selectors:
+  - name!=local-cluster
