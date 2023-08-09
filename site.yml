@@ -3,22 +3,22 @@ runtime:
 
 site:
   title: LAB - 5G RAN Deployments on OpenShift
-  url: http://localhost:3000
+  url: https://labs.sysdeseng.com/
   start_page: 5g-ran-deployments-on-ocp-lab::index.adoc
 
 content:
   sources:
     - url: ./
       branches:
-      - 'aap-integration-updates'
+      - 'lab-4.13'
       start_path: documentation
 
 asciidoc:
   attributes:
     release-version: 4.13
     page-pagination: true
-    gh-user: 'ewsiegel'
-    gh-branch: 'aap-integration-updates'
+    gh-user: 'RHsyseng'
+    gh-branch: 'lab-4.13'
   extensions:
     - ./lib/tab-block.js
     - ./lib/remote-include-processor.js
@@ -30,11 +30,7 @@ ui:
     # UI Repo: https://github.com/RHsyseng/rht-tutorial-ui/tree/latest-antora
     # In order to build: gulp bundle
     snapshot: true
-  supplemental_files:
-    - path: ./supplemental-ui
-    - path: .nojekyll
-    - path: ui.yml
-      contents: "static_files: [ .nojekyll ]"
+  supplemental_files: ./supplemental-ui
 
 output:
   dir: ./gh-pages
