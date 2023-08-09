@@ -22,7 +22,7 @@ IMPORTANT: Applying policies on `sno2` can take up to 15 minutes after cluster h
 +
 image::acm-sno2-policies-done.png[RHACM SNO2 policies done]
 +
-4. At this point the SNO is ready ro tun 5G RAN workloads.
+4. At this point the SNO is ready to run 5G RAN workloads.
 
 [#check-sno-deployment-cli]
 == Check SNO Deployment has Finished via the CLI
@@ -66,4 +66,4 @@ ztp-policies.du-sno-group-policies          inform               Compliant      
 ztp-policies.sno2-site-policies             inform               Compliant          74m
 -----
 +
-3. At this point the SNO is ready ro tun 5G RAN workloads.
+3. At this point the SNO is ready to run 5G RAN workloads.
