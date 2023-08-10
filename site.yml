@@ -17,8 +17,6 @@ asciidoc:
   attributes:
     release-version: 4.13
     page-pagination: true
-    gh-user: 'RHsyseng'
-    gh-branch: 'lab-4.13'
   extensions:
     - ./lib/tab-block.js
     - ./lib/remote-include-processor.js
