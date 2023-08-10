@@ -77,7 +77,11 @@ Now that SNO deployment is finished, automation should run as soon as the cluste
 
 If the `ztp-done` label is present, we can check to see whether our AAP automation ran successfully by monitoring the `sno2` cluster's policy governance. If the `monitor-ztp-done` policy is applied to `sno2` and marked as compliant, then we know that our automation has run successfully.
 
+NOTE: Deployment of the hub cluster was not part of this lab, but if `local-cluster` was deployed via ZTP workflow as well, our automation policy will bind to it and run automation on `local-cluster` as well. Because of this behavior, utilizng ZTP and AAP automation together in a 5G RAN environment maintains ease of configuration at scale.
+
 <cli example>
+
+<local cluster example>
 
 Lastly, to view status and logs for the actual Ansible Controller job that ran, we can navigate to automation-aap.apps.hub.5g-deployment.lab, click on the "Jobs" tab, and view the latest job that ran.
 

@@ -16,7 +16,7 @@ cat << EOF | oc apply -f -
 apiVersion: addon.open-cluster-management.io/v1alpha1
 kind: ManagedClusterAddOn
 metadata:
-  name: sno2-managed-cluster-addon
+  name: managed-serviceaccount
   namespace: sno2
 spec:
   installNamespace: open-cluster-management-agent-addon
@@ -26,7 +26,7 @@ cat << EOF | oc apply -f -
 apiVersion: authentication.open-cluster-management.io/v1alpha1
 kind: ManagedServiceAccount
 metadata:
-  name: sno2-managed-serviceaccount
+  name: sno2
   namespace: sno2
 spec:
   rotation: {}
