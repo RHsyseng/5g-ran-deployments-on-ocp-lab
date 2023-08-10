@@ -118,8 +118,6 @@ link:https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_mana
 
 link:https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.5/html/install/installing#serviceaccount-addon-intro[ManagedServiceAccount] enables ACM to create a service account on a spoke cluster, providing identity and credentials for authentication purposes on-demand. A new ManagedServiceAccount will be created for each managed cluster we wish to access and configure.
 
-<CRD image>
-
 [#acm-hooks-toward-aap]
 === ACM Hooks Toward AAP
 
