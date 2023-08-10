@@ -3,14 +3,15 @@ runtime:
 
 site:
   title: LAB - 5G RAN Deployments on OpenShift
-  url: http://localhost:3000
+  #url: http://localhost:3000/5g-ran-deployments-on-ocp-lab/index.html
+  url: http://localhost:3000/
   start_page: 5g-ran-deployments-on-ocp-lab::index.adoc
 
 content:
   sources:
-    - url: ./
+    - url: .
       branches:
-      - 'aap-integration-updates'
+      - 'lab-4.13'
       start_path: documentation
 
 asciidoc:
@@ -23,10 +24,8 @@ asciidoc:
 
 ui:
   bundle:
-#    url: https://github.com/redhat-developer-demos/rhd-tutorial-ui/releases/download/v0.1.9/ui-bundle.zip
+    #url: https://github.com/redhat-developer-demos/rhd-tutorial-ui/releases/download/v0.1.9/ui-bundle.zip
     url: ./ui-bundle-telco.zip
-    # UI Repo: https://github.com/RHsyseng/rht-tutorial-ui/tree/latest-antora
-    # In order to build: gulp bundle
     snapshot: true
   supplemental_files:
     - path: ./supplemental-ui
