@@ -105,7 +105,7 @@ awx --conf.host "${ANSIBLE_CTRL_URL}" --conf.username "${ANSIBLE_CTRL_USER}" --c
 awx --conf.host "${ANSIBLE_CTRL_URL}" --conf.username "${ANSIBLE_CTRL_USER}" --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure organizations associate --organization 'Default' --galaxy_credential 'hub-galaxy-token'
 -----
 
-In the local hosted git repository at https://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/, notice a directory named aap-integration-tools. This directory contains relevant configuration files that we will be using for AAP automation. We will be using the Ansible Controller's source control management feature to manage our automation file and automatically update our automation project when the source is updated.
+There is a hypervisor hosted git repository at https://infra.5g-deployment.lab:3000/student/aap-integration-tools/. This repository contains relevant configuration files that we will be using for AAP automation. We will be using the Ansible Controller's source control management feature to manage our automation file and automatically update our automation project when the source is updated.
 
 We will create an Ansible project using this git repository as our target.
 
