@@ -274,7 +274,7 @@ upgrades.pre-cache 2023-07-04T11:00:48+00:00 DEBUG Image pre-cache done
 
 Once the precache is done, the CGU state moves to `NotEnabled` and the Pod running the pre-cache task in both SNO clusters is deleted. At this moment, TALM is waiting for acknowledging the start of the upgrade.
 
-WARNING: It can take up to 5 minutes for the CGU to report the new state.
+WARNING: It can take up to 5 minutes for the CGU to report the new state. After that time, the precache objects and the openshift-talo-pre-cache namespace created in the managed clusters are automatically deleted.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
