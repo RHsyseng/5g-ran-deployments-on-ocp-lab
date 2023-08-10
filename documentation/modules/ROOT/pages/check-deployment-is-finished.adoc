@@ -71,6 +71,8 @@ ztp-policies.sno2-site-policies             inform               Compliant      
 [#ensure-automation-ran-successfully]
 == Ensure AAP Automation Ran Successfully
 
+NOTE: Give policy based governance about 20 minutes after installation to complete.
+
 Now that SNO deployment is finished, automation should run as soon as the cluster is marked with the `ztp-done` label. We can easily check the labels on our `sno2` cluster via the OpenShift web console, under the `Infrastructure` > `Clusters` tab.
 
 image::sno2-labels.png[SNO2 Labels]
