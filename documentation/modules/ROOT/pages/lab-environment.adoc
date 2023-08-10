@@ -356,7 +356,13 @@ clusterversion.config.openshift.io/version   4.13.2    True        False        
 
 An AutomationHub, a private Ansible Galaxy server for storing Ansible collections, is deployed on our OpenShift cluster. AutomationHub is a downstream version of link:https://github.com/ansible/galaxy_ng[Galaxy NG]. We need to upload the collections we will use in this lab.
 
-First, retrieve Automation Hub URL and credentials, and generate an authentication token via the Automation Hub's API.
+First, retrieve Automation Hub URL and credentials, and generate an authentication token via the Automation Hub's API. In order to do this, we will need to add the following entry to `/etc/hosts` then run the commands.
+
+[.console-input]
+[source,bash]
+-----
+<HYPERVISOR_REACHABLE_IP> automation-hub-aap.apps.hub.5g-deployment.lab automation-aap.apps.hub.5g-deployment.lab
+-----
 
 [.console-input]
 [source,bash]
@@ -368,13 +374,7 @@ export GALAXY_NG_URL="https://$(oc -n aap get route automation-hub -o jsonpath='
 curl -sku ${GALAXY_NG_USER}:"${GALAXY_NG_PASSWORD}" -X POST ${GALAXY_NG_URL}/api/galaxy/v3/auth/token/ | jq -r .token > /opt/galaxy_token
 -----
 
-We will also need to add the following entry to /etc/hosts:
-
-[.console-input]
-[source,bash]
------
-<HYPERVISOR_REACHABLE_IP> automation-hub-aap.apps.hub.5g-deployment.lab automation-aap.apps.hub.5g-deployment.lab
------
+NOTE: If the above oc commands fail, you may need to wait for AutomationHub and AutomationController to complete their deployment.
 
 We will create a requirements.yml file that holds the names and versions for each Ansible collection needed for this lab.
 
@@ -427,7 +427,7 @@ This process is easily automatable with a simple bash script:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-curl https://raw.githubusercontent.com/{gh-user}/5g-ran-deployments-on-ocp-lab/{gh-branch}/aap-integration-tools/collections/collections_to_hub.bash -o ~/collections_to_hub.bash
+curl https://raw.githubusercontent.com/ewsiegel/aap-integration-tools/main/collections/collections_to_hub.bash -o ~/collections_to_hub.bash
 -----
 
 [source,bash]

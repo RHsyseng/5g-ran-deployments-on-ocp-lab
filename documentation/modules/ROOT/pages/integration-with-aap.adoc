@@ -20,7 +20,7 @@ For a deeper dive, see link:https://www.ansible.com/blog/openshift-and-ansible-b
 [#intro-to-aap-operator]
 === Introduction to the AAP Operator
 
-The AAP operator provides us with the necessary components to host both Ansible collections (through the Automation Hub) to leverage Ansible's diverse distribution platform and Ansible automation objects (through the Automation Controller) natively through Openshift. The operator offers the custom resources definitions AutomationHub and AutomationController, whose functions are defined below.
+The AAP operator provides us with the necessary components to host both Ansible collections (through the Automation Hub) to leverage Ansible's diverse distribution platform and Ansible automation objects (through the Automation Controller) natively through Openshift. The operator offers the custom resource definitions AutomationHub and AutomationController, whose functions are defined below.
 
 [#aap-components]
 == Defining AAP Components

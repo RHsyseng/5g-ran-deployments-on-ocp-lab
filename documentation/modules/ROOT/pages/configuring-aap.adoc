@@ -17,6 +17,16 @@ First, we need to ensure the Automation Hub and Automatin Controller domains are
 <hypervisor_ip> automation-hub-aap.apps.hub.5g-deployment.lab automation-aap.apps.hub.5g-deployme    nt.lab
 -----
 
+Next, we will login into our OpenShift Hub cluster.
+
+NOTE: replace `<admin_password>` with the OpenShift admin password orivded in the e-mail you received when the lab was ready.
+
+[.console-input]
+[source,bash]
+-----
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig login -u admin -p <admin_password> https://api.hub.5g-deployment.lab:6443 --insecure-skip-tls-verify=true
+-----
+
 Next, let's gather our Automation Hub and Automation Controller credentials.
 
 [.console-input]
@@ -37,9 +47,11 @@ It is important to register the Red Hat AAP Controller product using a valid sub
 fatal: [localhost]: FAILED! => {"changed": false, "msg": "You don't have permission to POST to /api/v2/job_templates/10/launch/ (HTTP 403)."}
 -----
 
-We can accomplish this by accessing the link:https://automation-aap.apps.hub.5g-deployment.lab[Automation Controller's web UI] via web browser. From there, login with Red Hat account credentials and select the subscription you wish to use, then you will be redirected to the Automation Hub console.
+We can accomplish this by accessing the link:https://automation-aap.apps.hub.5g-deployment.lab[Automation Controller's web UI] via web browser. From there, login with Red Hat account credentials and select the subscription you wish to use, click submit and follow the prompts, then you will be redirected to the Automation Hub console.
 
-<image>
+image::aap-controller-subscription-screen.png[AAP Controller Subscription Screen]
+
+image::aap-controller-dashboard-screen.png[AAP Controller Dashboard Screen]
 
 We will need to install the link:https://github.com/ansible/awx[AWX] CLI for simple interaction with the Automation controller via command line.
 
@@ -50,23 +62,13 @@ pip3 install awxkit
 awx --help
 -----
 
-We will create authentication tokens for accessing our Automation Hub and Automation Controller, via the Automations Hub API and `awx` CLI for the Automation Controller.
+Lastly, we will create authentication tokens for accessing our Automation Hub and Automation Controller, via the Automations Hub API and `awx` CLI for the Automation Controller.
 
 [.console-input]
 [source,bash]
 -----
 curl -sku ${GALAXY_NG_USER}:"${GALAXY_NG_PASSWORD}" -X POST ${GALAXY_NG_URL}/api/galaxy/v3/auth/token/ | jq -r .token > ~/5g-deployment-lab/galaxy_token
 awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure login | jq -r .token > ~/5g-deployment-lab/tower_token
------
-
-Lastly, we will login into our OpenShift Hub cluster.
-
-NOTE: replace `<admin_password>` with the OpenShift admin password orivded in the e-mail you received when the lab was ready.
-
-[.console-input]
-[source,bash]
------
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig login -u admin -p <admin_password> https://api.hub.5g-deployment.lab:6443 --insecure-skip-tls-verify=true
 -----
 
 We now have the necessary components to begin configuring Ansible automation.
@@ -79,8 +81,8 @@ First, lets create authorization credentials for accessing our OpenShift Hub. We
 [.console-input]
 [source,bash,subs="+macros,attributes+"]
 -----
-curl https://raw.githubusercontent.com/{gh-user}/5g-ran-deployments-on-ocp-lab/{gh-branch}/aap-integration-tools/tower-config/credential_inputs_kubeconfig.json -o ~/5g-deployment-lab/credential_inputs_kubeconfig.json
-curl https://raw.githubusercontent.com/{gh-user}/5g-ran-deployments-on-ocp-lab/{gh-branch}/aap-integration-tools/tower-config/credential_injector_kubeconfig.json -o ~/5g-deployment-lab/credential_injector_kubeconfig.json
+curl https://raw.githubusercontent.com/ewsiegel/aap-integration-tools/main/tower-config/credential_inputs_kubeconfig.json -o ~/5g-deployment-lab/credential_inputs_kubeconfig.json
+curl https://raw.githubusercontent.com/ewsiegel/aap-integration-tools/main/tower-config/credential_injector_kubeconfig.json -o ~/5g-deployment-lab/credential_injector_kubeconfig.json
 awx --conf.host pass:[${ANSIBLE_CTRL_URL}] --conf.username pass:[${ANSIBLE_CTRL_USER}] --conf.password pass:["${ANSIBLE_CTRL_PASSWORD}"] --conf.insecure credential_types create --name 'kubeconfig' --kind cloud --inputs '@~/5g-deployment-lab/credential_inputs_kubeconfig.json' --injectors '@~/5g-deployment-lab/credential_injector_kubeconfig.json'
 awx --conf.host pass:[${ANSIBLE_CTRL_URL}] --conf.username pass:[${ANSIBLE_CTRL_USER}] --conf.password pass:["${ANSIBLE_CTRL_PASSWORD}"] --conf.insecure credentials create --name 'hub-acm-kubeconfig' --organization 'Default' --credential_type 'kubeconfig' --inputs "{'kube_config':'@~/5g-deployment-lab/hub-kubeconfig'}"
 -----
@@ -110,7 +112,7 @@ We will create an Ansible project using this git repository as our target.
 [.console-input]
 [source,bash,subs="+macros,attributes+"]
 -----
-awx --conf.host pass:[${ANSIBLE_CTRL_URL}] --conf.username pass:[${ANSIBLE_CTRL_USER}] --conf.password pass:["${ANSIBLE_CTRL_PASSWORD}"] --conf.insecure projects create --name 'aap-for-ran-ztp-project' --organization 'Default' --wait --scm_type git --scm_url https://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab.git --scm_branch {gh-branch}
+awx --conf.host pass:[${ANSIBLE_CTRL_URL}] --conf.username pass:[${ANSIBLE_CTRL_USER}] --conf.password pass:["${ANSIBLE_CTRL_PASSWORD}"] --conf.insecure projects create --name 'aap-for-ran-ztp-project' --organization 'Default' --wait --scm_type git --scm_url http://infra.5g-deployment.lab:3000/student/aap-integration-tools.git --scm_branch main
 -----
 
 Since each Ansible deployment needs a list of hosts it can run on, we will create an inventory along with a dynamic inventory source.
@@ -119,7 +121,15 @@ Since each Ansible deployment needs a list of hosts it can run on, we will creat
 [source,bash]
 -----
 awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure inventory create --name 'hub-acm-inventory' --organization 'Default'
-awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure inventory_sources create --name 'acm-dynamic-inventory' --organization 'Default' --inventory 'hub-acm-inventory' --update_on_launch true --credential 'hub-acm-kubeconfig' --source scm --source_project 'aap-for-ran-ztp-project' --source_path 'aap-integration-tools/inventories/cluster-inventory-example.yml'
+awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure inventory_sources create --name 'acm-dynamic-inventory' --organization 'Default' --inventory 'hub-acm-inventory' --update_on_launch true --credential 3 --source scm --source_project 'aap-for-ran-ztp-project' --source_path 'inventories/cluster-inventory-example.yml'
+-----
+
+NOTE: The `--credential 3` flag when creating our inventory source refers to the `hub-acm-kubeconfig` credential that we created earler, where 3 is the id of the credential. We can see the credentials we've created in json format along with information like the credential id by running:
+
+[.console-input]
+[source,bash]
+-----
+awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure credentials list
 -----
 
 Now, we create our job template and associate the template with our ACM Hub credentials. This is the job template for the Ansible job that gets invoked by ACM. The jobe template we create is associated with our created project and inventory, a playbook to run in our git repository, and any extra variables we wish to add as input.
@@ -127,7 +137,7 @@ Now, we create our job template and associate the template with our ACM Hub cred
 [.console-input]
 [source,bash]
 -----
-awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSiWORD}" --conf.insecure job_templates create --name 'ztp-day2-automation-template' --project 'aap-for-ran-ztp-project' --playbook 'aap-integration-tools/playbooks/cluster-mgmt.yml' --inventory 'hub-acm-inventory' --ask_variables_on_launch true --allow_simultaneous true --extra_vars '{"state": "present", "namespace_to_add": "ztp-day2-automation"}'
+awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure job_templates create --name 'ztp-day2-automation-template' --project 'aap-for-ran-ztp-project' --playbook 'playbooks/cluster_mgmt_example_playbook.yml' --inventory 'hub-acm-inventory' --ask_variables_on_launch true --allow_simultaneous true --extra_vars '{"state": "present", "namespace_to_add": "ztp-day2-automation"}'
 awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure job_templates associate 'ztp-day2-automation-template' --credential 'hub-acm-kubeconfig'
 -----
 

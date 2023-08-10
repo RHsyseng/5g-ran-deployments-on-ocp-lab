@@ -4,6 +4,6 @@ include::_attributes.adoc[]
 
 In conclusion, deploying OpenShift for 5G RAN deployments via GitOps using the ZTP workflow is a powerful and efficient way to manage infrastructure in large telco environments.
 
-Through this lab, we have learned how the ZTP workflow helps us to deploy SNO clusters at scale by using OpenShift, RHACM, and Argo CD. All of this, while leveraging GitOps methodologies.
-
+Through this lab, we have learned how the ZTP workflow helps us to deploy SNO clusters at scale by using OpenShift, RHACM, and Argo CD. All of this, while leveraging GitOps methodologies. In addition, we have learned how to integrate AAP automation with this workflow, adding automated imperative configuration when needed.
+ 
 We hope you enjoyed this lab, we are open to suggestions/feedback/contributions via pull requests.
