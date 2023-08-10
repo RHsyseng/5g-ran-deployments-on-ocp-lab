@@ -81,8 +81,8 @@ First, lets create authorization credentials for accessing our OpenShift Hub. We
 [.console-input]
 [source,bash,subs="+macros,attributes+"]
 -----
-curl https://raw.githubusercontent.com/ewsiegel/aap-integration-tools/main/tower-config/credential_inputs_kubeconfig.json -o ~/5g-deployment-lab/credential_inputs_kubeconfig.json
-curl https://raw.githubusercontent.com/ewsiegel/aap-integration-tools/main/tower-config/credential_injector_kubeconfig.json -o ~/5g-deployment-lab/credential_injector_kubeconfig.json
+curl https://raw.githubusercontent.com/RHsyseng/5g-ran-lab-aap-integration-tools/main/tower-config/credential_inputs_kubeconfig.json -o ~/5g-deployment-lab/credential_inputs_kubeconfig.json
+curl https://raw.githubusercontent.com/RHsyseng/5g-ran-lab-aap-integration-tools/main/tower-config/credential_injector_kubeconfig.json -o ~/5g-deployment-lab/credential_injector_kubeconfig.json
 awx --conf.host pass:[${ANSIBLE_CTRL_URL}] --conf.username pass:[${ANSIBLE_CTRL_USER}] --conf.password pass:["${ANSIBLE_CTRL_PASSWORD}"] --conf.insecure credential_types create --name 'kubeconfig' --kind cloud --inputs '@~/5g-deployment-lab/credential_inputs_kubeconfig.json' --injectors '@~/5g-deployment-lab/credential_injector_kubeconfig.json'
 awx --conf.host pass:[${ANSIBLE_CTRL_URL}] --conf.username pass:[${ANSIBLE_CTRL_USER}] --conf.password pass:["${ANSIBLE_CTRL_PASSWORD}"] --conf.insecure credentials create --name 'hub-acm-kubeconfig' --organization 'Default' --credential_type 'kubeconfig' --inputs "{'kube_config':'@~/5g-deployment-lab/hub-kubeconfig'}"
 -----
