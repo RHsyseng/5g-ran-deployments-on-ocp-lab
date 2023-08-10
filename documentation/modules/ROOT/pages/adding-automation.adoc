@@ -120,7 +120,7 @@ metadata:
   namespace: ran-lab-automation
 spec:
   policyRef: monitor-ztp-done
-  mode: once
+  mode: everyEvent
   automationDef:
     name: ztp-day2-automation-template
     secret: aap-controller-token

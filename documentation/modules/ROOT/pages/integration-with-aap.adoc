@@ -30,7 +30,49 @@ The AAP operator provides us with the necessary components to host both Ansible 
 
 The OpenShift AAP operator's Automation Hub, defined by the custom resource definition AutomationHub, is a downstream version of link:https://github.com/ansible/galaxy_ng[Galaxy NG] which allows for the hosting of Ansible collections on a private distribution server. Collections are a distribution format for Ansible objects including playbooks, roles, modules, and plugins. We store all necessary Ansible collections through an Automation Hub deployed on OpenShift, allowing all dependencies to be hosted and managed through our local cluster. We can upload collections, manage collections, and interact with the Automation Hub through API or through its web UI deployed at automation-hub-aap.apps.hub.5g-deployment.lab.
 
-<CRD image>
+An example AutomationHub CRD is shown below.
+
+[source,bash]
+-----
+apiVersion: automationhub.ansible.com/v1beta1
+kind: AutomationHub
+metadata:
+  name: automation-hub
+  namespace: aap
+spec:
+  route_tls_termination_mechanism: Edge
+  ingress_type: Route
+  loadbalancer_port: 80
+  file_storage_size: 100Gi
+  image_pull_policy: IfNotPresent
+  web:
+    replicas: 1
+  file_storage_access_mode: ReadWriteOnce
+  content:
+    log_level: INFO
+    replicas: 2
+  postgres_storage_requirements:
+    limits:
+      storage: 50Gi
+    requests:
+      storage: 8Gi
+  api:
+    log_level: INFO
+    replicas: 1
+  postgres_resource_requirements:
+    limits:
+      cpu: 1000m
+      memory: 8Gi
+    requests:
+      cpu: 500m
+      memory: 2Gi
+  loadbalancer_protocol: http
+  resource_manager:
+    replicas: 1
+  storage_type: File
+  worker:
+    replicas: 2
+-----
 
 [#automation-controller]
 === Automation Controller
@@ -39,7 +81,33 @@ The Openshift AAP operator's Automation Controller, defined by the custom resour
 
 Details of the contents of an Ansible job will be covered as we craft our automation template. At a high level, an Ansible _job_ is a running instance of a _job template_, which contains a logical collection of Ansible _playbooks_ in the form of a _project_, a list of managed hosts in the form of an _inventory_, and any extra variables we want to pass to the job. 
 
-<CRD image>
+An example AutomationController CRD is shown below.
+
+[source,bash]
+-----
+apiVersion: automationcontroller.ansible.com/v1beta1
+kind: AutomationController
+metadata:
+  name: automation
+  namespace: aap
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  create_preload_data: true
+  route_tls_termination_mechanism: Edge
+  garbage_collect_secrets: false
+  ingress_type: Route
+  loadbalancer_port: 80
+  image_pull_policy: IfNotPresent
+  projects_storage_size: 8Gi
+  task_privileged: false
+  projects_storage_access_mode: ReadWriteOnce
+  projects_persistence: false
+  replicas: 1
+  admin_user: admin
+  loadbalancer_protocol: http
+  nodeport_port: 30080
+-----
 
 [#mch-addons]
 === MultiClusterHub Add-Ons
