@@ -184,8 +184,6 @@ curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"
 curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/ewsiegel/aap-integration-tools.git","uid":1,"repo_name":"aap-integration-tools"}' http://infra.5g-deployment.lab:3000/api/v1/repos/migrate
 -----
 
------
-
 WARNING: It could be possible that the last few commands do not work at the first time since the registry container image is being pulled and then started. If that's the case, try them once again after a couple of seconds.
 
 [#configure-ntp-server]
