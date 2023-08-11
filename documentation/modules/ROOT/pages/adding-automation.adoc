@@ -129,7 +129,7 @@ EOF
 -----
 
 For reference, here is a visual representation of the extra variable RHACM adds:
-[source,bash]
+[source,yaml]
 -----
 ...
   automationDef:
