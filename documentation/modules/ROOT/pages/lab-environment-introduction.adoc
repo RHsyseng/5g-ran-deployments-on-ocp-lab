@@ -33,7 +33,7 @@ NOTE: If you receive an error message regarding the certificate please re-run up
 
 An OpenShift cluster is running on the infrastructure host, you can reach it out at https://console-openshift-console.apps.hub.5g-deployment.lab and https://api.hub.5g-deployment.lab:6443
 
-Credentials for the OCP cluster (htpassidp provider):
+Credentials for the OCP cluster:
 
 * Username: `admin` 
 * Password: The password is randomly generated for each environment, and can be found in the following path: `/root/cred-admin.txt` in your hypervisor host or in the e-mail you received when the lab was ready.
