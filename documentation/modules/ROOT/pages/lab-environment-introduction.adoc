@@ -66,11 +66,3 @@ Credentials for Automation Controller:
 -----
 oc -n aap get secret automation-admin-password -o jsonpath='{.data.password}' | base64 -d
 -----
-
-NOTE: If the above URLs are not reachable, add the following entry to your `/etc/hosts`:
-
-[source,bash]
------
-<hypervisor_ip> automation-hub-aap.apps.hub.5g-deployment.lab automation-aap.apps.hub.5g-deployment.lab
------
-
