@@ -12,7 +12,7 @@ We have already installed ManagedServiceAccount to our MultiClusterHub, but we m
 [.console-input]
 [source,bash]
 -----
-cat << EOF | oc apply -f -
+cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
 apiVersion: addon.open-cluster-management.io/v1alpha1
 kind: ManagedClusterAddOn
 metadata:
@@ -22,7 +22,7 @@ spec:
   installNamespace: open-cluster-management-agent-addon
 EOF
 
-cat << EOF | oc apply -f -
+cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
 apiVersion: authentication.open-cluster-management.io/v1alpha1
 kind: ManagedServiceAccount
 metadata:
@@ -41,7 +41,7 @@ In order to create our governance hook, we will need to first create a Policy th
 [.console-input]
 [source,bash]
 -----
-cat << EOF | oc -n ran-lab-automation apply -f -
+cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n ran-lab-automation apply -f -
 apiVersion: policy.open-cluster-management.io/v1
 kind: Policy
 metadata:
@@ -112,7 +112,7 @@ Lastly, in order to actually trigger the Ansible job, we create an AnsibleJob ba
 [.console-input]
 [source,bash]
 -----
-cat << EOF | oc -n ran-lab-automation apply -f -
+cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n ran-lab-automation apply -f -
 apiVersion: policy.open-cluster-management.io/v1beta1
 kind: PolicyAutomation
 metadata:
