@@ -100,7 +100,7 @@
 
 * xref:integration-with-aap.adoc[Integration with Ansible Automation Platform]
 ** xref:integration-with-aap.adoc#aap-overview[AAP Overview]
-*** xref:integration-with-aap.adoc#augmenting-openshift[Augmenting Openshift with Ansible Automation]
+*** xref:integration-with-aap.adoc#augmenting-openshift[Augmenting OpenShift with Ansible Automation]
 *** xref:integration-with-aap.adoc#intro-to-aap-operator[Introduction to the AAP Operator]
 ** xref:integration-with-aap.adoc#aap-components[Defining Components]
 *** xref:integration-with-aap.adoc#automation-hub[Automation Hub]
