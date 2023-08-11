@@ -28,8 +28,7 @@ The AAP operator provides us with the necessary components to host both Ansible 
 [#automation-hub]
 === Automation Hub
 
-The OpenShift AAP operator's Automation Hub, defined by the custom resource definition AutomationHub, is a downstream version of link:https://github.com/ansible/galaxy_ng[Galaxy NG] which allows for the hosting of Ansible collections on a private distribution server. Collections are a distribution format for Ansible objects including playbooks, roles, modules, and plugins. We store all necessary Ansible collections through an Automation Hub deployed on OpenShift, allowing all dependencies to be hosted and managed through our local cluster. We can upload collections, manage collections, and interact with the Automation Hub through API or through its web UI deployed at automation-hub-aap.apps.hub.5g-deployment.lab.
-
+The OpenShift AAP operator's Automation Hub, defined by the custom resource definition AutomationHub, is a downstream version of link:https://github.com/ansible/galaxy_ng[Galaxy NG] which allows for the hosting of Ansible collections on a private distribution server. Collections are a distribution format for Ansible objects including playbooks, roles, modules, and plugins. We store all necessary Ansible collections through an Automation Hub deployed on OpenShift, allowing all dependencies to be hosted and managed through our local cluster. We can upload collections, manage collections, and interact with the Automation Hub through API or through its web UI deployed at link:https://automation-hub-aap.apps.hub.5g-deployment.lab[https://automation-hub-aap.apps.hub.5g-deployment.lab].
 An example AutomationHub CRD is shown below.
 
 [source,bash]
