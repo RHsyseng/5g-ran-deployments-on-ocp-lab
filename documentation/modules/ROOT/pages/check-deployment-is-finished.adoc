@@ -83,7 +83,7 @@ NOTE: Deployment of the hub cluster was not part of this lab, but `local-cluster
 
 image::automation-policy.png[Monitor-ZTP-Done Policy]
 
-Lastly, to view status and logs for the actual Ansible Controller job that ran, we can navigate to automation-aap.apps.hub.5g-deployment.lab, click on the "Jobs" tab, and view the latest job that ran.
+Lastly, to view status and logs for the actual Ansible Controller job that ran, we can navigate to https://automation-aap.apps.hub.5g-deployment.lab, click on the "Jobs" tab, and view the latest job that ran.
 
 image::aap-jobs.png[AAP Jobs]
 
