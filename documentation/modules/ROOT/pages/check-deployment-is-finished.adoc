@@ -79,7 +79,7 @@ image::sno2-labels.png[SNO2 Labels]
 
 If the `ztp-done` label is present, we can check to see whether our AAP automation ran successfully by monitoring the `sno2` cluster's policy governance. If the `monitor-ztp-done` policy is applied to `sno2` and marked as compliant, then we know that our automation has run successfully.
 
-NOTE: Deployment of the hub cluster was not part of this lab, but `local-cluster` was also deployed via a ZTP workflow, so it will have a `ztp-done` label and our policy will run automation on `local-cluster` as well. This model of maintaing one automation policy for day 2 operations for N clusters makes utilizng ZTP and AAP automation together in a 5G RAN environment great at scale while also maintaining configuration control, as controlling which clusters run automation is as simple as adjusting the automation policy's PlacementRule.
+NOTE: Deployment of the hub cluster was not part of this lab, but `local-cluster` was also deployed via a ZTP workflow, so it will have a `ztp-done` label and our policy will run automation on `local-cluster` as well. This model of maintaing one automation policy for day 2 operations for N clusters makes utilizing ZTP and AAP automation together in a 5G RAN environment great at scale while also maintaining configuration control, as controlling which clusters run automation is as simple as adjusting the automation policy's PlacementRule.
 
 image::automation-policy.png[Monitor-ZTP-Done Policy]
 
