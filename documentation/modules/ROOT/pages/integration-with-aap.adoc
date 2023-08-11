@@ -6,7 +6,7 @@ include::_attributes.adoc[]
 [#aap-overview]
 == AAP Overview
 
-link:https://www.redhat.com/en/technologies/management/ansible[Red Hat Ansible Automation Platform] allows for the configuration and management of systems at scale through simple IT automation. If unfamiliar with AAP, see the link:https://docs.ansible.com/ansible/latest/index.html[AAP Docs]. In this section, we will discuss the need for AAP integration with 5G RAN deployments on OpenShift.
+link:https://www.redhat.com/en/technologies/management/ansible[Red Hat Ansible Automation Platform] allows for the configuration and management of systems at scale through simple IT automation. If unfamiliar with AAP, see the link:https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4[AAP Docs]. In this section, we will discuss the need for AAP integration with 5G RAN deployments on OpenShift.
 
 [#augmenting-openshift]
 === Augmenting Openshift with Ansible Automation
