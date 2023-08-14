@@ -131,6 +131,8 @@ EOF
 
 Modify the kustomization.yaml inside the site-policies folder, so it includes this new PGT and eventually will be applied by ArgoCD.
 
+NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gnu-sed`: `brew install gnu-sed`.
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
