@@ -795,6 +795,18 @@ mv kubectl oc /usr/bin/</code></pre>
 </div>
 <div class="sect2">
 <h3 id="configure-local-dns-dhcp-server"><a class="anchor" href="#configure-local-dns-dhcp-server"></a>Configure Local DNS/DHCP Server</h3>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>sed -i</code> commands, make sure you are using <code>gnu-sed</code>: <code>brew install gnu-sed</code>.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf -y install dnsmasq policycoreutils-python-utils
@@ -1000,6 +1012,18 @@ kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P
 </td>
 <td class="content">
 This step requires a valid OpenShift Pull Secret placed in /root/openshift_pull.json. Notice that you can replace the admin or developer&#8217;s password shown below for any other.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>sed -i</code> commands, make sure you are using <code>gnu-sed</code>: <code>brew install gnu-sed</code>.
 </td>
 </tr>
 </table>

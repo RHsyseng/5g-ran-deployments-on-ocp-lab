@@ -840,6 +840,18 @@ EOF</code></pre>
 <div class="paragraph">
 <p>Modify the kustomization.yaml inside the site-policies folder, so it includes this new PGT and eventually will be applied by ArgoCD.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>sed -i</code> commands, make sure you are using <code>gnu-sed</code>: <code>brew install gnu-sed</code>.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "/- group-du-sno.yaml/a \ \ - zone-europe-upgrade-413-3.yaml" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml</code></pre>
