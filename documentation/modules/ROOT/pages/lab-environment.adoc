@@ -70,6 +70,8 @@ kcli create network -c 192.168.125.0/24 --nodhcp --domain 5g-deployment.lab 5gde
 [#configure-local-dns-dhcp-server]
 === Configure Local DNS/DHCP Server
 
+NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gnu-sed`: `brew install gnu-sed`.
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -254,6 +256,8 @@ kcli ssh <VM_name>
 === Deploy OpenShift Hub Cluster
 
 IMPORTANT: This step requires a valid OpenShift Pull Secret placed in /root/openshift_pull.json. Notice that you can replace the admin or developer's password shown below for any other.
+
+NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gnu-sed`: `brew install gnu-sed`.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
