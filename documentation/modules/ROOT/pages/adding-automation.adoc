@@ -36,7 +36,43 @@ EOF
 [#creating-governance-hook]
 == Crafting a Governance Hook into AAP
 
-In order to create our governance hook, we will need to first create a Policy that will monitor for the `ztp-done` label and trigger an Ansible job in the AAP Controller. This Policy should stay in a violating status until the automation job completes successfully and the `ztp-day2-automation` namespace is created on our `sno2` cluster. In order for this Policy to bind to clusters with the `ztp-done` label, we must also create the relevant PlacementRule and a PlacementBinding to bind the Policy to this PlacementRule. Notice these resources exist in the `ran-lab-automation` namespace.
+First, we will add some supporting OpenShift resources for automation. We will add a namespace `ran-lab-automation` which our automation Policy and PolicyAutomation will belong to, along with a Secret configuring ACM's authorization to access the AAP Controller through the controller's auth token.
+
+CAUTION: Replace <automation-controller-token> with the Automation Controller token privded in the e-mail you received when the lab was ready.
+
+[.console-input]
+[source,bash]
+-----
+export CONTROLLER_TOKEN=<automation-controller-token>
+-----
+
+[.console-input]
+[source,bash]
+-----
+cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ran-lab-automation
+EOF
+
+cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n ran-lab-automation apply -f -
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: aap-controller-token
+  namespace: ran-lab-automation
+  labels:
+    cluster.open-cluster-management.io/type: ans
+    cluster.open-cluster-management.io/credentials: ""
+stringData:
+  host: https://automation-aap.apps.hub.5g-deployment.lab
+  token: ${CONTROLLER_TOKEN}
+EOF
+-----
+
+In order to create our governance hook, we will need to create a Policy that will monitor for the `ztp-done` label and trigger an Ansible job in the AAP Controller. This Policy should stay in a violating status until the automation job completes successfully and the `ztp-day2-automation` namespace is created on our `sno2` cluster. In order for this Policy to bind to clusters with the `ztp-done` label, we must also create the relevant PlacementRule and a PlacementBinding to bind the Policy to this PlacementRule. Notice these resources exist in the `ran-lab-automation` namespace.
 
 [.console-input]
 [source,bash]
@@ -65,16 +101,9 @@ spec:
             - complianceType: musthave
               objectDefinition:
                 apiVersion: v1
-                data:
-                  clusterid: '{{ fromClusterClaim "id.openshift.io" }} '
-                  clustername: '{{ fromClusterClaim "name" }}'
-                  ocpversion: '{{ fromClusterClaim "version.openshift.io" }}'
-                  platform: '{{ fromClusterClaim "platform.open-cluster-management.io" }}'
-                  product: '{{ fromClusterClaim "product.open-cluster-management.io" }}'
-                kind: ConfigMap
+                kind: Namespace
                 metadata:
-                  name: '{{ fromClusterClaim "name" }}'
-                  namespace: ztp-day2-automation
+                  name: 'ztp-day2-automation'
           remediationAction: inform
           severity: low
 ---

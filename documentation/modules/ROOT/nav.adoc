@@ -142,13 +142,6 @@
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#crafting-testing-policies[Crafting testing Policies]
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#configure-kustomization-for-policies[Configure Kustomization for Policies]
 
-* xref:configuring-aap.adoc[Configuring AAP]
-** xref:configuring-aap.adoc#configuring-automation-controller[Configuring Automation Controller]
-*** xref:configuring-aap.adoc#controller-config-setup[Setup]
-*** xref:configuring-aap.adoc#creating-controller-automation-templates[Creating Controller Automation Templates]
-** xref:configuring-aap.adoc#installing-mch-addons[Installing MultiClusterHub Add-Ons]
-** xref:configuring-aap.adoc#adding-supporting-objects[Adding Supporting Objects]
-
 * xref:running-the-deployment.adoc[Running the Deployment]
 ** xref:running-the-deployment.adoc#deploying-ztp-gitops-pipeline[Deploying the ZTP GitOps Pipeline]
 ** xref:running-the-deployment.adoc#deploying-sno-using-gitops-pipeline[Deploying the SNO Cluster using the ZTP GitOps Pipeline]
@@ -215,4 +208,4 @@
 *** xref:lab-environment.adoc#configure-openshift-hub-cluster[Configure OpenShift Hub Cluster]
 *** xref:lab-environment.adoc#deploy-openshift-hub-cluster-operators[Deploy OpenShift HUB Cluster Operators]
 *** xref:lab-environment.adoc#deploy-sno1-cluster-without-ztp[Deploy SNO1 Cluster (without ZTP)]
-*** xref:lab-environment.adoc#upload-collections-to-aap-hub[Upload Necessary Collections to AAP Hub]
+*** xref:lab-environment.adoc#configure-aap[Configure AAP]
