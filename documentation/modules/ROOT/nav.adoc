@@ -105,7 +105,6 @@
 ** xref:integration-with-aap.adoc#aap-components[Defining Components]
 *** xref:integration-with-aap.adoc#automation-hub[Automation Hub]
 *** xref:integration-with-aap.adoc#automation-controller[Automation Controller]
-*** xref:integration-with-aap.adoc#mch-addons[MultiClusterHub Add-Ons]
 *** xref:integration-with-aap.adoc#acm-hooks-toward-aap[ACM Hooks Toward AAP]
 ** xref:integration-with-aap.adoc#workflow-overview[Workflow Overview]
 *** xref:integration-with-aap.adoc#general-workflow[General AAP Integration Workflow]
@@ -146,9 +145,7 @@
 ** xref:running-the-deployment.adoc#deploying-ztp-gitops-pipeline[Deploying the ZTP GitOps Pipeline]
 ** xref:running-the-deployment.adoc#deploying-sno-using-gitops-pipeline[Deploying the SNO Cluster using the ZTP GitOps Pipeline]
 
-* xref:adding-automation.adoc[Adding Policy-Based Automation]
-** xref:adding-automation.adoc#enabling-managedserviceaccount[Enabling the ManagedServiceAccount Add-On]
-** xref:adding-automation.adoc#creating-governance-hook[Crafting a Governance Hook into AAP]
+* xref:adding-automation.adoc[Adding Automation]
 
 * xref:monitoring-the-deployment.adoc[Monitoring the Deployment]
 ** xref:monitoring-the-deployment.adoc#monitoring-deployment-webui[Monitoring the Deployment via the WebUI]

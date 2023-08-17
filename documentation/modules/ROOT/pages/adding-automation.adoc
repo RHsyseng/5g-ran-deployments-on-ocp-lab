@@ -1,42 +1,10 @@
-= Adding Policy-Based AAP Automation to the Deployment
+= Adding AAP Automation to the Deployment
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-Now that our SNO cluster has began the ZTP deployment process, we can configure the last couple steps of post-install automation. 
+Now that we have deployed our cluster, let's add our automation. Recall that this process includes creating supporting resources, checking our AnsibleJob CRD into a hosted git repository, and deploying our automation Application.
 
-[#enabling-managedserviceaccount]
-== Enabling the ManagedServiceAccount Add-On
-
-We have already installed ManagedServiceAccount to our MultiClusterHub, but we must still enable and deploy a unique ManagedServiceAccount on each spoke cluster that we wish to run automation on. We accomplish this through the follow OpenShift CRDs. Notice these resources exist in the `sno2` namespace.
-
-[.console-input]
-[source,bash]
------
-cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
-apiVersion: addon.open-cluster-management.io/v1alpha1
-kind: ManagedClusterAddOn
-metadata:
-  name: managed-serviceaccount
-  namespace: sno2
-spec:
-  installNamespace: open-cluster-management-agent-addon
-EOF
-
-cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
-apiVersion: authentication.open-cluster-management.io/v1alpha1
-kind: ManagedServiceAccount
-metadata:
-  name: sno2
-  namespace: sno2
-spec:
-  rotation: {}
-EOF
------
-
-[#creating-governance-hook]
-== Crafting a Governance Hook into AAP
-
-First, we will add some supporting OpenShift resources for automation. We will add a namespace `ran-lab-automation` which our automation Policy and PolicyAutomation will belong to, along with a Secret configuring ACM's authorization to access the AAP Controller through the controller's auth token.
+First, we will add some supporting OpenShift resources for automation. We will add a namespace `ran-lab-automation` which our automation resources will belong to, along with a Secret configuring ACM's authorization to access the AAP Controller through the controller's auth token.
 
 CAUTION: Replace <automation-controller-token> with the Automation Controller token privded in the e-mail you received when the lab was ready.
 
@@ -72,54 +40,94 @@ stringData:
 EOF
 -----
 
-In order to create our governance hook, we will need to create a Policy that will monitor for the `ztp-done` label and trigger an Ansible job in the AAP Controller. This Policy should stay in a violating status until the automation job completes successfully and the `ztp-day2-automation` namespace is created on our `sno2` cluster. In order for this Policy to bind to clusters with the `ztp-done` label, we must also create the relevant PlacementRule and a PlacementBinding to bind the Policy to this PlacementRule. Notice these resources exist in the `ran-lab-automation` namespace.
+Our AnsibleJob automation is housed in a git repository at http://infra.5g-deployment.lab:3000/student/aap-integration-tools/src/branch/main/site-applications/prehook/main.yml. It invokes our `ztp-day2-automation-template` Ansible Controller job template, which first creates the `ztp-day2-automation` namespace in the cluster, then adds the `aap-done` label to the cluster.
+
+NOTE: Creating the `ztp-day2-automation` namespace is an example configuration. In your own deployments, this step can be substituted with any series of imperative configuration steps that a deployed cluster may need.
+
+We will now create an Openshift Application-based hook into AAP. At a high level the role of the Application is to trigger the AnsibleJob with an extra variable to pass to the Automation Controller which hosts the automation should run on. Here is an example CRD for reference, with the extra variable RHACM passes in comments:
+
+[source,yaml]
+-----
+apiVersion: tower.ansible.com/v1alpha1
+kind: AnsibleJob
+metadata:
+  name: ztp-day2-automation
+spec:
+  tower_auth_secret: aap-controller-token
+  job_template_name: ztp-day2-automation-template
+# extra_vars:
+#   target_clusters: {{ list.of.clusters }}     <-- array provided by ACM with an entry for each managed cluster that is affected
+-----
+
+Now, let's create our Application. 
+
+First, the Channel that will be used by the application.
 
 [.console-input]
 [source,bash]
 -----
-cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n ran-lab-automation apply -f -
-apiVersion: policy.open-cluster-management.io/v1
-kind: Policy
+cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gogs-repo-ns
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: gogs-repo
+  namespace: gogs-repo-ns
+spec:
+  pathname: http://infra.5g-deployment.lab:3000/student/aap-integration-tools.git
+  type: Git
+EOF
+-----
+
+Next, we can create our Application, its Subscription, and the PlacementRule to bind this application to the intended clusters.
+
+[.console-input]
+[source,bash]
+-----
+cat << EOF | oc -n ran-lab-automation apply -f -
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
 metadata:
   name: monitor-ztp-done
   namespace: ran-lab-automation
-  annotations:
-    policy.open-cluster-management.io/standards: NIST SP 800-53
-    policy.open-cluster-management.io/categories: CM Configuration Management
-    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
 spec:
-  disabled: false
-  remediationAction: inform
-  policy-templates:
-    - objectDefinition:
-        apiVersion: policy.open-cluster-management.io/v1
-        kind: ConfigurationPolicy
-        metadata:
-          name: monitor-ztp-done
-        spec:
-          object-templates:
-            - complianceType: musthave
-              objectDefinition:
-                apiVersion: cluster.open-cluster-management.io/v1alpha1
-                kind: ClusterClaim
-                metadata:
-                  name: aap-done
-          remediationAction: inform
-          severity: low
+  componentKinds:
+    - group: apps.open-cluster-management.io
+      kind: Subscription
+  descriptor: {}
+  selector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - monitor-ztp-done
 ---
-apiVersion: policy.open-cluster-management.io/v1
-kind: PlacementBinding
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
 metadata:
-  name: monitor-ztp-done-placement
+  annotations:
+    apps.open-cluster-management.io/git-branch: main
+    apps.open-cluster-management.io/git-path: site-applications
+    apps.open-cluster-management.io/reconcile-option: merge
+  labels:
+    app: monitor-ztp-done
+  name: monitor-ztp-done-subscription
   namespace: ran-lab-automation
-placementRef:
-  apiGroup: apps.open-cluster-management.io
-  kind: PlacementRule
-  name: monitor-ztp-done-placement
-subjects:
-  - apiGroup: policy.open-cluster-management.io
-    kind: Policy
-    name: monitor-ztp-done
+spec:
+  hooksecretref:
+    name: aap-controller-token
+  channel: gogs-repo-ns/gogs-repo
+  placement:
+    placementRef:
+      apiGroup: apps.open-cluster-management.io
+      kind: PlacementRule
+      name: monitor-ztp-done-placement
 ---
 apiVersion: apps.open-cluster-management.io/v1
 kind: PlacementRule
@@ -136,37 +144,4 @@ spec:
 EOF
 -----
 
-Lastly, in order to actually trigger the Ansible job, we create an AnsibleJob based PolicyAutomation resource also in the `ran-lab-automation` namespace alongside our defined Policy. When the Ansible job is triggered, RHACM automatically injects an extra variable `target_clusters`, which is a list of clusters to run automation on based on our policy's PlacementRule.
-
-[.console-input]
-[source,bash]
------
-cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n ran-lab-automation apply -f -
-apiVersion: policy.open-cluster-management.io/v1beta1
-kind: PolicyAutomation
-metadata:
-  name: ran-lab-day2-automation
-  namespace: ran-lab-automation
-spec:
-  policyRef: monitor-ztp-done
-  mode: everyEvent
-  automationDef:
-    name: ztp-day2-automation-template
-    secret: aap-controller-token
-    type: AnsibleJob
-EOF
------
-
-For reference, here is a visual representation of the extra variable RHACM adds:
-[source,yaml]
------
-...
-  automationDef:
-    name: ztp-day2-automation-template
-    secret: aap-controller-token
-    type: AnsibleJob
-#    extra_vars:
-#      target_clusters: {{ list.of.clusters }}     <-- array provided by ACM with an entry for each managed cluster that is affected
------
-
-We have now successfully configured and deployed our AAP automation, integrated with the ZTP workflow.
+We have now successfully configured our automation, which will run as soon as our cluster reaches `ztp-done`.
