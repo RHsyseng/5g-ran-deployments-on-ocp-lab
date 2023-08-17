@@ -100,17 +100,10 @@ spec:
           object-templates:
             - complianceType: musthave
               objectDefinition:
-                apiVersion: v1
-                data:
-                  clusterid: '{{ fromClusterClaim "id.openshift.io" }} '
-                  clustername: '{{ fromClusterClaim "name" }}'
-                  ocpversion: '{{ fromClusterClaim "version.openshift.io" }}'
-                  platform: '{{ fromClusterClaim "platform.open-cluster-management.io" }}'
-                  product: '{{ fromClusterClaim "product.open-cluster-management.io" }}'
-                kind: ConfigMap
+                apiVersion: cluster.open-cluster-management.io/v1alpha1
+                kind: ClusterClaim
                 metadata:
-                  name: '{{ fromClusterClaim "name" }}'
-                  namespace: ztp-day2-automation
+                  name: aap-done
           remediationAction: inform
           severity: low
 ---
