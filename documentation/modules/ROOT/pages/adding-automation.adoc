@@ -1,0 +1,147 @@
+= Adding AAP Automation to the Deployment
+include::_attributes.adoc[]
+:profile: 5g-ran-lab
+
+Now that we have deployed our cluster, let's add our automation. Recall that this process includes creating supporting resources, checking our AnsibleJob CRD into a hosted git repository, and deploying our automation Application.
+
+First, we will add some supporting OpenShift resources for automation. We will add a namespace `ran-lab-automation` which our automation resources will belong to, along with a Secret configuring ACM's authorization to access the AAP Controller through the controller's auth token.
+
+CAUTION: Replace <automation-controller-token> with the Automation Controller token privded in the e-mail you received when the lab was ready.
+
+[.console-input]
+[source,bash]
+-----
+export CONTROLLER_TOKEN=<automation-controller-token>
+-----
+
+[.console-input]
+[source,bash]
+-----
+cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ran-lab-automation
+EOF
+
+cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n ran-lab-automation apply -f -
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: aap-controller-token
+  namespace: ran-lab-automation
+  labels:
+    cluster.open-cluster-management.io/type: ans
+    cluster.open-cluster-management.io/credentials: ""
+stringData:
+  host: https://automation-aap.apps.hub.5g-deployment.lab
+  token: ${CONTROLLER_TOKEN}
+EOF
+-----
+
+Our AnsibleJob automation is housed in a git repository at http://infra.5g-deployment.lab:3000/student/aap-integration-tools/src/branch/main/site-applications/prehook/main.yml. It invokes our `ztp-day2-automation-template` Ansible Controller job template, which first creates the `ztp-day2-automation` namespace in the cluster, then adds the `aap-done` label to the cluster.
+
+NOTE: Creating the `ztp-day2-automation` namespace is an example configuration. In your own deployments, this step can be substituted with any series of imperative configuration steps that a deployed cluster may need.
+
+We will now create an Openshift Application-based hook into AAP. At a high level the role of the Application is to trigger the AnsibleJob with an extra variable to pass to the Automation Controller which hosts the automation should run on. Here is an example CRD for reference, with the extra variable RHACM passes in comments:
+
+[source,yaml]
+-----
+apiVersion: tower.ansible.com/v1alpha1
+kind: AnsibleJob
+metadata:
+  name: ztp-day2-automation
+spec:
+  tower_auth_secret: aap-controller-token
+  job_template_name: ztp-day2-automation-template
+# extra_vars:
+#   target_clusters: {{ list.of.clusters }}     <-- array provided by ACM with an entry for each managed cluster that is affected
+-----
+
+Now, let's create our Application. 
+
+First, the Channel that will be used by the application.
+
+[.console-input]
+[source,bash]
+-----
+cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gogs-repo-ns
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: gogs-repo
+  namespace: gogs-repo-ns
+spec:
+  pathname: http://infra.5g-deployment.lab:3000/student/aap-integration-tools.git
+  type: Git
+EOF
+-----
+
+Next, we can create our Application, its Subscription, and the PlacementRule to bind this application to the intended clusters.
+
+[.console-input]
+[source,bash]
+-----
+cat << EOF | oc -n ran-lab-automation apply -f -
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: monitor-ztp-done
+  namespace: ran-lab-automation
+spec:
+  componentKinds:
+    - group: apps.open-cluster-management.io
+      kind: Subscription
+  descriptor: {}
+  selector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - monitor-ztp-done
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  annotations:
+    apps.open-cluster-management.io/git-branch: main
+    apps.open-cluster-management.io/git-path: site-applications
+    apps.open-cluster-management.io/reconcile-option: merge
+  labels:
+    app: monitor-ztp-done
+  name: monitor-ztp-done-subscription
+  namespace: ran-lab-automation
+spec:
+  hooksecretref:
+    name: aap-controller-token
+  channel: gogs-repo-ns/gogs-repo
+  placement:
+    placementRef:
+      apiGroup: apps.open-cluster-management.io
+      kind: PlacementRule
+      name: monitor-ztp-done-placement
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: monitor-ztp-done-placement
+  namespace: ran-lab-automation
+spec:
+  clusterConditions:
+    - status: "True"
+      type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - {key: ztp-done, operator: Exists}
+EOF
+-----
+
+We have now successfully configured our automation, which will run as soon as our cluster reaches `ztp-done`.

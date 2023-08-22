@@ -183,9 +183,10 @@ systemctl daemon-reload
 systemctl enable podman-gitea --now
 podman exec --user 1000 gitea /bin/sh -c 'gitea admin user create --username student --password student --email student@5g-deployment.lab --must-change-password=false --admin'
 curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab.git","uid":1,"repo_name":"5g-ran-deployments-on-ocp-lab"}' http://infra.5g-deployment.lab:3000/api/v1/repos/migrate
+curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-lab-aap-integration-tools.git","uid":1,"repo_name":"aap-integration-tools"}' http://infra.5g-deployment.lab:3000/api/v1/repos/migrate
 -----
 
-WARNING: It could be possible that the last two commands do not work at the first time since the registry container image is being pulled and then started. If that's the case, try them once again after a couple of seconds.
+WARNING: It could be possible that the last few commands do not work at the first time since the registry container image is being pulled and then started. If that's the case, try them once again after a couple of seconds.
 
 [#configure-ntp-server]
 === Configure NTP Server
@@ -354,3 +355,221 @@ node/openshift-master-0   Ready    control-plane,master,worker   94m   v1.26.5+0
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.13.2    True        False         75m     Cluster version is 4.13.2
 -----
+
+[#configure-aap]
+=== Configure AAP
+
+NOTE: These steps require `awx` CLI
+
+[.console-input]
+[source,bash]
+-----
+pip3 install awxkit
+awx --help
+-----
+
+First wait for AutomationHub and AutomationController to finish deployment.
+
+Next, retrieve Automation Hub and Automation Controller credentials, urls, and tokens. In order to do this, we will need to add the following entry to `/etc/hosts` then run the commands.
+
+[.console-input]
+[source,bash]
+-----
+<HYPERVISOR_REACHABLE_IP> automation-hub-aap.apps.hub.5g-deployment.lab automation-aap.apps.hub.5g-deployment.lab
+-----
+
+[.console-input]
+[source,bash]
+-----
+export GALAXY_NG_USER="admin"
+export GALAXY_NG_PASSWORD=$(oc -n aap get secret automation-hub-admin-password -o jsonpath='{.data.password}' | base64 -d)
+export ANSIBLE_CTRL_USER="admin"
+export ANSIBLE_CTRL_PASSWORD=$(oc -n aap get secret automation-admin-password -o jsonpath='{.data.password}' | base64 -d)
+export GALAXY_NG_URL="https://$(oc -n aap get route automation-hub -o jsonpath='{.spec.host}')"
+export ANSIBLE_CTRL_URL="https://$(oc -n aap get route automation -o jsonpath='{.spec.host}')"
+curl -sku ${GALAXY_NG_USER}:"${GALAXY_NG_PASSWORD}" -X POST ${GALAXY_NG_URL}/api/galaxy/v3/auth/token/ | jq -r .token > /opt/galaxy_token
+awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure login | jq -r .token > /opt/tower_token
+-----
+
+Now, we upload collections to our private Automation Hub.
+
+We will create a requirements.yml file that holds the names and versions for each Ansible collection needed for this lab.
+
+[.console-input]
+[source,bash]
+-----
+cat << EOF > ~/requirements.yml -
+collections:
+- name: kubernetes.core
+  version: 2.4.0
+- name: awx.awx
+  version: 22.5.0
+- name: stolostron.core
+  version: 0.0.2
+EOF
+-----
+
+For each collection specified in requirements.yml, we need to download the collection and its dependencies as a tarball from link:https://galaxy.ansible.com[Ansible Galaxy], create a namespace on our private Automation Hub to host the collection, upload the collection to the hub, then approve the collection for use by external components. We can accomplish this via the ansible-galaxy command (part of Ansible's set of CLI tools) and the API exposed by the Automation Hub.
+
+First, let's download all required collection tarballs to a directory called ansible-collections.
+
+NOTE: If the `ansible-galaxy` can not be found, run `python3 -m pip install --user ansible` and add `~/.local/bin` to your PATH.
+
+[.console-input]
+[source,bash]
+-----
+ansible-galaxy collection download -r ~/requirements.yml -p ~/ansible-collections
+-----
+
+Now for each downloaded collection, we create a namespace for the collection, publish the collection to the Automation Hub, then approve the collection.
+
+Given a downloaded ansible collection in the ansible-collections directory with namespace NAMESPACE, collection name COLLECTION, and version VERSION, the process is as follows:
+
+//[.console-input]
+[source,bash]
+-----
+# create namespace and get API response
+curl -sku ${GALAXY_NG_USER}:"${GALAXY_NG_PASSWORD}" -X POST -H 'Content-Type: application/json' -d '{"name":"'$NAMESPACE'","groups":[]}' ${GALAXY_NG_URL}/api/galaxy/_ui/v1/namespaces/ | jq
+
+# publish collection using ansible-galaxy command
+# -s flag points ansible-galaxy to our private Automation Hub, --token flag specifies our Automation Hub token
+ansible-galaxy collection publish "~/ansible-collections/${NAMESPACE}-${COLLECTION}-${VERSION}.tar.gz" -s ${GALAXY_NG_URL}/api/galaxy/ --token $(cat /opt/galaxy_token) --ignore-certs
+
+# approve collection and get API response
+curl -sku ${GALAXY_NG_USER}:"${GALAXY_NG_PASSWORD}" -X POST -H 'Content-Type: application/json' "${GALAXY_NG_URL}"/api/galaxy/v3/collections/"${NAMESPACE}"/"${COLLECTION}"/versions/"${VERSION}"/move/staging/published/ | jq
+-----
+
+This process is easily automatable with a simple bash script:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+curl https://raw.githubusercontent.com/RHsyseng/5g-ran-lab-aap-integration-tools/main/collections/collections_to_hub.bash -o ~/collections_to_hub.bash
+-----
+
+[source,bash]
+-----
+> cat ~/collections_to_hub.bash
+#!/bin/bash
+
+[ -z "$GALAXY_NG_USER" ] && echo "GALAXY_NG_USER is not set"
+[ -z "$GALAXY_NG_PASSWORD" ] && echo "GALAXY_NG_PASSWORD is not set"
+[ -z "$GALAXY_NG_URL" ] && echo "GALAXY_NG_URL is not set"
+[ ! -f "/opt/galaxy_token" ] && echo "Expected galaxy token at /opt/galaxy_token"
+
+DIR=~/ansible-collections
+
+for path in ${DIR}/*.tar.gz; do
+    filename=$(basename ${path} .tar.gz)
+    readarray -d "-" -t filearray <<< "$filename"
+    NAMESPACE=${filearray[0]}
+    COLLECTION=${filearray[1]}
+    VERSION=$(echo "${filearray[2]}" | tr -d '\n')
+    echo "Uploading ${NAMESPACE}-${COLLECTION}-${VERSION}"
+    #create namespace
+    curl -sku ${GALAXY_NG_USER}:"${GALAXY_NG_PASSWORD}" -X POST -H 'Content-Type: application/json' -d '{"name":"'${NAMESPACE}'","groups":[]}' ${GALAXY_NG_URL}/api/galaxy/_ui/v1/namespaces/ | jq
+    #publish collection
+    ansible-galaxy collection publish "${DIR}/${NAMESPACE}-${COLLECTION}-${VERSION}.tar.gz" -s ${GALAXY_NG_URL}/api/galaxy/ --token $(cat /opt/galaxy_token) --ignore-certs
+    #approve collection
+    curl -sku ${GALAXY_NG_USER}:"${GALAXY_NG_PASSWORD}" -X POST -H 'Content-Type: application/json' "${GALAXY_NG_URL}"/api/galaxy/v3/collections/"${NAMESPACE}"/"${COLLECTION}"/versions/"${VERSION}"/move/staging/published/ | jq
+done
+-----
+
+[.console-input]
+[source,bash]
+-----
+chmod u+x ~/collections_to_hub.bash
+~/collections_to_hub.bash
+-----
+
+After running this script, if we head to automation-hub-aap.apps.hub.5g-deployment.lab and click on the "Collections" tab, we will see the collections we have just uploaded. Note that the `amazon.aws` collection has been included, which is a listed dependency of `stolostron.core` that `ansible-galaxy` has taken care of.
+
+image::aap-hub-collections.png[AAP Hub Collections]
+
+Now that we have configured Automation Hub, we will configure Automation Controller next.
+
+First, we need to attach Automation Controller to a subscription. Either log into Automation Controller at https://automation-aap.apps.hub.5g-deployment.lab and select a subscription via web GUI, or if you have an existing manifest zip file, you can run:
+
+[.console-input]
+[source,bash]
+-----
+echo "{\"manifest\": \"$(base64 -w 0 </path/to/manifest.zip>)\"}" > ~/manifest_payload.json
+curl -vk -u $ANSIBLE_CTRL_USER:$ANSIBLE_CTRL_PASSWORD -H 'Content-Type:application/json' -X POST -d @~/manifest_payload.json "${ANSIBLE_CTRL_URL}/api/v2/config/"
+-----
+
+Our Automation Controller should now be configured with a subscription.
+
+Next, lets create authorization credentials for accessing our OpenShift Hub. We will start off by creating a credential type with custom inputs and injectors, then create a credential of that credential type.
+
+[.console-input]
+[source,bash,subs="+macros,attributes+"]
+-----
+mkdir ~/5g-deployment-lab
+curl https://raw.githubusercontent.com/RHsyseng/5g-ran-lab-aap-integration-tools/main/tower-config/credential_inputs_kubeconfig.json -o ~/5g-deployment-lab/credential_inputs_kubeconfig.json
+curl https://raw.githubusercontent.com/RHsyseng/5g-ran-lab-aap-integration-tools/main/tower-config/credential_injector_kubeconfig.json -o ~/5g-deployment-lab/credential_injector_kubeconfig.json
+awx --conf.host pass:[${ANSIBLE_CTRL_URL}] --conf.username pass:[${ANSIBLE_CTRL_USER}] --conf.password pass:["${ANSIBLE_CTRL_PASSWORD}"] --conf.insecure credential_types create --name 'kubeconfig' --kind cloud --inputs '@~/5g-deployment-lab/credential_inputs_kubeconfig.json' --injectors '@~/5g-deployment-lab/credential_injector_kubeconfig.json'
+awx --conf.host pass:[${ANSIBLE_CTRL_URL}] --conf.username pass:[${ANSIBLE_CTRL_USER}] --conf.password pass:["${ANSIBLE_CTRL_PASSWORD}"] --conf.insecure credentials create --name 'hub-acm-kubeconfig' --organization 'Default' --credential_type 'kubeconfig' --inputs "{'kube_config':'@~/.kcli/clusters/hub/auth/kubeconfig'}"
+-----
+
+Next, we'll create authorization credentials to give our AAP Controller access to the AAP Hub. Since we are using self-signed certificates for the AAP Hub, we will also need to disable SSL certificate verifications.
+
+[.console-input]
+[source,bash]
+-----
+awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure credentials create --name 'hub-galaxy-token' --organization 'Default' --credential_type 'Ansible Galaxy/Automation Hub API Token' --inputs "{'url':'$GALAXY_NG_URL/api/galaxy/content/published/','token':'$(cat /opt/galaxy_token)'}"
+awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure settings modify GALAXY_IGNORE_CERTS true
+-----
+
+Since we wish to pull collections from our private Automation Hub, we will configure the Automation Controller default organization to use our custom Automation Hub credentials created above instead of `galaxy.ansible.com` credentials.
+
+[.console-input]
+[source,bash]
+-----
+awx --conf.host "${ANSIBLE_CTRL_URL}" --conf.username "${ANSIBLE_CTRL_USER}" --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure organizations disassociate --organization 'Default' --galaxy_credential 'Ansible Galaxy'
+awx --conf.host "${ANSIBLE_CTRL_URL}" --conf.username "${ANSIBLE_CTRL_USER}" --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure organizations associate --organization 'Default' --galaxy_credential 'hub-galaxy-token'
+-----
+
+There is a hypervisor hosted git repository at https://infra.5g-deployment.lab:3000/student/aap-integration-tools/. This repository contains relevant configuration files that we will be using for AAP automation. We will be using the Ansible Controller's source control management feature to manage our automation file and automatically update our automation project when the source is updated.
+
+We will create an Ansible project using this git repository as our target.
+
+[.console-input]
+[source,bash,subs="+macros,attributes+"]
+-----
+awx --conf.host pass:[${ANSIBLE_CTRL_URL}] --conf.username pass:[${ANSIBLE_CTRL_USER}] --conf.password pass:["${ANSIBLE_CTRL_PASSWORD}"] --conf.insecure projects create --name 'aap-for-ran-ztp-project' --organization 'Default' --wait --scm_type git --scm_url http://infra.5g-deployment.lab:3000/student/aap-integration-tools.git --scm_branch main
+-----
+
+Since each Ansible deployment needs a list of hosts it can run on, we will create an inventory along with a dynamic inventory source.
+
+[.console-input]
+[source,bash]
+-----
+awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure inventory create --name 'hub-acm-inventory' --organization 'Default'
+awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure inventory_sources create --name 'acm-dynamic-inventory' --organization 'Default' --inventory 'hub-acm-inventory' --update_on_launch true --credential 3 --source scm --source_project 'aap-for-ran-ztp-project' --source_path 'inventories/cluster-inventory-example.yml'
+-----
+
+NOTE: The `--credential 3` flag when creating our inventory source refers to the `hub-acm-kubeconfig` credential that we created earler, where 3 is the id of the credential. We can see the credentials we've created in json format along with information like the credential id by running:
+
+[.console-input]
+[source,bash]
+-----
+awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure credentials list
+-----
+
+Now, we create our job template and associate the template with our ACM Hub credentials. This is the job template for the Ansible job that gets invoked by ACM. The jobe template we create is associated with our created project and inventory, a playbook to run in our git repository, and any extra variables we wish to add as input.
+
+[.console-input]
+[source,bash]
+-----
+awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure job_templates create --name 'ztp-day2-automation-template' --project 'aap-for-ran-ztp-project' --playbook 'playbooks/cluster_mgmt_example_playbook.yml' --inventory 'hub-acm-inventory' --ask_variables_on_launch true --allow_simultaneous true --extra_vars '{"state": "present", "namespace_to_add": "ztp-day2-automation"}'
+awx --conf.host ${ANSIBLE_CTRL_URL} --conf.username ${ANSIBLE_CTRL_USER} --conf.password "${ANSIBLE_CTRL_PASSWORD}" --conf.insecure job_templates associate 'ztp-day2-automation-template' --credential 'hub-acm-kubeconfig'
+-----
+
+Let's patch MultiClusterHub with the necessary add-ons to enable our OpenShift Hub to access and configure spoke clusters.
+
+[.console-input]
+[source,bash]
+-----
+oc patch mch multiclusterhub -n open-cluster-management --type=json -p='[{"op": "add", "path": "/spec/overrides/components/-","value":{"name":"cluster-proxy-addon","enabled":true}}]'
+oc patch mch multiclusterhub -n open-cluster-management --type=json -p='[{"op": "add", "path": "/spec/overrides/components/-","value":{"name":"managedserviceaccount-preview","enabled":true}}]'
+----- 
