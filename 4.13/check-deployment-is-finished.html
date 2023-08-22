@@ -364,51 +364,10 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="integration-with-aap.html">Integration with Ansible Automation Platform</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="integration-with-aap.html#aap-overview">AAP Overview</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="integration-with-aap.html#augmenting-openshift">Augmenting OpenShift with Ansible Automation</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="integration-with-aap.html#intro-to-aap-operator">Introduction to the AAP Operator</a>
-  </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="integration-with-aap.html#aap-components">Defining Components</a>
+  <li class="nav-item" data-depth="0">
 <ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="integration-with-aap.html#automation-hub">Automation Hub</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="integration-with-aap.html#automation-controller">Automation Controller</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="integration-with-aap.html#acm-hooks-toward-aap">ACM Hooks Toward AAP</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="integration-with-aap.html#workflow-overview">Workflow Overview</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="integration-with-aap.html#general-workflow">General AAP Integration Workflow</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="integration-with-aap.html#lab-workflow">Lab AAP Integration Workflow</a>
-  </li>
-</ul>
-  </li>
-</ul>
-  </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
@@ -523,9 +482,10 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="adding-automation.html">Adding Automation</a>
+</ul>
   </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="monitoring-the-deployment.html">Monitoring the Deployment</a>
@@ -550,9 +510,6 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#ensure-automation-ran-successfully">Ensure AAP Automation Ran Successfully</a>
   </li>
 </ul>
   </li>
@@ -701,9 +658,6 @@
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-environment.html#configure-aap">Configure AAP</a>
   </li>
 </ul>
   </li>
@@ -872,68 +826,6 @@ ztp-policies.sno2-site-policies             inform               Compliant      
 <p>At this point the SNO is ready to run 5G RAN workloads.</p>
 </li>
 </ol>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="ensure-automation-ran-successfully"><a class="anchor" href="#ensure-automation-ran-successfully"></a>Ensure AAP Automation Ran Successfully</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Now that SNO deployment is finished, automation should run as soon as the cluster is marked with the <code>ztp-done</code> label. We can easily check the labels on our <code>sno2</code> cluster via the OpenShift web console, under the <code>Infrastructure</code> &gt; <code>Clusters</code> tab.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/sno2-labels.png" alt="SNO2 Labels">
-</div>
-</div>
-<div class="paragraph">
-<p>There are a couple ways to ensure automation has run successfully.</p>
-</div>
-<div class="paragraph">
-<p>First, the Ansible job template used in this lab was configured to add an <code>aap-done</code> label to a cluster after it has run automation on it successfully, so notice that our <code>sno2</code> cluster now has the label <code>aap-done</code>.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/sno2-aap-done.png" alt="SNO2 AAP Done Label">
-</div>
-</div>
-<div class="paragraph">
-<p>Additionally, under the Applications tab on our OpenShift web console, if we search for <code>monitor-ztp-done</code>, we will see our automation Application. Let&#8217;s take a look at this Application by clicking on its name. Notice the green check next to <code>Cluster resource status</code>, indicating automation has ran successfully. Now, navigating to the Topology tab we see a visual representation of the automation that has ran.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/aap-app.png" alt="AAP Application">
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/aap-app-topology.png" alt="AAP Topology">
-</div>
-</div>
-<div class="paragraph">
-<p>Lastly, to view status and logs for the actual Ansible Controller job that ran, we can navigate to <a href="https://automation-aap.apps.hub.5g-deployment.lab" class="bare">https://automation-aap.apps.hub.5g-deployment.lab</a>, click on the "Jobs" tab, and view the latest job that ran.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/aap-jobs.png" alt="AAP Jobs">
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/aap-single-job.png" alt="Single AAP Job">
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Running automation on <code>local-cluster</code> and <code>sno1</code> was not a focus of this lab, but since <code>local-cluster</code> was also deployed via a ZTP workflow and <code>sno1</code> was imported into RHACM, they will have <code>ztp-done</code> labels and our application will run automation on these clusters as well. This model of maintaing one automation application for day 2 operations for N clusters makes utilizing ZTP and AAP automation together in a 5G RAN environment great at scale while also maintaining configuration control, as controlling which clusters run automation is as simple as adjusting the automation application&#8217;s PlacementRule.
-</td>
-</tr>
-</table>
 </div>
 </div>
 </div>

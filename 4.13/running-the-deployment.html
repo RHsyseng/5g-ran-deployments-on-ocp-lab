@@ -6,7 +6,7 @@
     <title>Running the Deployment :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://labs.sysdeseng.com/4.13/running-the-deployment.html">
     <link rel="prev" href="crafting-cluster-telco-related-infra-operators-configs.html">
-    <link rel="next" href="adding-automation.html">
+    <link rel="next" href="monitoring-the-deployment.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
   </head>
@@ -364,51 +364,10 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="integration-with-aap.html">Integration with Ansible Automation Platform</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="integration-with-aap.html#aap-overview">AAP Overview</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="integration-with-aap.html#augmenting-openshift">Augmenting OpenShift with Ansible Automation</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="integration-with-aap.html#intro-to-aap-operator">Introduction to the AAP Operator</a>
-  </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="integration-with-aap.html#aap-components">Defining Components</a>
+  <li class="nav-item" data-depth="0">
 <ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="integration-with-aap.html#automation-hub">Automation Hub</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="integration-with-aap.html#automation-controller">Automation Controller</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="integration-with-aap.html#acm-hooks-toward-aap">ACM Hooks Toward AAP</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="integration-with-aap.html#workflow-overview">Workflow Overview</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="integration-with-aap.html#general-workflow">General AAP Integration Workflow</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="integration-with-aap.html#lab-workflow">Lab AAP Integration Workflow</a>
-  </li>
-</ul>
-  </li>
-</ul>
-  </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
@@ -523,9 +482,10 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="adding-automation.html">Adding Automation</a>
+</ul>
   </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="monitoring-the-deployment.html">Monitoring the Deployment</a>
@@ -550,9 +510,6 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="check-deployment-is-finished.html#ensure-automation-ran-successfully">Ensure AAP Automation Ran Successfully</a>
   </li>
 </ul>
   </li>
@@ -701,9 +658,6 @@
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-environment.html#configure-aap">Configure AAP</a>
   </li>
 </ul>
   </li>
@@ -935,7 +889,7 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 </div>
 <nav class="pagination">
   <span class="prev"><a href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a></span>
-  <span class="next"><a href="adding-automation.html">Adding Automation</a></span>
+  <span class="next"><a href="monitoring-the-deployment.html">Monitoring the Deployment</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
