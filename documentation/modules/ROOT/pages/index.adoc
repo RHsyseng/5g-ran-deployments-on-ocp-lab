@@ -19,6 +19,9 @@ IMPORTANT: This is not an official Red Hat Training. Please, contact with your R
 |Alberto Losada
 |Lab Developer / Maintainer
 
+|Ethan Siegel
+|Lab Contributor
+
 |Ian Miller
 |Lab Contributor / CNF Developer
 
