@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Introduction to Single Node OpenShift (SNO) :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://labs.sysdeseng.com/4.13/sno-intro.html">
-    <link rel="prev" href="5g-ran-context.html">
-    <link rel="next" href="telco-related-infra-operators-intro.html">
+    <title>Adding AAP Automation to the Deployment :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://labs.sysdeseng.com/4.13/adding-automation.html">
+    <link rel="prev" href="running-the-deployment.html">
+    <link rel="next" href="monitoring-the-deployment.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
   </head>
@@ -109,21 +109,21 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item is-current-page" data-depth="1">
+  <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="sno-intro.html">Introduction to Single Node OpenShift (SNO)</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#5g-ran">5G Radio Access Network</a>
+    <a class="nav-link" href="sno-intro.html#5g-ran">5G Radio Access Network</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#things-keep-mind">Things to keep in mind</a>
+    <a class="nav-link" href="sno-intro.html#things-keep-mind">Things to keep in mind</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#deployments">Deployments</a>
+    <a class="nav-link" href="sno-intro.html#deployments">Deployments</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#extra-information">Extra information</a>
+    <a class="nav-link" href="sno-intro.html#extra-information">Extra information</a>
   </li>
 </ul>
   </li>
@@ -523,7 +523,7 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <a class="nav-link" href="adding-automation.html">Adding Automation</a>
   </li>
   <li class="nav-item" data-depth="1">
@@ -723,153 +723,185 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="sno-intro.html">Introduction to Single Node OpenShift (SNO)</a></li>
+    <li><a href="adding-automation.html">Adding Automation</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/lab-4.13/documentation/modules/ROOT/pages/sno-intro.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/lab-4.13/documentation/modules/ROOT/pages/adding-automation.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Introduction to Single Node OpenShift (SNO)</h1>
-<div id="preamble">
-<div class="sectionbody">
+<h1 class="page">Adding AAP Automation to the Deployment</h1>
 <div class="paragraph">
-<p>Edge computing is everywhere. While many organizations look to take advantage of deploying applications at the edge, the physical nature of many of these edge sites can cause challenges to the architects who need to deploy hardware in confined spaces, with reduced cost, with limited power budgets, or where network connectivity back to the central data center may be intermittent. To help solve this problem, we have been working to make our Red Hat OpenShift footprint smaller to fit into these more constrained environments by putting both control and worker capabilities into a Single Node. As of OpenShift 4.9, we now have a full OpenShift deployment in a Single Node called Single Node OpenShift (SNO).</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="5g-ran"><a class="anchor" href="#5g-ran"></a>5G Radio Access Network</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>SNO&#8217;s primary use case is for edge computing workloads, including intermittent connectivity, portable clouds, and 5G radio access networks (RAN) close to a base station. The major tradeoff with an installation on a Single Node is the lack of high availability. In this lab, we are going to focus in telecommunication service providers' implementation of a Radio Access Network (RAN) use case as part of a 5G mobile network.</p>
+<p>Now that we have deployed our cluster, let&#8217;s add our automation. Recall that this process includes creating supporting resources, checking our AnsibleJob CRD into a hosted git repository, and deploying our automation Application.</p>
 </div>
 <div class="paragraph">
-<p>Notice that in the context of telecommunications service providers' 5G RANs, it is increasingly common to see "cloud native" implementations of the 5G RAN application, including the Distributed Unit (DU) components. Due to latency constraints, the DU needs to be deployed very close to the Radio Units (RUs), for which it is responsible. In practice, this can mean running the DU on anything from a single server at the base of a cell tower to a more datacenter-like environment serving several RUs.</p>
+<p>First, we will add some supporting OpenShift resources for automation. We will add a namespace <code>ran-lab-automation</code> which our automation resources will belong to, along with a Secret configuring ACM&#8217;s authorization to access the AAP Controller through the controller&#8217;s auth token.</p>
 </div>
-<div class="paragraph">
-<p>A typical DU example is a resource-intensive workload, requiring multiple dedicated cores per DU and several DUs packed on the server. For performance the DU requires dedicated memory configured as huge pages, multiple single route I/O virtualization (SR-IOV) NICs, FPGA, or GPU acceleration cards  carrying several Gbps of traffic each.</p>
-</div>
-<div class="paragraph">
-<p>One crucial detail of this use case is ensuring that this workload can be "autonomous" so that it can continue operating with its existing configuration, even when any centralized management functionality is unavailable. This is where Single Node OpenShift comes in.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="things-keep-mind"><a class="anchor" href="#things-keep-mind"></a>Things to keep in mind</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Single Node OpenShift offers both control and worker node capabilities in a single server and provides users with a consistent experience across the sites where OpenShift is deployed, regardless of the size of the deployment. Keep in mind a Single Node OpenShift deployment differs from the default self-managed/highly-available cluster profile in a couple of ways:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>To optimize system resource usage, many operators are configured to reduce the footprint (cpu use) of their operands when running on a Single Node OpenShift. This is even more visible when deploying the Telco 5G RAN QE validated configuration which establishes a base platform for RAN DU workloads.</p>
-</li>
-<li>
-<p>In environments that require high availability, it is recommended that the architecture be configured in a way in which if the hardware was to fail, those workloads are transitioned to other sites or nodes while the impacted node is recovered. This is where <a href="https://www.redhat.com/en/technologies/management/advanced-cluster-management">Red Hat Advanced Cluster Management for Kubernetes</a>(ACM) can really help us control our fleet of clusters.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="deployments"><a class="anchor" href="#deployments"></a>Deployments</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>OpenShift installs typically require a temporary bootstrap machine, which is usually a separate machine, but edge deployments are often performed in environments where there are no extra nodes. However, for these use-cases, the new functionality provided by OpenShift’s “Bootstrap-in-Place” option eliminates the separate bootstrap node requirement for single-node deployments. So when installing single-node OpenShift, you only need the node you wish to install onto.</p>
-</div>
-<div class="paragraph">
-<p>OpenShift Container Platform on a Single Node is a specialized installation that requires the creation of a special ignition configuration ISO. It is supported on bare metal, vSphere, Red Hat OpenStack, and Red Hat Virtualization platforms as today. When using ACM&#8217;s Assisted Service for installation, this ISO is automatically created as part of the installation process.</p>
-</div>
-<div class="admonitionblock important">
+<div class="admonitionblock caution">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-important" title="Important"></i>
+<i class="fa icon-caution" title="Caution"></i>
 </td>
 <td class="content">
-The use of OpenShiftSDN with single-node OpenShift is not supported. OVN-Kubernetes is the default networking solution for single-node OpenShift deployments.
+Replace &lt;automation-controller-token&gt; with the Automation Controller token privded in the e-mail you received when the lab was ready.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export CONTROLLER_TOKEN=&lt;automation-controller-token&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ran-lab-automation
+EOF
+
+cat &lt;&lt; EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n ran-lab-automation apply -f -
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: aap-controller-token
+  namespace: ran-lab-automation
+  labels:
+    cluster.open-cluster-management.io/type: ans
+    cluster.open-cluster-management.io/credentials: ""
+stringData:
+  host: https://automation-aap.apps.hub.5g-deployment.lab
+  token: ${CONTROLLER_TOKEN}
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Our AnsibleJob automation is housed in a git repository at <a href="http://infra.5g-deployment.lab:3000/student/aap-integration-tools/src/branch/main/site-applications/prehook/main.yml" class="bare">http://infra.5g-deployment.lab:3000/student/aap-integration-tools/src/branch/main/site-applications/prehook/main.yml</a>. It invokes our <code>ztp-day2-automation-template</code> Ansible Controller job template, which first creates the <code>ztp-day2-automation</code> namespace in the cluster, then adds the <code>aap-done</code> label to the cluster.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Creating the <code>ztp-day2-automation</code> namespace is an example configuration. In your own deployments, this step can be substituted with any series of imperative configuration steps that a deployed cluster may need.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Requirements for SNO are:</p>
+<p>We will now create an Openshift Application-based hook into AAP. At a high level the role of the Application is to trigger the AnsibleJob with an extra variable to pass to the Automation Controller which hosts the automation should run on. Here is an example CRD for reference, with the extra variable RHACM passes in comments:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>Single-node OpenShift requires the following minimum host resources: vCPU: 8, VirtualRAM: 16 GB, Storage: 120 GB.</p>
-</li>
-<li>
-<p>Single-node OpenShift isn’t highly-available. It explicitly does not assume zero downtime of the Kubernetes API.</p>
-</li>
-<li>
-<p>The server must have access to the internet or access to a local (disconnected) registry if it is not connected to an externally routable network.</p>
-</li>
-<li>
-<p>The server must have a DHCP reservation or a static IP address for the Kubernetes API, ingress route, and cluster node domain names. You must also configure the proper DNS records to resolve the previous reservations. More information with regards to the DNS records that must be configured can be found in the official documentation, specifically at <a href="https://docs.openshift.com/container-platform/4.13/installing/installing_sno/install-sno-preparing-to-install-sno.html#install-sno-requirements-for-installing-on-a-single-node_install-sno-preparing">Requirements for installing OpenShift on a single node</a> section. Notice that all the DNS records must be subdomains of the same base domain.</p>
-</li>
-</ul>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: tower.ansible.com/v1alpha1
+kind: AnsibleJob
+metadata:
+  name: ztp-day2-automation
+spec:
+  tower_auth_secret: aap-controller-token
+  job_template_name: ztp-day2-automation-template
+# extra_vars:
+#   target_clusters: {{ list.of.clusters }}     &lt;-- array provided by ACM with an entry for each managed cluster that is affected</code></pre>
 </div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Starting at OpenShift 4.11, you can now add workers to a Single-Node OpenShift (SNO).
-</td>
-</tr>
-</table>
 </div>
 <div class="paragraph">
-<p>With single-node OpenShift, you have three choices to perform the installation:</p>
+<p>Now, let&#8217;s create our Application.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Red Hat Advanced Cluster Management for Kubernetes</strong> - allows provisioning single-node OpenShift using kube-native APIs. In this lab we will use a GitOps Zero Touch Provisioning (ZTP) method for installing clusters which leverages RHACM under the hood.</p>
-</li>
-<li>
-<p><strong>Web-based Assisted Installer</strong> and a discovery ISO that you generate using the Assisted Installer. Basically, you need to follow the web-based Assisted Installer wizard from <a href="https://console.redhat.com/openshift/assisted-installer/clusters">the Red Hat OpenShift Cluster Manager</a> that will guide you through the process and manage the installation. Once the discovery ISO is created, attach the image to the target host and  boot your server from the attached discovery ISO. Detailed information can be found <a href="https://docs.openshift.com/container-platform/latest/installing/installing_sno/install-sno-installing-sno.html#installing-single-node-openshift-using-the-assisted-installer">here</a>.</p>
-</li>
-<li>
-<p><strong>coreos-installer</strong>. You can also install single-node OpenShift by using coreos-installer to generate the installation ISO and then boot the server from the ISO. Detailed information can be found <a href="https://docs.openshift.com/container-platform/latest/installing/installing_sno/install-sno-installing-sno.html#installing-single-node-openshift-manually">here</a>.</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="extra-information"><a class="anchor" href="#extra-information"></a>Extra information</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>There is plenty of information about SNO, here you have some interesting references that can help you to better understand the different methods to install a Single Node OpenShift cluster:</p>
+<p>First, the Channel that will be used by the application.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://cloud.redhat.com/blog/deploy-openshift-at-the-edge-with-single-node-openshift">Using web-based Assisted Installer</a> and a <a href="https://www.youtube.com/watch?v=QFf0yVAHQKc">recording</a>.</p>
-</li>
-<li>
-<p><a href="https://cloud.redhat.com/blog/telco-5g-zero-touch-provisioning-ztp">Telco 5G Zero Touch Provisioning</a>.</p>
-</li>
-<li>
-<p><a href="https://www.redhat.com/en/blog/meet-single-node-openshift-our-smallest-openshift-footprint-edge-architectures">Meet single node OpenShift: Our newest small OpenShift footprint for edge architectures</a>.</p>
-</li>
-<li>
-<p><a href="https://docs.openshift.com/container-platform/4.13/installing/installing_sno/install-sno-preparing-to-install-sno.html">Preparing to install on a single node</a> in the official documentation.</p>
-</li>
-</ul>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: gogs-repo-ns
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: gogs-repo
+  namespace: gogs-repo-ns
+spec:
+  pathname: http://infra.5g-deployment.lab:3000/student/aap-integration-tools.git
+  type: Git
+EOF</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Next, we can create our Application, its Subscription, and the PlacementRule to bind this application to the intended clusters.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF | oc -n ran-lab-automation apply -f -
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: monitor-ztp-done
+  namespace: ran-lab-automation
+spec:
+  componentKinds:
+    - group: apps.open-cluster-management.io
+      kind: Subscription
+  descriptor: {}
+  selector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - monitor-ztp-done
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  annotations:
+    apps.open-cluster-management.io/git-branch: main
+    apps.open-cluster-management.io/git-path: site-applications
+    apps.open-cluster-management.io/reconcile-option: merge
+  labels:
+    app: monitor-ztp-done
+  name: monitor-ztp-done-subscription
+  namespace: ran-lab-automation
+spec:
+  hooksecretref:
+    name: aap-controller-token
+  channel: gogs-repo-ns/gogs-repo
+  placement:
+    placementRef:
+      apiGroup: apps.open-cluster-management.io
+      kind: PlacementRule
+      name: monitor-ztp-done-placement
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: monitor-ztp-done-placement
+  namespace: ran-lab-automation
+spec:
+  clusterConditions:
+    - status: "True"
+      type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - {key: ztp-done, operator: Exists}
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We have now successfully configured our automation, which will run as soon as our cluster reaches <code>ztp-done</code>.</p>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="5g-ran-context.html">5G Ran Context</a></span>
-  <span class="next"><a href="telco-related-infra-operators-intro.html">Introduction to Telco Related Infrastructure Operators</a></span>
+  <span class="prev"><a href="running-the-deployment.html">Running the Deployment</a></span>
+  <span class="next"><a href="monitoring-the-deployment.html">Monitoring the Deployment</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

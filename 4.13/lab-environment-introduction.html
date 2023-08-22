@@ -366,6 +366,51 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html">Integration with Ansible Automation Platform</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#aap-overview">AAP Overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#augmenting-openshift">Augmenting OpenShift with Ansible Automation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#intro-to-aap-operator">Introduction to the AAP Operator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#aap-components">Defining Components</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#automation-hub">Automation Hub</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#automation-controller">Automation Controller</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#acm-hooks-toward-aap">ACM Hooks Toward AAP</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#workflow-overview">Workflow Overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#general-workflow">General AAP Integration Workflow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#lab-workflow">Lab AAP Integration Workflow</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
@@ -409,6 +454,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#openshift-hub-cluster">OpenShift Hub Cluster</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#automation-hub-and-controller">AAP Automation Hub and Automation Controller</a>
   </li>
 </ul>
   </li>
@@ -476,6 +524,9 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="adding-automation.html">Adding Automation</a>
+  </li>
+  <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="monitoring-the-deployment.html">Monitoring the Deployment</a>
 <ul class="nav-list">
@@ -499,6 +550,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#ensure-automation-ran-successfully">Ensure AAP Automation Ran Successfully</a>
   </li>
 </ul>
   </li>
@@ -648,6 +702,9 @@
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
   </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-aap">Configure AAP</a>
+  </li>
 </ul>
   </li>
 </ul>
@@ -763,6 +820,43 @@ If you receive an error message regarding the certificate please re-run update-c
 </li>
 <li>
 <p>Password: The password is randomly generated for each environment, and can be found in the following path: <code>/root/cred-admin.txt</code> in your hypervisor host or in the e-mail you received when the lab was ready.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="automation-hub-and-controller"><a class="anchor" href="#automation-hub-and-controller"></a>AAP Automation Hub and Controller</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Automation Hub can be reached at <a href="https://automation-hub-aap.apps.hub.5g-deployment.lab" class="bare">https://automation-hub-aap.apps.hub.5g-deployment.lab</a></p>
+</div>
+<div class="paragraph">
+<p>Credentials for Automation Hub:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>admin</code></p>
+</li>
+<li>
+<p>Password: The password can be found in the e-mail you received when the lab was ready.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The Automation Controller can be reached at <a href="https://automation-aap.apps.hub.5g-deployment.lab" class="bare">https://automation-aap.apps.hub.5g-deployment.lab</a></p>
+</div>
+<div class="paragraph">
+<p>Credentials for Automation Controller:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Username: <code>admin</code></p>
+</li>
+<li>
+<p>Password: The password can be found in the e-mail you received when the lab was ready.</p>
 </li>
 </ul>
 </div>
