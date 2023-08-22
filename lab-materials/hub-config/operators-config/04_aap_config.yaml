@@ -10,7 +10,7 @@ spec:
   route_tls_termination_mechanism: Edge
   ingress_type: Route
   loadbalancer_port: 80
-  file_storage_size: 100Gi
+  file_storage_size: 10Gi
   image_pull_policy: IfNotPresent
   web:
     replicas: 1
