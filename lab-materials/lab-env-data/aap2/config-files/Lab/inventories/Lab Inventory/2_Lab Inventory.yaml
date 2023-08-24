@@ -1,0 +1,8 @@
+---
+controller_inventories:
+  - name: "Lab Inventory"
+    description: ""
+    organization: "Lab"
+    variables:
+      ansible_python_interpreter: /usr/bin/python3.9
+...

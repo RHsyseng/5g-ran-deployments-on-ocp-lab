@@ -1,0 +1,8 @@
+---
+controller_execution_environments:
+  - name: "5G RAN Lab"
+    description: ""
+    image: "{{ execution_environment_img }}"
+    pull: "missing"
+    credential: "Lab Disconnected Registry"
+...

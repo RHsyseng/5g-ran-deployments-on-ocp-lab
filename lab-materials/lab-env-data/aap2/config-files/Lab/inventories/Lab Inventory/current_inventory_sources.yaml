@@ -1,0 +1,13 @@
+---
+controller_inventory_sources:
+  - name: "ACM Lab Inventory Source"
+    description: ""
+    organization: "Lab"
+    source: "scm"
+    source_project: "5G RAN Lab Project"
+    source_path: "{{ inventory_source_path }}"
+    inventory: "Lab Inventory"
+    update_on_launch: "False"
+    overwrite: "True"
+    credential: "HUB Cluster Kubeconfig"
+...

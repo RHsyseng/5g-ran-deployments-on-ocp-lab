@@ -4,11 +4,10 @@ kind: Namespace
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
+    workload.openshift.io/allowed: management
   name: open-cluster-management
   labels:
     openshift.io/cluster-monitoring: "true"
-  annotations:
-    workload.openshift.io/allowed: management
 ---
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup

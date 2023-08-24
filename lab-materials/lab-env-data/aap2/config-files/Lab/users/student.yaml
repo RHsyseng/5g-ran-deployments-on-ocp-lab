@@ -1,0 +1,11 @@
+---
+controller_user_accounts:
+- username: "student"
+  password: "{{ student_aap_pwd }}"
+  email: ""
+  first_name: "Student"
+  last_name: ""
+  auditor: "False"
+  superuser: "False"
+  update_secrets: False
+...

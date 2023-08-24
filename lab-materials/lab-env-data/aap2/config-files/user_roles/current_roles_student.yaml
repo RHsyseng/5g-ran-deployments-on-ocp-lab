@@ -1,0 +1,11 @@
+---
+controller_roles:
+  - user: "student"
+    organizations:
+      - "Lab"
+    role: "admin"
+  - user: "student"
+    organizations:
+      - "Lab"
+    role: "member"
+...

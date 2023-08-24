@@ -1,0 +1,24 @@
+---
+controller_templates:
+  - name: "ZTP Done Automation"
+    description: ""
+    organization: "Lab"
+    project: "5G RAN Lab Project"
+    inventory: "ZTP Done Clusters"
+    playbook: "{{ playbook_source_path }}"
+    job_type: "run"
+    fact_caching_enabled: "False"
+    credentials:
+      - "HUB Cluster Kubeconfig"
+    concurrent_jobs_enabled: "False"
+    ask_scm_branch_on_launch: "False"
+    ask_tags_on_launch: "False"
+    ask_verbosity_on_launch: "False"
+    ask_variables_on_launch: "False"
+    extra_vars:
+      namespace_to_add: ztp-day2-automation-with-aap
+      state: present
+    execution_environment: "5G RAN Lab"
+    survey_enabled: False
+    survey_spec: {}
+...

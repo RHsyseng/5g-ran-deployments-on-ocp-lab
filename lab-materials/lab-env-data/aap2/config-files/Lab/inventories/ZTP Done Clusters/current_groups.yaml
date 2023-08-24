@@ -1,0 +1,61 @@
+---
+controller_groups:
+  - name: "all-managed-clusters"
+    description: "imported"
+    inventory: "ZTP Done Clusters"
+    variables:
+      {}
+    hosts:
+      - sno1
+      - sno2
+  - name: "all-ztp-done-clusters"
+    description: "imported"
+    inventory: "ZTP Done Clusters"
+    variables:
+      {}
+    hosts:
+      - sno1
+      - sno2
+  - name: "amazon"
+    description: "imported"
+    inventory: "ZTP Done Clusters"
+    variables:
+      {}
+    hosts:
+      []
+  - name: "azure"
+    description: "imported"
+    inventory: "ZTP Done Clusters"
+    variables:
+      {}
+    hosts:
+      []
+  - name: "baremetal"
+    description: "imported"
+    inventory: "ZTP Done Clusters"
+    variables:
+      {}
+    hosts:
+      []
+  - name: "hub"
+    description: "imported"
+    inventory: "ZTP Done Clusters"
+    variables:
+      {}
+    hosts:
+      []
+  - name: "kind-clusters"
+    description: "imported"
+    inventory: "ZTP Done Clusters"
+    variables:
+      {}
+    hosts:
+      []
+  - name: "vmware"
+    description: "imported"
+    inventory: "ZTP Done Clusters"
+    variables:
+      {}
+    hosts:
+      []
+...
