@@ -10,4 +10,5 @@ controller_inventory_sources:
     update_on_launch: "False"
     overwrite: "True"
     credential: "HUB Cluster Kubeconfig"
+    execution_environment: "5G RAN Lab"
 ...
