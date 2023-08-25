@@ -1,0 +1,9 @@
+---
+controller_inventory_sources:
+  - name: "Auto-created source for: ZTP Done Clusters"
+    organization: "Lab"
+    inventory: "ZTP Done Clusters"
+    source_vars:
+      plugin: constructed
+    limit: "all-ztp-done-clusters"
+...
