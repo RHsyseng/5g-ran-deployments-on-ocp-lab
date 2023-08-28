@@ -7,7 +7,7 @@ controller_inventory_sources:
     source_project: "5G RAN Lab Project"
     source_path: "{{ inventory_source_path }}"
     inventory: "Lab Inventory"
-    update_on_launch: "False"
+    update_on_launch: "True"
     overwrite: "True"
     credential: "HUB Cluster Kubeconfig"
     execution_environment: "5G RAN Lab"
