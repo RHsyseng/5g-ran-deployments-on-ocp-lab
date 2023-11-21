@@ -21,8 +21,8 @@ The lab is aimed to technical profiles working with OpenShift who are interested
 
 The lab is based on the following software versions.
 
-* HUB Cluster OpenShift v4.13.2.
-* SNO Cluster OpenShift v4.13.2 and v4.13.3.
-* RHACM v2.8.
-* MCE v2.3.
-* PolicyGenTool v4.13.
+* HUB Cluster OpenShift {hub-cluster-ocp-version}.
+* SNO Cluster OpenShift {sno-cluster-version1} and {sno-cluster-version2}.
+* RHACM {rhacm-version}.
+* MCE {mce-version}.
+* PolicyGenTool {policygentool-version}.

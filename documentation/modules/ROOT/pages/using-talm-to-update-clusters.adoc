@@ -32,7 +32,7 @@ openshift-gitops-operator.openshift-operators          16h
 topology-aware-lifecycle-manager.openshift-operators   16h
 -----
 
-Next, double check there is no problem with the Pod. Notice that the name of the Pod is cluster-group-upgrade-controller-manager, based on the name of the upstream project https://github.com/openshift-kni/cluster-group-upgrades-operator[Cluster Group Upgrade Operator].
+Next, double check there is no problem with the Pod. Notice that the name of the Pod is cluster-group-upgrade-controller-manager, based on the name of the upstream project {talm-upstream-project}[Cluster Group Upgrade Operator].
 
 
 [.console-input]
@@ -98,7 +98,7 @@ Create an upgrade PGT in inform mode, as usual, that will apply and upgrade the 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/zone-europe-upgrade-413-3.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{talm-update-file}
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
@@ -113,18 +113,18 @@ spec:
   remediationAction: inform
   sourceFiles:
     - fileName: ClusterVersion.yaml
-      policyName: "version-413-3"
+      policyName: "{talm-update-policy-name}"
       metadata:
         name: version
       spec:
-        channel: "stable-4.13"
+        channel: "{talm-update-channel}"
         desiredUpdate:
           force: false
-          version: "4.13.3"
-          image: "infra.5g-deployment.lab:8443/openshift/release-images@sha256:bc9835804046aa844c874d2cc37387ec95fe7e87d8ce96129fba78d465c932fa"
+          version: "{talm-update-version}"
+          image: "{talm-update-image}"
       status:
         history:
-          - version: "4.13.3"
+          - version: "{talm-update-version}"
             state: "Completed"
 EOF
 -----
@@ -136,7 +136,7 @@ NOTE: If you're using MacOS and you're getting errors while running `sed -i` com
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-sed -i "/- group-du-sno.yaml/a \ \ - zone-europe-upgrade-413-3.yaml" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
+sed -i "/- group-du-sno.yaml/a \ \ - {talm-update-file}" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
 -----
 
 Then commit all the changes:
@@ -145,12 +145,12 @@ Then commit all the changes:
 [source,bash,subs="attributes+,+macros"]
 -----
 cd ~/5g-deployment-lab/ztp-repository/
-git add site-policies/fleet/active/zone-europe-upgrade-413-3.yaml site-policies/fleet/active/kustomization.yaml
+git add site-policies/fleet/active/{talm-update-file} site-policies/fleet/active/kustomization.yaml
 git commit -m "adds upgrade policy"
 git push origin main 
 -----
 
-Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named `europe-snos-upgrade-version-413-3`` has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule. 
+Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named `europe-snos-upgrade-{talm-update-policy-name}`` has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule. 
 
 WARNING: Notice in the following picture that there are policies not applying to any cluster. Those are policies targeting the test environment. This is expected since we do not have any clusters in the test environment, e.g, no clusters are labeled with the proper label for testing: logicalGroup=test.
 
@@ -181,7 +181,7 @@ At this point, we need to create a Cluster Group Upgrade (CGU) resource that wil
 [#talm-backup-precache]
 === Backup and pre-cache
 
-Let's create the CGU. In this case, we will apply the managed policy (europe-snos-upgrade-version-413-3) to both clusters at the same time (maxConcurrency is 2). Notice that the CGU is disabled, this is suggested if we are going to run the precaching feature. This means, that once the precaching process is done we are ready to start the upgrade process by enabling the CGU. This idea is related to the compliance of a maintenance window in an enterprise. 
+Let's create the CGU. In this case, we will apply the managed policy (europe-snos-upgrade-{talm-update-policy-name}) to both clusters at the same time (maxConcurrency is 2). Notice that the CGU is disabled, this is suggested if we are going to run the precaching feature. This means, that once the precaching process is done we are ready to start the upgrade process by enabling the CGU. This idea is related to the compliance of a maintenance window in an enterprise. 
 
 Remember that several gigabytes of artifacts needs to be downloaded to the spoke for a full upgrade. SNO spoke clusters may have limited bandwidth to the hub cluster hosting the registry, which will make it difficult for the upgrade to complete within the required time. In order to ensure the upgrade can fit within the maintenance window, the required artifacts need to be present on the spoke cluster prior to the upgrade. Therefore, the process is split up into two stages as mentioned.
 
@@ -207,7 +207,7 @@ spec:
   - sno2
   enable: false
   managedPolicies:
-  - europe-snos-upgrade-version-413-3
+  - europe-snos-upgrade-{talm-update-policy-name}
   remediationStrategy:
     maxConcurrency: 2
     timeout: 240
@@ -260,18 +260,18 @@ oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/pre-cache -n opensh
 [source,console]
 -----
 highThresholdPercent: 85 diskSize:209124332 used:17648032
-upgrades.pre-cache 2023-07-04T10:55:10+00:00 DEBUG Release index image processing done
+upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Release index image processing done
 7df5fe3b5fb7352b870735c7d7bd898d0959a9a49558d2ffb42dcd269e01752f
-upgrades.pre-cache 2023-07-04T10:55:10+00:00 DEBUG Operators index is not specified. Operators won't be pre-cached
-upgrades.pre-cache 2023-07-04T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:00162a72c1ae283977f0191ee216e15fe696838b6d7addd8250ff8c5b474cc61 [1/183]
-upgrades.pre-cache 2023-07-04T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:00eaf204536112ed09a10e4c70f9a8dc6827726bf9bc34f279a9156b881a7a2a [2/183]
-upgrades.pre-cache 2023-07-04T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:02d61dfc59ac70096dffadda38a52829cd61c9c016e54d2b6d78eb5182d2b19a [3/183]
+upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Operators index is not specified. Operators won't be pre-cached
+upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:00162a72c1ae283977f0191ee216e15fe696838b6d7addd8250ff8c5b474cc61 [1/183]
+upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:00eaf204536112ed09a10e4c70f9a8dc6827726bf9bc34f279a9156b881a7a2a [2/183]
+upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:02d61dfc59ac70096dffadda38a52829cd61c9c016e54d2b6d78eb5182d2b19a [3/183]
 .
 .
 .
-upgrades.pre-cache 2023-07-04T11:00:48+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ff7cfeec16898c293222ac1422841440cdeffefa7d489757e71999d5305425f8 [182/183]
-upgrades.pre-cache 2023-07-04T11:00:48+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ff88f1a78dac067bb93d98818bcee9bed36de0b2a74f3ed42d15ad816a16f624 [183/183]
-upgrades.pre-cache 2023-07-04T11:00:48+00:00 DEBUG Image pre-cache done
+upgrades.pre-cache {last-update-date}T11:00:48+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ff7cfeec16898c293222ac1422841440cdeffefa7d489757e71999d5305425f8 [182/183]
+upgrades.pre-cache {last-update-date}T11:00:48+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ff88f1a78dac067bb93d98818bcee9bed36de0b2a74f3ed42d15ad816a16f624 [183/183]
+upgrades.pre-cache {last-update-date}T11:00:48+00:00 DEBUG Image pre-cache done
 -----
 
 Once the precache is done, the CGU state moves to `NotEnabled` and the Pod running the pre-cache task in both SNO clusters is deleted. At this moment, TALM is waiting for acknowledging the start of the upgrade.
@@ -299,7 +299,7 @@ Now that the pre-cache is done, we can trigger the update. As we said earlier, b
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig patch cgu update-europe-snos -n  ztp-policies --type merge --patch '{"spec":{"enable":true}}'
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig patch cgu update-europe-snos -n ztp-policies --type merge --patch '{"spec":{"enable":true}}'
 -----
 
 Notice the CGU state moved to `InProgress`, which means, the upgrade process has started. In the details you can see that the backup is in progress.
@@ -420,10 +420,10 @@ oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig get clusterversion,nodes
 [source,console]
 -----
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.13.2    True        True          30s     Working towards 4.13.3: 101 of 842 done (11% complete), waiting on kube-apiserver
+clusterversion.config.openshift.io/version   {sno-cluster-version2-cvo}    True        True          30s     Working towards {sno-cluster-version2-cvo}: 101 of 842 done (11% complete), waiting on kube-apiserver
 
 NAME                          STATUS   ROLES                         AGE    VERSION
-node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   156m   v1.26.5+0001a21
+node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   156m   {sno-cluster-version2-kubeversion}
 -----
 
 Meanwhile, the clusters are upgrading we can take a look at the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/governance/policies[multicloud console] and see that there is a new policy in enforce mode:
@@ -446,10 +446,10 @@ oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig get clusterversion,nodes
 [source,console]
 -----
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.13.3    True        False         6m8s    Cluster version is 4.13.3
+clusterversion.config.openshift.io/version   {sno-cluster-version2-cvo}    True        False         6m8s    Cluster version is {sno-cluster-version2-cvo}
 
 NAME                          STATUS   ROLES                         AGE     VERSION
-node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   3h26m   v1.26.5+7a891f0
+node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   3h26m   {sno-cluster-version2-kubeversion}
 -----
 
 [.console-input]
@@ -462,13 +462,13 @@ oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig get clusterversion,nodes
 [source,console]
 -----
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.13.3    True        False         9m12s   Cluster version is 4.13.3
+clusterversion.config.openshift.io/version   {sno-cluster-version2-cvo}    True        False         9m12s   Cluster version is {sno-cluster-version2-cvo}
 
 NAME                      STATUS   ROLES                         AGE   VERSION
-node/openshift-master-0   Ready    control-plane,master,worker   22h   v1.26.5+7a891f0
+node/openshift-master-0   Ready    control-plane,master,worker   22h   {sno-cluster-version2-kubeversion}
 -----
 
-Notice that now the upgrade policy `europe-snos-upgrade-version-413-3` is now compliant on both clusters. See that, in order to save resources, the enforce policy is removed once the CGU is successfully applied. 
+Notice that now the upgrade policy `europe-snos-upgrade-{talm-update-policy-name}` is now compliant on both clusters. See that, in order to save resources, the enforce policy is removed once the CGU is successfully applied. 
 
 And finally, the CGU will be `Completed`:
 

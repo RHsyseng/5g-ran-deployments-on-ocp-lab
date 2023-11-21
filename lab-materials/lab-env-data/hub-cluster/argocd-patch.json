@@ -41,7 +41,7 @@
             }
           ],
           "terminationMessagePolicy": "File",
-          "image": "infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.13.1-3"
+          "image": "infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.14.0-71"
         }
       ],
       "volumeMounts": [

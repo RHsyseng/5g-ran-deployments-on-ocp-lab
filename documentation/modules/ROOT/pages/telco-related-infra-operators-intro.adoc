@@ -14,11 +14,11 @@ In RAN environments we will leverage the PerformanceProfile API in order to:
 * Update the kernel to kernel-rt.
 * Configure CPUs for housekeeping (reserved CPUs).
 * Configure CPUs for running workloads (isolated CPUs).
-* Configure workloadHints to enable tuning of power savings vs performance. https://docs.openshift.com/container-platform/4.13/scalability_and_performance/cnf-low-latency-tuning.html#cnf-understanding-workload-hints_cnf-master[More here].
+* Configure workloadHints to enable tuning of power savings vs performance. {workload-hints-doc}[More here].
 
 The Node Tuning Operator is part of the standard OpenShift installation.
 
-You can read more about the NTO https://docs.openshift.com/container-platform/4.13/scalability_and_performance/using-node-tuning-operator.html[here].
+You can read more about the NTO {nto-docs}[here].
 
 [#sriov-operator]
 == SR-IOV Operator
@@ -27,7 +27,7 @@ This Operator helps you manage SR-IOV network devices and network attachments. Y
 
 We usually refer to this virtualized NICs as virtual functions (VFs), and these are exposed in the containers in order to provide extra networks to workloads. These VFs are "slices" of the underlying NIC which are passed into the container as hardware devices. This allows the container direct access to that "slice" of the NIC and is typically used to provide high performance access to networking.
 
-You can read more about the SR-IOV operator https://docs.openshift.com/container-platform/4.13/networking/hardware_networks/about-sriov.html[here].
+You can read more about the SR-IOV operator {sriov-docs}[here].
 
 [#ptp-operator]
 == PTP Operator
@@ -38,7 +38,7 @@ The PTP Operator can be used to configure PTP on OpenShift nodes.
 
 Some extra PTP information you may find useful:
 
-* https://docs.openshift.com/container-platform/4.13/networking/using-ptp.html[PTP Operator Official Docs].
+* {ptp-docs}[PTP Operator Official Docs].
 * PTP blog posts on cloud.redhat.com https://cloud.redhat.com/blog/delivering-high-precision-clock-synchronization-for-low-latency-5g-networks-with-openshift-part-1[part 1] and https://cloud.redhat.com/blog/delivering-high-accuracy-clock-synchronization-for-5g-networks-with-openshift-part-2[part 2].
 
 [#accelerators-operators]

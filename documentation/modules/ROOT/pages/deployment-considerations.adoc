@@ -33,7 +33,7 @@ NOTE: Depending on your hardware vendor the naming of the following features may
 * SR-IOV and VT-D must be set to `Enabled`.
 * Storage should be configured with a `RAID1` at least.
 
-https://docs.openshift.com/container-platform/4.13/scalability_and_performance/ztp_far_edge/ztp-vdu-validating-cluster-tuning.html#ztp-du-firmware-config-reference_vdu-config-ref[Reference 4.13 documentation]
+{reference-documentation}[Reference {openshift-release} documentation]
 
 [#networking]
 == Networking

@@ -103,4 +103,4 @@ Some key features:
 * Associate templated configuration with different environments.
 * Promote applications across clusters, from staging to production.
 
-You can learn more about OpenShift GitOps https://docs.openshift.com/container-platform/4.13/cicd/gitops/understanding-openshift-gitops.html[here].
+You can learn more about OpenShift GitOps {openshift-gitops-docs}[here].
