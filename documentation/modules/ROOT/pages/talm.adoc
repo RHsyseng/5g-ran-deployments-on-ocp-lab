@@ -79,7 +79,7 @@ In essence, the ztp-done label will be applied when the cluster is fully ready f
 [#waves]
 == Waves
 
-A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every link:policygen-deepdive.html#policies-templating[policy] generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the link:https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/source-crs/SriovSubscriptionNS.yaml[SriovSubscriptionNS.yaml]:
+A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every link:policygen-deepdive.html#policies-templating[policy] generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the link:{cnf-features-source-crs}/SriovSubscriptionNS.yaml[SriovSubscriptionNS.yaml]:
 
 [console-input]
 [source,yaml,subs="attributes+,+macros"]
@@ -99,7 +99,7 @@ When TALM builds the auto-generated CGU as part of the ZTP phase, the included p
 
 As TALM works through the list of managedPolicies included in the CGU it will wait for each policy to be compliant before moving to the next policy. It is important to ensure that the order in which policies are listed under managedPolicies (and thus also the wave annotation used in populating this list during ZTP) takes into account any pre-requisites for the CRs in those policies to be applied to the cluster. For example an operator must be installed before, or concurrently with, the configuration for the operator.
 
-WARNING: All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate. Default ztp-deploy-wave value can be found on the proper https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.13/ztp/source-crs[source crs].
+WARNING: All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate. Default ztp-deploy-wave value can be found on the proper {cnf-features-source-crs}[source crs].
 
 [#talm-precache]
 == Precaching
@@ -180,8 +180,8 @@ spec:
 
 The backup workload generates a utility called `upgrade-recovery.sh` in the recovery partition or at the recovery folder at `/var/recovery` and takes the pre-upgrade backup. In addition, the active OS deployment is pinned using ostree and the standby deployments are removed.
 
-In case, the upgrade failed in a managed cluster, the TALM CGU needs to be deleted in the hub cluster and an admin needs to log in to the spoke cluster to start the recovery process. The process is detailed in the https://github.com/openshift-kni/cluster-group-upgrades-operator/tree/main/docs/backup-recovery#recovery-from-upgrade-failure[Recovery from Upgrade failure] documentation.
+In case, the upgrade failed in a managed cluster, the TALM CGU needs to be deleted in the hub cluster and an admin needs to log in to the spoke cluster to start the recovery process. The process is detailed in the {talm-recovery-from-failed-upgrade-doc}[Recovery from Upgrade failure] documentation.
 
 A more in-detail explanation of the Backup & Recovery is covered in this https://videos.learning.redhat.com/media/Upgrade%2C+backup+and+recovery+with+TALO/1_27k8gb8m/253048913[training material]: "Upgrade, backup and recover your cluster with TALM" recording.
 
-You can read more about it https://docs.openshift.com/container-platform/latest/scalability_and_performance/cnf-talm-for-cluster-upgrades.html[here] and https://videos.learning.redhat.com/media/Using+TALO+to+perform+OCP+upgrades+via+RHACM/1_ozf040n9/253048913[here].
+You can read more about it {talm-cluster-upgrades-doc}[here] and https://videos.learning.redhat.com/media/Using+TALO+to+perform+OCP+upgrades+via+RHACM/1_ozf040n9/253048913[here].

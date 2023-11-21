@@ -13,7 +13,7 @@ The `SiteConfig` is an abstraction layer on top of the different components that
 
 The SiteConfig simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place.
 
-In this https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.13/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml[link] you can find an example of a SiteConfig for a SNO deployment. In the next section, we will create our own SiteConfig to deploy a SNO in our lab environment.
+In this {example-sno-siteconfig-link}[link] you can find an example of a SiteConfig for a SNO deployment. In the next section, we will create our own SiteConfig to deploy a SNO in our lab environment.
 
 [#crafting-our-own-siteconfig]
 == Crafting our own SiteConfig
@@ -103,7 +103,7 @@ The details for our baremetal node that we want to provision as SNO2 are the one
 
 Before we start working on the SiteConfig, let's add some information required for the deployment into the git repository.
 
-CAUTION: In a production environment you don't want to add sensible information in plain text in your git repository, for the sake of simplicity for this lab we are adding this information in plain text to the git repo, so you don't have to care about it. This applies to things like pull secrets or bmc credentials.
+CAUTION: In a production environment you don't want to add sensitive information in plain text in your git repository, for the sake of simplicity for this lab we are adding this information in plain text to the git repo, so you don't have to care about it. This applies to things like pull secrets or bmc credentials.
 
 1. BMC credentials file.
 +
@@ -176,8 +176,6 @@ EOF
 
 Now that we have the pre-reqs, let's jump into the SiteConfig.
 
-IMPORTANT: In 4.13 release a couple of noticeable changes in provisioning are included. Improvements such as the chance to use crun as the container runtime or leverage Composable OpenShift feature to reduce the platform footprint.
-
 Copy the command below and refer to the comments in the code for explanations.
 
 [.console-input]
@@ -206,11 +204,10 @@ spec:
     networkType: "OVNKubernetes"
     # All Composable capabilities removed except required for telco
     installConfigOverrides:  "{\"capabilities\":{\"baselineCapabilitySet\": \"None\", \"additionalEnabledCapabilities\": [ \"marketplace\", \"NodeTuning\" ] }}"
-    # It is strongly recommended to include crun manifests as part of the additional install-time manifests for 4.13+.
     extraManifestPath: hub-1/sno2-extra-manifest
     # Cluster labels (this will be used by RHACM)
     clusterLabels:
-      common: "ocp413"
+      common: "{policygen-common-label}"
       logicalGroup: "active"
       group-du-sno: ""
       du-site: "sno2"
@@ -309,7 +306,7 @@ kind: ClusterImageSet
 metadata:
   name: active-ocp-version
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.13.2-x86_64
+  releaseImage: {active-ocp-version-clusterimageset}
 EOF
 -----
 

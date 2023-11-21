@@ -53,8 +53,8 @@ dnf -y install kcli bash-completion vim jq tar git ipcalc python3-pyOpenSSL
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-kcli download oc -P version=stable -P tag='4.13'
-kcli download kubectl -P version=stable -P tag='4.13'
+kcli download oc -P version=stable -P tag='{kcli-tools-tag}'
+kcli download kubectl -P version=stable -P tag='{kcli-tools-tag}'
 mv kubectl oc /usr/bin/
 -----
 
@@ -70,20 +70,20 @@ kcli create network -c 192.168.125.0/24 --nodhcp --domain 5g-deployment.lab 5gde
 [#configure-local-dns-dhcp-server]
 === Configure Local DNS/DHCP Server
 
-NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gnu-sed`: `brew install gnu-sed`.
+NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gsed`: `brew install gnu-sed`.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 dnf -y install dnsmasq policycoreutils-python-utils
 mkdir -p /opt/dnsmasq/include.d/
-curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/dnsmasq/dnsmasq.conf -o /opt/dnsmasq/dnsmasq.conf
-curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/dnsmasq/upstream-resolv.conf -o /opt/dnsmasq/upstream-resolv.conf
-curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/dnsmasq/hub.ipv4 -o /opt/dnsmasq/include.d/hub.ipv4
-curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/dnsmasq/sno1.ipv4 -o /opt/dnsmasq/include.d/sno1.ipv4
-curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/dnsmasq/sno2.ipv4 -o /opt/dnsmasq/include.d/sno2.ipv4
-curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/dnsmasq/infrastructure-host.ipv4 -o /opt/dnsmasq/include.d/infrastructure-host.ipv4
-curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/dnsmasq/dnsmasq-virt.service -o /etc/systemd/system/dnsmasq-virt.service
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/dnsmasq/dnsmasq.conf -o /opt/dnsmasq/dnsmasq.conf
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/dnsmasq/upstream-resolv.conf -o /opt/dnsmasq/upstream-resolv.conf
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/dnsmasq/hub.ipv4 -o /opt/dnsmasq/include.d/hub.ipv4
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/dnsmasq/sno1.ipv4 -o /opt/dnsmasq/include.d/sno1.ipv4
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/dnsmasq/sno2.ipv4 -o /opt/dnsmasq/include.d/sno2.ipv4
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/dnsmasq/infrastructure-host.ipv4 -o /opt/dnsmasq/include.d/infrastructure-host.ipv4
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/dnsmasq/dnsmasq-virt.service -o /etc/systemd/system/dnsmasq-virt.service
 touch /opt/dnsmasq/hosts.leases
 semanage fcontext -a -t dnsmasq_lease_t /opt/dnsmasq/hosts.leases
 restorecon /opt/dnsmasq/hosts.leases
@@ -101,7 +101,7 @@ The default upstream DNS is set to 1.1.1.1 in `/opt/dnsmasq/upstream-resolv.conf
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-curl -L https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/hypervisor/forcedns -o /etc/NetworkManager/dispatcher.d/forcedns
+curl -L https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/hypervisor/forcedns -o /etc/NetworkManager/dispatcher.d/forcedns
 chmod +x /etc/NetworkManager/dispatcher.d/forcedns
 systemctl restart NetworkManager
 /etc/NetworkManager/dispatcher.d/forcedns
@@ -128,10 +128,10 @@ The webcache is basically an Apache httpd container serving the RHCOS live ISO a
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-curl -L https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/webcache/podman-webcache.service -o /etc/systemd/system/podman-webcache.service
+curl -L https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/webcache/podman-webcache.service -o /etc/systemd/system/podman-webcache.service
 mkdir -p /opt/webcache/data
-curl -L https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.13/4.13.0/rhcos-4.13.0-x86_64-live-rootfs.x86_64.img -o /opt/webcache/data/rhcos-4.13.0-x86_64-live-rootfs.x86_64.img
-curl -L https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.13/4.13.0/rhcos-4.13.0-x86_64-live.x86_64.iso -o /opt/webcache/data/rhcos-4.13.0-x86_64-live.x86_64.iso
+curl -L {rhcos-rootfs-url} -o /opt/webcache/data/{rhcos-rootfs-filename}
+curl -L {rhcos-liveiso-url} -o /opt/webcache/data/{rhcos-liveiso-filename}
 systemctl daemon-reload
 systemctl enable podman-webcache --now
 -----
@@ -156,11 +156,11 @@ systemctl enable ksushy --now
 dnf -y install podman httpd-tools
 REGISTRY_NAME=infra.5g-deployment.lab
 mkdir -p /opt/registry/{auth,certs,data,conf}
-curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/registry/registry-key.pem -o /opt/registry/certs/registry-key.pem
-curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/registry/registry-cert.pem -o /opt/registry/certs/registry-cert.pem
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/registry/registry-key.pem -o /opt/registry/certs/registry-key.pem
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/registry/registry-cert.pem -o /opt/registry/certs/registry-cert.pem
 htpasswd -bBc /opt/registry/auth/htpasswd admin r3dh4t1! 
-curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/registry/config.yml -o /opt/registry/conf/config.yml
-curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/registry/podman-registry.service -o /etc/systemd/system/podman-registry.service
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/registry/config.yml -o /opt/registry/conf/config.yml
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/registry/podman-registry.service -o /etc/systemd/system/podman-registry.service
 systemctl daemon-reload
 systemctl enable podman-registry --now
 cp /opt/registry/certs/registry-cert.pem /etc/pki/ca-trust/source/anchors/
@@ -168,7 +168,7 @@ update-ca-trust
 podman login --authfile auth.json -u admin  infra.5g-deployment.lab:8443 -p r3dh4t1!
 -----
 
-NOTE: Link to additional configuration documentation of a disconnected registry: https://docs.openshift.com/container-platform/4.13/installing/disconnected_install/installing-mirroring-disconnected.html
+NOTE: Link to additional configuration documentation of a disconnected registry: {disconnected-registry-docs}
 
 [#configure-git-server]
 === Configure Git Server
@@ -178,7 +178,7 @@ NOTE: Link to additional configuration documentation of a disconnected registry:
 -----
 mkdir -p /opt/gitea/
 chown -R 1000:1000 /opt/gitea/
-curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/gitea/podman-gitea.service -o /etc/systemd/system/podman-gitea.service
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/gitea/podman-gitea.service -o /etc/systemd/system/podman-gitea.service
 systemctl daemon-reload
 systemctl enable podman-gitea --now
 podman exec --user 1000 gitea /bin/sh -c 'gitea admin user create --username student --password student --email student@5g-deployment.lab --must-change-password=false --admin'
@@ -219,7 +219,7 @@ In order to access the hub cluster we will deploy an HAProxy that will be listen
 -----
 dnf install haproxy -y
 semanage port -a -t http_port_t -p tcp 6443
-curl -L https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/haproxy/haproxy.cfg -o /etc/haproxy/haproxy.cfg
+curl -L https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/haproxy/haproxy.cfg -o /etc/haproxy/haproxy.cfg
 systemctl enable haproxy --now
 -----
 
@@ -263,7 +263,7 @@ NOTE: If you're using MacOS and you're getting errors while running `sed -i` com
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/hub-cluster/hub.yml -o /root/hub.yml
+curl -sL https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/hub-cluster/hub.yml -o /root/hub.yml
 sed -i "s/CHANGE_ADMIN_PWD/admin/" hub.yml
 sed -i "s/CHANGE_DEV_PWD/developer/" hub.yml
 cd /root/
@@ -306,7 +306,7 @@ And then create the VMs again as explained in the previous section link:lab-envi
 export KUBECONFIG=~/.kcli/clusters/hub/auth/kubeconfig
 oc -n openshift-storage wait lvmcluster lvmcluster --for=jsonpath='{.status.state}'=Ready --timeout=900s
 oc patch storageclass lvms-vg1 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-curl https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/hub-cluster/argocd-patch.json -o /tmp/argopatch.json
+curl https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/hub-cluster/argocd-patch.json -o /tmp/argopatch.json
 oc patch argocd openshift-gitops -n openshift-gitops --type=merge --patch-file /tmp/argopatch.json
 oc wait --for=condition=Ready pod -lapp.kubernetes.io/name=openshift-gitops-repo-server -n openshift-gitops
 oc -n openshift-gitops adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller
@@ -318,7 +318,7 @@ oc -n openshift-gitops adm policy add-cluster-role-to-user cluster-admin -z open
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc apply -f https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml
+oc apply -f https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml
 -----
 
 [#deploy-sno1-cluster-without-ztp]
@@ -329,9 +329,9 @@ A SNO is deployed outside the ZTP workflow so students can import it and see how
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-curl -L http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/lab-4.13/lab-materials/lab-env-data/hypervisor/ssh-key -o /root/.ssh/snokey
+curl -L http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/{branch}/lab-materials/lab-env-data/hypervisor/ssh-key -o /root/.ssh/snokey
 chmod 400 /root/.ssh/snokey
-oc apply -f https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.13/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml
+oc apply -f https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml
 -----
 
 Once the cluster is deployed, the kubeconfig can be gathered as follows:
@@ -350,10 +350,10 @@ oc extract secret/sno1-admin-kubeconfig --to=- -n sno1 > /root/sno1kubeconfig
 oc --kubeconfig /root/sno1kubeconfig get nodes,clusterversion
 
 NAME                      STATUS   ROLES                         AGE     VERSION
-node/openshift-master-0   Ready    control-plane,master,worker   94m   v1.26.5+0001a21
+node/openshift-master-0   Ready    control-plane,master,worker   94m     {sno-cluster-version1-kubeversion}
 
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.13.2    True        False         75m     Cluster version is 4.13.2
+clusterversion.config.openshift.io/version   {sno-cluster-version1-cvo}    True        False         75m     Cluster version is {sno-cluster-version1-cvo}
 -----
 
 

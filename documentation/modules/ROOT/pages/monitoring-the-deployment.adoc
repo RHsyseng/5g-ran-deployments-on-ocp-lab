@@ -64,10 +64,10 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get agentclusterinsta
 [console-input]
 [source,console,subs="attributes+,+macros"]
 -----
-- lastProbeTime: "2023-03-18T16:18:20Z"
-  lastTransitionTime: "2023-03-18T16:18:20Z"
+- lastProbeTime: "{last-update-date}T16:18:20Z"
+  lastTransitionTime: "{last-update-date}T16:18:20Z"
   message: 'The installation is in progress: Finalizing cluster installation. Cluster
-    version status: progressing, message: Working towards 4.13.2: 523 of 829 done
+    version status: progressing, message: Working towards {sno-cluster-version1-cvo}: 523 of 829 done
     (63% complete)'
   reason: InstallationInProgress
   status: "False"
@@ -79,8 +79,8 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get agentclusterinsta
 [console-input]
 [source,console,subs="attributes+,+macros"]
 -----
-- lastProbeTime: "2023-03-18T17:05:20Z"
-  lastTransitionTime: "2023-03-18T17:05:20Z"
+- lastProbeTime: "{last-update-date}T17:05:20Z"
+  lastTransitionTime: "{last-update-date}T17:05:20Z"
   message: 'The installation has completed: Cluster is installed'
   reason: InstallationCompleted
   status: "True"

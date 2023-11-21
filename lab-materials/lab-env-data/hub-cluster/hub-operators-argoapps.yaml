@@ -12,7 +12,7 @@ spec:
   source:
     path: lab-materials/hub-config/operators-deployment
     repoURL: 'http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab.git'
-    targetRevision: lab-4.13 
+    targetRevision: lab-4.14 
   project: default
   syncPolicy:
     automated:
@@ -38,7 +38,7 @@ spec:
   source:
     path: lab-materials/hub-config/operators-config
     repoURL: 'http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab.git'
-    targetRevision: lab-4.13
+    targetRevision: lab-4.14
   project: default
   syncPolicy:
     automated:

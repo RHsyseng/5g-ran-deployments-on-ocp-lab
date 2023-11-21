@@ -10,7 +10,7 @@ IMPORTANT: Below commands must be executed from the workstation host if not spec
 
 Before continuing, make sure you have the following tooling installed in your workstation:
 
-* https://docs.openshift.com/container-platform/4.13/cli_reference/openshift_cli/getting-started-cli.html[oc client].
+* {ocp-cli-docs}[oc client].
 * https://podman.io/getting-started/installation[podman].
 
 [#deploying-ztp-gitops-pipeline]
@@ -25,7 +25,7 @@ WARNING: If you get `ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100
 -----
 mkdir -p ~/5g-deployment-lab/ztp-pipeline/
 podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
-podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.13.1-3 extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/
+podman run --log-driver=none --rm --tls-verify=false {ztp-sitegenerate-disconnected-image} extract /home/ztp --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/
 -----
 
 Now that we extracted the pipeline content we need to get it applied to our hub cluster:
@@ -43,7 +43,7 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig login -u admin -p <admin_pass
 2. Modify the ZTP GitOps Pipeline configuration to match our environment configuration.
 .. Change the repository url for the two ArgoApps:
 +
-NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gnu-sed`: `brew install gnu-sed`.
+NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gsed`: `brew install gnu-sed`.
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]

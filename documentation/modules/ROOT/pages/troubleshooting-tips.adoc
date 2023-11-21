@@ -80,7 +80,7 @@ oc get clusterversion
 [source,console]
 -----
 NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-version   4.11.13   True        False         22h     Cluster version is 4.11.13
+version   {hub-cluster-ocp-version}   True        False         22h     Cluster version is {hub-cluster-ocp-version}
 -----
 
 [.console-input]
@@ -93,9 +93,9 @@ oc get nodes
 [source,console]
 -----
 NAME           STATUS   ROLES           AGE   VERSION
-ocp-master-0   Ready    master,worker   23h   v1.24.6+5157800
-ocp-master-1   Ready    master,worker   23h   v1.24.6+5157800
-ocp-master-2   Ready    master,worker   23h   v1.24.6+5157800
+ocp-master-0   Ready    master,worker   23h   {hub-cluster-kubeversion}
+ocp-master-1   Ready    master,worker   23h   {hub-cluster-kubeversion}
+ocp-master-2   Ready    master,worker   23h   {hub-cluster-kubeversion}
 -----
 
 [.console-input]
@@ -188,7 +188,7 @@ We can also connect to the OpenShift GitOps console and see there the error. In 
 
 image::trbst-argo-not-sync.png[Argo app not syncing]
 
-There are also cases that we need to synchronize manually the application because we modified the different manifests. For instance, as detailed in the previous example where we wrongly copy and paste the SiteConfig defnition. In those cases, we can workaround the issue by accessing the GitOps console using the local admin user and password.
+There are also cases that we need to synchronize manually the application because we modified the different manifests. For instance, as detailed in the previous example where we wrongly copy and paste the SiteConfig definition. In those cases, we can workaround the issue by accessing the GitOps console using the local admin user and password.
 
 This is the permission denied error shown in the console:
 
@@ -199,7 +199,7 @@ Execute this command connected to the hub cluster to obtain the local admin pass
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc extract secret/openshift-gitops-cluster -n openshift-gitops  --to=-
+oc extract secret/openshift-gitops-cluster -n openshift-gitops --to=-
 -----
 
 image::trbst-login-local.png[Argo local login]
@@ -273,8 +273,8 @@ oc get infraenv -A
 [source,console]
 -----
 NAMESPACE   NAME   ISO CREATED AT
-sno1        sno1   2023-03-01T10:08:09Z
-sno2        sno2   2023-03-02T10:26:06Z
+sno1        sno1   {last-update-date}T10:08:09Z
+sno2        sno2   {last-update-date}T10:26:06Z
 -----
 
 [.console-input]
@@ -408,7 +408,7 @@ metadata:
 status:
   computedMaxConcurrency: 1
   conditions:
-  - lastTransitionTime: "2023-03-02T11:16:09Z"
+  - lastTransitionTime: "{last-update-date}T11:16:09Z"
     message: The ClusterGroupUpgrade CR has upgrade policies that are still non compliant
     reason: UpgradeNotCompleted
     status: "False"
@@ -427,8 +427,8 @@ status:
       sno2:
         policyIndex: 2
         state: InProgress
-    currentBatchStartedAt: "2023-03-02T11:16:09Z"
-    startedAt: "2023-03-02T11:16:09Z"
+    currentBatchStartedAt: "{last-update-date}T11:16:09Z"
+    startedAt: "{last-update-date}T11:16:09Z"
 -----
 
 Verfiy that now there are two times the number of policies in the hub cluster. That's because a enforce copy of each one of them was created.
@@ -503,7 +503,7 @@ oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig -n openshift-storage get sub
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  creationTimestamp: "2023-06-14T14:35:17Z"
+  creationTimestamp: "{last-update-date}T14:35:17Z"
   generation: 1
   labels:
     operators.coreos.com/lvms-operator.openshift-storage: ""
@@ -513,7 +513,7 @@ metadata:
   resourceVersion: "70835"
   uid: f30a26a2-fdaf-4469-8271-d5d5ac0cb64c
 spec:
-  channel: stable-4.13
+  channel: {lvms-channel}
   installPlanApproval: Manual
   name: lvms-operator
   source: redhat-operator-index
@@ -528,9 +528,9 @@ status:
       resourceVersion: "70778"
       uid: e9ebbd29-f28d-4619-ab71-66bed8e52de2
     healthy: true
-    lastUpdated: "2023-06-14T15:34:53Z"
+    lastUpdated: "{last-update-date}T15:34:53Z"
   conditions:
-  - lastTransitionTime: "2023-06-14T15:34:53Z"
+  - lastTransitionTime: "{last-update-date}T15:34:53Z"
     message: all available catalogsources are healthy
     reason: AllCatalogSourcesHealthy
     status: "False"
