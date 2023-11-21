@@ -6,6 +6,7 @@ on:
       - 'main'
       - 'lab-4.12'
       - 'lab-4.13'
+      - 'lab-4.14'
 env:
   SITE_DIR: "gh-pages"
 jobs:
