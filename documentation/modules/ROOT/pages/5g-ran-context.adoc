@@ -69,7 +69,7 @@ In OpenShift, it is possible to use the DPDK libraries and attach a network inte
 [#cpu-reduction-tuning]
 == Tuning for CPU Reduction
 
-In RAN environments, on Single-Node OpenShift (SNO) the CPU usage by the platform must be reduced to the bare minimum so RAN workloads can benefit from as much CPU as possible. In order to accomplish that, the OpenShift platform will be limited to run their infrastructure components on a limited set of CPUs. This is what we call _workload partitioning_, the operating system (OS) and OCP components will be allowed to run only in a sub set of the available CPUs, leaving the rest of CPUs available for the RAN workloads.
+In RAN environments, on Single-Node OpenShift (SNO) the CPU usage by the platform must be reduced to the bare minimum so RAN workloads can benefit from as much CPU as possible. In order to accomplish that, the OpenShift platform will be limited to run their infrastructure components on a limited set of CPUs. This is what we call {workload-partitioning-docs}[_workload partitioning_], the operating system (OS) and OCP components will be allowed to run only in a sub set of the available CPUs, leaving the rest of CPUs available for the RAN workloads.
 
 On top of _workload partitioning_, the CNF team has tuned the OpenShift platform for RAN workloads by removing components that are not required in a RAN context such as Grafana Web Console, OpenShift Web Console, etc.
 

@@ -96,6 +96,7 @@
 *** xref:policygen-deepdive.adoc#logs[Log Collector and Forwarder]
 ** xref:policygen-deepdive.adoc#siteconfig-templating[SiteConfig Templating]
 ** xref:policygen-deepdive.adoc#policies-templating[Policies Templating]
+*** xref:policygen-deepdive.adoc#custom-policy-templates[Policies Custom Templating]
 ** xref:policygen-deepdive.adoc#kustomize-plugins-locally[Running Kustomize Plugins Locally]
 
 //* xref:integration-with-aap.adoc[Integration with Ansible Automation Platform]
