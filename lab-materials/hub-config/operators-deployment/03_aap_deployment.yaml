@@ -27,5 +27,5 @@ metadata:
 spec:
   channel: stable-2.4-cluster-scoped
   name: ansible-automation-platform-operator
-  source: redhat-operator-index
+  source: cs-redhat-operator-index
   sourceNamespace: openshift-marketplace
