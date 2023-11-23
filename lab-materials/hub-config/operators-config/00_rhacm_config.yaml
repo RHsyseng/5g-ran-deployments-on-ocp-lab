@@ -40,4 +40,12 @@ spec:
       name: cluster-proxy-addon
     - enabled: true
       name: managedserviceaccount-preview
+    - enabled: true	
+      name: cluster-permission	
+    - enabled: true	
+      name: multicluster-observability	
+    - enabled: true	
+      name: submariner-addon
   separateCertificateManagement: false
+
+

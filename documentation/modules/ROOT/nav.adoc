@@ -72,6 +72,8 @@
 ** xref:talm.adoc#phase-labels[Phase labels]
 ** xref:talm.adoc#waves[Policy Waves]
 ** xref:talm.adoc#talm-precache[Precaching]
+*** xref:talm.adoc#talm-precaching-without-precachingconfig[Precaching without PreCachingConfig Example]
+*** xref:talm.adoc#talm-precaching-with-precachingconfig[Precaching with PreCachingConfig Example]
 ** xref:talm.adoc#talm-backup[Backup & Recovery]
 
 * xref:policygen-deepdive.adoc[PolicyGen Deepdive]
