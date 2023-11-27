@@ -3,5 +3,5 @@ kind: Kustomization
 resources:
   - 00_rhacm_deployment.yaml
   - 01_talm_deployment.yaml
-#  - 02_mce_deployment.yaml
+  - 02_mce_deployment.yaml
   - 03_aap_deployment.yaml
