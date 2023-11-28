@@ -6,7 +6,7 @@
     <title>PolicyGen DeepDive :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://labs.sysdeseng.com/4.14/policygen-deepdive.html">
     <link rel="prev" href="talm.html">
-    <link rel="next" href="deployment-considerations.html">
+    <link rel="next" href="integration-with-aap.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
   </head>
@@ -279,7 +279,16 @@
     <a class="nav-link" href="talm.html#waves">Policy Waves</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="talm.html#talm-precache">Precaching</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="talm.html#talm-precaching-without-precachingconfig">Precaching without PreCachingConfig Example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="talm.html#talm-precaching-with-precachingconfig">Precaching with PreCachingConfig Example</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="talm.html#talm-backup">Backup &amp; Recovery</a>
@@ -357,17 +366,61 @@
     <a class="nav-link" href="#siteconfig-templating">SiteConfig Templating</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="#policies-templating">Policies Templating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#custom-policy-templates">Policies Custom Templating</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#kustomize-plugins-locally">Running Kustomize Plugins Locally</a>
   </li>
 </ul>
   </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html">Integration with Ansible Automation Platform</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#aap-overview">AAP Overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#augmenting-openshift">Augmenting OpenShift with Ansible Automation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#intro-to-aap-operator">Introduction to the AAP Operator</a>
+  </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="0">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#aap-components">Defining Components</a>
 <ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#automation-hub">Automation Hub</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#automation-controller">Automation Controller</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#workflow-overview">Workflow Overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#general-workflow">General AAP Integration Workflow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#lab-workflow">Lab AAP Integration Workflow</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
@@ -415,7 +468,7 @@
     <a class="nav-link" href="lab-environment-introduction.html#openshift-hub-cluster">OpenShift Hub Cluster</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="lab-environment-introduction.html#automation-hub-and-controller">AAP Automation Hub and Automation Controller</a>
+    <a class="nav-link" href="lab-environment-introduction.html#automation-controller">AAP Automation Controller</a>
   </li>
 </ul>
   </li>
@@ -482,10 +535,9 @@
   </li>
 </ul>
   </li>
-</ul>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="adding-automation.html">Adding Automation</a>
   </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="monitoring-the-deployment.html">Monitoring the Deployment</a>
@@ -510,6 +562,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#ensure-automation-ran-successfully">Ensure AAP Automation Ran Successfully</a>
   </li>
 </ul>
   </li>
@@ -658,6 +713,9 @@
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-aap">Configure AAP</a>
   </li>
 </ul>
   </li>
@@ -849,7 +907,7 @@ Some of these configurations are configured at install time (through the use of 
 <p>Pins OCP platform, operating system processes and day2 operator Pods that are part of the DU profile to the reserved cpuset.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.14/ztp/source-crs/extra-manifest/workload/03-workload-partitioning.yaml">Manifest</a></p>
+<p>Starting in OCP4.14+ this gets configured in the <code>PerformanceProfile</code> managed by the Node Tuning Operator.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1045,7 +1103,7 @@ Some of these configurations are configured at install time (through the use of 
 <h2 id="policies-templating"><a class="anchor" href="#policies-templating"></a>Policies Templating</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Policies templating is a bit different, we have a set of base configuration CRs, known as source-crs, that we can use. This set of CRs can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.13/ztp/source-crs">here</a>.</p>
+<p>Policies templating is a bit different, we have a set of base configuration CRs, known as source-crs, that we can use. This set of CRs can be found <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.14/ztp/source-crs">here</a>.</p>
 </div>
 <div class="paragraph">
 <p>If you access this link you will see lots of files, like for example:</p>
@@ -1120,6 +1178,12 @@ Inside the templates we can often see references to what may appear variables li
 </tr>
 </table>
 </div>
+<div class="sect2">
+<h3 id="custom-policy-templates"><a class="anchor" href="#custom-policy-templates"></a>Policies Custom Templating</h3>
+<div class="paragraph">
+<p>In the previous section we have seen how we can use pre-defined templates to craft our policies, sometimes we may need to configure things that do not have a specific template pre-defined. In such cases, we can create our own templates by creating the template files within the same repository. Complete information can be found in <a href="https://docs.openshift.com/container-platform/4.14/scalability_and_performance/ztp_far_edge/ztp-advanced-policy-config.html#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config">the docs</a>.</p>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1173,13 +1237,6 @@ metadata:
     name: ztp-sno
   name: ztp-sno
 ---
-apiVersion: v1
-data:
-  03-workload-partitioning.yaml: |
-    apiVersion: machineconfiguration.openshift.io/v1
-    kind: MachineConfig
-    metadata:
-        annotations:
 &lt;OUTPUT_OMITTED&gt;</code></pre>
 </div>
 </div>
@@ -1187,7 +1244,7 @@ data:
 </div>
 <nav class="pagination">
   <span class="prev"><a href="talm.html">Topology Aware Lifecycle Manager (TALM)</a></span>
-  <span class="next"><a href="deployment-considerations.html">Deployment Considerations</a></span>
+  <span class="next"><a href="integration-with-aap.html">Integration with Ansible Automation Platform</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Integration with Ansible Automation Platform (AAP) :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://labs.sysdeseng.com/4.14/integration-with-aap.html">
+    <link rel="prev" href="policygen-deepdive.html">
+    <link rel="next" href="deployment-considerations.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
   </head>
@@ -277,7 +279,16 @@
     <a class="nav-link" href="talm.html#waves">Policy Waves</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="talm.html#talm-precache">Precaching</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="talm.html#talm-precaching-without-precachingconfig">Precaching without PreCachingConfig Example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="talm.html#talm-precaching-with-precachingconfig">Precaching with PreCachingConfig Example</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="talm.html#talm-backup">Backup &amp; Recovery</a>
@@ -355,17 +366,61 @@
     <a class="nav-link" href="policygen-deepdive.html#siteconfig-templating">SiteConfig Templating</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="policygen-deepdive.html#policies-templating">Policies Templating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#custom-policy-templates">Policies Custom Templating</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="policygen-deepdive.html#kustomize-plugins-locally">Running Kustomize Plugins Locally</a>
   </li>
 </ul>
   </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html">Integration with Ansible Automation Platform</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#aap-overview">AAP Overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#augmenting-openshift">Augmenting OpenShift with Ansible Automation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#intro-to-aap-operator">Introduction to the AAP Operator</a>
+  </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="0">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#aap-components">Defining Components</a>
 <ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#automation-hub">Automation Hub</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#automation-controller">Automation Controller</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#workflow-overview">Workflow Overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#general-workflow">General AAP Integration Workflow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#lab-workflow">Lab AAP Integration Workflow</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
@@ -413,7 +468,7 @@
     <a class="nav-link" href="lab-environment-introduction.html#openshift-hub-cluster">OpenShift Hub Cluster</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="lab-environment-introduction.html#automation-hub-and-controller">AAP Automation Hub and Automation Controller</a>
+    <a class="nav-link" href="lab-environment-introduction.html#automation-controller">AAP Automation Controller</a>
   </li>
 </ul>
   </li>
@@ -480,10 +535,9 @@
   </li>
 </ul>
   </li>
-</ul>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="adding-automation.html">Adding Automation</a>
   </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="monitoring-the-deployment.html">Monitoring the Deployment</a>
@@ -508,6 +562,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#ensure-automation-ran-successfully">Ensure AAP Automation Ran Successfully</a>
   </li>
 </ul>
   </li>
@@ -657,6 +714,9 @@
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
   </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-aap">Configure AAP</a>
+  </li>
 </ul>
   </li>
 </ul>
@@ -675,7 +735,7 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="integration-with-aap.html">Integration with Ansible Automation Platform (AAP)</a></li>
+    <li><a href="integration-with-aap.html">Integration with Ansible Automation Platform</a></li>
   </ul>
 </nav>
   <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/lab-4.14/documentation/modules/ROOT/pages/integration-with-aap.adoc">Edit this Page</a></div>
@@ -687,7 +747,7 @@
 <h2 id="aap-overview"><a class="anchor" href="#aap-overview"></a>AAP Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://www.redhat.com/en/technologies/management/ansible">Red Hat Ansible Automation Platform</a> allows for the configuration and management of systems at scale through simple IT automation. If unfamiliar with AAP, see the <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4">AAP Docs</a>. In this section, we will discuss the need for AAP integration with 5G RAN deployments on OpenShift.</p>
+<p><a href="https://www.redhat.com/en/technologies/management/ansible">Red Hat Ansible Automation Platform</a> allows for the configuration and management of systems at scale through simple IT automation. If unfamiliar with AAP, see the <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/">AAP Docs</a>. In this section, we will discuss the need for AAP integration with 5G RAN deployments on OpenShift.</p>
 </div>
 <div class="sect2">
 <h3 id="augmenting-openshift"><a class="anchor" href="#augmenting-openshift"></a>Augmenting OpenShift with Ansible Automation</h3>
@@ -695,7 +755,7 @@
 <p>As discussed in previous sections, we leverage RHACM and OpenShift to configure our clusters through custom resource definitions and policy based governance. These definitions define the desired state of the clusters, and upon deployment and beyond, OpenShift works to bring the clusters to compliance with our policies. This is known as a <em>declarative</em> model of configuration, and alongside GitOps and our ZTP workflow, allows for simplicity and flexibility when managing a large number clusters at scale.</p>
 </div>
 <div class="paragraph">
-<p>Often times in our declarative configuration worflow, there comes a need to configure important non-declarative components of a system such as bare metal servers, network infrastructure, or legacy systems. In these cases, we can leverage Ansible Automation Platform to manage these components through automated <em>imperative</em> configuration. Utilizing hooks into Ansible, we can invoke Ansible Playbooks upon deployment of a cluster or at other significant moments in the lifecycle of clusters. This allows for efficient and automated management of both the declarative and non-declarative components of 5G infrastructure.</p>
+<p>Often times in our declarative configuration workflow, there comes a need to configure important non-declarative components of a system such as bare metal servers, network infrastructure, or legacy systems. In these cases, we can leverage Ansible Automation Platform to manage these components through automated <em>imperative</em> configuration. Utilizing hooks into Ansible, we can invoke Ansible Playbooks upon deployment of a cluster or at other significant moments in the lifecycle of clusters. This allows for efficient and automated management of both the declarative and non-declarative components of 5G infrastructure.</p>
 </div>
 <div class="paragraph">
 <p>For a deeper dive, see <a href="https://www.ansible.com/blog/openshift-and-ansible-bridging-the-automation-gap-for-5g-and-beyond-networks-part-1">OpenShift and Ansible: Bridging the Automation Gap for 5G and Beyond Networks - Part 1</a> on the Ansible blog.</p>
@@ -715,7 +775,7 @@
 <div class="sect2">
 <h3 id="automation-hub"><a class="anchor" href="#automation-hub"></a>Automation Hub</h3>
 <div class="paragraph">
-<p>The OpenShift AAP operator&#8217;s Automation Hub, defined by the custom resource definition AutomationHub, is a downstream version of <a href="https://github.com/ansible/galaxy_ng">Galaxy NG</a> which allows for the hosting of Ansible collections on a private distribution server. Collections are a distribution format for Ansible objects including playbooks, roles, modules, and plugins. We store all necessary Ansible collections through an Automation Hub deployed on OpenShift, allowing all dependencies to be hosted and managed through our local cluster. We can upload collections, manage collections, and interact with the Automation Hub through API or through its web UI deployed at <a href="https://automation-hub-aap.apps.hub.5g-deployment.lab" class="bare">https://automation-hub-aap.apps.hub.5g-deployment.lab</a>.</p>
+<p>The OpenShift AAP operator&#8217;s Automation Hub, defined by the custom resource definition AutomationHub, is a downstream version of <a href="https://github.com/ansible/galaxy_ng">Galaxy NG</a> which allows for the hosting of Ansible collections on a private distribution server. Collections are a distribution format for Ansible objects including playbooks, roles, modules, and plugins. We store all necessary Ansible collections through an Automation Hub deployed on OpenShift, allowing all dependencies to be hosted and managed through our local cluster. We can upload collections, manage collections, and interact with the Automation Hub through API or through its web UI.</p>
 </div>
 </div>
 <div class="sect2">
@@ -725,18 +785,6 @@
 </div>
 <div class="paragraph">
 <p>At a high level, an Ansible <em>job</em> is a running instance of a <em>job template</em>, which contains a logical collection of Ansible <em>playbooks</em> in the form of a <em>project</em>, a list of managed hosts in the form of an <em>inventory</em>, and any extra variables we want to pass to the job.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="acm-hooks-toward-aap"><a class="anchor" href="#acm-hooks-toward-aap"></a>ACM Hooks Toward AAP</h3>
-<div class="paragraph">
-<p>This section will provide a high level overview of an application-based ACM hook toward AAP automation. Through hooks, we can await a certain cluster state, the run imperative automation to complete the configuration process. This process involves an OpenShift Application CRD, its supporting Channel, Subscription, and PlacementRule, and a custom AnsibleJob housed in a hosted git repository.</p>
-</div>
-<div class="paragraph">
-<p>First, we create an AnsibleJob resource and host the config in a git repository under the path <code>site-applications/prehook/main.yml</code>. This is an OpenShift resource that executes a specified Ansible Controller job template on a certain cluster, which will be triggered by our Application.</p>
-</div>
-<div class="paragraph">
-<p>Next, we create our Application along with its Channel, Subscription, and PlacementRule to bind to the correct clusters, retrieve our AnsibleJob, and run the automation. Together, these OpenShift CRDs create the necessary components to craft an Application-based hook into AAP, triggering an Ansible job on certain clusters based on cluster events as determined by PlacementBinding.</p>
 </div>
 </div>
 </div>
@@ -755,28 +803,28 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Mirror AAP operator to disconnected registry (outside the scope of this lab, see the <a href="https://access.redhat.com/documentation/en-us/openshift_container_platform/4.13/html/installing/disconnected-installation-mirroring">official docs</a> for more info)</p>
+<p>Mirror AAP operator to disconnected registry (outside the scope of this lab, see the <a href="https://docs.openshift.com/container-platform/4.14/installing/disconnected_install/installing-mirroring-disconnected.html">official docs</a> for more info).</p>
 </li>
 <li>
-<p>Install AAP operator, deploy AutomationHub and AutomationController (outside the scope of this lab, see the <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/deploying_the_red_hat_ansible_automation_platform_operator_on_openshift_container_platform/installing-hub-operator">Hub Installation Docs</a>, the <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/deploying_the_red_hat_ansible_automation_platform_operator_on_openshift_container_platform/installing-controller-operator">Controller Installation Docs</a>, and the CRD examples for <a href="integration-with-aap.html#automation-hub">AutomationHub</a> and <a href="integration-with-aap.html#automation-controller">AutomationController</a>)</p>
+<p>Install AAP operator, deploy AutomationHub and AutomationController (outside the scope of this lab, see the <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/deploying_the_red_hat_ansible_automation_platform_operator_on_openshift_container_platform/installing-hub-operator">Hub Installation Docs</a>, the <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/deploying_the_red_hat_ansible_automation_platform_operator_on_openshift_container_platform/installing-controller-operator">Controller Installation Docs</a>, and the CRD examples for <a href="integration-with-aap.html#automation-hub">AutomationHub</a> and <a href="integration-with-aap.html#automation-controller">AutomationController</a>).</p>
 </li>
 <li>
-<p>Upload necessary Ansible collections to Automation Hub (outside the scope of this lab, see uploaded collections at <a href="https://automation-hub-aap.apps.hub.5g-deployment.lab" class="bare">https://automation-hub-aap.apps.hub.5g-deployment.lab</a>)</p>
+<p>Upload necessary Ansible collections to Automation Hub (outside the scope of this lab).</p>
 </li>
 <li>
-<p>Configure Automation Controller with Ansible automation resources (outside the scope of this lab, see configured Ansible resources at <a href="https://automation-aap.apps.hub.5g-deployment.lab" class="bare">https://automation-aap.apps.hub.5g-deployment.lab</a>)</p>
+<p>Configure Automation Controller with Ansible automation resources (outside the scope of this lab, see configured Ansible resources at <a href="https://automation-aap.apps.hub.5g-deployment.lab" class="bare">https://automation-aap.apps.hub.5g-deployment.lab</a>).</p>
 </li>
 <li>
-<p>Install MultiClusterHub add-ons (outside the scope of this lab)</p>
+<p>Install MultiClusterHub add-ons (outside the scope of this lab).</p>
 </li>
 <li>
-<p><strong>Deploy spoke clusters</strong></p>
+<p><strong>Deploy spoke clusters</strong>.</p>
 </li>
 <li>
-<p><strong>Deploy Application and supporting resources to craft an application hook into AAP</strong></p>
+<p><strong>Deploy Application and supporting resources to craft an application hook into AAP</strong>.</p>
 </li>
 <li>
-<p><strong>Spoke cluster(s) reach state where the Application&#8217;s PlacementRule applies, Ansible job is triggered by the Application, Ansible job completes successfully</strong></p>
+<p><strong>Spoke cluster(s) reach state where the Application&#8217;s PlacementRule applies, Ansible job is triggered by the Application, Ansible job completes successfully</strong>.</p>
 </li>
 </ul>
 </div>
@@ -784,7 +832,7 @@
 <div class="sect2">
 <h3 id="lab-workflow"><a class="anchor" href="#lab-workflow"></a>This Lab&#8217;s AAP Integration Workflow</h3>
 <div class="paragraph">
-<p>This section will overview our example AAP integration workflow in this lab. If unfamiliar with the general AAP integration worflow, see the <a href="integration-with-aap.html#general-workflow">above section</a>.</p>
+<p>This section will overview our example AAP integration workflow in this lab. If unfamiliar with the general AAP integration workflow, see the <a href="integration-with-aap.html#general-workflow">above section</a>.</p>
 </div>
 <div class="paragraph">
 <p>In this lab, we will deploy a SNO cluster through the ZTP pipeline and await the completion of the SNO deployment, which will mark the SNO cluster with the <em>ztp-done</em> label. The <em>ztp-done</em> label will trigger an Ansible job that creates the namespace <em>ztp-day2-automation</em> within our deployed SNO cluster, and completes by adding an <code>aap-done</code> label to the cluster. As explained in the above section, AAP is pre-configured in our lab environment, so we will only cover the steps to craft our application-based automation and ensure our automation ran successfully. The integration steps in this lab are as follows:</p>
@@ -792,39 +840,39 @@
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Deploy SNO2 cluster via ZTP workflow</strong></p>
+<p><strong>Deploy SNO2 cluster via ZTP workflow</strong>.</p>
 </li>
 <li>
-<p><strong>Deploy OpenShift objects for application-based hook into AAP</strong></p>
+<p><strong>Deploy OpenShift objects for application-based hook into AAP</strong>.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Create our custom AnsibleJob that executes a Ansible Controller job template</p>
+<p>Create our custom AnsibleJob that executes a Ansible Controller job template.</p>
 </li>
 <li>
-<p>Create Application and supporting resources for managing cluster automation</p>
+<p>Create Application and supporting resources for managing cluster automation.</p>
 </li>
 </ul>
 </div>
 </li>
 <li>
-<p><strong>Wait for the SNO2 deployment to complete</strong></p>
+<p><strong>Wait for the SNO2 deployment to complete</strong>.</p>
 </li>
 <li>
-<p><strong>Automation triggered upon deployment completion</strong></p>
+<p><strong>Automation triggered upon deployment completion</strong>.</p>
 </li>
 <li>
-<p><strong>Confirm automation has completed successfully</strong></p>
+<p><strong>Confirm automation has completed successfully</strong>.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Examine Application via Web UI</p>
+<p>Examine Application via Web UI.</p>
 </li>
 <li>
-<p>Check cluster labels</p>
+<p>Check cluster labels.</p>
 </li>
 <li>
-<p>Check <code>ztp-day2-automation</code> namespace exists on our deployed cluster</p>
+<p>Check <code>ztp-day2-automation</code> namespace exists on our deployed cluster.</p>
 </li>
 </ul>
 </div>
@@ -849,6 +897,10 @@ Our example automation involves creating a new namespace within a deployed clust
 </div>
 </div>
 </div>
+<nav class="pagination">
+  <span class="prev"><a href="policygen-deepdive.html">PolicyGen Deepdive</a></span>
+  <span class="next"><a href="deployment-considerations.html">Deployment Considerations</a></span>
+</nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
   <div class="toc-menu"></div>

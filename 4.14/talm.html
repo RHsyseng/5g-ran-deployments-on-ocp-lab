@@ -279,7 +279,16 @@
     <a class="nav-link" href="#waves">Policy Waves</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="#talm-precache">Precaching</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#talm-precaching-without-precachingconfig">Precaching without PreCachingConfig Example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#talm-precaching-with-precachingconfig">Precaching with PreCachingConfig Example</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#talm-backup">Backup &amp; Recovery</a>
@@ -357,17 +366,61 @@
     <a class="nav-link" href="policygen-deepdive.html#siteconfig-templating">SiteConfig Templating</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="policygen-deepdive.html#policies-templating">Policies Templating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#custom-policy-templates">Policies Custom Templating</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="policygen-deepdive.html#kustomize-plugins-locally">Running Kustomize Plugins Locally</a>
   </li>
 </ul>
   </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html">Integration with Ansible Automation Platform</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#aap-overview">AAP Overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#augmenting-openshift">Augmenting OpenShift with Ansible Automation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#intro-to-aap-operator">Introduction to the AAP Operator</a>
+  </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="0">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#aap-components">Defining Components</a>
 <ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#automation-hub">Automation Hub</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#automation-controller">Automation Controller</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#workflow-overview">Workflow Overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#general-workflow">General AAP Integration Workflow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#lab-workflow">Lab AAP Integration Workflow</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
@@ -415,7 +468,7 @@
     <a class="nav-link" href="lab-environment-introduction.html#openshift-hub-cluster">OpenShift Hub Cluster</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="lab-environment-introduction.html#automation-hub-and-controller">AAP Automation Hub and Automation Controller</a>
+    <a class="nav-link" href="lab-environment-introduction.html#automation-controller">AAP Automation Controller</a>
   </li>
 </ul>
   </li>
@@ -482,10 +535,9 @@
   </li>
 </ul>
   </li>
-</ul>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="adding-automation.html">Adding Automation</a>
   </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="monitoring-the-deployment.html">Monitoring the Deployment</a>
@@ -510,6 +562,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#ensure-automation-ran-successfully">Ensure AAP Automation Ran Successfully</a>
   </li>
 </ul>
   </li>
@@ -658,6 +713,9 @@
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-aap">Configure AAP</a>
   </li>
 </ul>
   </li>
@@ -899,8 +957,37 @@ Precaching currently only targets Single Node OpenShift clusters.
 </table>
 </div>
 <div class="paragraph">
-<p>By enabling precache feature without enabling the CGU, as shown in the following code snippet, the first thing is going to happen is pull all the container images required for the OCP release we are about to upgrade in the target cluster. So, we will have all required images already downloaded in our container-storage location, by default '/var/lib/containers', before even starting the upgrade task.</p>
+<p>By enabling precache feature without enabling the CGU, the first thing is going to happen is a pull operation for all the container images required for the OCP release we are about to upgrade in the target cluster. So, we will have all required images already downloaded in our container-storage location, by default '/var/lib/containers', before even starting the upgrade task.</p>
 </div>
+<div class="paragraph">
+<p>Starting in OCP 4.14+ a new CRD has been added in TALM, <code>PreCachingConfig</code>, this CRD enables fine-grained control over what artifacts must be pre-cached before the update gets triggered.</p>
+</div>
+<div class="paragraph">
+<p>It&#8217;s not mandatory to define a <code>PreCachingConfig</code>, if we don&#8217;t define one and we configure the <code>preCaching: true</code> in the <code>ClusterGroupUpgrade</code> the behavior will be the same as it was in previous versions where everything in the release was precached.</p>
+</div>
+<div class="paragraph">
+<p>Extended documentation on how the <code>PreCachingConfig</code> works can be found <a href="https://docs.openshift.com/container-platform/4.14/scalability_and_performance/ztp_far_edge/ztp-talm-updating-managed-policies.html#talm-prechache-user-specified-images-concept_ztp-talm">here</a>.</p>
+</div>
+<div class="paragraph">
+<p>Once the container images are precached, we just need to enable the CGU by setting <code>enabled: true</code>. Then, a regular platform upgrade managed by the TALM operator will start. This time the update will be faster and resilient to transient network issues since the container images are stored locally.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+If both policy and precaching are enabled, the upgrade will be executed immediately after the precache is done successfully.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>A more in-detail explanation of the Precaching feature is covered in <a href="https://videos.learning.redhat.com/media/OCP+TALO+precache+sequential+platform+upgrade/1_7kgh6jze/253048913">training material</a>: "Precaching and sequential platform upgrades using TALM" recording.</p>
+</div>
+<div class="sect2">
+<h3 id="talm-precaching-without-precachingconfig"><a class="anchor" href="#talm-precaching-without-precachingconfig"></a>Precaching without PreCachingConfig Example</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ran.openshift.io/v1alpha1
@@ -923,23 +1010,60 @@ spec:
     timeout: 240</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Once the container images are precached, we just need to enable the CGU by setting <code>enabled: true</code>. Then, a regular platform upgrade managed by the TALM operator will start. This time the update will be faster and resilient to transient network issues since the container images are stored locally.</p>
 </div>
-<div class="admonitionblock caution">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-caution" title="Caution"></i>
-</td>
-<td class="content">
-If both policy and precaching are enabled, the upgrade will be executed immediately after the precache is done successfully.
-</td>
-</tr>
-</table>
+<div class="sect2">
+<h3 id="talm-precaching-with-precachingconfig"><a class="anchor" href="#talm-precaching-with-precachingconfig"></a>Precaching with PreCachingConfig Example</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ran.openshift.io/v1alpha1
+kind: PreCachingConfig
+metadata:
+  name: du-upgrade
+  namespace: ztp-group-du-sno
+spec:
+  overrides:
+    platformImage: infra.5g-deployment.lab:8443/openshift/release-images@sha256:05ba8e63f8a76e568afe87f182334504a01d47342b6ad5b4c3ff83a2463018bd
+    operatorsIndexes:
+      - registry.example.com:5000/custom-redhat-operators:1.0.0
+    operatorsPackagesAndChannels:
+      - local-storage-operator: stable
+      - ptp-operator: stable
+      - sriov-network-operator: stable
+  spaceRequired: 30 Gi
+  excludePrecachePatterns:
+    - aws
+    - vsphere
+  additionalImages:
+    - quay.io/exampleconfig/application1@sha256:3d5800990dee7cd4727d3fe238a97e2d2976d3808fc925ada29c559a47e2e1ef
+    - quay.io/exampleconfig/application2@sha256:3d5800123dee7cd4727d3fe238a97e2d2976d3808fc925ada29c559a47adfaef
+    - quay.io/exampleconfig/applicationN@sha256:4fe1334adfafadsf987123adfffdaf1243340adfafdedga0991234afdadfsa09</code></pre>
 </div>
-<div class="paragraph">
-<p>A more in-detail explanation of the Precaching feature is covered in <a href="https://videos.learning.redhat.com/media/OCP+TALO+precache+sequential+platform+upgrade/1_7kgh6jze/253048913">training material</a>: "Precaching and sequential platform upgrades using TALM" recording.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ran.openshift.io/v1alpha1
+kind: ClusterGroupUpgrade
+metadata:
+  name: du-upgrade
+  namespace: ztp-group-du-sno
+spec:
+  preCaching: true #precache configuration
+  preCachingConfigRef: #reference to precacheconfiguration
+    name: du-upgrade
+    namespace: ztp-group-du-sno
+  backup: true
+  deleteObjectsOnCompletion: true
+  clusters:
+  - cnfdb1
+  - cnfdb2
+  enable: false #precache only
+  managedPolicies:
+  - du-upgrade-platform-upgrade
+  remediationStrategy:
+    maxConcurrency: 2
+    timeout: 240</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>

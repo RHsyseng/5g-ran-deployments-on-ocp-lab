@@ -279,7 +279,16 @@
     <a class="nav-link" href="talm.html#waves">Policy Waves</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="talm.html#talm-precache">Precaching</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="talm.html#talm-precaching-without-precachingconfig">Precaching without PreCachingConfig Example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="talm.html#talm-precaching-with-precachingconfig">Precaching with PreCachingConfig Example</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="talm.html#talm-backup">Backup &amp; Recovery</a>
@@ -357,17 +366,61 @@
     <a class="nav-link" href="policygen-deepdive.html#siteconfig-templating">SiteConfig Templating</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="policygen-deepdive.html#policies-templating">Policies Templating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#custom-policy-templates">Policies Custom Templating</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="policygen-deepdive.html#kustomize-plugins-locally">Running Kustomize Plugins Locally</a>
   </li>
 </ul>
   </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html">Integration with Ansible Automation Platform</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#aap-overview">AAP Overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#augmenting-openshift">Augmenting OpenShift with Ansible Automation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#intro-to-aap-operator">Introduction to the AAP Operator</a>
+  </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="0">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#aap-components">Defining Components</a>
 <ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#automation-hub">Automation Hub</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#automation-controller">Automation Controller</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#workflow-overview">Workflow Overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#general-workflow">General AAP Integration Workflow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#lab-workflow">Lab AAP Integration Workflow</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
@@ -415,7 +468,7 @@
     <a class="nav-link" href="lab-environment-introduction.html#openshift-hub-cluster">OpenShift Hub Cluster</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="lab-environment-introduction.html#automation-hub-and-controller">AAP Automation Hub and Automation Controller</a>
+    <a class="nav-link" href="lab-environment-introduction.html#automation-controller">AAP Automation Controller</a>
   </li>
 </ul>
   </li>
@@ -482,10 +535,9 @@
   </li>
 </ul>
   </li>
-</ul>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="adding-automation.html">Adding Automation</a>
   </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="monitoring-the-deployment.html">Monitoring the Deployment</a>
@@ -510,6 +562,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#ensure-automation-ran-successfully">Ensure AAP Automation Ran Successfully</a>
   </li>
 </ul>
   </li>
@@ -658,6 +713,9 @@
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-aap">Configure AAP</a>
   </li>
 </ul>
   </li>
@@ -944,11 +1002,50 @@ Notice in the following picture that there are policies not applying to any clus
 </div>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s apply the CGU to our hub cluster:</p>
+<p>Let&#8217;s apply the PreCachingConfig and the CGU to our hub cluster:</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You can get the required list for <code>excludePrecachePattern</code> for each upgrade by following <a href="https://access.redhat.com/articles/7046378">this KCS</a>.
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+---
+apiVersion: ran.openshift.io/v1alpha1
+kind: PreCachingConfig
+metadata:
+  name: update-europe-snos
+  namespace: ztp-policies
+spec:
+  overrides: {}
+  excludePrecachePatterns:
+    - agent-installer-
+    - alibaba-
+    - aws-
+    - azure-
+    - cloud-
+    - gcp-
+    - ibmcloud
+    - ibm-
+    - nutanix-
+    - openstack-
+    - ovirt-
+    - powervs-
+    - sdn
+    - vsphere-
+    - kuryr-
+    - csi-
+    - hypershift
+  additionalImages: []
 ---
 apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
@@ -957,6 +1054,9 @@ metadata:
   namespace: ztp-policies
 spec:
   preCaching: true
+  preCachingConfigRef:
+    name: update-europe-snos
+    namespace: ztp-policies
   backup: true
   clusters:
   - sno1
@@ -1024,18 +1124,18 @@ pre-cache   0/1           64s        64s</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">highThresholdPercent: 85 diskSize:209124332 used:17648032
-upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Release index image processing done
+upgrades.pre-cache 2023-11-21T10:55:10+00:00 DEBUG Release index image processing done
 7df5fe3b5fb7352b870735c7d7bd898d0959a9a49558d2ffb42dcd269e01752f
-upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Operators index is not specified. Operators won't be pre-cached
-upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:00162a72c1ae283977f0191ee216e15fe696838b6d7addd8250ff8c5b474cc61 [1/183]
-upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:00eaf204536112ed09a10e4c70f9a8dc6827726bf9bc34f279a9156b881a7a2a [2/183]
-upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:02d61dfc59ac70096dffadda38a52829cd61c9c016e54d2b6d78eb5182d2b19a [3/183]
+upgrades.pre-cache 2023-11-21T10:55:10+00:00 DEBUG Operators index is not specified. Operators won't be pre-cached
+upgrades.pre-cache 2023-11-21T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:00162a72c1ae283977f0191ee216e15fe696838b6d7addd8250ff8c5b474cc61 [1/183]
+upgrades.pre-cache 2023-11-21T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:00eaf204536112ed09a10e4c70f9a8dc6827726bf9bc34f279a9156b881a7a2a [2/183]
+upgrades.pre-cache 2023-11-21T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:02d61dfc59ac70096dffadda38a52829cd61c9c016e54d2b6d78eb5182d2b19a [3/183]
 .
 .
 .
-upgrades.pre-cache {last-update-date}T11:00:48+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ff7cfeec16898c293222ac1422841440cdeffefa7d489757e71999d5305425f8 [182/183]
-upgrades.pre-cache {last-update-date}T11:00:48+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ff88f1a78dac067bb93d98818bcee9bed36de0b2a74f3ed42d15ad816a16f624 [183/183]
-upgrades.pre-cache {last-update-date}T11:00:48+00:00 DEBUG Image pre-cache done</code></pre>
+upgrades.pre-cache 2023-11-21T11:00:48+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ff7cfeec16898c293222ac1422841440cdeffefa7d489757e71999d5305425f8 [182/183]
+upgrades.pre-cache 2023-11-21T11:00:48+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ff88f1a78dac067bb93d98818bcee9bed36de0b2a74f3ed42d15ad816a16f624 [183/183]
+upgrades.pre-cache 2023-11-21T11:00:48+00:00 DEBUG Image pre-cache done</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1153,12 +1253,12 @@ INFO[0000] found latest etcd: /etc/kubernetes/static-pod-resources/etcd-pod-3
 INFO[0000] aa91d2b9d4ac8ef60ea81f11643fdaad14717e21a7a4f82b57f59667a02c92af
 INFO[0000] etcdctl version: 3.5.6
 INFO[0000] API version: 3.5
-INFO[0000] {"level":"info","ts":"2023-07-05T10:57:54.421Z","caller":"snapshot/v3_snapshot.go:65","msg":"created temporary db file","path":"/var/recovery/cluster/snapshot_2023-07-05_105754__POSSIBLY_DIRTY__.db.part"}
-INFO[0000] {"level":"info","ts":"2023-07-05T10:57:54.434Z","logger":"client","caller":"v3@v3.5.6/maintenance.go:212","msg":"opened snapshot stream; downloading"}
-INFO[0000] {"level":"info","ts":"2023-07-05T10:57:54.434Z","caller":"snapshot/v3_snapshot.go:73","msg":"fetching snapshot","endpoint":"https://192.168.125.40:2379"}
-INFO[0001] {"level":"info","ts":"2023-07-05T10:57:55.204Z","logger":"client","caller":"v3@v3.5.6/maintenance.go:220","msg":"completed snapshot read; closing"}
-INFO[0001] {"level":"info","ts":"2023-07-05T10:57:55.290Z","caller":"snapshot/v3_snapshot.go:88","msg":"fetched snapshot","endpoint":"https://192.168.125.40:2379","size":"84 MB","took":"now"}
-INFO[0001] {"level":"info","ts":"2023-07-05T10:57:55.290Z","caller":"snapshot/v3_snapshot.go:97","msg":"saved","path":"/var/recovery/cluster/snapshot_2023-07-05_105754__POSSIBLY_DIRTY__.db"}
+INFO[0000] {"level":"info","ts":"2023-11-21T10:57:54.421Z","caller":"snapshot/v3_snapshot.go:65","msg":"created temporary db file","path":"/var/recovery/cluster/snapshot_2023-07-05_105754__POSSIBLY_DIRTY__.db.part"}
+INFO[0000] {"level":"info","ts":"2023-11-21T10:57:54.434Z","logger":"client","caller":"v3@v3.5.6/maintenance.go:212","msg":"opened snapshot stream; downloading"}
+INFO[0000] {"level":"info","ts":"2023-11-21T10:57:54.434Z","caller":"snapshot/v3_snapshot.go:73","msg":"fetching snapshot","endpoint":"https://192.168.125.40:2379"}
+INFO[0001] {"level":"info","ts":"2023-11-21T10:57:55.204Z","logger":"client","caller":"v3@v3.5.6/maintenance.go:220","msg":"completed snapshot read; closing"}
+INFO[0001] {"level":"info","ts":"2023-11-21T10:57:55.290Z","caller":"snapshot/v3_snapshot.go:88","msg":"fetched snapshot","endpoint":"https://192.168.125.40:2379","size":"84 MB","took":"now"}
+INFO[0001] {"level":"info","ts":"2023-11-21T10:57:55.290Z","caller":"snapshot/v3_snapshot.go:97","msg":"saved","path":"/var/recovery/cluster/snapshot_2023-07-05_105754__POSSIBLY_DIRTY__.db"}
 INFO[0001] Snapshot saved at /var/recovery/cluster/snapshot_2023-07-05_105754__POSSIBLY_DIRTY__.db
 INFO[0001] Deprecated: Use `etcdutl snapshot status` instead.
 INFO[0001]
@@ -1198,10 +1298,10 @@ ztp-policies   update-europe-snos   28m    BackupCompleted   Backup is completed
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   {sno-cluster-version2-cvo}    True        True          30s     Working towards {sno-cluster-version2-cvo}: 101 of 842 done (11% complete), waiting on kube-apiserver
+clusterversion.config.openshift.io/version   4.14.1    True        True          30s     Working towards 4.14.1: 101 of 842 done (11% complete), waiting on kube-apiserver
 
 NAME                          STATUS   ROLES                         AGE    VERSION
-node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   156m   {sno-cluster-version2-kubeversion}</code></pre>
+node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   156m   v1.27.6+f67aeb3</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1231,10 +1331,10 @@ node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   156m   {sno
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   {sno-cluster-version2-cvo}    True        False         6m8s    Cluster version is {sno-cluster-version2-cvo}
+clusterversion.config.openshift.io/version   4.14.1    True        False         6m8s    Cluster version is 4.14.1
 
 NAME                          STATUS   ROLES                         AGE     VERSION
-node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   3h26m   {sno-cluster-version2-kubeversion}</code></pre>
+node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   3h26m   v1.27.6+f67aeb3</code></pre>
 </div>
 </div>
 <div class="listingblock console-input">
@@ -1245,10 +1345,10 @@ node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   3h26m   {sn
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   {sno-cluster-version2-cvo}    True        False         9m12s   Cluster version is {sno-cluster-version2-cvo}
+clusterversion.config.openshift.io/version   4.14.1    True        False         9m12s   Cluster version is 4.14.1
 
 NAME                      STATUS   ROLES                         AGE   VERSION
-node/openshift-master-0   Ready    control-plane,master,worker   22h   {sno-cluster-version2-kubeversion}</code></pre>
+node/openshift-master-0   Ready    control-plane,master,worker   22h   v1.27.6+f67aeb3</code></pre>
 </div>
 </div>
 <div class="paragraph">

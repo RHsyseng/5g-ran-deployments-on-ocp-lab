@@ -279,7 +279,16 @@
     <a class="nav-link" href="talm.html#waves">Policy Waves</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="talm.html#talm-precache">Precaching</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="talm.html#talm-precaching-without-precachingconfig">Precaching without PreCachingConfig Example</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="talm.html#talm-precaching-with-precachingconfig">Precaching with PreCachingConfig Example</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="talm.html#talm-backup">Backup &amp; Recovery</a>
@@ -357,17 +366,61 @@
     <a class="nav-link" href="policygen-deepdive.html#siteconfig-templating">SiteConfig Templating</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="policygen-deepdive.html#policies-templating">Policies Templating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#custom-policy-templates">Policies Custom Templating</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="policygen-deepdive.html#kustomize-plugins-locally">Running Kustomize Plugins Locally</a>
   </li>
 </ul>
   </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html">Integration with Ansible Automation Platform</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#aap-overview">AAP Overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#augmenting-openshift">Augmenting OpenShift with Ansible Automation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#intro-to-aap-operator">Introduction to the AAP Operator</a>
+  </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="0">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#aap-components">Defining Components</a>
 <ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#automation-hub">Automation Hub</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#automation-controller">Automation Controller</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="integration-with-aap.html#workflow-overview">Workflow Overview</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#general-workflow">General AAP Integration Workflow</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="integration-with-aap.html#lab-workflow">Lab AAP Integration Workflow</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
@@ -415,7 +468,7 @@
     <a class="nav-link" href="lab-environment-introduction.html#openshift-hub-cluster">OpenShift Hub Cluster</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="lab-environment-introduction.html#automation-hub-and-controller">AAP Automation Hub and Automation Controller</a>
+    <a class="nav-link" href="lab-environment-introduction.html#automation-controller">AAP Automation Controller</a>
   </li>
 </ul>
   </li>
@@ -482,10 +535,9 @@
   </li>
 </ul>
   </li>
-</ul>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="adding-automation.html">Adding Automation</a>
   </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="monitoring-the-deployment.html">Monitoring the Deployment</a>
@@ -510,6 +562,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#ensure-automation-ran-successfully">Ensure AAP Automation Ran Successfully</a>
   </li>
 </ul>
   </li>
@@ -659,6 +714,9 @@
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
   </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-aap">Configure AAP</a>
+  </li>
 </ul>
   </li>
 </ul>
@@ -774,7 +832,7 @@ oc get clusterversion</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME      VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-version   {hub-cluster-ocp-version}   True        False         22h     Cluster version is {hub-cluster-ocp-version}</code></pre>
+version   v4.14.1   True        False         22h     Cluster version is v4.14.1</code></pre>
 </div>
 </div>
 <div class="listingblock console-input">
@@ -785,9 +843,9 @@ version   {hub-cluster-ocp-version}   True        False         22h     Cluster 
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME           STATUS   ROLES           AGE   VERSION
-ocp-master-0   Ready    master,worker   23h   {hub-cluster-kubeversion}
-ocp-master-1   Ready    master,worker   23h   {hub-cluster-kubeversion}
-ocp-master-2   Ready    master,worker   23h   {hub-cluster-kubeversion}</code></pre>
+ocp-master-0   Ready    master,worker   23h   v1.27.6+f67aeb3
+ocp-master-1   Ready    master,worker   23h   v1.27.6+f67aeb3
+ocp-master-2   Ready    master,worker   23h   v1.27.6+f67aeb3</code></pre>
 </div>
 </div>
 <div class="listingblock console-input">
@@ -990,8 +1048,8 @@ sno2                    sno2.5g-deployment.lab   provisioned                    
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAMESPACE   NAME   ISO CREATED AT
-sno1        sno1   {last-update-date}T10:08:09Z
-sno2        sno2   {last-update-date}T10:26:06Z</code></pre>
+sno1        sno1   2023-11-21T10:08:09Z
+sno2        sno2   2023-11-21T10:26:06Z</code></pre>
 </div>
 </div>
 <div class="listingblock console-input">
@@ -1131,7 +1189,7 @@ metadata:
 status:
   computedMaxConcurrency: 1
   conditions:
-  - lastTransitionTime: "{last-update-date}T11:16:09Z"
+  - lastTransitionTime: "2023-11-21T11:16:09Z"
     message: The ClusterGroupUpgrade CR has upgrade policies that are still non compliant
     reason: UpgradeNotCompleted
     status: "False"
@@ -1150,8 +1208,8 @@ status:
       sno2:
         policyIndex: 2
         state: InProgress
-    currentBatchStartedAt: "{last-update-date}T11:16:09Z"
-    startedAt: "{last-update-date}T11:16:09Z"</code></pre>
+    currentBatchStartedAt: "2023-11-21T11:16:09Z"
+    startedAt: "2023-11-21T11:16:09Z"</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1247,7 +1305,7 @@ Command below checks sno1, you may want to check both SNOs.
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
 metadata:
-  creationTimestamp: "{last-update-date}T14:35:17Z"
+  creationTimestamp: "2023-11-21T14:35:17Z"
   generation: 1
   labels:
     operators.coreos.com/lvms-operator.openshift-storage: ""
@@ -1257,7 +1315,7 @@ metadata:
   resourceVersion: "70835"
   uid: f30a26a2-fdaf-4469-8271-d5d5ac0cb64c
 spec:
-  channel: {lvms-channel}
+  channel: stable-4.14
   installPlanApproval: Manual
   name: lvms-operator
   source: redhat-operator-index
@@ -1272,9 +1330,9 @@ status:
       resourceVersion: "70778"
       uid: e9ebbd29-f28d-4619-ab71-66bed8e52de2
     healthy: true
-    lastUpdated: "{last-update-date}T15:34:53Z"
+    lastUpdated: "2023-11-21T15:34:53Z"
   conditions:
-  - lastTransitionTime: "{last-update-date}T15:34:53Z"
+  - lastTransitionTime: "2023-11-21T15:34:53Z"
     message: all available catalogsources are healthy
     reason: AllCatalogSourcesHealthy
     status: "False"
