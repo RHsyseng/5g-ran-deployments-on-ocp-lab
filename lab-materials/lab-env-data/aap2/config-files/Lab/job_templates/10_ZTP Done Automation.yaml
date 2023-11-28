@@ -14,10 +14,11 @@ controller_templates:
     ask_scm_branch_on_launch: "False"
     ask_tags_on_launch: "False"
     ask_verbosity_on_launch: "False"
-    ask_variables_on_launch: "False"
+    ask_variables_on_launch: "True"
     extra_vars:
       namespace_to_add: ztp-day2-automation-with-aap
       state: present
+      target_clusters: []
     execution_environment: "5G RAN Lab"
     survey_enabled: False
     survey_spec: {}

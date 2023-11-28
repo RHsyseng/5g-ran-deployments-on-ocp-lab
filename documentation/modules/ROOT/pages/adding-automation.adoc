@@ -6,7 +6,17 @@ Now that we have deployed our cluster, let's add our automation. Recall that thi
 
 First, we will add some supporting OpenShift resources for automation. We will add a namespace `ran-lab-automation` which our automation resources will belong to, along with a Secret configuring ACM's authorization to access the AAP Controller through the controller's auth token.
 
-CAUTION: Replace <automation-controller-token> with the Automation Controller token privded in the e-mail you received when the lab was ready.
+Before configuring the automation jobs, we need to grant access to our Ansible Automation Platform to RHACM. In order to do that, we first need to login into the https://automation-aap.apps.hub.5g-deployment.lab/#/home[AAP Controller UI], and login with the `student` user and the password that you received in the email.
+
+Once you're logged follow the following steps:
+
+1. Click on the `student` -> `User Details` in the top right corner.
+2. Click on `Tokens`.
+3. Click on `Add`
+4. Leave application and description fields empty and select `write` for the Scope.
+5. Click `Save` and once the token is presented, save it into a safe location, we will use it in the next steps.
+
+CAUTION: Replace <automation-controller-token> with the token you just got created.
 
 [.console-input]
 [source,bash]
@@ -24,7 +34,7 @@ metadata:
   name: ran-lab-automation
 EOF
 
-cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n ran-lab-automation apply -f -
+cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
 apiVersion: v1
 kind: Secret
 type: Opaque
@@ -54,42 +64,28 @@ metadata:
   name: ztp-day2-automation
 spec:
   tower_auth_secret: aap-controller-token
-  job_template_name: ztp-day2-automation-template
+  job_template_name: "ZTP Done Automation"
 # extra_vars:
 #   target_clusters: {{ list.of.clusters }}     <-- array provided by ACM with an entry for each managed cluster that is affected
 -----
 
 Now, let's create our Application. 
 
-First, the Channel that will be used by the application.
+We can create our Channel, Application, its Subscription, and the PlacementRule to bind this application to the intended clusters.
 
 [.console-input]
 [source,bash]
 -----
 cat << EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
 ---
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: gogs-repo-ns
----
 apiVersion: apps.open-cluster-management.io/v1
 kind: Channel
 metadata:
   name: gogs-repo
-  namespace: gogs-repo-ns
+  namespace: ran-lab-automation
 spec:
   pathname: http://infra.5g-deployment.lab:3000/student/aap-integration-tools.git
   type: Git
-EOF
------
-
-Next, we can create our Application, its Subscription, and the PlacementRule to bind this application to the intended clusters.
-
-[.console-input]
-[source,bash]
------
-cat << EOF | oc -n ran-lab-automation apply -f -
 ---
 apiVersion: app.k8s.io/v1beta1
 kind: Application
@@ -122,7 +118,7 @@ metadata:
 spec:
   hooksecretref:
     name: aap-controller-token
-  channel: gogs-repo-ns/gogs-repo
+  channel: ran-lab-automation/gogs-repo
   placement:
     placementRef:
       apiGroup: apps.open-cluster-management.io

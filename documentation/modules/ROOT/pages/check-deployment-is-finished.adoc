@@ -68,29 +68,29 @@ ztp-policies.sno2-site-policies             inform               Compliant      
 
 3. At this point the SNO is ready to run 5G RAN workloads.
 
-//[#ensure-automation-ran-successfully]
-//== Ensure AAP Automation Ran Successfully
-//
-//Now that SNO deployment is finished, automation should run as soon as the cluster is marked with the `ztp-done` label. We can easily check the labels on our `sno2` cluster via the OpenShift web console, under the `Infrastructure` > `Clusters` tab.
-//
-//image::sno2-labels.png[SNO2 Labels]
-//
-//There are a couple ways to ensure automation has run successfully.
-//
-//First, the Ansible job template used in this lab was configured to add an `aap-done` label to a cluster after it has run automation on it successfully, so notice that our `sno2` cluster now has the label `aap-done`.
-//
-//image::sno2-aap-done.png[SNO2 AAP Done Label]
-//
-//Additionally, under the Applications tab on our OpenShift web console, if we search for `monitor-ztp-done`, we will see our automation Application. Let's take a look at this Application by clicking on its name. Notice the green check next to `Cluster resource status`, indicating automation has ran successfully. Now, navigating to the Topology tab we see a visual representation of the automation that has ran.
-//
-//image::aap-app.png[AAP Application]
-//
-//image::aap-app-topology.png[AAP Topology]
-//
-//Lastly, to view status and logs for the actual Ansible Controller job that ran, we can navigate to https://automation-aap.apps.hub.5g-deployment.lab, click on the "Jobs" tab, and view the latest job that ran.
-//
-//image::aap-jobs.png[AAP Jobs]
-//
-//image::aap-single-job.png[Single AAP Job]
-//
-//NOTE: Running automation on `local-cluster` and `sno1` was not a focus of this lab, but since `local-cluster` was also deployed via a ZTP workflow and `sno1` was imported into RHACM, they will have `ztp-done` labels and our application will run automation on these clusters as well. This model of maintaing one automation application for day 2 operations for N clusters makes utilizing ZTP and AAP automation together in a 5G RAN environment great at scale while also maintaining configuration control, as controlling which clusters run automation is as simple as adjusting the automation application's PlacementRule.
+[#ensure-automation-ran-successfully]
+== Ensure AAP Automation Ran Successfully
+
+Now that SNO deployment is finished, automation should run as soon as the cluster is marked with the `ztp-done` label. We can easily check the labels on our `sno2` cluster via the OpenShift web console, under the `Infrastructure` > `Clusters` tab.
+
+image::sno2-labels.png[SNO2 Labels]
+
+There are a couple ways to ensure automation has run successfully.
+
+First, the Ansible job template used in this lab was configured to add an `aap-done` label to a cluster after it has run automation on it successfully, so notice that our `sno2` cluster now has the label `aap-done`.
+
+image::sno2-aap-done.png[SNO2 AAP Done Label]
+
+Additionally, under the Applications tab on our OpenShift web console, if we search for `monitor-ztp-done`, we will see our automation Application. Let's take a look at this Application by clicking on its name. Notice the green check next to `Cluster resource status`, indicating automation has ran successfully. Now, navigating to the Topology tab we see a visual representation of the automation that has ran.
+
+image::aap-app.png[AAP Application]
+
+image::aap-app-topology.png[AAP Topology]
+
+Lastly, to view status and logs for the actual Ansible Controller job that ran, we can navigate to https://automation-aap.apps.hub.5g-deployment.lab, click on the "Jobs" tab, and view the latest job that ran.
+
+image::aap-jobs.png[AAP Jobs]
+
+image::aap-single-job.png[Single AAP Job]
+
+NOTE: As we can see the automation has run on every managed cluster with the label `ztp-done` and that is not the Hub cluster itself. This model of maintain one automation application for day 2 operations for N clusters makes utilizing ZTP and AAP automation together in a 5G RAN environment great at scale while also maintaining configuration control, as controlling which clusters run automation is as simple as adjusting the automation application's PlacementRule.

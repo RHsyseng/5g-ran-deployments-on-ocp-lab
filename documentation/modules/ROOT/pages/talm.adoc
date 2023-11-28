@@ -110,7 +110,22 @@ image::talm_precache.png[ACM architecture]
 
 IMPORTANT: Precaching currently only targets Single Node OpenShift clusters.
 
-By enabling precache feature without enabling the CGU, as shown in the following code snippet, the first thing is going to happen is pull all the container images required for the OCP release we are about to upgrade in the target cluster. So, we will have all required images already downloaded in our container-storage location, by default '/var/lib/containers', before even starting the upgrade task.
+By enabling precache feature without enabling the CGU, the first thing is going to happen is a pull operation for all the container images required for the OCP release we are about to upgrade in the target cluster. So, we will have all required images already downloaded in our container-storage location, by default '/var/lib/containers', before even starting the upgrade task.
+
+Starting in OCP 4.14+ a new CRD has been added in TALM, `PreCachingConfig`, this CRD enables fine-grained control over what artifacts must be pre-cached before the update gets triggered.
+
+It's not mandatory to define a `PreCachingConfig`, if we don't define one and we configure the `preCaching: true` in the `ClusterGroupUpgrade` the behavior will be the same as it was in previous versions where everything in the release was precached.
+
+Extended documentation on how the `PreCachingConfig` works can be found {ztp-precaching-config-docs}[here].
+
+Once the container images are precached, we just need to enable the CGU by setting `enabled: true`. Then, a regular platform upgrade managed by the TALM operator will start. This time the update will be faster and resilient to transient network issues since the container images are stored locally.
+
+CAUTION: If both policy and precaching are enabled, the upgrade will be executed immediately after the precache is done successfully.
+
+A more in-detail explanation of the Precaching feature is covered in https://videos.learning.redhat.com/media/OCP+TALO+precache+sequential+platform+upgrade/1_7kgh6jze/253048913[training material]: "Precaching and sequential platform upgrades using TALM" recording.
+
+[#talm-precaching-without-precachingconfig]
+=== Precaching without PreCachingConfig Example
 
 [console-input]
 [source,yaml,subs="attributes+,+macros"]
@@ -135,12 +150,61 @@ spec:
     timeout: 240
 -----
 
-Once the container images are precached, we just need to enable the CGU by setting `enabled: true`. Then, a regular platform upgrade managed by the TALM operator will start. This time the update will be faster and resilient to transient network issues since the container images are stored locally.
+[#talm-precaching-with-precachingconfig]
+=== Precaching with PreCachingConfig Example
 
-CAUTION: If both policy and precaching are enabled, the upgrade will be executed immediately after the precache is done successfully.
+[console-input]
+[source,yaml,subs="attributes+,+macros"]
+-----
+apiVersion: ran.openshift.io/v1alpha1
+kind: PreCachingConfig
+metadata:
+  name: du-upgrade
+  namespace: ztp-group-du-sno
+spec:
+  overrides: 
+    platformImage: {talm-update-image}
+    operatorsIndexes:
+      - registry.example.com:5000/custom-redhat-operators:1.0.0
+    operatorsPackagesAndChannels:
+      - local-storage-operator: stable
+      - ptp-operator: stable
+      - sriov-network-operator: stable
+  spaceRequired: 30 Gi 
+  excludePrecachePatterns: 
+    - aws
+    - vsphere
+  additionalImages: 
+    - quay.io/exampleconfig/application1@sha256:3d5800990dee7cd4727d3fe238a97e2d2976d3808fc925ada29c559a47e2e1ef
+    - quay.io/exampleconfig/application2@sha256:3d5800123dee7cd4727d3fe238a97e2d2976d3808fc925ada29c559a47adfaef
+    - quay.io/exampleconfig/applicationN@sha256:4fe1334adfafadsf987123adfffdaf1243340adfafdedga0991234afdadfsa09
+-----
 
-A more in-detail explanation of the Precaching feature is covered in https://videos.learning.redhat.com/media/OCP+TALO+precache+sequential+platform+upgrade/1_7kgh6jze/253048913[training material]: "Precaching and sequential platform upgrades using TALM" recording.
-
+[console-input]
+[source,yaml,subs="attributes+,+macros"]
+-----
+apiVersion: ran.openshift.io/v1alpha1
+kind: ClusterGroupUpgrade
+metadata:
+  name: du-upgrade
+  namespace: ztp-group-du-sno
+spec:
+  preCaching: true #precache configuration
+  preCachingConfigRef: #reference to precacheconfiguration
+    name: du-upgrade
+    namespace: ztp-group-du-sno
+  backup: true
+  deleteObjectsOnCompletion: true
+  clusters:
+  - cnfdb1
+  - cnfdb2
+  enable: false #precache only
+  managedPolicies:
+  - du-upgrade-platform-upgrade
+  remediationStrategy:
+    maxConcurrency: 2
+    timeout: 240
+-----
 
 [#talm-backup]
 == Backup and Recovery

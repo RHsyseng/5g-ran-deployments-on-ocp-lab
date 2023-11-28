@@ -100,7 +100,7 @@ A more in-detail explanation of the 5G RAN Profile is covered in this https://vi
 
 Pins OCP platform, operating system processes and day2 operator Pods that are part of the DU profile to the reserved cpuset.
 
-{cnf-features-source-crs}/extra-manifest/workload/03-workload-partitioning.yaml[Manifest]
+Starting in OCP4.14+ this gets configured in the `PerformanceProfile` managed by the Node Tuning Operator.
 
 [#kubelet-tuning]
 === Kubelet Tuning
@@ -230,7 +230,7 @@ The SiteConfig templating is pretty straightforward, whatever information we put
 [#policies-templating]
 == Policies Templating
 
-Policies templating is a bit different, we have a set of base configuration CRs, known as source-crs, that we can use. This set of CRs can be found https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.13/ztp/source-crs[here].
+Policies templating is a bit different, we have a set of base configuration CRs, known as source-crs, that we can use. This set of CRs can be found {cnf-features-source-crs}[here].
 
 If you access this link you will see lots of files, like for example:
 
@@ -280,6 +280,11 @@ The second source CR, `PerformanceProfile.yaml`, is overriding some parameters i
 
 CAUTION: Inside the templates we can often see references to what may appear variables like `$size`, `$count`, etc. These are not vars, that actually tells the policyGen plugin to remove that line from the output if no value was provided as an override. The only variable that is referenced and is actually substituted is the `$mcp` variable that will be replaced with the value of the same property defined in the PolicyGenTemplate.
 
+[#custom-policy-templates]
+=== Policies Custom Templating
+
+In the previous section we have seen how we can use pre-defined templates to craft our policies, sometimes we may need to configure things that do not have a specific template pre-defined. In such cases, we can create our own templates by creating the template files within the same repository. Complete information can be found in {advanced-ztp-policy-config}[the docs].
+
 [#kustomize-plugins-locally]
 == Running Kustomize Plugins Locally
 
@@ -320,12 +325,5 @@ metadata:
     name: ztp-sno
   name: ztp-sno
 ---
-apiVersion: v1
-data:
-  03-workload-partitioning.yaml: |
-    apiVersion: machineconfiguration.openshift.io/v1
-    kind: MachineConfig
-    metadata:
-        annotations:
 <OUTPUT_OMITTED>
 -----
