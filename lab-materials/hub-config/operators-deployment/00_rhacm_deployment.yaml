@@ -30,5 +30,5 @@ metadata:
 spec:
   channel: "release-2.9"
   name: advanced-cluster-management
-  source: redhat-operator-index
+  source: cs-redhat-operator-index
   sourceNamespace: openshift-marketplace
