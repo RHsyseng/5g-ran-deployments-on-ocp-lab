@@ -86,7 +86,7 @@ image::aap-app.png[AAP Application]
 image::aap-app-topology.png[AAP Topology]
 
 Lastly, to view status and logs for the actual Ansible Controller job that ran, we can navigate to https://automation-aap.apps.hub.5g-deployment.lab, click on the "Jobs" tab, and view the latest job that ran.
-mv 
+
 image::aap-jobs.png[AAP Jobs]
 
 image::aap-single-job.png[Single AAP Job]
