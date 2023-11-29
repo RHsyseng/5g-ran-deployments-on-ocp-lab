@@ -64,4 +64,5 @@
 :aap-docs: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/
 :aap-hub-docs: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/deploying_the_red_hat_ansible_automation_platform_operator_on_openshift_container_platform/installing-hub-operator
 :aap-controller-docs: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/deploying_the_red_hat_ansible_automation_platform_operator_on_openshift_container_platform/installing-controller-operator
+:aap-get-manifest-docs: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/red_hat_ansible_automation_platform_operations_guide/assembly-aap-obtain-manifest-files
 :last-update-date: 2023-11-21
