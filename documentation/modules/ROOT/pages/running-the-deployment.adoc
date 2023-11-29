@@ -109,4 +109,4 @@ image::argocd-clusters-app.png[ArgoCD Clusters App]
 image::argocd-policies-app.png[ArgoCD Policies App]
 +
 
-In the next section we will see how we can monitor the deployment process.
+In the next section we will see how we can add extra automation by using Ansible Automation Platform integration.
