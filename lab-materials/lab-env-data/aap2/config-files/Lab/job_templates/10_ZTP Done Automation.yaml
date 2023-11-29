@@ -4,7 +4,7 @@ controller_templates:
     description: ""
     organization: "Lab"
     project: "5G RAN Lab Project"
-    inventory: "ZTP Done Clusters"
+    inventory: "Lab Inventory"
     playbook: "{{ playbook_source_path }}"
     job_type: "run"
     fact_caching_enabled: "False"

@@ -150,7 +150,7 @@ git commit -m "adds upgrade policy"
 git push origin main 
 -----
 
-Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named `europe-snos-upgrade-{talm-update-policy-name}`` has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule. 
+Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named `europe-snos-upgrade-{talm-update-policy-name}` has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule. 
 
 WARNING: Notice in the following picture that there are policies not applying to any cluster. Those are policies targeting the test environment. This is expected since we do not have any clusters in the test environment, e.g, no clusters are labeled with the proper label for testing: logicalGroup=test.
 
@@ -265,7 +265,7 @@ ztp-policies   update-europe-snos   20s    InProgress   Precaching in progress f
 
 Connecting to any of our spoke clusters we can see a new job being created called pre-cache.
 
-WARNING: Notice that pre-cache job can take up to 5m to be created.
+WARNING: Pre-cache job can take up to 5m to be created.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -351,7 +351,7 @@ ztp-policies   update-europe-snos   30m     InProgress   Backup in progress for 
 
 Connecting to any of our spoke clusters we can see a new job being created called backup-agent.
 
-WARNING: Notice that backup job can take up to 5m to be created.
+WARNING: Backup job can take up to 5m to be created.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -452,7 +452,7 @@ oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig get clusterversion,nodes
 [source,console,subs="attributes+,+macros"]
 -----
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   {sno-cluster-version2-cvo}    True        True          30s     Working towards {sno-cluster-version2-cvo}: 101 of 842 done (11% complete), waiting on kube-apiserver
+clusterversion.config.openshift.io/version   {sno-cluster-version1-cvo}    True        True          30s     Working towards {sno-cluster-version2-cvo}: 101 of 842 done (11% complete), waiting on kube-apiserver
 
 NAME                          STATUS   ROLES                         AGE    VERSION
 node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   156m   {sno-cluster-version2-kubeversion}

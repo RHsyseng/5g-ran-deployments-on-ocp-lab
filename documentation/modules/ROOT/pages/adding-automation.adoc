@@ -50,11 +50,11 @@ stringData:
 EOF
 -----
 
-Our AnsibleJob automation is housed in a git repository at http://infra.5g-deployment.lab:3000/student/aap-integration-tools/src/branch/main/site-applications/prehook/main.yml. It invokes our `ztp-day2-automation-template` Ansible Controller job template, which first creates the `ztp-day2-automation` namespace in the cluster, then adds the `aap-done` label to the cluster.
+Our AnsibleJob automation is housed in a git repository at http://infra.5g-deployment.lab:3000/student/aap-integration-tools/src/branch/main/site-applications/prehook/main.yml. It invokes our `ZTP Done Automation` Ansible Controller job template, which first creates the `ztp-day2-automation` namespace in the cluster, then adds the `aap-done` label to the managed cluster.
 
-NOTE: Creating the `ztp-day2-automation` namespace is an example configuration. In your own deployments, this step can be substituted with any series of imperative configuration steps that a deployed cluster may need.
+NOTE: Creating the `ztp-day2-automation` namespace is an example configuration. In your own deployments, this step can be substituted with any series of imperative configuration steps that a deployed cluster or the infrastructure may need.
 
-We will now create an Openshift Application-based hook into AAP. At a high level the role of the Application is to trigger the AnsibleJob with an extra variable to pass to the Automation Controller which hosts the automation should run on. Here is an example CRD for reference, with the extra variable RHACM passes in comments:
+We will now create an Openshift Application-based hook into AAP. At a high level the role of the Application is to trigger the AnsibleJob and pass the clusters being targeted by the automation as extra_vars. Here is an example CRD for reference, with the extra variable RHACM passes in comments:
 
 [source,yaml]
 -----
@@ -137,7 +137,8 @@ spec:
   clusterSelector:
     matchExpressions:
       - {key: ztp-done, operator: Exists}
+      - {key: name, operator: NotIn, values: [local-cluster]}
 EOF
 -----
 
-We have now successfully configured our automation, which will run as soon as our cluster reaches `ztp-done`.
+We have now successfully configured our automation, which will run as soon as our clusters reach `ztp-done`. We can move to the next section to see how we can monitor the deployment process.
