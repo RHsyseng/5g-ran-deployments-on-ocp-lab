@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Lab Environment :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://labs.sysdeseng.com/4.14/lab-environment.html">
-    <link rel="prev" href="closing-thoughts.html">
+    <title>Adding AAP Automation to the Deployment :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://labs.sysdeseng.com/4.14/adding-aap-automation.html">
+    <link rel="prev" href="running-the-deployment.html">
+    <link rel="next" href="monitoring-the-deployment.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
   </head>
@@ -534,7 +535,7 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <a class="nav-link" href="adding-aap-automation.html">Adding AAP Automation to the Deployment</a>
   </li>
   <li class="nav-item" data-depth="1">
@@ -654,67 +655,67 @@
   <li class="nav-item" data-depth="1">
     <a class="nav-link" href="closing-thoughts.html">Closing Thoughts</a>
   </li>
-  <li class="nav-item is-current-page" data-depth="1">
+  <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="lab-environment.html">Lab Environment</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#lab-requirements">Lab Requirements</a>
+    <a class="nav-link" href="lab-environment.html#lab-requirements">Lab Requirements</a>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#lab-deployment">Lab Deployment</a>
+    <a class="nav-link" href="lab-environment.html#lab-deployment">Lab Deployment</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#install-kcli">Install kcli</a>
+    <a class="nav-link" href="lab-environment.html#install-kcli">Install kcli</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#install-oc-kubectl">Install oc/kubectl CLIs</a>
+    <a class="nav-link" href="lab-environment.html#install-oc-kubectl">Install oc/kubectl CLIs</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#configure-disconnected-network">Configure Disconnected Network</a>
+    <a class="nav-link" href="lab-environment.html#configure-disconnected-network">Configure Disconnected Network</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#configure-local-dns-dhcp-server">Configure Local DNS/DHCP Server</a>
+    <a class="nav-link" href="lab-environment.html#configure-local-dns-dhcp-server">Configure Local DNS/DHCP Server</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#configure-local-dns-as-primary-server">Configure Local DNS as Primary Server</a>
+    <a class="nav-link" href="lab-environment.html#configure-local-dns-as-primary-server">Configure Local DNS as Primary Server</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#disable-firewall">Disable Firewall</a>
+    <a class="nav-link" href="lab-environment.html#disable-firewall">Disable Firewall</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#install-ksushytools">Install Ksushy Tool</a>
+    <a class="nav-link" href="lab-environment.html#install-ksushytools">Install Ksushy Tool</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#configure-disconnected-registry">Configure Disconnected Registry</a>
+    <a class="nav-link" href="lab-environment.html#configure-disconnected-registry">Configure Disconnected Registry</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#configure-git-server">Configure Git Server</a>
+    <a class="nav-link" href="lab-environment.html#configure-git-server">Configure Git Server</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#configure-ntp-server">Configure NTP Server</a>
+    <a class="nav-link" href="lab-environment.html#configure-ntp-server">Configure NTP Server</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#configure-access-to-cluster-apps">Configure Access to Cluster Apps</a>
+    <a class="nav-link" href="lab-environment.html#configure-access-to-cluster-apps">Configure Access to Cluster Apps</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#create-openshift-nodes-vms">Create OpenShift Nodes VMs</a>
+    <a class="nav-link" href="lab-environment.html#create-openshift-nodes-vms">Create OpenShift Nodes VMs</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#deploy-openshift-hub-cluster">Deploy OpenShift Hub Cluster</a>
+    <a class="nav-link" href="lab-environment.html#deploy-openshift-hub-cluster">Deploy OpenShift Hub Cluster</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#configure-openshift-hub-cluster">Configure OpenShift Hub Cluster</a>
+    <a class="nav-link" href="lab-environment.html#configure-openshift-hub-cluster">Configure OpenShift Hub Cluster</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#deploy-openshift-hub-cluster-operators">Deploy OpenShift HUB Cluster Operators</a>
+    <a class="nav-link" href="lab-environment.html#deploy-openshift-hub-cluster-operators">Deploy OpenShift HUB Cluster Operators</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
+    <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#configure-aap">Configure Ansible Automation Platform</a>
+    <a class="nav-link" href="lab-environment.html#configure-aap">Configure Ansible Automation Platform</a>
   </li>
 </ul>
   </li>
@@ -734,18 +735,44 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="lab-environment.html">Lab Environment</a></li>
+    <li><a href="adding-aap-automation.html">Adding AAP Automation to the Deployment</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/lab-4.14/documentation/modules/ROOT/pages/lab-environment.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/lab-4.14/documentation/modules/ROOT/pages/adding-aap-automation.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Lab Environment</h1>
-<div id="preamble">
-<div class="sectionbody">
+<h1 class="page">Adding AAP Automation to the Deployment</h1>
 <div class="paragraph">
-<p>This section describes how to deploy your own lab environment.</p>
+<p>Now that we have deployed our cluster, let&#8217;s add our automation. Recall that this process includes creating supporting resources, checking our AnsibleJob CRD into a hosted git repository, and deploying our automation Application.</p>
+</div>
+<div class="paragraph">
+<p>First, we will add some supporting OpenShift resources for automation. We will add a namespace <code>ran-lab-automation</code> which our automation resources will belong to, along with a Secret configuring ACM&#8217;s authorization to access the AAP Controller through the controller&#8217;s auth token.</p>
+</div>
+<div class="paragraph">
+<p>Before configuring the automation jobs, we need to grant access to our Ansible Automation Platform to RHACM. In order to do that, we first need to login into the <a href="https://automation-aap.apps.hub.5g-deployment.lab/#/home">AAP Controller UI</a>, and login with the <code>student</code> user and the password that you received in the email.</p>
+</div>
+<div class="paragraph">
+<p>Once you&#8217;re logged follow the following steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click on the <code>student</code> &#8594; <code>User Details</code> in the top right corner.</p>
+</li>
+<li>
+<p>Click on <code>Tokens</code>.</p>
+</li>
+<li>
+<p>Click on <code>Add</code></p>
+</li>
+<li>
+<p>Leave application and description fields empty and select <code>write</code> for the Scope.</p>
+</li>
+<li>
+<p>Click <code>Save</code> and once the token is presented, save it into a safe location, we will use it in the next steps.</p>
+</li>
+</ol>
 </div>
 <div class="admonitionblock caution">
 <table>
@@ -754,338 +781,43 @@
 <i class="fa icon-caution" title="Caution"></i>
 </td>
 <td class="content">
-If you are a Red Hatter, you can order a lab environment on the <a href="https://demo.redhat.com">Red Hat Demo Platform</a>. You just need to order the lab named <code>5G RAN Deployment on OpenShift</code>.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="lab-requirements"><a class="anchor" href="#lab-requirements"></a>Lab Requirements</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>RHEL 8.X box with access to the Internet. This lab relies on KVM, so you need to have the proper virtualization packages already installed. It is highly recommended to use a bare-metal host. Our lab environment has the following specs:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>64 cores in total, with or without hyperthreading enabled.</p>
-</li>
-<li>
-<p>200GiB Memory.</p>
-</li>
-<li>
-<p>1 TiB storage.</p>
-</li>
-</ul>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-These instructions have been tested in a RHEL 8.8, we cannot guarantee that other operating systems (even RHEL-based) will work. We won&#8217;t be providing support out of RHEL 8.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>These are the steps to install the required packages on a RHEL 8.8 server:</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum -y install libvirt libvirt-daemon-driver-qemu qemu-kvm
-usermod -aG qemu,libvirt $(id -un)
-newgrp libvirt
-systemctl enable --now libvirtd</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="lab-deployment"><a class="anchor" href="#lab-deployment"></a>Lab Deployment</h2>
-<div class="sectionbody">
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-All the steps in the below sections must be run as <code>root</code> user on the hypervisor host.
-</td>
-</tr>
-</table>
-</div>
-<div class="sect2">
-<h3 id="install-kcli"><a class="anchor" href="#install-kcli"></a>Install kcli</h3>
-<div class="paragraph">
-<p>We use <a href="https://github.com/karmab/kcli">kcli</a> to do several things, like managing VMs, deploying the first OCP cluster, etc. Additional kcli documentation can be found at <code><a href="https://kcli.readthedocs.io" class="bare">https://kcli.readthedocs.io</a></code></p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Below commands must be executed from the hypervisor host as root if not specified otherwise.
+Replace &lt;automation-controller-token&gt; with the token you just got created.
 </td>
 </tr>
 </table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf -y copr enable karmab/kcli
-dnf -y install kcli bash-completion vim jq tar git ipcalc python3-pyOpenSSL</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export CONTROLLER_TOKEN=&lt;automation-controller-token&gt;</code></pre>
 </div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="install-oc-kubectl"><a class="anchor" href="#install-oc-kubectl"></a>Install oc/kubectl CLIs</h3>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli download oc -P version=stable -P tag='4.14'
-kcli download kubectl -P version=stable -P tag='4.14'
-mv kubectl oc /usr/bin/</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="configure-disconnected-network"><a class="anchor" href="#configure-disconnected-network"></a>Configure Disconnected Network</h3>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli create network -c 192.168.125.0/24 -P dns=false -P dhcp=false --domain 5g-deployment.lab 5gdeploymentlab</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="configure-local-dns-dhcp-server"><a class="anchor" href="#configure-local-dns-dhcp-server"></a>Configure Local DNS/DHCP Server</h3>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>sed -i</code> commands, make sure you are using <code>gsed</code>: <code>brew install gnu-sed</code>.
-</td>
-</tr>
-</table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf -y install dnsmasq policycoreutils-python-utils
-mkdir -p /opt/dnsmasq/include.d/
-curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/dnsmasq/dnsmasq.conf" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/dnsmasq/dnsmasq.conf</a> -o /opt/dnsmasq/dnsmasq.conf
-curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/dnsmasq/upstream-resolv.conf" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/dnsmasq/upstream-resolv.conf</a> -o /opt/dnsmasq/upstream-resolv.conf
-curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/dnsmasq/hub.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/dnsmasq/hub.ipv4</a> -o /opt/dnsmasq/include.d/hub.ipv4
-curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/dnsmasq/sno1.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/dnsmasq/sno1.ipv4</a> -o /opt/dnsmasq/include.d/sno1.ipv4
-curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/dnsmasq/sno2.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/dnsmasq/sno2.ipv4</a> -o /opt/dnsmasq/include.d/sno2.ipv4
-curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/dnsmasq/infrastructure-host.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/dnsmasq/infrastructure-host.ipv4</a> -o /opt/dnsmasq/include.d/infrastructure-host.ipv4
-curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/dnsmasq/dnsmasq-virt.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/dnsmasq/dnsmasq-virt.service</a> -o /etc/systemd/system/dnsmasq-virt.service
-touch /opt/dnsmasq/hosts.leases
-semanage fcontext -a -t dnsmasq_lease_t /opt/dnsmasq/hosts.leases
-restorecon /opt/dnsmasq/hosts.leases
-sed -i "s/UPSTREAM_DNS/1.1.1.1/" /opt/dnsmasq/upstream-resolv.conf
-systemctl daemon-reload
-systemctl enable --now dnsmasq-virt
-systemctl mask dnsmasq</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="configure-local-dns-as-primary-server"><a class="anchor" href="#configure-local-dns-as-primary-server"></a>Configure Local DNS as Primary Server</h3>
-<div class="paragraph">
-<p>The default upstream DNS is set to 1.1.1.1 in <code>/opt/dnsmasq/upstream-resolv.conf</code>. There might be cases in your local environment where the hypervisor may not reach it. So, notice that you must change it to a different DNS that allows you to resolve public hostnames. Once changed, remember to restart the dnsmasq-virt service.</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/hypervisor/forcedns" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/hypervisor/forcedns</a> -o /etc/NetworkManager/dispatcher.d/forcedns
-chmod +x /etc/NetworkManager/dispatcher.d/forcedns
-systemctl restart NetworkManager
-/etc/NetworkManager/dispatcher.d/forcedns</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="disable-firewall"><a class="anchor" href="#disable-firewall"></a>Disable Firewall</h3>
-<div class="paragraph">
-<p>You can also create the required rules in the firewall if you want, but for the sake of simplicity we are disabling the firewall.</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">systemctl disable firewalld iptables
-systemctl stop firewalld iptables
-iptables -F
-systemctl restart libvirtd</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="configure-webcache"><a class="anchor" href="#configure-webcache"></a>Configure Webcache</h3>
-<div class="paragraph">
-<p>The webcache is basically an Apache httpd container serving the RHCOS live ISO and rootfs images locally. They are required for provisioning OCP clusters.</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/webcache/podman-webcache.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/webcache/podman-webcache.service</a> -o /etc/systemd/system/podman-webcache.service
-mkdir -p /opt/webcache/data
-curl -L <a href="https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.14/4.14.0/rhcos-4.14.0-x86_64-live-rootfs.x86_64.img" class="bare">https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.14/4.14.0/rhcos-4.14.0-x86_64-live-rootfs.x86_64.img</a> -o /opt/webcache/data/rhcos-4.14.0-x86_64-live-rootfs.x86_64.img
-curl -L <a href="https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.14/4.14.0/rhcos-4.14.0-x86_64-live.x86_64.iso" class="bare">https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.14/4.14.0/rhcos-4.14.0-x86_64-live.x86_64.iso</a> -o /opt/webcache/data/rhcos-4.14.0-x86_64-live.x86_64.iso
-systemctl daemon-reload
-systemctl enable podman-webcache --now</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="install-ksushytool"><a class="anchor" href="#install-ksushytool"></a>Install Ksushy Tool</h3>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">pip3 install cherrypy
-kcli create sushy-service --ssl --port 9000
-systemctl enable ksushy --now</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="configure-disconnected-registry"><a class="anchor" href="#configure-disconnected-registry"></a>Configure Disconnected Registry</h3>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf -y install podman httpd-tools
-REGISTRY_NAME=infra.5g-deployment.lab
-mkdir -p /opt/registry/{auth,certs,data,conf}
-curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/registry/registry-key.pem" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/registry/registry-key.pem</a> -o /opt/registry/certs/registry-key.pem
-curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/registry/registry-cert.pem" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/registry/registry-cert.pem</a> -o /opt/registry/certs/registry-cert.pem
-htpasswd -bBc /opt/registry/auth/htpasswd admin r3dh4t1!
-curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/registry/config.yml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/registry/config.yml</a> -o /opt/registry/conf/config.yml
-curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/registry/podman-registry.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/registry/podman-registry.service</a> -o /etc/systemd/system/podman-registry.service
-systemctl daemon-reload
-systemctl enable podman-registry --now
-cp /opt/registry/certs/registry-cert.pem /etc/pki/ca-trust/source/anchors/
-update-ca-trust
-podman login --authfile auth.json -u admin  infra.5g-deployment.lab:8443 -p r3dh4t1!</code></pre>
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Link to additional configuration documentation of a disconnected registry: <a href="https://docs.openshift.com/container-platform/4.14/installing/disconnected_install/installing-mirroring-disconnected.html" class="bare">https://docs.openshift.com/container-platform/4.14/installing/disconnected_install/installing-mirroring-disconnected.html</a>
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="configure-git-server"><a class="anchor" href="#configure-git-server"></a>Configure Git Server</h3>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p /opt/gitea/
-chown -R 1000:1000 /opt/gitea/
-curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/gitea/podman-gitea.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/gitea/podman-gitea.service</a> -o /etc/systemd/system/podman-gitea.service
-systemctl daemon-reload
-systemctl enable podman-gitea --now
-podman exec --user 1000 gitea /bin/sh -c 'gitea admin user create --username student --password student --email <a href="mailto:student@5g-deployment.lab">student@5g-deployment.lab</a> --must-change-password=false --admin'
-curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab.git","uid":1,"repo_name":"5g-ran-deployments-on-ocp-lab"}' <a href="http://infra.5g-deployment.lab:3000/api/v1/repos/migrate" class="bare">http://infra.5g-deployment.lab:3000/api/v1/repos/migrate</a>
-curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-lab-aap-integration-tools.git","uid":1,"repo_name":"aap-integration-tools"}' <a href="http://infra.5g-deployment.lab:3000/api/v1/repos/migrate" class="bare">http://infra.5g-deployment.lab:3000/api/v1/repos/migrate</a></code></pre>
-</div>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-It could be possible that the last few commands do not work at the first time since the registry container image is being pulled and then started. If that&#8217;s the case, try them once again after a couple of seconds.
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="configure-ntp-server"><a class="anchor" href="#configure-ntp-server"></a>Configure NTP Server</h3>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf install chrony -y
-cat &lt;&lt;EOF &gt; /etc/chrony.conf
-server time.cloudflare.com iburst
-driftfile /var/lib/chrony/drift
-makestep 1.0 3
-rtcsync
-keyfile /etc/chrony.keys
-leapsectz right/UTC
-logdir /var/log/chrony
-bindcmdaddress ::
-allow 192.168.125.0/24
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ran-lab-automation
 EOF
-systemctl enable chronyd --now</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="configure-access-to-cluster-apps"><a class="anchor" href="#configure-access-to-cluster-apps"></a>Configure Access to Cluster Apps</h3>
-<div class="paragraph">
-<p>In order to access the hub cluster we will deploy an HAProxy that will be listening on the public interface of the Hypervisor host.</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf install haproxy -y
-semanage port -a -t http_port_t -p tcp 6443
-curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/haproxy/haproxy.cfg" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/haproxy/haproxy.cfg</a> -o /etc/haproxy/haproxy.cfg
-systemctl enable haproxy --now</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>After that you need to add the following entries to your /etc/hosts file:</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">&lt;HYPERVISOR_REACHABLE_IP&gt; infra.5g-deployment.lab api.hub.5g-deployment.lab multicloud-console.apps.hub.5g-deployment.lab console-openshift-console.apps.hub.5g-deployment.lab oauth-openshift.apps.hub.5g-deployment.lab openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab assisted-service-multicluster-engine.apps.hub.5g-deployment.lab api.sno1.5g-deployment.lab api.sno2.5g-deployment.lab</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="create-openshift-nodes-vms"><a class="anchor" href="#create-openshift-nodes-vms"></a>Create SNO Nodes VMs</h3>
-<div class="paragraph">
-<p>Before running the following commands, make sure you have generated a SSH key pair in your default location <code>~/.ssh/</code>. That SSH key will allow you to connect to the VMs you are about to create:</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli create pool -p /var/lib/libvirt/images default
-kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:02:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201 -P name=sno1
-kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:03:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301 -P name=sno2</code></pre>
+
+cat &lt;&lt; EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+  name: aap-controller-token
+  namespace: ran-lab-automation
+  labels:
+    cluster.open-cluster-management.io/type: ans
+    cluster.open-cluster-management.io/credentials: ""
+stringData:
+  host: https://automation-aap.apps.hub.5g-deployment.lab
+  token: ${CONTROLLER_TOKEN}
+EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If you need or want to connect to any of the VMs you can do so by just executing:</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli ssh &lt;VM_name&gt;</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="deploy-openshift-hub-cluster"><a class="anchor" href="#deploy-openshift-hub-cluster"></a>Deploy OpenShift Hub Cluster</h3>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-This step requires a valid OpenShift Pull Secret placed in /root/openshift_pull.json. Notice that you can replace the admin or developer&#8217;s password shown below for any other.
-</td>
-</tr>
-</table>
+<p>Our AnsibleJob automation is housed in a git repository at <a href="http://infra.5g-deployment.lab:3000/student/aap-integration-tools/src/branch/main/site-applications/prehook/main.yml" class="bare">http://infra.5g-deployment.lab:3000/student/aap-integration-tools/src/branch/main/site-applications/prehook/main.yml</a>. It invokes our <code>ZTP Done Automation</code> Ansible Controller job template, which first creates the <code>ztp-day2-automation</code> namespace in the cluster, then adds the <code>aap-done</code> label to the managed cluster.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1094,163 +826,106 @@ This step requires a valid OpenShift Pull Secret placed in /root/openshift_pull.
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>sed -i</code> commands, make sure you are using <code>gnu-sed</code>: <code>brew install gnu-sed</code>.
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/hub-cluster/hub.yml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/hub-cluster/hub.yml</a> -o /root/hub.yml
-sed -i "s/CHANGE_ADMIN_PWD/admin/" hub.yml
-sed -i "s/CHANGE_DEV_PWD/developer/" hub.yml
-cd /root/
-kcli create cluster openshift --pf hub.yml</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This will take around 40 minutes to complete.</p>
-</div>
-<div class="paragraph">
-<p>If the installation fails for whatever reason, you will need to delete all the VMs that were created and execute the same procedure again. So, first remove the plans, which actually will remove all VMs:</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># kcli list plan
---------------------------------------------------------------+
-| Plan |                          Vms                           |
---------------------------------------------------------------+
-| hub  | hub-ctlplane-0,hub-ctlplane-1,hub-ctlplane-2,sno1,sno2 |
---------------------------------------------------------------+
-
-# kcli delete plan hub -y
-hub-ctlplane-0 deleted on local!
-hub-ctlplane-1 deleted on local!
-hub-ctlplane-2 deleted on local!
-sno1 deleted on local!
-sno2 deleted on local!
-Plan hub deleted!</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>And then create the VMs again as explained in the previous section <a href="lab-environment.html#create-openshift-nodes-vms">Deploy OpenShift Hub Cluster</a>.</p>
-</div>
-</div>
-<div class="sect2">
-<h3 id="configure-openshift-hub-cluster"><a class="anchor" href="#configure-openshift-hub-cluster"></a>Configure OpenShift Hub Cluster</h3>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export KUBECONFIG=~/.kcli/clusters/hub/auth/kubeconfig
-oc -n openshift-storage wait lvmcluster lvmcluster --for=jsonpath='{.status.state}'=Ready --timeout=900s
-oc patch storageclass lvms-vg1 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-curl <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/hub-cluster/argocd-patch.json" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/hub-cluster/argocd-patch.json</a> -o /tmp/argopatch.json
-oc patch argocd openshift-gitops -n openshift-gitops --type=merge --patch-file /tmp/argopatch.json
-oc wait --for=condition=Ready pod -lapp.kubernetes.io/name=openshift-gitops-repo-server -n openshift-gitops
-oc -n openshift-gitops adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="deploy-openshift-hub-cluster-operators"><a class="anchor" href="#deploy-openshift-hub-cluster-operators"></a>Deploy OpenShift HUB Cluster Operators</h3>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml</a></code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="deploy-sno1-cluster-without-ztp"><a class="anchor" href="#deploy-sno1-cluster-without-ztp"></a>Deploy SNO1 Cluster (without ZTP)</h3>
-<div class="paragraph">
-<p>A SNO is deployed outside the ZTP workflow so students can import it and see how that workflow works.</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/lab-4.14/lab-materials/lab-env-data/hypervisor/ssh-key" class="bare">http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/lab-4.14/lab-materials/lab-env-data/hypervisor/ssh-key</a> -o /root/.ssh/snokey
-chmod 400 /root/.ssh/snokey
-oc apply -f <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml</a></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Once the cluster is deployed, the kubeconfig can be gathered as follows:</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc -n sno1 get agentclusterinstall,agent
-NAME                                                    CLUSTER   STATE
-agentclusterinstall.extensions.hive.openshift.io/sno1   sno1      adding-hosts
-
-NAME                                                                    CLUSTER   APPROVED   ROLE     STAGE
-agent.agent-install.openshift.io/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201   sno1      true       master   Done
-
-oc extract secret/sno1-admin-kubeconfig --to=- -n sno1 &gt; /root/sno1kubeconfig
-oc --kubeconfig /root/sno1kubeconfig get nodes,clusterversion
-
-NAME                      STATUS   ROLES                         AGE     VERSION
-node/openshift-master-0   Ready    control-plane,master,worker   94m     v1.27.6+f67aeb3
-
-NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.14.0    True        False         75m     Cluster version is 4.14.0</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="configure-aap"><a class="anchor" href="#configure-aap"></a>Configure Ansible Automation Platform</h3>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-This step requires a valid Ansible Automation Platform Manifest. You can <a href="https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/red_hat_ansible_automation_platform_operations_guide/assembly-aap-obtain-manifest-files">read the official docs to get one</a>.
+Creating the <code>ztp-day2-automation</code> namespace is an example configuration. In your own deployments, this step can be substituted with any series of imperative configuration steps that a deployed cluster or the infrastructure may need.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Before proceeding, you need to wait for the AAP to be fully deployed in the Hub cluster.</p>
+<p>We will now create an Openshift Application-based hook into AAP. At a high level the role of the Application is to trigger the AnsibleJob and pass the clusters being targeted by the automation as extra_vars. Here is an example CRD for reference, with the extra variable RHACM passes in comments:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: tower.ansible.com/v1alpha1
+kind: AnsibleJob
+metadata:
+  name: ztp-day2-automation
+spec:
+  tower_auth_secret: aap-controller-token
+  job_template_name: "ZTP Done Automation"
+# extra_vars:
+#   target_clusters: {{ list.of.clusters }}     &lt;-- array provided by ACM with an entry for each managed cluster that is affected</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>This configuration requires of having ansible deployed in the hypervisor host along with some ansible collections.</p>
+<p>Now, let&#8217;s create our Application.</p>
+</div>
+<div class="paragraph">
+<p>We can create our Channel, Application, its Subscription, and the PlacementRule to bind this application to the intended clusters.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf install ansible-core python3.11-pip -y
-python3.11 -m pip install kubernetes
-ansible-galaxy collection install awx.awx
-ansible-galaxy collection install infra.controller_configuration
-ansible-galaxy collection install kubernetes.core</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Channel
+metadata:
+  name: gogs-repo
+  namespace: ran-lab-automation
+spec:
+  pathname: http://infra.5g-deployment.lab:3000/student/aap-integration-tools.git
+  type: Git
+---
+apiVersion: app.k8s.io/v1beta1
+kind: Application
+metadata:
+  name: monitor-ztp-done
+  namespace: ran-lab-automation
+spec:
+  componentKinds:
+    - group: apps.open-cluster-management.io
+      kind: Subscription
+  descriptor: {}
+  selector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - monitor-ztp-done
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: Subscription
+metadata:
+  annotations:
+    apps.open-cluster-management.io/git-branch: main
+    apps.open-cluster-management.io/git-path: site-applications
+    apps.open-cluster-management.io/reconcile-option: merge
+  labels:
+    app: monitor-ztp-done
+  name: monitor-ztp-done-subscription
+  namespace: ran-lab-automation
+spec:
+  hooksecretref:
+    name: aap-controller-token
+  channel: ran-lab-automation/gogs-repo
+  placement:
+    placementRef:
+      apiGroup: apps.open-cluster-management.io
+      kind: PlacementRule
+      name: monitor-ztp-done-placement
+---
+apiVersion: apps.open-cluster-management.io/v1
+kind: PlacementRule
+metadata:
+  name: monitor-ztp-done-placement
+  namespace: ran-lab-automation
+spec:
+  clusterConditions:
+    - status: "True"
+      type: ManagedClusterConditionAvailable
+  clusterSelector:
+    matchExpressions:
+      - {key: ztp-done, operator: Exists}
+      - {key: name, operator: NotIn, values: [local-cluster]}
+EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Next, let&#8217;s create a playbook that will configure the automation controller for us:</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Change the <code>aap_manifest_file_path</code> var value to match the path where you stored the manifest in the hypervisor host and change the value for the <code>student</code> user.
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/aap2/configure-aap.yaml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/aap2/configure-aap.yaml</a> -o /root/configure-aap.yaml
-ansible-playbook /root/configure-aap.yaml -e strong_student_password=yourstrongstudentpassword -e aap_manifest_file_path=/path/to/your/manifest</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Once the playbook finishes we should have access to the AAP Controller at <a href="https://automation-aap.apps.hub.5g-deployment.lab" class="bare">https://automation-aap.apps.hub.5g-deployment.lab</a> with the student user and the password you configured.</p>
-</div>
-</div>
-</div>
+<p>We have now successfully configured our automation, which will run as soon as our clusters reach <code>ztp-done</code>. We can move to the next section to see how we can monitor the deployment process.</p>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="closing-thoughts.html">Closing Thoughts</a></span>
+  <span class="prev"><a href="running-the-deployment.html">Running the Deployment</a></span>
+  <span class="next"><a href="monitoring-the-deployment.html">Monitoring the Deployment</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
