@@ -147,7 +147,7 @@
 ** xref:running-the-deployment.adoc#deploying-ztp-gitops-pipeline[Deploying the ZTP GitOps Pipeline]
 ** xref:running-the-deployment.adoc#deploying-sno-using-gitops-pipeline[Deploying the SNO Cluster using the ZTP GitOps Pipeline]
 
-* xref:adding-automation.adoc[Adding Automation]
+* xref:adding-aap-automation.adoc[Adding AAP Automation to the Deployment]
 
 * xref:monitoring-the-deployment.adoc[Monitoring the Deployment]
 ** xref:monitoring-the-deployment.adoc#monitoring-deployment-webui[Monitoring the Deployment via the WebUI]
@@ -207,4 +207,4 @@
 *** xref:lab-environment.adoc#configure-openshift-hub-cluster[Configure OpenShift Hub Cluster]
 *** xref:lab-environment.adoc#deploy-openshift-hub-cluster-operators[Deploy OpenShift HUB Cluster Operators]
 *** xref:lab-environment.adoc#deploy-sno1-cluster-without-ztp[Deploy SNO1 Cluster (without ZTP)]
-*** xref:lab-environment.adoc#configure-aap[Configure AAP]
+*** xref:lab-environment.adoc#configure-aap[Configure Ansible Automation Platform]
