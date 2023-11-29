@@ -893,20 +893,15 @@ ztp-policies.sno2-site-policies             inform               Compliant      
 <div class="paragraph">
 <p>Now that SNO deployment is finished, automation should run as soon as the cluster is marked with the <code>ztp-done</code> label. We can easily check the labels on our <code>sno2</code> cluster via the OpenShift web console, under the <code>Infrastructure</code> &gt; <code>Clusters</code> tab.</p>
 </div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/sno2-labels.png" alt="SNO2 Labels">
-</div>
-</div>
 <div class="paragraph">
 <p>There are a couple ways to ensure automation has run successfully.</p>
 </div>
 <div class="paragraph">
-<p>First, the Ansible job template used in this lab was configured to add an <code>aap-done</code> label to a cluster after it has run automation on it successfully, so notice that our <code>sno2</code> cluster now has the label <code>aap-done</code>.</p>
+<p>First, the Ansible job template used in this lab was configured to add an <code>aap-done</code> label to a cluster after it has run automation on it successfully, so notice that our <code>sno1</code> and <code>sno2</code> clusters now have the label <code>aap-done</code>.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="_images/sno2-aap-done.png" alt="SNO2 AAP Done Label">
+<img src="_images/aap-done-label-sno1-sno2.png" alt="SNO1/SNO2 AAP Done Label">
 </div>
 </div>
 <div class="paragraph">
@@ -923,12 +918,9 @@ ztp-policies.sno2-site-policies             inform               Compliant      
 </div>
 </div>
 <div class="paragraph">
-<p>Lastly, to view status and logs for the actual Ansible Controller job that ran, we can navigate to <a href="https://automation-aap.apps.hub.5g-deployment.lab" class="bare">https://automation-aap.apps.hub.5g-deployment.lab</a>, click on the "Jobs" tab, and view the latest job that ran.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/aap-jobs.png" alt="AAP Jobs">
-</div>
+<p>Lastly, to view status and logs for the actual Ansible Controller job that ran, we can navigate to <a href="https://automation-aap.apps.hub.5g-deployment.lab" class="bare">https://automation-aap.apps.hub.5g-deployment.lab</a>, click on the "Jobs" tab, and view the latest job that ran.
+mv
+image::aap-jobs.png[AAP Jobs]</p>
 </div>
 <div class="imageblock">
 <div class="content">

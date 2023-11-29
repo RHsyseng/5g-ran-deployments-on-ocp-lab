@@ -938,7 +938,7 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named <code>europe-snos-upgrade-version-414-1`</code> has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That&#8217;s because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule.</p>
+<p>Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named <code>europe-snos-upgrade-version-414-1</code> has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That&#8217;s because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1097,7 +1097,7 @@ ztp-policies   update-europe-snos   20s    InProgress   Precaching in progress f
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Notice that pre-cache job can take up to 5m to be created.
+Pre-cache job can take up to 5m to be created.
 </td>
 </tr>
 </table>
@@ -1199,7 +1199,7 @@ ztp-policies   update-europe-snos   30m     InProgress   Backup in progress for 
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Notice that backup job can take up to 5m to be created.
+Backup job can take up to 5m to be created.
 </td>
 </tr>
 </table>
@@ -1298,7 +1298,7 @@ ztp-policies   update-europe-snos   28m    BackupCompleted   Backup is completed
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.14.1    True        True          30s     Working towards 4.14.1: 101 of 842 done (11% complete), waiting on kube-apiserver
+clusterversion.config.openshift.io/version   4.14.0    True        True          30s     Working towards 4.14.1: 101 of 842 done (11% complete), waiting on kube-apiserver
 
 NAME                          STATUS   ROLES                         AGE    VERSION
 node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   156m   v1.27.6+f67aeb3</code></pre>

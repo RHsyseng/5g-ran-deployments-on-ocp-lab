@@ -817,7 +817,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Our AnsibleJob automation is housed in a git repository at <a href="http://infra.5g-deployment.lab:3000/student/aap-integration-tools/src/branch/main/site-applications/prehook/main.yml" class="bare">http://infra.5g-deployment.lab:3000/student/aap-integration-tools/src/branch/main/site-applications/prehook/main.yml</a>. It invokes our <code>ztp-day2-automation-template</code> Ansible Controller job template, which first creates the <code>ztp-day2-automation</code> namespace in the cluster, then adds the <code>aap-done</code> label to the cluster.</p>
+<p>Our AnsibleJob automation is housed in a git repository at <a href="http://infra.5g-deployment.lab:3000/student/aap-integration-tools/src/branch/main/site-applications/prehook/main.yml" class="bare">http://infra.5g-deployment.lab:3000/student/aap-integration-tools/src/branch/main/site-applications/prehook/main.yml</a>. It invokes our <code>ZTP Done Automation</code> Ansible Controller job template, which first creates the <code>ztp-day2-automation</code> namespace in the cluster, then adds the <code>aap-done</code> label to the managed cluster.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -826,13 +826,13 @@ EOF</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Creating the <code>ztp-day2-automation</code> namespace is an example configuration. In your own deployments, this step can be substituted with any series of imperative configuration steps that a deployed cluster may need.
+Creating the <code>ztp-day2-automation</code> namespace is an example configuration. In your own deployments, this step can be substituted with any series of imperative configuration steps that a deployed cluster or the infrastructure may need.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>We will now create an Openshift Application-based hook into AAP. At a high level the role of the Application is to trigger the AnsibleJob with an extra variable to pass to the Automation Controller which hosts the automation should run on. Here is an example CRD for reference, with the extra variable RHACM passes in comments:</p>
+<p>We will now create an Openshift Application-based hook into AAP. At a high level the role of the Application is to trigger the AnsibleJob and pass the clusters being targeted by the automation as extra_vars. Here is an example CRD for reference, with the extra variable RHACM passes in comments:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -916,11 +916,12 @@ spec:
   clusterSelector:
     matchExpressions:
       - {key: ztp-done, operator: Exists}
+      - {key: name, operator: NotIn, values: [local-cluster]}
 EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>We have now successfully configured our automation, which will run as soon as our cluster reaches <code>ztp-done</code>.</p>
+<p>We have now successfully configured our automation, which will run as soon as our clusters reach <code>ztp-done</code>. We can move to the next section to see how we can monitor the deployment process.</p>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="running-the-deployment.html">Running the Deployment</a></span>
