@@ -1077,6 +1077,9 @@ spec:
     nodes:
       - hostName: "sno2.5g-deployment.lab"
         role: "master"
+        # We can add custom labels to our nodes, these will be added once the node joins the cluster
+        nodeLabels:
+          5gran.lab/my-custom-label: ""
         bmcAddress: "redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno2"
         # The secret name of the secret containing the bmc credentials for our bare metal node
         bmcCredentialsName:

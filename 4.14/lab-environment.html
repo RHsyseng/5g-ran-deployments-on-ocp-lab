@@ -797,7 +797,7 @@ These instructions have been tested in a RHEL 8.8, we cannot guarantee that othe
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">yum -y install libvirt libvirt-daemon-driver-qemu qemu-kvm
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf -y install libvirt libvirt-daemon-driver-qemu qemu-kvm
 usermod -aG qemu,libvirt $(id -un)
 newgrp libvirt
 systemctl enable --now libvirtd</code></pre>
