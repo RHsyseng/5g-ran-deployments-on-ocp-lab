@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-Now that we have deployed our cluster, let's add our automation. Recall that this process includes creating supporting resources, checking our AnsibleJob CRD into a hosted git repository, and deploying our automation Application.
+Now that we have deployed our cluster, let's add our automation. Recall that this process includes creating supporting resources, checking our AnsibleJob CRD into a hosted Git repository, and deploying our automation Application.
 
 First, we will add some supporting OpenShift resources for automation. We will add a namespace `ran-lab-automation` which our automation resources will belong to, along with a Secret configuring ACM's authorization to access the AAP Controller through the controller's auth token.
 

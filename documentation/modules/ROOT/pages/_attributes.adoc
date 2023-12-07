@@ -52,6 +52,7 @@
 :talm-recovery-from-failed-upgrade-doc: https://docs.openshift.com/container-platform/4.14/scalability_and_performance/ztp_far_edge/cnf-talm-for-cluster-upgrades.html#talo-backup-recovery_cnf-topology-aware-lifecycle-manager
 :talm-cluster-upgrades-doc: https://docs.openshift.com/container-platform/4.14/scalability_and_performance/ztp_far_edge/cnf-talm-for-cluster-upgrades.html
 :talm-upstream-project: https://github.com/openshift-kni/cluster-group-upgrades-operator
+:talm-precachingconfig-doc:https://docs.openshift.com/container-platform/4.14/scalability_and_performance/ztp_far_edge/ztp-talm-updating-managed-policies.html#talm-prechache-user-specified-images-concept_ztp-talm
 :workload-hints-doc: https://docs.openshift.com/container-platform/4.14/scalability_and_performance/cnf-low-latency-tuning.html#cnf-understanding-workload-hints_cnf-master
 :ztp-gitops-docs: https://docs.openshift.com/container-platform/4.14/scalability_and_performance/ztp_far_edge/ztp-preparing-the-hub-cluster.html#installing-disconnected-rhacm_ztp-preparing-the-hub-cluster
 :nto-docs: https://docs.openshift.com/container-platform/4.14/scalability_and_performance/using-node-tuning-operator.html

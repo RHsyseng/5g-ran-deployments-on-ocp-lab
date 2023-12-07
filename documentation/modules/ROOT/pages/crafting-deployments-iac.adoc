@@ -4,12 +4,12 @@ include::_attributes.adoc[]
 
 In RAN environments we will be managing thousands of Single Node OpenShift (SNO) instances, and as such, a scalable and manageable way of defining our infrastructure is required.
 
-By describing our infrastructure as code (IaC) the git repository holds declarative state of the fleet. 
+By describing our infrastructure as code (IaC) the Git repository holds declarative state of the fleet. 
 
 [#introduction-to-siteconfig]
 == Introduction to the SiteConfig
 
-The `SiteConfig` is an abstraction layer on top of the different components that are used to deploy an OpenShift cluster using the `Assisted Service`. For the ones familiar with the `Assisted Service`, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like: `ClusterDeployment`, `InfraEnv`, `AgentClusterInstall`, etc. 
+The `SiteConfig` is an abstraction layer on top of the different components that are used to deploy an OpenShift cluster using the `Assisted Service`. For the ones familiar with the `Assisted Service`, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like: `ClusterDeployment`, `InfraEnv`, `AgentClusterInstall`, etc. Notice that `Assisted Service` now it is part of the MultiCluster Engine (MCE) operator.
 
 The SiteConfig simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place.
 
@@ -34,7 +34,7 @@ image::gitea-repository.png[Gitea Repository]
 +
 3. Click on the "+" next to `Repositories`.
 4. Use `ztp-repository` as `Repository Name` and click on `Create Repository`.
-5. You will get redirect to the new repository page.
+5. You will get redirected to the new repository page.
 
 Now that we have a repository ready to be used we will clone it to our workstation.
 
@@ -101,9 +101,9 @@ The details for our baremetal node that we want to provision as SNO2 are the one
 [#pre-reqs]
 === Deployment Prerequisites
 
-Before we start working on the SiteConfig, let's add some information required for the deployment into the git repository.
+Before we start working on the SiteConfig, let's add some information required for the deployment into the Git repository.
 
-CAUTION: In a production environment you don't want to add sensitive information in plain text in your git repository, for the sake of simplicity for this lab we are adding this information in plain text to the git repo, so you don't have to care about it. This applies to things like pull secrets or bmc credentials.
+CAUTION: In a production environment you don't want to add sensitive information in plain text in your Git repository, for the sake of simplicity for this lab we are adding this information in plain text to the Git repo, so you don't have to care about it. This applies to things like pull secrets or BMC credentials.
 
 1. BMC credentials file.
 +
