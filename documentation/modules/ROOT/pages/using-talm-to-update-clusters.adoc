@@ -131,7 +131,7 @@ EOF
 
 Modify the kustomization.yaml inside the site-policies folder, so it includes this new PGT and eventually will be applied by ArgoCD.
 
-NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gnu-sed`: `brew install gnu-sed`.
+NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gsed`. If you do not have it available, please install it: `brew install gnu-sed`.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -187,9 +187,9 @@ Remember that several gigabytes of artifacts needs to be downloaded to the spoke
 
 image::timing.png[TALM maintenance window concept]
 
-Let's apply the PreCachingConfig and the CGU to our hub cluster:
+In OCP 4.14+, there is a new CRD called `PreCachingConfig` that will allow us to be more precise on the container images that we need for our cluster to upgrade. We must apply the {talm-precachingconfig-doc}[PreCachingConfig CR] before or concurrently with the CGU to our hub cluster:
 
-NOTE: You can get the required list for `excludePrecachePattern` for each upgrade by following https://access.redhat.com/articles/7046378[this KCS].
+NOTE: You can obtain a more detailed list for `excludePrecachePattern` for each upgrade by following https://access.redhat.com/articles/7046378[this KCS].
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
