@@ -916,7 +916,7 @@ EOF</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>sed -i</code> commands, make sure you are using <code>gnu-sed</code>: <code>brew install gnu-sed</code>.
+If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>sed -i</code> commands, make sure you are using <code>gsed</code>. If you do not have it available, please install it: <code>brew install gnu-sed</code>.
 </td>
 </tr>
 </table>
@@ -1002,7 +1002,7 @@ Notice in the following picture that there are policies not applying to any clus
 </div>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s apply the PreCachingConfig and the CGU to our hub cluster:</p>
+<p>In OCP 4.14+, there is a new CRD called <code>PreCachingConfig</code> that will allow us to be more precise on the container images that we need for our cluster to upgrade. We must apply the {talm-precachingconfig-doc}[PreCachingConfig CR] before or concurrently with the CGU to our hub cluster:</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1011,7 +1011,7 @@ Notice in the following picture that there are policies not applying to any clus
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-You can get the required list for <code>excludePrecachePattern</code> for each upgrade by following <a href="https://access.redhat.com/articles/7046378">this KCS</a>.
+You can obtain a more detailed list for <code>excludePrecachePattern</code> for each upgrade by following <a href="https://access.redhat.com/articles/7046378">this KCS</a>.
 </td>
 </tr>
 </table>

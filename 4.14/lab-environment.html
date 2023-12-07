@@ -787,13 +787,13 @@ If you are a Red Hatter, you can order a lab environment on the <a href="https:/
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-These instructions have been tested in a RHEL 8.8, we cannot guarantee that other operating systems (even RHEL-based) will work. We won&#8217;t be providing support out of RHEL 8.
+These instructions have been tested in a RHEL 8.9, we cannot guarantee that other operating systems (even RHEL-based) will work. We won&#8217;t be providing support out of RHEL 8.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>These are the steps to install the required packages on a RHEL 8.8 server:</p>
+<p>These are the steps to install the required packages on a RHEL 8.9 server:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -950,6 +950,18 @@ kcli create sushy-service --ssl --port 9000
 systemctl enable ksushy --now</code></pre>
 </div>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+A message like this <code>The unit files have no installation config (WantedBy, RequiredBy, Also, Alias settings in the [Install] section, and DefaultInstance for template units).</code> can be shown in the terminal after creating or starting the service. It is just a warning, please check that the ksushy service has started successfully.
+</td>
+</tr>
+</table>
+</div>
 </div>
 <div class="sect2">
 <h3 id="configure-disconnected-registry"><a class="anchor" href="#configure-disconnected-registry"></a>Configure Disconnected Registry</h3>
@@ -1044,11 +1056,11 @@ systemctl enable haproxy --now</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>After that you need to add the following entries to your /etc/hosts file:</p>
+<p>After that you need to add the following entries to your local /etc/hosts file:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">&lt;HYPERVISOR_REACHABLE_IP&gt; infra.5g-deployment.lab api.hub.5g-deployment.lab multicloud-console.apps.hub.5g-deployment.lab console-openshift-console.apps.hub.5g-deployment.lab oauth-openshift.apps.hub.5g-deployment.lab openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab assisted-service-multicluster-engine.apps.hub.5g-deployment.lab api.sno1.5g-deployment.lab api.sno2.5g-deployment.lab</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">&lt;HYPERVISOR_REACHABLE_IP&gt; infra.5g-deployment.lab api.hub.5g-deployment.lab multicloud-console.apps.hub.5g-deployment.lab console-openshift-console.apps.hub.5g-deployment.lab oauth-openshift.apps.hub.5g-deployment.lab openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab assisted-service-multicluster-engine.apps.hub.5g-deployment.lab automation-hub-aap.apps.hub.5g-deployment.lab automation-aap.apps.hub.5g-deployment.lab api.sno1.5g-deployment.lab api.sno2.5g-deployment.lab</code></pre>
 </div>
 </div>
 </div>
