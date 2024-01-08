@@ -28,7 +28,7 @@ Single Node OpenShift offers both control and worker node capabilities in a sing
 
 OpenShift installs typically require a temporary bootstrap machine, which is usually a separate machine, but edge deployments are often performed in environments where there are no extra nodes. However, for these use-cases, the new functionality provided by OpenShift’s “Bootstrap-in-Place” option eliminates the separate bootstrap node requirement for single-node deployments. So when installing single-node OpenShift, you only need the node you wish to install onto.
 
-OpenShift Container Platform on a Single Node is a specialized installation that requires the creation of a special ignition configuration ISO. It is supported on bare metal, vSphere, Red Hat OpenStack, and Red Hat Virtualization platforms as today. When using ACM's Assisted Service for installation, this ISO is automatically created as part of the installation process.
+OpenShift Container Platform on a Single Node is a specialized installation that requires the creation of a special ignition configuration ISO. It is supported on bare metal, vSphere, and Red Hat OpenStack platforms as today. When using ACM's Assisted Service for installation, this ISO is automatically created as part of the installation process.
 
 IMPORTANT: The use of OpenShiftSDN with single-node OpenShift is not supported. OVN-Kubernetes is the default networking solution for single-node OpenShift deployments.
 
