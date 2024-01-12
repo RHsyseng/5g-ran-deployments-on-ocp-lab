@@ -90,7 +90,7 @@ Precision Time Protocol (PTP) is used to synchronize clocks in a network. When u
 PTP can work in three modes:
 
 * `GrandMaster`: A PTP daemon connected to a hardware with PTP support to synchronize its clock. Other PTP daemons will connect to this PTP GrandMaster in order to sync their clocks.
-* `Ordinary Clock`: A PTP daemon connected to a GrandMaster to synchronize its clock.
-* `Boundary Clock`: A PTP daemon connected to a GrandMaster to synchronize its clock and being master for other PTP daemons on the network.
+* `Ordinary Clock`: A PTP daemon connected to a GrandMaster to synchronize its clock or also to a Boundary Clock behaving as a GrandMaster.
+* `Boundary Clock`: A PTP daemon connected to a GrandMaster to synchronize its clock and being a GrandMaster for other PTP daemons that needs to synchronize their time on the network.
 
 image::ptp_diagram.png[PTP Diagram]
