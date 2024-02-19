@@ -988,6 +988,9 @@ systemctl daemon-reload
 systemctl enable podman-webcache --now</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Verify that the webcache container has started successfully by executing <code>podman ps</code>. If it is not running, check the status of the podman-webcache systemd unit.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="install-ksushytool"><a class="anchor" href="#install-ksushytool"></a>Install Ksushy Tool</h3>
@@ -1010,6 +1013,9 @@ A message like this <code>The unit files have no installation config (WantedBy, 
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>Verify that the ksushy service is running. Furthermore, you can check that the port number 9000 TCP is being used by a python application (ksushy) by executing <code>netstat -lntp | grep 9000</code>.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="configure-disconnected-registry"><a class="anchor" href="#configure-disconnected-registry"></a>Configure Disconnected Registry</h3>
@@ -1027,6 +1033,7 @@ systemctl daemon-reload
 systemctl enable podman-registry --now
 cp /opt/registry/certs/registry-cert.pem /etc/pki/ca-trust/source/anchors/
 update-ca-trust
+sleep 10
 podman login --authfile auth.json -u admin  infra.5g-deployment.lab:8443 -p r3dh4t1!</code></pre>
 </div>
 </div>
@@ -1052,7 +1059,7 @@ chown -R 1000:1000 /opt/gitea/
 curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/gitea/podman-gitea.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/gitea/podman-gitea.service</a> -o /etc/systemd/system/podman-gitea.service
 systemctl daemon-reload
 systemctl enable podman-gitea --now
-sleep 10
+sleep 20
 podman exec --user 1000 gitea /bin/sh -c 'gitea admin user create --username student --password student --email <a href="mailto:student@5g-deployment.lab">student@5g-deployment.lab</a> --must-change-password=false --admin'
 curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab.git","uid":1,"repo_name":"5g-ran-deployments-on-ocp-lab"}' <a href="http://infra.5g-deployment.lab:3000/api/v1/repos/migrate" class="bare">http://infra.5g-deployment.lab:3000/api/v1/repos/migrate</a>
 curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-lab-aap-integration-tools.git","uid":1,"repo_name":"aap-integration-tools"}' <a href="http://infra.5g-deployment.lab:3000/api/v1/repos/migrate" class="bare">http://infra.5g-deployment.lab:3000/api/v1/repos/migrate</a></code></pre>
@@ -1105,7 +1112,41 @@ systemctl enable haproxy --now</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>After that you need to add the following entries to your local /etc/hosts file:</p>
+<p>Verify that the haproxy systemd unit started successfully. After that, you need to add the following entries to your <strong>laptop&#8217;s local /etc/hosts file</strong>. This line will help you to connect to the different exposed services that are being set in the lab host. Notice that:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>HYPERVISOR_REACHABLE_IP</strong> is the IP address of the lab server you are configuring. It must be an IP address that you can connect from your laptop, usually the IP address you are using to connect via SSH to the lab server.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For example, your lab server now should have similar interfaces (podman, virbr0 and 5gdeploymentlab) as my lab:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">ip -o a
+1: lo    inet 127.0.0.1/8 scope host lo\       valid_lft forever preferred_lft forever
+1: lo    inet6 ::1/128 scope host \       valid_lft forever preferred_lft forever
+2: ens1f0    inet 10.19.32.199/26 brd 10.19.32.255 scope global dynamic noprefixroute ens1f0\       valid_lft 13481sec preferred_lft 13481sec
+2: ens1f0    inet6 2620:52:0:1343::8d/128 scope global dynamic noprefixroute \       valid_lft 13481sec preferred_lft 13481sec
+2: ens1f0    inet6 2620:52:0:1343:e643:4bff:febd:9046/64 scope global dynamic noprefixroute \       valid_lft 2591777sec preferred_lft 604577sec
+2: ens1f0    inet6 fe80::e643:4bff:febd:9046/64 scope link noprefixroute \       valid_lft forever preferred_lft forever
+6: virbr0    inet 192.168.122.1/24 brd 192.168.122.255 scope global virbr0\       valid_lft forever preferred_lft forever
+7: 5gdeploymentlab    inet 192.168.125.1/24 brd 192.168.125.255 scope global 5gdeploymentlab\       valid_lft forever preferred_lft forever
+8: podman0    inet 10.88.0.1/16 brd 10.88.255.255 scope global podman0\       valid_lft forever preferred_lft forever
+8: podman0    inet6 fe80::b85e:c8ff:feb9:e105/64 scope link \       valid_lft forever preferred_lft forever
+9: veth0    inet6 fe80::5828:77ff:fe5d:869f/64 scope link \       valid_lft forever preferred_lft forever</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Then, obtain the IP you are connecting to via SSH. In my case it is 10.19.32.199. Finally append this entry to your laptop&#8217;s local /etc/hosts:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-none hljs">10.19.32.199 infra.5g-deployment.lab api.hub.5g-deployment.lab multicloud-console.apps.hub.5g-deployment.lab console-openshift-console.apps.hub.5g-deployment.lab oauth-openshift.apps.hub.5g-deployment.lab openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab assisted-service-multicluster-engine.apps.hub.5g-deployment.lab automation-hub-aap.apps.hub.5g-deployment.lab automation-aap.apps.hub.5g-deployment.lab api.sno1.5g-deployment.lab api.sno2.5g-deployment.lab</code></pre>
+</div>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1116,7 +1157,15 @@ systemctl enable haproxy --now</code></pre>
 <div class="sect2">
 <h3 id="create-openshift-nodes-vms"><a class="anchor" href="#create-openshift-nodes-vms"></a>Create SNO Nodes VMs</h3>
 <div class="paragraph">
-<p>Before running the following commands, make sure you have generated a SSH key pair in your default location <code>~/.ssh/</code>. That SSH key will allow you to connect to the VMs you are about to create:</p>
+<p>Before running the following commands, make sure you have generated a SSH key pair in your default location <code>~/.ssh/</code>.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ssh-keygen -t rsa -b 2048</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>That SSH key will allow you to connect to the VMs you are about to create:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1126,7 +1175,7 @@ kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P
 </div>
 </div>
 <div class="paragraph">
-<p>If you need or want to connect to any of the VMs you can do so by just executing:</p>
+<p>If you need or want to connect to any of the VMs, once they are started, you can do so by just executing:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1155,7 +1204,7 @@ This step requires a valid OpenShift Pull Secret placed in /root/openshift_pull.
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>sed -i</code> commands, make sure you are using <code>gnu-sed</code>: <code>brew install gnu-sed</code>.
+If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>sed -i</code> commands, make sure you are using <code>gnu-sed</code> by executing <code>brew install gnu-sed</code>.
 </td>
 </tr>
 </table>
@@ -1232,7 +1281,7 @@ oc apply -f <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deploymen
 </div>
 </div>
 <div class="paragraph">
-<p>Once the cluster is deployed, the kubeconfig can be gathered as follows:</p>
+<p>Once the cluster is deployed:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1241,10 +1290,23 @@ NAME                                                    CLUSTER   STATE
 agentclusterinstall.extensions.hive.openshift.io/sno1   sno1      adding-hosts
 
 NAME                                                                    CLUSTER   APPROVED   ROLE     STAGE
-agent.agent-install.openshift.io/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201   sno1      true       master   Done
-
-oc extract secret/sno1-admin-kubeconfig --to=- -n sno1 &gt; /root/sno1kubeconfig
-oc --kubeconfig /root/sno1kubeconfig get nodes,clusterversion
+agent.agent-install.openshift.io/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201   sno1      true       master   Done</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The kubeconfig can be gathered as follows:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc extract secret/sno1-admin-kubeconfig --to=- -n sno1 &gt; /root/sno1kubeconfig</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now, with the proper credentials you can check the status of the SNO1 cluster:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig /root/sno1kubeconfig get nodes,clusterversion
 
 NAME                      STATUS   ROLES                         AGE     VERSION
 node/openshift-master-0   Ready    control-plane,master,worker   94m     v1.27.6+f67aeb3
@@ -1293,7 +1355,7 @@ ansible-galaxy collection install kubernetes.core</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Change the <code>aap_manifest_file_path</code> var value to match the path where you stored the manifest in the hypervisor host and change the value for the <code>student</code> user.
+Change the <code>aap_manifest_file_path</code> var value to match the path where you stored the manifest in the hypervisor host and change the <code>strong_student_password</code> var to set a password for the AAP <code>student</code> user.
 </td>
 </tr>
 </table>
@@ -1301,7 +1363,7 @@ Change the <code>aap_manifest_file_path</code> var value to match the path where
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/aap2/configure-aap.yaml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.14/lab-materials/lab-env-data/aap2/configure-aap.yaml</a> -o /root/configure-aap.yaml
-ansible-playbook /root/configure-aap.yaml -e strong_student_password=yourstrongstudentpassword -e aap_manifest_file_path=/path/to/your/manifest</code></pre>
+ansible-playbook /root/configure-aap.yaml -e strong_student_password=yourstrongstudentpassword -e aap_manifest_file_path=/path/to/your/manifest -e ansible_python_interpreter=/usr/bin/python3.11</code></pre>
 </div>
 </div>
 <div class="paragraph">
