@@ -15,7 +15,7 @@ RHEL 9.X box with access to the Internet. This lab relies on KVM, so you need to
 * 200GiB Memory.
 * 1 TiB storage.
 
-IMPORTANT: The /opt directory requires a minimum of 60 GiB of storage for the lab installation and the /var directory requires a minimum of 70 GiB for the lab installation.
+IMPORTANT: The /opt directory requires a minimum of 60 GiB of storage for the disconnected registry installation and the /var directory requires a minimum of 70 GiB for the lab installation.
 Size the filesystems containing these directories accordingly as the default partition layout for a RHEL 9.X install does not provide enough storage on the root filesystem for the lab installation.
 
 IMPORTANT: These instructions have been tested in a RHEL 9.3, we cannot guarantee that other operating systems (even RHEL-based) will work. We won't be providing support out of RHEL 9.
