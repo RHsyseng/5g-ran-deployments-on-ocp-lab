@@ -37,7 +37,7 @@ CAUTION: The command below must be changed to use the OpenShift admin password p
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig login -u admin -p <admin_password> https://api.hub.5g-deployment.lab:6443 --insecure-skip-tls-verify=true
+oc login -u admin -p <admin_password> https://api.hub.5g-deployment.lab:6443 --insecure-skip-tls-verify=true
 -----
 +
 2. Modify the ZTP GitOps Pipeline configuration to match our environment configuration.
