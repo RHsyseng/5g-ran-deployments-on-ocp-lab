@@ -203,7 +203,7 @@ spec:
     # The sdn plugin that will be used
     networkType: "OVNKubernetes"
     # All Composable capabilities removed except required for telco
-    installConfigOverrides:  "{\"capabilities\":{\"baselineCapabilitySet\": \"None\", \"additionalEnabledCapabilities\": [ \"marketplace\", \"NodeTuning\" ] }}"
+    installConfigOverrides:  "{\"capabilities\":{\"baselineCapabilitySet\": \"None\", \"additionalEnabledCapabilities\": [ \"OperatorLifecycleManager\", \"NodeTuning\" ] }}"
     extraManifestPath: hub-1/sno2-extra-manifest
     # Cluster labels (this will be used by RHACM)
     clusterLabels:
@@ -212,6 +212,7 @@ spec:
       group-du-sno: ""
       du-site: "sno2"
       du-zone: "europe"
+      hardware-type: "hw-type-platform-1"
     # Pod's SDN network range
     clusterNetwork:
       - cidr: "10.128.0.0/14"
@@ -222,6 +223,7 @@ spec:
     # Services SDN network range
     serviceNetwork:
       - "172.30.0.0/16"
+    # Sets up a cluster for CPU partitioning at install time
     cpuPartitioningMode: AllNodes
     additionalNTPSources:
       - infra.5g-deployment.lab
