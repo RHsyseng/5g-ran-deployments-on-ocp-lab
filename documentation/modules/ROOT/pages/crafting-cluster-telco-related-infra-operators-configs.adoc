@@ -38,29 +38,28 @@ spec:
   mcp: master
   remediationAction: inform
   sourceFiles:
-    - fileName: OperatorHub.yaml
-      policyName: config-policies
     - fileName: DefaultCatsrc.yaml
       metadata:
         name: redhat-operator-index
       spec:
         image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:{catalogsource-index-image-tag}
-      policyName: config-policies
+      policyName: config-policy
     - fileName: ReduceMonitoringFootprint.yaml
-      policyName: config-policies
-    - fileName: StorageLVMOSubscriptionNS.yaml
+      policyName: config-policy
+    - fileName: StorageLVMSubscriptionNS.yaml
       metadata:
         annotations:
           workload.openshift.io/allowed: management
-      policyName: subscription-policies
-    - fileName: StorageLVMOSubscriptionOperGroup.yaml
-      policyName: subscription-policies
-    - fileName: StorageLVMOSubscription.yaml
+      policyName: subscriptions-policy
+    - fileName: StorageLVMSubscriptionOperGroup.yaml
+      policyName: subscriptions-policy
+    - fileName: StorageLVMSubscription.yaml
       spec:
-        name: lvms-operator
         channel: {lvms-channel}
         source: redhat-operator-index
-      policyName: subscription-policies          
+      policyName: subscriptions-policy
+    - fileName: LVMOperatorStatus.yaml
+      policyName: subscriptions-policy
 EOF
 -----
 
@@ -69,7 +68,7 @@ EOF
 
 The group policies apply to a group of clusters that typically have something in common, for example they are SNOs, or they have similar hardware: SR-IOV cards, number of CPUs, etc.
 
-The CNF team has prepared some common tuning configurations that should be applied on every SNO DU deployed. In this section, we will be crafting these configurations.
+The CNF team has prepared some common tuning configurations that should be applied on every SNO DU deployed with similar hardware. In this section, we will be crafting these configurations.
 
 IMPORTANT: If you check the binding rules you can see that we are targeting clusters labeled with `group-du-sno: ""` and `logicalGroup: "active"`. These labels were set in the `SiteConfig` definition in the link:crafting-deployments-iaac.html#siteconfig[previous section].
 
@@ -89,15 +88,94 @@ spec:
   bindingRules:
     group-du-sno: ""
     logicalGroup: "active"
+    hardware-type: "hw-type-platform-1"
   mcp: master
   remediationAction: inform
   sourceFiles:
     - fileName: DisableSnoNetworkDiag.yaml
-      policyName: group-policies
+      policyName: "group-policy"
+    - fileName: DisableOLMPprof.yaml # wave 10
+      policyName: "group-policy"
+    - fileName: PerformanceProfile.yaml
+      policyName: "group-policy"
+      metadata:
+        annotations:
+          kubeletconfig.experimental: |
+            {"topologyManagerScope": "pod",
+             "systemReserved": {"memory": "3Gi"}
+            }
+      spec:
+        cpu:
+          isolated: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-cpu-isolated" (index .ManagedClusterLabels "hardware-type")) hub}}'
+          reserved: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-cpu-reserved" (index .ManagedClusterLabels "hardware-type")) hub}}'
+        hugepages:
+          defaultHugepagesSize: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-hugepages-default" (index .ManagedClusterLabels "hardware-type"))| hub}}'
+          pages:
+          - count: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-hugepages-count" (index .ManagedClusterLabels "hardware-type")) | toInt hub}}'
+            size: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-hugepages-size" (index .ManagedClusterLabels "hardware-type")) hub}}'
+        numa:
+          topologyPolicy: single-numa-node
+        realTimeKernel:
+          enabled: false
+        globallyDisableIrqLoadBalancing: false
+        # WorkloadHints defines the set of upper level flags for different type of workloads.
+        # The configuration below is set for a low latency, performance mode.
+        workloadHints:
+          realTime: true
+          highPowerConsumption: false
+          perPodPowerManagement: false
+    - fileName: TunedPerformancePatch.yaml
+      policyName: "group-policy"
+      spec:
+        profile:
+          - name: performance-patch
+            data: |
+              [main]
+              summary=Configuration changes profile inherited from performance created tuned
+              include=openshift-node-performance-openshift-node-performance-profile
+              [sysctl]
+              # When using the standard (non-realtime) kernel, remove the kernel.timer_migration override from the [sysctl] section
+              # kernel.timer_migration=0
+              [scheduler]
+              group.ice-ptp=0:f:10:*:ice-ptp.*
+              group.ice-gnss=0:f:10:*:ice-gnss.*
+              [service]
+              service.stalld=start,enable
+              service.chronyd=stop,disable
+EOF
+-----
+IMPORTANT: By leveraging hub site templating we are reducing the number of policies on our hub cluster. This makes the clusters's deployment and maintenance process simpler. Notice that with large fleets of clusters, it can quickly become hard to maintain per-site configurations.
+
+2. We're using policy templating, so we need to create a `ConfigMap` with the templating values to be used. Notice that the following resource contains values for multiple hardware specifications that we may have in our infrastructure. In the policy we have just applied we are obtaining the value for tuning our SNO by obtaining the value of the label `hardware-type` that each cluster was assigned to. This label was set in the `SiteConfig` definition in the link:crafting-deployments-iaac.html#siteconfig[previous section]. More information about Template processing can be found in {rhacm-template-processing}[Red Hat Advanced Cluster Management documentation].
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/group-hardware-types-configmap.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: group-hardware-types-configmap
+  namespace: ztp-policies
+  annotations:
+    argocd.argoproj.io/sync-options: Replace=true
+data:  
+  # PerformanceProfile.yaml
+  hw-type-platform-1-cpu-isolated: "4-11"
+  hw-type-platform-1-cpu-reserved: "0-3"
+  hw-type-platform-1-hugepages-default: "1G"
+  hw-type-platform-1-hugepages-count: "4"
+  hw-type-platform-1-hugepages-size: "1G"
+  hw-type-platform-2-cpu-isolated: "2-39,42-79"
+  hw-type-platform-2-cpu-reserved: "0-1,40-41"
+  hw-type-platform-2-hugepages-default: "256M"
+  hw-type-platform-2-hugepages-count: "16"
+  hw-type-platform-2-hugepages-size: "1G"  
 EOF
 -----
 +
-2. Since we are deploying DUs, we need to run the validator policies crafted by the CNF team as well:
+3. Since we are deploying DUs, we need to run the validator policies crafted by the CNF team as well:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -128,23 +206,23 @@ EOF
 
 Site policies apply to a specific cluster/s in our site, they usually configure stuff that is very specific to a single cluster or to a small subset of clusters. For example, we could configure storage for a group of clusters if those share the same hardware, disks configurations, etc. otherwise we will need to have different bindings for different clusters.
 
-We are going to create the `PerformanceProfile` and storage configurations for our SNO2 cluster.
+We are going to create the storage configurations for our SNO2 cluster whose hardware type belongs to `hw-type-platform-1`. Notice that this policy leverages hub side templating. Therefore it is targeting all clusters with this specific hardware configuration, not only `SNO2`.
 
-1. Create the `sno2` PolicyGenTemplate for the `SNO2` cluster in our `5glab` site:
+1. Create the `du-sno-sites` PolicyGenTemplate for the clusters that contain `hw-type-platform-1` hardware type in our `5glab` site. In our case the `SNO2` cluster:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/sites/hub-1/site-sno2.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/sites/hub-1/sites-specific.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
 metadata:
-  name: "sno2"
+  name: "du-sno-sites"
   namespace: "ztp-policies"
 spec:
   bindingRules:
-    du-site: "sno2"
+    common: "{policygen-common-label}"
     logicalGroup: "active"
   mcp: master
   remediationAction: inform
@@ -158,75 +236,36 @@ spec:
                 name: thin-pool-1
                 sizePercent: 90
                 overprovisionRatio: 10
-      policyName: "site-policies"
-    - fileName: PerformanceProfile.yaml
-      policyName: "site-policies"
-      metadata:
-        annotations:
-          kubeletconfig.experimental: |
-            {"topologyManagerScope": "pod",
-             "systemReserved": {"memory": "3Gi"}
-            }
-      spec:
-        cpu:
-          isolated: '{{hub fromConfigMap "" "hub1-sites-data" (printf "%s-isolated-cpus" .ManagedClusterName) hub}}'
-          reserved: '{{hub fromConfigMap "" "hub1-sites-data" (printf "%s-reserved-cpus" .ManagedClusterName) hub}}'
-        hugepages:
-          defaultHugepagesSize: 1G
-          pages:
-          - count: '{{hub fromConfigMap "" "hub1-sites-data" (printf "%s-hugepages-count" .ManagedClusterName)|toInt hub}}'
-            size: '{{hub fromConfigMap "" "hub1-sites-data" (printf "%s-hugepages-size" .ManagedClusterName) hub}}'
-        numa:
-          topologyPolicy: single-numa-node
-        realTimeKernel:
-          enabled: false
-        globallyDisableIrqLoadBalancing: false
-        # WorkloadHints defines the set of upper level flags for different type of workloads.
-        workloadHints:
-          realTime: true
-          highPowerConsumption: false
-          perPodPowerManagement: false
-    - fileName: TunedPerformancePatch.yaml
-      policyName: "site-policies"
-      spec:
-        profile:
-          - name: performance-patch
-            data: |
-              [main]
-              summary=Configuration changes profile inherited from performance created tuned
-              include=openshift-node-performance-openshift-node-performance-profile
-              [sysctl]
-              kernel.timer_migration=1
-              [scheduler]
-              group.ice-ptp=0:f:10:*:ice-ptp.*
-              group.ice-gnss=0:f:10:*:ice-gnss.*
-              [service]
-              service.stalld=start,enable
-              service.chronyd=stop,disable
+              deviceSelector:
+                paths:
+                - '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-storage-path" .ManagedClusterName) hub}}'
+      policyName: "sites-policy"
 EOF
 -----
-+
-2. We're using policy templating, so we need to create the `ConfigMap` with the templating values to be used:
-+
+IMPORTANT: By leveraging hub site templating we are reducing the number of policies on our hub cluster. This makes the clusters's deployment and maintenance process a lot less cumbersome. Notice that with large fleets of clusters, it can quickly become hard to maintain per-site configurations.
+
+2. We're using policy templating, so we have to create a `ConfigMap` with the templating values to be used. Observe that the following manifest contains disk paths for each cluster deployed by our Hub-1. This storage information is required to configure the LVM operator and provide storage to our SNO clusters. In the previous policy, it is captured the device path used to present persistent storage to our applications by obtaining the name of the cluster managed by the hub. The information is not obtained from a label set in the `SiteConfig` definition, it is the `ManagedClusterName`, e.g., the name of the cluster used instead. 
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/sites/hub-1/hub1-sites-data.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/sites/hub-1/site-data-hw-1-configmap.yaml
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: hub1-sites-data
+  name: site-data-configmap
   namespace: ztp-policies
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
 data:
-  sno2-isolated-cpus: "4-11"
-  sno2-reserved-cpus: "0-3"
-  sno2-hugepages-count: "4"
-  sno2-hugepages-size: "1G"
+  # StorageLVMCluster.yaml
+  sno2-storage-path: "/dev/vdb"
+  sno3-storage-path: "[\"/dev/disk/by-path/pci-0001:05:00.0-nvme-1\", \"pci-0000:18:00.0-scsi-0:2:0:0\"]"
 EOF
 -----
+
+More information about Template processing can be found in {rhacm-template-processing}[Red Hat Advanced Cluster Management documentation].
 
 [#crafting-testing-policies]
 == Crafting testing Policies
@@ -252,29 +291,28 @@ spec:
   mcp: master
   remediationAction: inform
   sourceFiles:
-    - fileName: OperatorHub.yaml
-      policyName: config-policies
     - fileName: DefaultCatsrc.yaml
       metadata:
         name: redhat-operator-index
       spec:
         image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:{catalogsource-index-image-tag}
-      policyName: config-policies
+      policyName: config-policy
     - fileName: ReduceMonitoringFootprint.yaml
-      policyName: config-policies
-    - fileName: StorageLVMOSubscriptionNS.yaml
+      policyName: config-policy
+    - fileName: StorageLVMSubscriptionNS.yaml
       metadata:
         annotations:
           workload.openshift.io/allowed: management
-      policyName: subscription-policies
-    - fileName: StorageLVMOSubscriptionOperGroup.yaml
-      policyName: subscription-policies
-    - fileName: StorageLVMOSubscription.yaml
+      policyName: subscriptions-policy
+    - fileName: StorageLVMSubscriptionOperGroup.yaml
+      policyName: subscriptions-policy
+    - fileName: StorageLVMSubscription.yaml
       spec:
-        name: lvms-operator
         channel: {lvms-channel}
         source: redhat-operator-index
-      policyName: subscription-policies    
+      policyName: subscriptions-policy
+    - fileName: LVMOperatorStatus.yaml
+      policyName: subscriptions-policy
 EOF
 -----
 +
@@ -294,11 +332,82 @@ spec:
   bindingRules:
     group-du-sno: ""
     logicalGroup: "testing"
+    hardware-type: "hw-type-platform-1"
   mcp: master
   remediationAction: inform
   sourceFiles:
     - fileName: DisableSnoNetworkDiag.yaml
-      policyName: group-policies
+      policyName: "group-policy"
+    - fileName: DisableOLMPprof.yaml # wave 10
+      policyName: "group-policy"
+    - fileName: PerformanceProfile.yaml
+      policyName: "group-policy"
+      metadata:
+        annotations:
+          kubeletconfig.experimental: |
+            {"topologyManagerScope": "pod",
+             "systemReserved": {"memory": "3Gi"}
+            }
+      spec:
+        cpu:
+          isolated: '{{hub fromConfigMap "" "group-hardware-types-configmap-test" (printf "%s-cpu-isolated" (index .ManagedClusterLabels "hardware-type")) hub}}'
+          reserved: '{{hub fromConfigMap "" "group-hardware-types-configmap-test" (printf "%s-cpu-reserved" (index .ManagedClusterLabels "hardware-type")) hub}}'
+        hugepages:
+          defaultHugepagesSize: '{{hub fromConfigMap "" "group-hardware-types-configmap-test" (printf "%s-hugepages-default" (index .ManagedClusterLabels "hardware-type"))| hub}}'
+          pages:
+          - count: '{{hub fromConfigMap "" "group-hardware-types-configmap-test" (printf "%s-hugepages-count" (index .ManagedClusterLabels "hardware-type")) | toInt hub}}'
+            size: '{{hub fromConfigMap "" "group-hardware-types-configmap-test" (printf "%s-hugepages-size" (index .ManagedClusterLabels "hardware-type")) hub}}'
+        numa:
+          topologyPolicy: single-numa-node
+        realTimeKernel:
+          enabled: false
+        globallyDisableIrqLoadBalancing: false
+        # WorkloadHints defines the set of upper level flags for different type of workloads.
+        workloadHints:
+          realTime: true
+          highPowerConsumption: false
+          perPodPowerManagement: false
+    - fileName: TunedPerformancePatch.yaml
+      policyName: "group-policy"
+      spec:
+        profile:
+          - name: performance-patch
+            data: |
+              [main]
+              summary=Configuration changes profile inherited from performance created tuned
+              include=openshift-node-performance-openshift-node-performance-profile
+              # When using the standard (non-realtime) kernel, remove the kernel.timer_migration override from the [sysctl] section
+              [sysctl]
+              kernel.timer_migration=0
+              [scheduler]
+              group.ice-ptp=0:f:10:*:ice-ptp.*
+              group.ice-gnss=0:f:10:*:ice-gnss.*
+              [service]
+              service.stalld=start,enable
+              service.chronyd=stop,disable
+
+EOF
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/group-hardware-types-configmap-test.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: group-hardware-types-configmap-test
+  namespace: ztp-policies
+  annotations:
+    argocd.argoproj.io/sync-options: Replace=true
+data:  
+  # PerformanceProfile.yaml
+  hw-type-platform-1-cpu-isolated: "4-11"
+  hw-type-platform-1-cpu-reserved: "0-3"
+  hw-type-platform-1-hugepages-default: "1G"
+  hw-type-platform-1-hugepages-count: "4"
+  hw-type-platform-1-hugepages-size: "1G"
+  hw-type-platform-2-cpu-isolated: "2-39,42-79"
+  hw-type-platform-2-cpu-reserved: "0-1,40-41"
+  hw-type-platform-2-hugepages-default: "256M"
+  hw-type-platform-2-hugepages-count: "16"
+  hw-type-platform-2-hugepages-size: "1G"  
 EOF
 cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/group-du-sno-validator.yaml
 ---
@@ -346,8 +455,9 @@ EOF
 +
 2. Create the required Kustomization files
 +
-WARNING: You can see that we commented the `group-du-sno-validator.yaml` files in our Kustomization files. Since this is a lab environment and we don't have PTP/SRIO-V hardware the validator policies won't be able to verify our SNOs as a well-configured DU. We kept the files here so you know how a real environment should be configured.
+WARNING: You can see that we commented the `group-du-sno-validator.yaml` files in our Kustomization files. Since this is a lab environment and we don't have PTP/SR-IOV hardware, the validator policies won't be able to verify our SNOs as a well-configured DU. We kept the files here so you know how a real environment should be configured.
 +
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -355,10 +465,9 @@ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-bases:
+resources:
   - fleet/
   - sites/
-resources:
   - policies-namespace.yaml
 EOF
 cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/sites/kustomization.yaml
@@ -373,15 +482,15 @@ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/sites/hub-1/kustomi
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 generators:
-  - site-sno2.yaml
+  - sites-specific.yaml
 resources:
-  - hub1-sites-data.yaml
+  - site-data-hw-1-configmap.yaml
 EOF
 cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-bases:
+resources:
   - active/
   - testing/
 EOF
@@ -393,6 +502,8 @@ generators:
   - {policygen-common-file}
   - group-du-sno.yaml
 #  - group-du-sno-validator.yaml
+resources:
+  - group-hardware-types-configmap.yaml
 EOF
 cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/kustomization.yaml
 ---
@@ -402,6 +513,8 @@ generators:
   - {policygen-common-file}
   - group-du-sno.yaml
 #  - group-du-sno-validator.yaml
+resources:
+  - group-hardware-types-configmap-test.yaml
 EOF
 -----
 +

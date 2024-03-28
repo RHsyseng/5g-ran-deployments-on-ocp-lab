@@ -138,7 +138,6 @@
 * xref:crafting-cluster-telco-related-infra-operators-configs.adoc[Crafting Cluster and Telco Related Infrastructure Operators Configs]
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#crafting-common-policies[Crafting Common Policies]
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#crafting-group-policies[Crafting Group Policies]
-** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#crafting-zone-policies[Crafting Zone Policies]
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#crafting-site-policies[Crafting Site Policies]
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#crafting-testing-policies[Crafting testing Policies]
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#configure-kustomization-for-policies[Configure Kustomization for Policies]
