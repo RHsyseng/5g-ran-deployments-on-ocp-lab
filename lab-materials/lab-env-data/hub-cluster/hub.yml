@@ -1,7 +1,7 @@
 plan: hub-cluster
 force: false
 version: stable
-tag: "4.15.0"
+tag: "4.15.3"
 cluster: "hub"
 domain: 5g-deployment.lab
 api_ip: 192.168.125.10
@@ -10,14 +10,14 @@ disconnected_url: infra.5g-deployment.lab:8443
 disconnected_update: true
 disconnected_user: admin
 disconnected_password: r3dh4t1!
-disconnected_operators_version: v4.15-1709221154
+disconnected_operators_version: v4.15-1711601986
 disconnected_operators:
 - name: advanced-cluster-management
   channels:
-  - name: release-2.9
+  - name: release-2.10
 - name: multicluster-engine
   channels:
-  - name: stable-2.4
+  - name: stable-2.5
 - name: topology-aware-lifecycle-manager
   channels:
   - name: stable
@@ -35,9 +35,12 @@ disconnected_extra_images:
 - quay.io/rhsysdeseng/5granlab-ee:lab
 disconnected_extra_releases:
 - quay.io/openshift-release-dev/ocp-release:4.15.0-x86_64
-disk_size: 200
-extra_disks: [200]
-memory: 48000
+#disk_size: 200
+disk_size: 120
+#extra_disks: [200]
+extra_disks: [100]
+#memory: 48000
+memory: 20000
 numcpus: 16
 ctlplanes: 3
 workers: 0

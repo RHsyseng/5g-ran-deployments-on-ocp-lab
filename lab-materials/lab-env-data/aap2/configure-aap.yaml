@@ -6,7 +6,7 @@
     - aap2_webconsole_user: admin
     - hub_kubeconfig_path: /root/.kcli/clusters/hub/auth/kubeconfig
     - repo_user: RHsyseng
-    - lab_version: lab-4.14
+    - lab_version: lab-4.15
     - lab_registry_host: "infra.5g-deployment.lab:8443"
   tasks:
     - name: Wait for AAP Controller to come up
