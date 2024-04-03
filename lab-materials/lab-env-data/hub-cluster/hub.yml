@@ -40,7 +40,7 @@ disk_size: 120
 #extra_disks: [200]
 extra_disks: [100]
 #memory: 48000
-memory: 20000
+memory: 24000
 numcpus: 16
 ctlplanes: 3
 workers: 0
