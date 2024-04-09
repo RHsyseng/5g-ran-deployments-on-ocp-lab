@@ -8,7 +8,7 @@
 :policygen-common-file: common-415.yaml
 :policygen-common-label: ocp415
 :lvms-channel: stable-4.15
-:catalogsource-index-image-tag: v4.15-1709221154
+:catalogsource-index-image-tag: v4.15-1711601986
 :ztp-sitegenerate-disconnected-image: infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.15.0-32
 :example-sno-siteconfig-link: https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.15/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml
 :example-groupdu-policygen-link: https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.15/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml
@@ -67,4 +67,4 @@
 :aap-hub-docs: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/deploying_the_red_hat_ansible_automation_platform_operator_on_openshift_container_platform/installing-hub-operator
 :aap-controller-docs: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/deploying_the_red_hat_ansible_automation_platform_operator_on_openshift_container_platform/installing-controller-operator
 :aap-get-manifest-docs: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/red_hat_ansible_automation_platform_operations_guide/assembly-aap-obtain-manifest-files
-:last-update-date: 2024-03-07
+:last-update-date: 2024-04-09
