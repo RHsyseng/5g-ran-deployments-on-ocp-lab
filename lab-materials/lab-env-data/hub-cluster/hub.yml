@@ -30,6 +30,9 @@ disconnected_operators:
 - name: ansible-automation-platform-operator
   channels:
   - name: stable-2.4-cluster-scoped
+- name: sriov-network-operator
+  channels:
+  - name: stable
 disconnected_extra_images:
 - registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.15.0-32
 - quay.io/rhsysdeseng/5granlab-ee:lab
