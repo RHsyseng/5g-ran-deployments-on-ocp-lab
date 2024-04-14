@@ -38,12 +38,12 @@ disconnected_extra_images:
 - quay.io/rhsysdeseng/5granlab-ee:lab
 disconnected_extra_releases:
 - quay.io/openshift-release-dev/ocp-release:4.15.0-x86_64
-#disk_size: 200
-disk_size: 120
-#extra_disks: [200]
-extra_disks: [100]
-#memory: 48000
-memory: 24000
+disk_size: 200
+#disk_size: 120
+extra_disks: [200]
+#extra_disks: [100]
+memory: 48000
+#memory: 24000
 numcpus: 16
 ctlplanes: 3
 workers: 0

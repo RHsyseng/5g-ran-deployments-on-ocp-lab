@@ -60,13 +60,28 @@ spec:
       policyName: subscriptions-policy
     - fileName: LVMOperatorStatus.yaml
       policyName: subscriptions-policy
+    - fileName: SriovSubscriptionNS.yaml
+      policyName: "subscriptions-policy"
+    - fileName: SriovSubscriptionOperGroup.yaml
+      policyName: "subscriptions-policy"
+    - fileName: SriovSubscription.yaml
+      spec:
+        channel: {sriov-channel}
+        source: redhat-operator-index
+        config:
+          env:
+            - name: "DEV_MODE"
+              value: "TRUE"
+      policyName: "subscriptions-policy"
+    - fileName: SriovOperatorStatus.yaml
+      policyName: subscriptions-policy
 EOF
 -----
 
 [#crafting-group-policies]
 == Crafting Group Policies
 
-The group policies apply to a group of clusters that typically have something in common, for example they are SNOs, or they have similar hardware: SR-IOV cards, number of CPUs, etc.
+The group policies apply to a group of clusters that typically have something in common, for example they are SNOs, or they have similar hardware: SR-IOV cards, number of CPUs, number of disks, etc.
 
 The CNF team has prepared some common tuning configurations that should be applied on every SNO DU deployed with similar hardware. In this section, we will be crafting these configurations.
 
@@ -95,6 +110,24 @@ spec:
     - fileName: DisableSnoNetworkDiag.yaml
       policyName: "group-policy"
     - fileName: DisableOLMPprof.yaml # wave 10
+      policyName: "group-policy"
+    - fileName: SriovOperatorConfig.yaml
+      policyName: "group-policy"
+      spec:
+        disableDrain: true
+        enableOperatorWebhook: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-supported-sriov-nic" (index .ManagedClusterLabels "hardware-type")) | toBool hub}}'
+    - fileName: StorageLVMCluster.yaml
+      spec:
+        storage:
+          deviceClasses:
+            - name: vg1
+              thinPoolConfig:
+                name: thin-pool-1
+                sizePercent: 90
+                overprovisionRatio: 10
+              deviceSelector:
+                paths:
+                - '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-storage-path" (index .ManagedClusterLabels "hardware-type")) hub}}'
       policyName: "group-policy"
     - fileName: PerformanceProfile.yaml
       policyName: "group-policy"
@@ -167,11 +200,15 @@ data:
   hw-type-platform-1-hugepages-default: "1G"
   hw-type-platform-1-hugepages-count: "4"
   hw-type-platform-1-hugepages-size: "1G"
+  hw-type-platform-1-supported-sriov-nic: "false"
+  hw-type-platform-1-storage-path: "/dev/vdb"
   hw-type-platform-2-cpu-isolated: "2-39,42-79"
   hw-type-platform-2-cpu-reserved: "0-1,40-41"
   hw-type-platform-2-hugepages-default: "256M"
   hw-type-platform-2-hugepages-count: "16"
-  hw-type-platform-2-hugepages-size: "1G"  
+  hw-type-platform-2-hugepages-size: "1G"
+  hw-type-platform-2-supported-sriov-nic: "true"
+  hw-type-platform-2-storage-path: "/dev/nvme0n1"
 EOF
 -----
 +
@@ -204,9 +241,9 @@ EOF
 [#crafting-site-policies]
 == Crafting Site Policies
 
-Site policies apply to a specific cluster/s in our site, they usually configure stuff that is very specific to a single cluster or to a small subset of clusters. For example, we could configure storage for a group of clusters if those share the same hardware, disks configurations, etc. otherwise we will need to have different bindings for different clusters.
+Site policies apply to a specific cluster or clusters in our site. They usually configure stuff that is very specific to a single cluster or to a small subset of clusters. For example, we could configure the SR-IOV network devices for a group of clusters if those share the same number of network interfaces, NIC model, etc. otherwise we will need to have different bindings for different clusters.
 
-We are going to create the storage configurations for our SNO2 cluster whose hardware type belongs to `hw-type-platform-1`. Notice that this policy leverages hub side templating. Therefore it is targeting all clusters with this specific hardware configuration, not only `SNO2`.
+We are going to create the SR-IOV network device configurations for our SNO2 cluster whose hardware type belongs to `hw-type-platform-1`. That sort of servers are built with 2 virtual Intel IGB capable SR-IOV network devices. Notice that this policy leverages hub side templating. Therefore, it is targeting all clusters with this specific hardware configuration, not only the `SNO2` cluster.
 
 1. Create the `du-sno-sites` PolicyGenTemplate for the clusters that contain `hw-type-platform-1` hardware type in our `5glab` site. In our case the `SNO2` cluster:
 +
@@ -224,27 +261,70 @@ spec:
   bindingRules:
     common: "{policygen-common-label}"
     logicalGroup: "active"
+    hardware-type: "hw-type-platform-1"
   mcp: master
   remediationAction: inform
   sourceFiles:
-    - fileName: StorageLVMCluster.yaml
-      spec:
-        storage:
-          deviceClasses:
-            - name: vg1
-              thinPoolConfig:
-                name: thin-pool-1
-                sizePercent: 90
-                overprovisionRatio: 10
-              deviceSelector:
-                paths:
-                - '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-storage-path" .ManagedClusterName) hub}}'
+    - fileName: SriovNetwork.yaml
       policyName: "sites-policy"
+      metadata:
+        name: "sriov-nw-du-netdev"
+      spec:  
+        ipam: '{"type": "host-local","ranges": [[{"subnet": "192.168.100.0/24"}]],"dataDir":
+      "/run/my-orchestrator/container-ipam-state-1"}'
+        resourceName: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename1" .ManagedClusterName) hub}}'
+        spoofChk: "off"
+        trust: "on"
+    - fileName: SriovNetworkNodePolicy.yaml
+      policyName: "sites-policy"
+      complianceType: mustonlyhave
+      metadata:
+        name: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename1" .ManagedClusterName) hub}}'
+      spec:
+        deviceType: netdevice
+        needVhostNet: false
+        mtu: 1500
+        linkType: eth
+        isRdma: false
+        nicSelector:
+          vendor: "8086"
+          deviceID: "10c9"
+          pfNames:
+            - '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-sriovnic1" .ManagedClusterName) hub}}'
+        numVfs: 2
+        resourceName: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename1" .ManagedClusterName) hub}}'
+    - fileName: SriovNetwork.yaml
+      policyName: "sites-policy"
+      metadata:
+        name: "sriov-nw-du-vfio"
+      spec:
+        ipam: '{"type": "host-local","ranges": [[{"subnet": "192.168.100.0/24"}]],"dataDir":
+      "/run/my-orchestrator/container-ipam-state-1"}'
+        resourceName: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename2" .ManagedClusterName) hub}}'
+        spoofChk: "off"
+        trust: "on"
+    - fileName: SriovNetworkNodePolicy.yaml
+      policyName: "sites-policy"
+      metadata:
+        name: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename2" .ManagedClusterName) hub}}'
+      spec:
+        deviceType: vfio-pci
+        mtu: 1500
+        linkType: eth
+        isRdma: false
+        needVhostNet: false
+        nicSelector:
+          vendor: "8086"
+          deviceID: "10c9"
+          pfNames:
+            - '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-sriovnic2" .ManagedClusterName) hub}}'
+        numVfs: 2
+        resourceName: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename2" .ManagedClusterName) hub}}'
 EOF
 -----
 IMPORTANT: By leveraging hub site templating we are reducing the number of policies on our hub cluster. This makes the clusters's deployment and maintenance process a lot less cumbersome. Notice that with large fleets of clusters, it can quickly become hard to maintain per-site configurations.
 
-2. We're using policy templating, so we have to create a `ConfigMap` with the templating values to be used. Observe that the following manifest contains disk paths for each cluster deployed by our Hub-1. This storage information is required to configure the LVM operator and provide storage to our SNO clusters. In the previous policy, it is captured the device path used to present persistent storage to our applications by obtaining the name of the cluster managed by the hub. The information is not obtained from a label set in the `SiteConfig` definition, it is the `ManagedClusterName`, e.g., the name of the cluster used instead. 
+2. We're using policy templating, so we have to create a `ConfigMap` with the templating values to be used. Observe that the following manifest contains SR-IOV information for each cluster deployed by our Hub-1. This network information is required to configure the SR-IOV network devices and provide SR-IOV capabilities to the Pods deployed in our SNO clusters. In the previous policy, it is captured the name of the SR-IOV interfaces (PFs) recognized on the host node to present additional virtual functions (VFs) on your OpenShift cluster. Those values are retrieved by obtaining the name of the cluster managed by the hub. The information is not obtained from a label set in the `SiteConfig` definition, it is the `ManagedClusterName`, e.g., the name of the cluster used instead. 
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -260,8 +340,14 @@ metadata:
     argocd.argoproj.io/sync-options: Replace=true
 data:
   # StorageLVMCluster.yaml
-  sno2-storage-path: "/dev/vdb"
-  sno3-storage-path: "[\"/dev/disk/by-path/pci-0001:05:00.0-nvme-1\", \"pci-0000:18:00.0-scsi-0:2:0:0\"]"
+  sno1-resourcename1: "igb-enp2s0"
+  sno1-resourcename2: "igb-enp3s0"
+  sno1-sriovnic1: "enp2s0"
+  sno1-sriovnic2: "enp3s0"
+  sno2-resourcename1: "virt-enp3s0"
+  sno2-resourcename2: "virt-enp2s0"
+  sno2-sriovnic1: "enp3s0"
+  sno2-sriovnic2: "enp2s0"
 EOF
 -----
 
@@ -313,6 +399,21 @@ spec:
       policyName: subscriptions-policy
     - fileName: LVMOperatorStatus.yaml
       policyName: subscriptions-policy
+    - fileName: SriovSubscriptionNS.yaml
+      policyName: "subscriptions-policy"
+    - fileName: SriovSubscriptionOperGroup.yaml
+      policyName: "subscriptions-policy"
+    - fileName: SriovSubscription.yaml
+      spec:
+        channel: {sriov-channel}
+        source: redhat-operator-index
+        config:
+          env:
+            - name: "DEV_MODE"
+              value: "TRUE"
+      policyName: "subscriptions-policy"
+    - fileName: SriovOperatorStatus.yaml
+      policyName: subscriptions-policy
 EOF
 -----
 +
@@ -340,6 +441,24 @@ spec:
       policyName: "group-policy"
     - fileName: DisableOLMPprof.yaml # wave 10
       policyName: "group-policy"
+    - fileName: SriovOperatorConfig.yaml
+      policyName: "group-policy"
+      spec:
+        disableDrain: true
+        enableOperatorWebhook: '{{hub fromConfigMap "" "group-hardware-types-configmap-test" (printf "%s-supported-sriov-nic" (index .ManagedClusterLabels "hardware-type")) | toBool hub}}'
+    - fileName: StorageLVMCluster.yaml
+      spec:
+        storage:
+          deviceClasses:
+            - name: vg1
+              thinPoolConfig:
+                name: thin-pool-1
+                sizePercent: 90
+                overprovisionRatio: 10
+              deviceSelector:
+                paths:
+                - '{{hub fromConfigMap "" "group-hardware-types-configmap-test" (printf "%s-storage-path" (index .ManagedClusterLabels "hardware-type")) hub}}'
+      policyName: "group-policy"
     - fileName: PerformanceProfile.yaml
       policyName: "group-policy"
       metadata:
@@ -363,6 +482,7 @@ spec:
           enabled: false
         globallyDisableIrqLoadBalancing: false
         # WorkloadHints defines the set of upper level flags for different type of workloads.
+        # The configuration below is set for a low latency, performance mode.
         workloadHints:
           realTime: true
           highPowerConsumption: false
@@ -376,16 +496,15 @@ spec:
               [main]
               summary=Configuration changes profile inherited from performance created tuned
               include=openshift-node-performance-openshift-node-performance-profile
-              # When using the standard (non-realtime) kernel, remove the kernel.timer_migration override from the [sysctl] section
               [sysctl]
-              kernel.timer_migration=0
+              # When using the standard (non-realtime) kernel, remove the kernel.timer_migration override from the [sysctl] section
+              # kernel.timer_migration=0
               [scheduler]
               group.ice-ptp=0:f:10:*:ice-ptp.*
               group.ice-gnss=0:f:10:*:ice-gnss.*
               [service]
               service.stalld=start,enable
               service.chronyd=stop,disable
-
 EOF
 cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/group-hardware-types-configmap-test.yaml
 ---
@@ -403,11 +522,15 @@ data:
   hw-type-platform-1-hugepages-default: "1G"
   hw-type-platform-1-hugepages-count: "4"
   hw-type-platform-1-hugepages-size: "1G"
+  hw-type-platform-1-supported-sriov-nic: "false"
+  hw-type-platform-1-storage-path: "/dev/vdb"
   hw-type-platform-2-cpu-isolated: "2-39,42-79"
   hw-type-platform-2-cpu-reserved: "0-1,40-41"
   hw-type-platform-2-hugepages-default: "256M"
   hw-type-platform-2-hugepages-count: "16"
-  hw-type-platform-2-hugepages-size: "1G"  
+  hw-type-platform-2-hugepages-size: "1G"
+  hw-type-platform-2-supported-sriov-nic: "true"
+  hw-type-platform-2-storage-path: "/dev/nvme0n1"
 EOF
 cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/group-du-sno-validator.yaml
 ---

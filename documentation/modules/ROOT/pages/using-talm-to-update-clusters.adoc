@@ -294,16 +294,17 @@ oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/pre-cache -n opensh
 highThresholdPercent: 85 diskSize:209124332 used:17648032
 upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Release index image processing done
 7df5fe3b5fb7352b870735c7d7bd898d0959a9a49558d2ffb42dcd269e01752f
-upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Operators index is not specified. Operators won't be pre-cached
-upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:00162a72c1ae283977f0191ee216e15fe696838b6d7addd8250ff8c5b474cc61 [1/183]
-upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:00eaf204536112ed09a10e4c70f9a8dc6827726bf9bc34f279a9156b881a7a2a [2/183]
-upgrades.pre-cache {last-update-date}T10:55:10+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:02d61dfc59ac70096dffadda38a52829cd61c9c016e54d2b6d78eb5182d2b19a [3/183]
+upgrades.pre-cache {last-update-date}T08:13:59+00:00 [DEBUG]: Operators index is not specified. Operators won't be pre-cached
+upgrades.pre-cache {last-update-date}T08:13:59+00:00 [INFO]: Image pre-caching starting for platform-images
+upgrades.pre-cache {last-update-date}T08:13:59+00:00 [DEBUG]: Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:98aedb56541d7021c097128406e6225ed9b8c6d4e59a59ab0d061c1b1866e137 [1/114]
+upgrades.pre-cache {last-update-date}T08:13:59+00:00 [DEBUG]: Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:8dbad8f6e69d19d9cd19c9ff9ac731c6e1a7f5ea7543626a9d473555c791bb26 [2/114]
+upgrades.pre-cache {last-update-date}T08:13:59+00:00 [DEBUG]: Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:634d44ec3d6d36106aa8857adcecfcacbbdb063b6bcb1bf823bd4bb874c68e5b [3/114]
 .
 .
 .
-upgrades.pre-cache {last-update-date}T11:00:48+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ff7cfeec16898c293222ac1422841440cdeffefa7d489757e71999d5305425f8 [182/183]
-upgrades.pre-cache {last-update-date}T11:00:48+00:00 DEBUG Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:ff88f1a78dac067bb93d98818bcee9bed36de0b2a74f3ed42d15ad816a16f624 [183/183]
-upgrades.pre-cache {last-update-date}T11:00:48+00:00 DEBUG Image pre-cache done
+upgrades.pre-cache {last-update-date}T08:20:25+00:00 [DEBUG]: Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:421b2983c440bf29118912209e93b12f4b24899911ee936f304502930fd04733 [113/114]
+upgrades.pre-cache {last-update-date}T08:20:25+00:00 [DEBUG]: Pulling quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:454d7e4a1b0f9433924440577a29fdfc54b669db4c5b0fd2cb3ae5e640594a68 [114/114]
+upgrades.pre-cache {last-update-date}T08:20:36+00:00 [INFO]: Image pre-caching complete for platform-images
 -----
 
 Once the precache is done, the CGU state moves to `NotEnabled` and the Pod running the pre-cache task in both SNO clusters is deleted. At this moment, TALM is waiting for acknowledging the start of the upgrade.
@@ -387,41 +388,40 @@ INFO[0000] Cleaning up old content...
 INFO[0000] ------------------------------------------------------------ 
 INFO[0000] Old directories deleted with contents        
 INFO[0000] Old contents have been cleaned up            
-INFO[0000] Available disk space : 154.98 GiB; Estimated disk space required for backup: 276.55 MiB  
+INFO[0000] Available disk space : 151.77 GiB; Estimated disk space required for backup: 277.41 MiB  
 INFO[0000] Sufficient disk space found to trigger backup 
 INFO[0000] Upgrade recovery script written              
 INFO[0000] Running: bash -c /var/recovery/upgrade-recovery.sh --take-backup --dir /var/recovery 
-INFO[0000] ##### Wed Jul  5 10:57:53 UTC 2023: Taking backup 
-INFO[0000] ##### Wed Jul  5 10:57:53 UTC 2023: Wiping previous deployments and pinning active 
+INFO[0000] ##### Wed Apr 10 09:06:34 UTC 2024: Taking backup 
+INFO[0000] ##### Wed Apr 10 09:06:34 UTC 2024: Wiping previous deployments and pinning active 
 INFO[0000] error: Out of range deployment index 1, expected < 1 
 INFO[0000] Deployment 0 is now pinned                   
-INFO[0000] ##### Wed Jul  5 10:57:54 UTC 2023: Backing up container cluster and required files 
+INFO[0000] ##### Wed Apr 10 09:06:34 UTC 2024: Backing up container cluster and required files 
 INFO[0000] Certificate /etc/kubernetes/static-pod-certs/configmaps/etcd-serving-ca/ca-bundle.crt is missing. Checking in different directory 
 INFO[0000] Certificate /etc/kubernetes/static-pod-resources/etcd-certs/configmaps/etcd-serving-ca/ca-bundle.crt found! 
-INFO[0000] found latest kube-apiserver: /etc/kubernetes/static-pod-resources/kube-apiserver-pod-7 
-INFO[0000] found latest kube-controller-manager: /etc/kubernetes/static-pod-resources/kube-controller-manager-pod-11 
-INFO[0000] found latest kube-scheduler: /etc/kubernetes/static-pod-resources/kube-scheduler-pod-8 
+INFO[0000] found latest kube-apiserver: /etc/kubernetes/static-pod-resources/kube-apiserver-pod-4 
+INFO[0000] found latest kube-controller-manager: /etc/kubernetes/static-pod-resources/kube-controller-manager-pod-7 
+INFO[0000] found latest kube-scheduler: /etc/kubernetes/static-pod-resources/kube-scheduler-pod-6 
 INFO[0000] found latest etcd: /etc/kubernetes/static-pod-resources/etcd-pod-3 
-INFO[0000] aa91d2b9d4ac8ef60ea81f11643fdaad14717e21a7a4f82b57f59667a02c92af 
-INFO[0000] etcdctl version: 3.5.6                       
-INFO[0000] API version: 3.5                             
-INFO[0000] {"level":"info","ts":"{last-update-date}T10:57:54.421Z","caller":"snapshot/v3_snapshot.go:65","msg":"created temporary db file","path":"/var/recovery/cluster/snapshot_2023-07-05_105754__POSSIBLY_DIRTY__.db.part"} 
-INFO[0000] {"level":"info","ts":"{last-update-date}T10:57:54.434Z","logger":"client","caller":"v3@v3.5.6/maintenance.go:212","msg":"opened snapshot stream; downloading"} 
-INFO[0000] {"level":"info","ts":"{last-update-date}T10:57:54.434Z","caller":"snapshot/v3_snapshot.go:73","msg":"fetching snapshot","endpoint":"https://192.168.125.40:2379"} 
-INFO[0001] {"level":"info","ts":"{last-update-date}T10:57:55.204Z","logger":"client","caller":"v3@v3.5.6/maintenance.go:220","msg":"completed snapshot read; closing"} 
-INFO[0001] {"level":"info","ts":"{last-update-date}T10:57:55.290Z","caller":"snapshot/v3_snapshot.go:88","msg":"fetched snapshot","endpoint":"https://192.168.125.40:2379","size":"84 MB","took":"now"} 
-INFO[0001] {"level":"info","ts":"{last-update-date}T10:57:55.290Z","caller":"snapshot/v3_snapshot.go:97","msg":"saved","path":"/var/recovery/cluster/snapshot_2023-07-05_105754__POSSIBLY_DIRTY__.db"} 
-INFO[0001] Snapshot saved at /var/recovery/cluster/snapshot_2023-07-05_105754__POSSIBLY_DIRTY__.db 
-INFO[0001] Deprecated: Use `etcdutl snapshot status` instead. 
-INFO[0001]                                              
-INFO[0001] {"hash":1007949646,"revision":43716,"totalKey":10582,"totalSize":83578880} 
-INFO[0001] snapshot db and kube resources are successfully saved to /var/recovery/cluster 
-INFO[0002] Command succeeded: cp -Ra /etc/ /var/recovery/etc/ 
-INFO[0002] Command succeeded: cp -Ra /usr/local/ /var/recovery/usrlocal/ 
-INFO[0002] Command succeeded: cp -Ra /var/lib/kubelet/ /var/recovery/kubelet/ 
-INFO[0002] ##### Wed Jul  5 10:57:55 UTC 2023: Backup complete 
-INFO[0002] ------------------------------------------------------------ 
-INFO[0002] backup has successfully finished ...         
+INFO[0001] 8f1f03837eccb959d0da9665ca79e995b87c6a1f024f0a198efcb2b51795f66c 
+INFO[0001] etcdctl version: 3.5.11                      
+INFO[0001] API version: 3.5                             
+INFO[0001] {"level":"info","ts":"2024-04-10T09:06:34.866338Z","caller":"snapshot/v3_snapshot.go:65","msg":"created temporary db file","path":"/var/recovery/cluster/snapshot_2024-04-10_090634__POSSIBLY_DIRTY__.db.part"} 
+INFO[0001] {"level":"info","ts":"2024-04-10T09:06:34.880464Z","logger":"client","caller":"v3@v3.5.11/maintenance.go:212","msg":"opened snapshot stream; downloading"} 
+INFO[0001] {"level":"info","ts":"2024-04-10T09:06:34.880497Z","caller":"snapshot/v3_snapshot.go:73","msg":"fetching snapshot","endpoint":"https://192.168.125.40:2379"} 
+INFO[0002] {"level":"info","ts":"2024-04-10T09:06:35.577727Z","logger":"client","caller":"v3@v3.5.11/maintenance.go:220","msg":"completed snapshot read; closing"} 
+INFO[0002] {"level":"info","ts":"2024-04-10T09:06:35.816588Z","caller":"snapshot/v3_snapshot.go:88","msg":"fetched snapshot","endpoint":"https://192.168.125.40:2379","size":"81 MB","took":"now"} 
+INFO[0002] {"level":"info","ts":"2024-04-10T09:06:35.816772Z","caller":"snapshot/v3_snapshot.go:97","msg":"saved","path":"/var/recovery/cluster/snapshot_2024-04-10_090634__POSSIBLY_DIRTY__.db"} 
+INFO[0002] Snapshot saved at /var/recovery/cluster/snapshot_2024-04-10_090634__POSSIBLY_DIRTY__.db 
+INFO[0002] {"hash":1474842361,"revision":33232,"totalKey":8130,"totalSize":80941056} 
+INFO[0002] snapshot db and kube resources are successfully saved to /var/recovery/cluster 
+INFO[0002] Command succeeded: cp -Ra /etc/ /var/recovery/ 
+INFO[0002] Command succeeded: cp -Ra /usr/local/ /var/recovery/ 
+INFO[0003] Command succeeded: cp -Ra /var/lib/kubelet/ /var/recovery/ 
+INFO[0003] tar: Removing leading `/' from member names  
+INFO[0003] ##### Wed Apr 10 09:06:36 UTC 2024: Backup complete 
+INFO[0003] ------------------------------------------------------------ 
+INFO[0003] backup has successfully finished ...         
 -----
 
 Once backups are finished for all clusters, the CGU state will move to `BackupCompleted` and then quickly move to `InProgress`:
