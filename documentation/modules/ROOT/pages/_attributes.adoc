@@ -4,7 +4,7 @@
 :github-repo: https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/blob/{branch}
 :profile: 5g-ran-lab
 :openshift-release: v4.15
-:rds-link: https://docs.google.com/document/d/1HCl52yGCsWRDvdnlIQQXtinCg0N2MtwF14RxyPhS9Z4
+:rds-link: https://docs.google.com/document/d/1qWUNGGaEEnzEF3hO0b00K1531YXQf0IxIUmq0FchB3I
 :policygen-common-file: common-415.yaml
 :policygen-common-label: ocp415
 :lvms-channel: stable-4.15
