@@ -94,3 +94,15 @@ PTP can work in three modes:
 * `Boundary Clock`: A PTP daemon connected to a GrandMaster to synchronize its clock and being a GrandMaster for other PTP daemons that needs to synchronize their time on the network.
 
 image::ptp_diagram.png[PTP Diagram]
+
+[#sriov]
+== SR-IOV
+
+The Single Root I/O Virtualization (SR-IOV) specification is a standard for a type of PCI device assignment that can share a single device with multiple pods.
+
+SR-IOV can segment a compliant network device, recognized on the host node as a physical function (PF), into multiple virtual functions (VFs). The VF is used like any other network device. The SR-IOV network device driver for the device determines how the VF is exposed in the container:
+
+* `netdevice driver`: A regular kernel network device in the netns of the container.
+* `vfio-pci driver`: A character device mounted in the container.
+
+A major field of application for SR-IOV is within high-performance computing (HPC). You can use SR-IOV network devices with additional networks on your OpenShift Container Platform cluster installed on bare metal for applications that require high bandwidth or low latency. OpenShift Container Platform supports the {sriov-supported-nics}[following network interface controllers].

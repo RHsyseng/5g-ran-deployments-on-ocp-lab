@@ -157,9 +157,7 @@ Disable networking diagnostics for SNO as it is not applicable.
 [#operatorhub]
 === OperatorHub
 
-A single catalog source is recommended that contains only the operators required for a RAN DU deployment.
-
-{cnf-features-source-crs}/OperatorHub.yaml[Manifest 1]
+As part of the composable OpenShift Settings the OperatorHub can be enabled-disabled. A single catalog source is recommended that contains only the operators required for a RAN DU deployment.
 
 {cnf-features-source-crs}/DefaultCatsrc.yaml[Manifest 2]
 
@@ -192,6 +190,12 @@ This will be customer specific.
 
 {cnf-features-source-crs}/SriovNetwork.yaml[SriovNetwork Manifest]
 
+It also enables the required SR-IOV kernel arguments `intel_ionmu` and `iommu=pt` at installation time avoiding unnecessary reboots when installing the operator:
+
+{cnf-features-source-crs}/extra-manifest/07-sriov-related-kernel-args-master.yaml[SR-IOV kernel manifest]
+
+{cnf-features-source-crs}/extra-manifest/07-sriov-related-kernel-args-worker.yaml[SR-IOV kernel manifest]
+
 [#nto]
 === Node Tuning Operator
 
@@ -205,14 +209,15 @@ Performance Tuning interface including:
 
 {cnf-features-source-crs}/PerformanceProfile.yaml[Manifest]
 
-
 [#local-storage]
 === Local Storage
 
 Enables creation of Persistent Volumes which can be consumed as PVCs by applications. This will be customer specific.
 
 {cnf-features-source-crs}/StorageClass.yaml[StorageClass Manifest]
+
 {cnf-features-source-crs}/StorageLV.yaml[Storage Local Volume Manifest]
+
 {cnf-features-source-crs}/StorageLVMCluster.yaml[Storage Local Volume Manifest Dynamic Provisioning]
 
 [#logs]
@@ -221,6 +226,15 @@ Enables creation of Persistent Volumes which can be consumed as PVCs by applicat
 Enables collection and shipping of logs off the edge node for remote analysis.
 
 {cnf-features-source-crs}/ClusterLogForwarder.yaml[Manifest]
+
+[#crun]
+=== crun Container Runtime
+
+For optimal cluster performance, it enables `crun` as container runtime instead of runc for master and worker nodes. This is an optional choice but suggested for telco deployments.
+
+{cnf-features-source-crs}/optional-extra-manifest/enable-crun-master.yaml[Manifest]
+
+{cnf-features-source-crs}/optional-extra-manifest/enable-crun-master.yaml[Manifest]
 
 [#siteconfig-templating]
 == SiteConfig Templating

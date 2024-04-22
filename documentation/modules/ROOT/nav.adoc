@@ -18,6 +18,7 @@
 ** xref:5g-ran-context.adoc#cpu-reduction-tuning[Tuning for CPU Reduction]
 ** xref:5g-ran-context.adoc#vran-accelerators[vRAN Dedicated Accelerators]
 ** xref:5g-ran-context.adoc#ptp[PTP]
+** xref:5g-ran-context.adoc#sriov[SR-IOV]
 
 * xref:sno-intro.adoc[Introduction to Single Node OpenShift (SNO)]
 ** xref:sno-intro.adoc#5g-ran[5G Radio Access Network]
@@ -96,6 +97,7 @@
 *** xref:policygen-deepdive.adoc#nto[Node Tuning Operator]
 *** xref:policygen-deepdive.adoc#local-storage[Local Storage]
 *** xref:policygen-deepdive.adoc#logs[Log Collector and Forwarder]
+*** xref:policygen-deepdive.adoc#crun[crun Container Runtime]
 ** xref:policygen-deepdive.adoc#siteconfig-templating[SiteConfig Templating]
 ** xref:policygen-deepdive.adoc#policies-templating[Policies Templating]
 *** xref:policygen-deepdive.adoc#custom-policy-templates[Policies Custom Templating]
