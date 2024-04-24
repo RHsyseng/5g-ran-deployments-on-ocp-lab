@@ -28,6 +28,11 @@ These are the steps to install the required packages on a RHEL 9.3 server:
 dnf -y install libvirt libvirt-daemon-driver-qemu qemu-kvm
 usermod -aG qemu,libvirt $(id -un)
 newgrp libvirt
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
 systemctl enable libvirtd --now
 -----
 
@@ -66,12 +71,56 @@ mv kubectl oc /usr/bin/
 -----
 
 [#configure-disconnected-network]
-=== Configure Disconnected Network
+=== Configure Disconnected Networks
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 kcli create network -c 192.168.125.0/24 -P dns=false -P dhcp=false --domain 5g-deployment.lab 5gdeploymentlab
+kcli create network -c 192.168.100.0/24 -P dhcp=false -P dns=false --domain sriov-network.lab -i sriov-network
+-----
+
+[#update-qemu-sriov]
+=== Update QEMU to support SR-IOV
+
+The current version of the qemu-kvm package that comes with RHEL 9.3 does not support SR-IOV virtual network interfaces. In order to enable SR-IOV support in the hypervisor we need to run a newer version. Therefore, we have to enable the CentOS 9 Stream repository, update the package and then we can safely remove the repository again.
+
+IMPORTANT: At some point in the near future the `qemu-kvm` package provided in the RHEL 9 repositories will move from 8.0 to 8.2. Then, this step will not be needed anymore. You can check your `qemu-kvm` version by running `qemu-img --version` or `rpm -qa qemu-kvm`.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cat <<EOF > /etc/yum.repos.d/centos-9-stream-appstream.repo
+[centos-9-stream-appstream]
+name=centos-9-stream-appstream
+baseurl=https://mirror.stream.centos.org/9-stream/AppStream/x86_64/os/
+enabled=1
+gpgcheck=0
+EOF
+-----
+
+Verify that the CentOS 9 Stream is enabled and part of your RPM repositories: 
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+dnf repolist
+-----
+
+Then, update the `qemu-kvm` package:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+dnf update qemu-kvm -y
+-----
+
+Once updated, verify by running `qemu-img --version` that you're running version 8.2 or above. Then, remove the CentOS 9 Stream repository.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+rm -rf /etc/yum.repos.d/centos-9-stream-appstream.repo
 -----
 
 [#configure-local-dns-dhcp-server]
@@ -145,8 +194,8 @@ You can also create the required rules in the firewall if you want, but for the 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-systemctl disable firewalld iptables
-systemctl stop firewalld iptables
+systemctl disable firewalld
+systemctl stop firewalld
 iptables -F
 systemctl restart libvirtd
 -----
