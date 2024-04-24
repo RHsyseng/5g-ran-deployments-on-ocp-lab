@@ -364,8 +364,8 @@ That SSH key will allow you to connect to the VMs you are about to create:
 [source,bash,subs="attributes+,+macros"]
 -----
 kcli create pool -p /var/lib/libvirt/images default
-kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:02:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201 -P name=sno1
-kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:03:01"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301 -P name=sno2
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:02:01"}','{"name":"sriov-network","type":"igb","vfio":"true","noconf":"true","numa":"0"}','{"name":"sriov-network","type":"igb","vfio":"true","noconf":"true","numa":"1"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201 -P name=sno1
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[200,200] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:03:01"}','{"name":"sriov-network","type":"igb","vfio":"true","noconf":"true","numa":"0"}','{"name":"sriov-network","type":"igb","vfio":"true","noconf":"true","numa":"1"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301 -P name=sno2
 -----
 
 If you need or want to connect to any of the VMs, once they are started, you can do so by just executing:
