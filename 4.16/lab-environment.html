@@ -883,7 +883,7 @@ Below commands must be executed from the hypervisor host as root if not specifie
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf -y install bash-completion vim jq tar git ipcalc pip <a href="https://github.com/alosadagrande/5g-ran-deployments-on-ocp-lab/raw/lab-4.16/lab-materials/kcli-rpm/kcli-99.0.0.git.202409091407.2293cfe-0.el9.x86_64.rpm" class="bare">https://github.com/alosadagrande/5g-ran-deployments-on-ocp-lab/raw/lab-4.16/lab-materials/kcli-rpm/kcli-99.0.0.git.202409091407.2293cfe-0.el9.x86_64.rpm</a>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf -y install bash-completion vim jq tar git ipcalc pip <a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/raw/lab-4.16/lab-materials/kcli-rpm/kcli-99.0.0.git.202409091407.2293cfe-0.el9.x86_64.rpm" class="bare">https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/raw/lab-4.16/lab-materials/kcli-rpm/kcli-99.0.0.git.202409091407.2293cfe-0.el9.x86_64.rpm</a>
 pip install pyopenssl</code></pre>
 </div>
 </div>
@@ -925,13 +925,13 @@ If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf -y install dnsmasq policycoreutils-python-utils
 mkdir -p /opt/dnsmasq/include.d/
-curl -sL <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/dnsmasq.conf" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/dnsmasq.conf</a> -o /opt/dnsmasq/dnsmasq.conf
-curl -sL <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/upstream-resolv.conf" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/upstream-resolv.conf</a> -o /opt/dnsmasq/upstream-resolv.conf
-curl -sL <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/hub.ipv4" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/hub.ipv4</a> -o /opt/dnsmasq/include.d/hub.ipv4
-curl -sL <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/sno1.ipv4" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/sno1.ipv4</a> -o /opt/dnsmasq/include.d/sno1.ipv4
-curl -sL <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/sno2.ipv4" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/sno2.ipv4</a> -o /opt/dnsmasq/include.d/sno2.ipv4
-curl -sL <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/infrastructure-host.ipv4" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/infrastructure-host.ipv4</a> -o /opt/dnsmasq/include.d/infrastructure-host.ipv4
-curl -sL <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/dnsmasq-virt.service" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/dnsmasq-virt.service</a> -o /etc/systemd/system/dnsmasq-virt.service
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/dnsmasq.conf" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/dnsmasq.conf</a> -o /opt/dnsmasq/dnsmasq.conf
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/upstream-resolv.conf" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/upstream-resolv.conf</a> -o /opt/dnsmasq/upstream-resolv.conf
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/hub.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/hub.ipv4</a> -o /opt/dnsmasq/include.d/hub.ipv4
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/sno1.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/sno1.ipv4</a> -o /opt/dnsmasq/include.d/sno1.ipv4
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/sno2.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/sno2.ipv4</a> -o /opt/dnsmasq/include.d/sno2.ipv4
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/infrastructure-host.ipv4" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/infrastructure-host.ipv4</a> -o /opt/dnsmasq/include.d/infrastructure-host.ipv4
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/dnsmasq-virt.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/dnsmasq/dnsmasq-virt.service</a> -o /etc/systemd/system/dnsmasq-virt.service
 touch /opt/dnsmasq/hosts.leases
 semanage fcontext -a -t dnsmasq_lease_t /opt/dnsmasq/hosts.leases
 restorecon /opt/dnsmasq/hosts.leases
@@ -972,7 +972,7 @@ restorecon -rv /opt/dnsmasq/</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hypervisor/forcedns" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hypervisor/forcedns</a> -o /etc/NetworkManager/dispatcher.d/forcedns
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hypervisor/forcedns" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hypervisor/forcedns</a> -o /etc/NetworkManager/dispatcher.d/forcedns
 chmod +x /etc/NetworkManager/dispatcher.d/forcedns
 systemctl restart NetworkManager
 /etc/NetworkManager/dispatcher.d/forcedns</code></pre>
@@ -1012,7 +1012,7 @@ The iptables.service probably does not exist in your server, so it fails to be d
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/webcache/podman-webcache.service" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/webcache/podman-webcache.service</a> -o /etc/systemd/system/podman-webcache.service
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/webcache/podman-webcache.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/webcache/podman-webcache.service</a> -o /etc/systemd/system/podman-webcache.service
 mkdir -p /opt/webcache/data
 curl -L <a href="https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.16/4.16.0/rhcos-4.16.0-x86_64-live-rootfs.x86_64.img" class="bare">https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.16/4.16.0/rhcos-4.16.0-x86_64-live-rootfs.x86_64.img</a> -o /opt/webcache/data/rhcos-4.16.0-x86_64-live-rootfs.x86_64.img
 curl -L <a href="https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.16/4.16.0/rhcos-4.16.0-x86_64-live.x86_64.iso" class="bare">https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.16/4.16.0/rhcos-4.16.0-x86_64-live.x86_64.iso</a> -o /opt/webcache/data/rhcos-4.16.0-x86_64-live.x86_64.iso
@@ -1056,11 +1056,11 @@ A message like this <code>The unit files have no installation config (WantedBy, 
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf -y install podman httpd-tools
 REGISTRY_NAME=infra.5g-deployment.lab
 mkdir -p /opt/registry/{auth,certs,data,conf}
-curl -sL <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/registry-key.pem" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/registry-key.pem</a> -o /opt/registry/certs/registry-key.pem
-curl -sL <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/registry-cert.pem" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/registry-cert.pem</a> -o /opt/registry/certs/registry-cert.pem
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/registry-key.pem" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/registry-key.pem</a> -o /opt/registry/certs/registry-key.pem
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/registry-cert.pem" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/registry-cert.pem</a> -o /opt/registry/certs/registry-cert.pem
 htpasswd -bBc /opt/registry/auth/htpasswd admin r3dh4t1!
-curl -sL <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/config.yml" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/config.yml</a> -o /opt/registry/conf/config.yml
-curl -sL <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/podman-registry.service" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/podman-registry.service</a> -o /etc/systemd/system/podman-registry.service
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/config.yml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/config.yml</a> -o /opt/registry/conf/config.yml
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/podman-registry.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/registry/podman-registry.service</a> -o /etc/systemd/system/podman-registry.service
 systemctl daemon-reload
 systemctl enable podman-registry --now
 cp /opt/registry/certs/registry-cert.pem /etc/pki/ca-trust/source/anchors/
@@ -1088,13 +1088,13 @@ Link to additional configuration documentation of a disconnected registry: <a hr
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p /opt/gitea/
 chown -R 1000:1000 /opt/gitea/
-curl -sL <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/gitea/podman-gitea.service" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/gitea/podman-gitea.service</a> -o /etc/systemd/system/podman-gitea.service
+curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/gitea/podman-gitea.service" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/gitea/podman-gitea.service</a> -o /etc/systemd/system/podman-gitea.service
 systemctl daemon-reload
 systemctl enable podman-gitea --now
 sleep 20
 podman exec --user 1000 gitea /bin/sh -c 'gitea admin user create --username student --password student --email <a href="mailto:student@5g-deployment.lab">student@5g-deployment.lab</a> --must-change-password=false --admin'
-curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/alosadagrande/5g-ran-deployments-on-ocp-lab.git","uid":1,"repo_name":"5g-ran-deployments-on-ocp-lab"}' <a href="http://infra.5g-deployment.lab:3000/api/v1/repos/migrate" class="bare">http://infra.5g-deployment.lab:3000/api/v1/repos/migrate</a>
-curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/alosadagrande/5g-ran-lab-aap-integration-tools.git","uid":1,"repo_name":"aap-integration-tools"}' <a href="http://infra.5g-deployment.lab:3000/api/v1/repos/migrate" class="bare">http://infra.5g-deployment.lab:3000/api/v1/repos/migrate</a></code></pre>
+curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab.git","uid":1,"repo_name":"5g-ran-deployments-on-ocp-lab"}' <a href="http://infra.5g-deployment.lab:3000/api/v1/repos/migrate" class="bare">http://infra.5g-deployment.lab:3000/api/v1/repos/migrate</a>
+curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/RHsyseng/5g-ran-lab-aap-integration-tools.git","uid":1,"repo_name":"aap-integration-tools"}' <a href="http://infra.5g-deployment.lab:3000/api/v1/repos/migrate" class="bare">http://infra.5g-deployment.lab:3000/api/v1/repos/migrate</a></code></pre>
 </div>
 </div>
 <div class="admonitionblock warning">
@@ -1139,7 +1139,7 @@ systemctl enable chronyd --now</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">dnf install haproxy -y
 semanage port -a -t http_port_t -p tcp 6443
-curl -L <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/haproxy/haproxy.cfg" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/haproxy/haproxy.cfg</a> -o /etc/haproxy/haproxy.cfg
+curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/haproxy/haproxy.cfg" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/haproxy/haproxy.cfg</a> -o /etc/haproxy/haproxy.cfg
 systemctl enable haproxy --now</code></pre>
 </div>
 </div>
@@ -1243,7 +1243,7 @@ If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -sL <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/hub.yml" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/hub.yml</a> -o /root/hub.yml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -sL <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/hub.yml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/hub.yml</a> -o /root/hub.yml
 sed -i "s/CHANGE_ADMIN_PWD/admin/" hub.yml
 sed -i "s/CHANGE_DEV_PWD/developer/" hub.yml
 cd /root/
@@ -1285,7 +1285,7 @@ Plan hub deleted!</code></pre>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">export KUBECONFIG=~/.kcli/clusters/hub/auth/kubeconfig
 oc -n openshift-storage wait lvmcluster lvmcluster --for=jsonpath='{.status.state}'=Ready --timeout=900s
 oc patch storageclass lvms-vg1 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
-curl <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/argocd-patch.json" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/argocd-patch.json</a> -o /tmp/argopatch.json
+curl <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/argocd-patch.json" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/argocd-patch.json</a> -o /tmp/argopatch.json
 oc patch argocd openshift-gitops -n openshift-gitops --type=merge --patch-file /tmp/argopatch.json
 oc wait --for=condition=Ready pod -lapp.kubernetes.io/name=openshift-gitops-repo-server -n openshift-gitops
 oc -n openshift-gitops adm policy add-cluster-role-to-user cluster-admin -z openshift-gitops-argocd-application-controller</code></pre>
@@ -1296,7 +1296,7 @@ oc -n openshift-gitops adm policy add-cluster-role-to-user cluster-admin -z open
 <h3 id="deploy-openshift-hub-cluster-operators"><a class="anchor" href="#deploy-openshift-hub-cluster-operators"></a>Deploy OpenShift HUB Cluster Operators</h3>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml</a></code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -f <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml</a></code></pre>
 </div>
 </div>
 </div>
@@ -1309,7 +1309,7 @@ oc -n openshift-gitops adm policy add-cluster-role-to-user cluster-admin -z open
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/lab-4.16/lab-materials/lab-env-data/hypervisor/ssh-key" class="bare">http://infra.5g-deployment.lab:3000/student/5g-ran-deployments-on-ocp-lab/raw/branch/lab-4.16/lab-materials/lab-env-data/hypervisor/ssh-key</a> -o /root/.ssh/snokey
 chmod 400 /root/.ssh/snokey
-oc apply -f <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml</a></code></pre>
+oc apply -f <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml</a></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1394,7 +1394,7 @@ Change the <code>aap_manifest_file_path</code> var value to match the path where
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/aap2/configure-aap.yaml" class="bare">https://raw.githubusercontent.com/alosadagrande/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/aap2/configure-aap.yaml</a> -o /root/configure-aap.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">curl -L <a href="https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/aap2/configure-aap.yaml" class="bare">https://raw.githubusercontent.com/RHsyseng/5g-ran-deployments-on-ocp-lab/lab-4.16/lab-materials/lab-env-data/aap2/configure-aap.yaml</a> -o /root/configure-aap.yaml
 ansible-playbook /root/configure-aap.yaml -e strong_student_password=yourstrongstudentpassword -e aap_manifest_file_path=/path/to/your/manifest -e ansible_python_interpreter=/usr/bin/python3.11</code></pre>
 </div>
 </div>
