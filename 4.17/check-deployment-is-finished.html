@@ -764,25 +764,13 @@
 <p>In the previous section we have learned how to follow the cluster deployment process, but the cluster finished its deployment doesn&#8217;t mean that the SNO deployment is complete.</p>
 </div>
 <div class="paragraph">
-<p>We say that the SNO deployment finished when the SNO cluster has been deployed <strong>and</strong> day2 configurations has been applied. In this section we will learn how to verify that the configs have been applied and our SNO is ready to run 5G RAN workloads.</p>
+<p>We say that the SNO deployment finished when the SNO cluster has been deployed <strong>and</strong> day2 configurations have been applied. In this section we will learn how to verify that the configs have been applied and our SNO is ready to run 5G RAN workloads.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="check-sno-deployment-webui"><a class="anchor" href="#check-sno-deployment-webui"></a>Check SNO Deployment has Finished via the WebUI</h2>
 <div class="sectionbody">
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Sometimes you may hit a <a href="https://issues.redhat.com/browse/OCPBUGS-13286">bug</a> that will cause the policies to not be properly applied. Follow the instructions <a href="troubleshooting-tips.html#olm-bug" class="xref page">here</a> if after 20 minutes policies are not ready.
-</td>
-</tr>
-</table>
-</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -891,7 +879,7 @@ Applying policies on <code>sno2</code> can take up to 15 minutes after cluster h
 ztp-policies.common-config-policies         inform               Compliant          74m
 ztp-policies.common-subscription-policies   inform               Compliant          74m
 ztp-policies.du-sno-group-policies          inform               Compliant          74m
-ztp-policies.sno2-site-policies             inform               Compliant          74m</code></pre>
+ztp-policies.du-sno-sites-sites-policy      inform               Compliant          74m</code></pre>
 </div>
 </div>
 </li>
