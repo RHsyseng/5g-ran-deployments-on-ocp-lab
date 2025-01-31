@@ -1,0 +1,35 @@
+---
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetwork
+metadata:
+  name: sriov-nw-du-vfio
+  namespace: openshift-sriov-network-operator
+spec:
+  ipam: '{"type": "host-local","ranges": [[{"subnet": "192.168.100.0/24"}]],"dataDir":
+    "/run/my-orchestrator/container-ipam-state-1"}'
+  logLevel: info
+  networkNamespace: openshift-sriov-network-operator
+  resourceName: virt-enp5s0
+  spoofChk: "off"
+  trust: "on"
+---
+apiVersion: sriovnetwork.openshift.io/v1
+kind: SriovNetworkNodePolicy
+metadata:
+  name: virt-enp5s0
+  namespace: openshift-sriov-network-operator
+spec:
+  deviceType: vfio-pci
+  isRdma: false
+  linkType: eth
+  mtu: 1500
+  needVhostNet: false
+  nicSelector:
+    deviceID: 10c9
+    pfNames:
+    - enp5s0
+    vendor: "8086"
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+  numVfs: 2
+  resourceName: virt-enp5s0

@@ -1,0 +1,38 @@
+apiVersion: performance.openshift.io/v2
+kind: PerformanceProfile
+metadata:
+  annotations:
+    kubeletconfig.experimental: |
+      {"topologyManagerScope": "pod",
+       "systemReserved": {"memory": "3Gi"}
+      }
+    ran.openshift.io/reference-configuration: ran-du.redhat.com
+  name: openshift-node-performance-profile
+spec:
+  additionalKernelArgs:
+  - rcupdate.rcu_normal_after_boot=0
+  - efi=runtime
+  - vfio_pci.enable_sriov=1
+  - vfio_pci.disable_idle_d3=1
+  - module_blacklist=irdma
+  cpu:
+    isolated: 4-11
+    reserved: 0-3
+  globallyDisableIrqLoadBalancing: false
+  hugepages:
+    defaultHugepagesSize: 1G
+    pages:
+    - count: 4
+      size: 1G
+  machineConfigPoolSelector:
+    pools.operator.machineconfiguration.openshift.io/master: ""
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+  numa:
+    topologyPolicy: single-numa-node
+  realTimeKernel:
+    enabled: false
+  workloadHints:
+    highPowerConsumption: false
+    perPodPowerManagement: false
+    realTime: true
