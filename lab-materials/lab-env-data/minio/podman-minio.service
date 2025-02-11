@@ -1,0 +1,18 @@
+[Unit]
+Description=Podman container - S3 Storage
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root
+TimeoutStartSec=300
+ExecStartPre=-/usr/bin/podman rm -f minio-server
+ExecStart= /usr/bin/podman run --name minio-server -p 9002:9000 -p 9001:9001 -v /opt/minio/s3-volume:/data:rw,z -e MINIO_SERVER_URL="http://192.168.125.1:9002" -e MINIO_ROOT_USER=admin -e MINIO_ROOT_PASSWORD=admin1234 quay.io/minio/minio:RELEASE.2025-02-07T23-21-09Z server /data --console-address ":9001"
+ExecStop=-/usr/bin/podman rm -f minio-server
+Restart=always
+RestartSec=30s
+StartLimitInterval=60s
+StartLimitBurst=99
+
+[Install]
+WantedBy=multi-user.target
