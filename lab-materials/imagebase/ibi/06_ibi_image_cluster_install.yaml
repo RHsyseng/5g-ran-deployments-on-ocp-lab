@@ -1,0 +1,59 @@
+---
+apiVersion: extensions.hive.openshift.io/v1alpha1
+kind: ImageClusterInstall
+metadata:
+  name: "sno3"
+  namespace: "sno3"
+spec:
+  extraManifestsRefs:
+    - name: catalog-source-disconnected 
+  clusterDeploymentRef:
+    name: "sno3"
+  imageSetRef:
+    name: "openshift-v4.18.0-rc.6-disconnected"
+  hostname: "ocp-sno3.sno3.5g-deployment.lab"
+  networkConfigRef:
+    name: "ocp-sno3"
+  bareMetalHostRef:
+    name: "ocp-sno3"
+    namespace: "sno3"
+  machineNetwork: 192.168.125.0/24
+  imageDigestSources:
+  - mirrors:
+    - infra.5g-deployment.lab:8443/prega/test/multicluster-engine
+    source: registry.redhat.io/multicluster-engine
+  - mirrors:
+    - infra.5g-deployment.lab:8443/prega/test/openshift-gitops-1
+    source: registry.redhat.io/openshift-gitops-1
+  - mirrors:
+    - infra.5g-deployment.lab:8443/prega/test/rh-sso-7
+    source: registry.redhat.io/rh-sso-7
+  - mirrors:
+    - infra.5g-deployment.lab:8443/prega/test/lvms4
+    source: registry.redhat.io/lvms4
+  - mirrors:
+    - infra.5g-deployment.lab:8443/prega/test/openshift4
+    source: registry.redhat.io/openshift4
+  - mirrors:
+    - infra.5g-deployment.lab:8443/prega/test/rhacm2
+    source: registry.redhat.io/rhacm2
+  - mirrors:
+    - infra.5g-deployment.lab:8443/prega/test/rhel8
+    source: registry.redhat.io/rhel8
+  - mirrors:
+    - infra.5g-deployment.lab:8443/prega/test/rh-osbs
+    source: quay.io/prega/test/rh-osbs
+  - mirrors:
+    - infra.5g-deployment.lab:8443/prega/test/oadp
+    source: quay.io/prega/test/oadp
+  - mirrors:
+    - infra.5g-deployment.lab:8443/openshift-release-dev/ocp-v4.0-art-dev
+    - infra.5g-deployment.lab:8443/openshift/release
+    source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+  - mirrors:
+    - infra.5g-deployment.lab:8443/openshift-release-dev
+    source: quay.io/openshift-release-dev
+  - mirrors:
+    - infra.5g-deployment.lab:8443/openshift/release-images
+    source: quay.io/openshift-release-dev/ocp-release
+  sshKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5pFKFLOuxrd9Q/TRu9sRtwGg2PV+kl2MHzBIGUhCcR0LuBJk62XG9tQWPQYTQ3ZUBKb6pRTqPXg+cDu5FmcpTwAKzqgUb6ArnjECxLJzJvWieBJ7k45QzhlZPeiN2Omik5bo7uM/P1YIo5pTUdVk5wJjaMOb7Xkcmbjc7r22xY54cce2Wb7B1QDtLWJkq++eJHSX2GlEjfxSlEvQzTN7m2N5pmoZtaXpLKcbOqtuSQSVKC4XPgb57hgEs/ZZy/LbGGHZyLAW5Tqfk1JCTFGm6Q+oOd3wAOF1SdUxM7frdrN3UOB12u/E6YuAx3fDvoNZvcrCYEpjkfrsjU91oz78aETZV43hOK9NWCOhdX5djA7G35/EMn1ifanVoHG34GwNuzMdkb7KdYQUztvsXIC792E2XzWfginFZha6kORngokZ2DwrzFj3wgvmVyNXyEOqhwi6LmlsYdKxEvUtiYhdISvh2Y9GPrFcJ5DanXe7NVAKXe5CyERjBnxWktqAPBzXJa36FKIlkeVF5G+NWgufC6ZWkDCD98VZDiPP9sSgqZF8bSR4l4/vxxAW4knKIZv11VX77Sa1qZOR9Ml12t5pNGT7wDlSOiDqr5EWsEexga/2s/t9itvfzhcWKt+k66jd8tdws2dw6+8JYJeiBbU63HBjxCX+vCVZASrNBjiXhFw=="

@@ -38,6 +38,9 @@ disconnected_operators:
 - name: lifecycle-agent
   channels:
   - name: stable
+- name: redhat-oadp-operator
+  channels:
+  - name: stable-1.4
 disconnected_extra_images:
 - registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.17.0-25
 - quay.io/rhsysdeseng/5granlab-ee:lab

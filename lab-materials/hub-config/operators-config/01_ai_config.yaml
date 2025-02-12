@@ -156,6 +156,14 @@ data:
 
     [[registry]]
     prefix = ""
+    location = "registry.redhat.io/oadp"
+    mirror-by-digest-only = true
+
+    [[registry.mirror]]
+      location = "infra.5g-deployment.lab:8443/prega/test/oadp"
+
+    [[registry]]
+    prefix = ""
     location = "quay.io/openshift-release-dev/ocp-v4.0-art-dev"
     mirror-by-digest-only = true
 
