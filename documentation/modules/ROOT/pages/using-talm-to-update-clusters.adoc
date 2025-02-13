@@ -87,46 +87,80 @@ In the previous sections we have deployed the `sno2` cluster and attached the `s
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno1 extract secret/sno1-admin-kubeconfig --to=- > ~/5g-deployment-lab/sno1-kubeconfig
 oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 extract secret/sno2-admin-kubeconfig --to=- > ~/5g-deployment-lab/sno2-kubeconfig
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno3 extract secret/sno3-admin-kubeconfig --to=- > ~/5g-deployment-lab/sno3-kubeconfig
 -----
 
-[#upgrade-policy-creation]
-== Creating the upgrade PGT
-
-Create an upgrade PGT in inform mode, as usual, that will apply and upgrade the SNOs located in Europe (binding rule: `du-zone: "europe"`), SNO1 and SNO2 clusters. This file needs to be created in the ztp-repository Git repo that we have created.
+[#install-lca]
+== Install the LifeCycle Agent Operator
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{talm-update-file}
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/requirements-upgrade.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
 metadata:
-  name: "europe-snos-upgrade"
+  name: "requirements-upgrade"
   namespace: "ztp-policies"
 spec:
   bindingRules:
-    du-zone: "europe"
+    common: "ocp418"
     logicalGroup: "active"
-  mcp: "master"
+    du-zone: europe
+  mcp: master
   remediationAction: inform
   sourceFiles:
-    - fileName: ClusterVersion.yaml
-      policyName: "{talm-update-policy-name}"
+    - fileName: LcaSubscriptionOperGroup.yaml
       metadata:
-        name: version
+        name: lifecycle-agent-operatorgroup
+      policyName: subscriptions-policy
+    - fileName: LcaSubscription.yaml
       spec:
-        channel: "{talm-update-channel}"
-        desiredUpdate:
-          force: false
-          version: "{talm-update-version}"
-          image: "{talm-update-image}"
-      status:
-        history:
-          - version: "{talm-update-version}"
-            state: "Completed"
+        channel: stable
+        source: redhat-operator-index
+      policyName: subscriptions-policy
+    - fileName: LcaOperatorStatus.yaml
+      policyName: subscriptions-policy
+    - fileName: LcaSubscriptionNS.yaml
+      policyName: subscriptions-policy
+    - fileName: OadpSubscriptionOperGroup.yaml
+      policyName: subscriptions-policy
+    - fileName: OadpSubscription.yaml
+      spec:
+        source: redhat-operator-index
+      policyName: subscriptions-policy
+    - fileName: OadpOperatorStatus.yaml
+      policyName: subscriptions-policy
+    - fileName: OadpSubscriptionNS.yaml
+      policyName: subscriptions-policy
+
+    - fileName: OadpSecret.yaml
+      data:
+        cloud: W2RlZmF1bHRdCmF3c19hY2Nlc3Nfa2V5X2lkPWFkbWluCmF3c19zZWNyZXRfYWNjZXNzX2tleT1hZG1pbjEyMzQK 
+      policyName: config-policy
+    - fileName: OadpDataProtectionApplication.yaml
+      spec:
+        backupLocations:
+        - velero:
+            config:
+              insecureSkipTLSVerify: "true"
+              profile: default
+              region: minio
+              s3ForcePathStyle: "true"
+              s3Url: http://192.168.125.1:9002
+            credential:
+              key: cloud
+              name: cloud-credentials
+            default: true
+            objectStorage:
+              bucket: klusterlet-backup
+              prefix: velero
+            provider: aws
+      policyName: config-policy
+    - fileName: OadpBackupStorageLocationStatus.yaml
+      policyName: config-policy
 EOF
 -----
 
@@ -137,7 +171,7 @@ NOTE: If you're using MacOS and you're getting errors while running `sed -i` com
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-sed -i "/- group-du-sno.yaml/a \ \ - {talm-update-file}" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
+sed -i "/- group-du-sno.yaml/a \ \ - requirements-upgrade.yaml" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
 -----
 
 Then commit all the changes:
@@ -146,7 +180,514 @@ Then commit all the changes:
 [source,bash,subs="attributes+,+macros"]
 -----
 cd ~/5g-deployment-lab/ztp-repository/
-git add site-policies/fleet/active/{talm-update-file} site-policies/fleet/active/kustomization.yaml
+git add site-policies/fleet/active/requirements-upgrade.yaml site-policies/fleet/active/kustomization.yaml
+git commit -m "adds upgrade policy"
+git push origin main 
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig label managedcluster sno3 du-zone=europe logicalGroup=active
+-----
+
+
+Enforce the policies
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cat <<EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+---
+apiVersion: ran.openshift.io/v1alpha1
+kind: ClusterGroupUpgrade
+metadata:
+  name: requirements-upgrade
+  namespace: ztp-policies
+spec:
+  clusters:
+  - sno2
+  - sno3
+  managedPolicies:
+  - requirements-upgrade-subscriptions-policy
+  - requirements-upgrade-config-policy
+  remediationStrategy:
+    maxConcurrency: 2
+    timeout: 240
+EOF
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+$ watch oc get cgu -A
+                                                                                                                                                            localhost.localdomain: 
+NAMESPACE      NAME                   AGE   STATE        DETAILS
+ztp-install    local-cluster          19h   Completed    All clusters already compliant with the specified managed policies
+ztp-install    sno2                   13m   Completed    All clusters are compliant with all the managed policies
+ztp-install    sno3                   11h   Completed    All clusters already compliant with the specified managed policies
+ztp-policies   requirements-upgrade   35s   InProgress   Remediating non-compliant policies
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -n ztp-policies
+NAME                   AGE   STATE       DETAILS
+requirements-upgrade   19m   Completed   All clusters are compliant with all the managed policies
+-----
+
+
+[#upgrade-policy-creation]
+== Creating the Image Base Group Upgrade 
+
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cat <<EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: catalog-source-disconnected
+  namespace: openshift-lifecycle-agent
+data:
+  redhat-operator-index.yaml: |
+    apiVersion: operators.coreos.com/v1alpha1
+    kind: CatalogSource
+    metadata:
+      annotations:
+        target.workload.openshift.io/management: '{"effect": "PreferredDuringScheduling"}'
+      name: redhat-operator-index
+      namespace: openshift-marketplace
+    spec:
+      displayName: default-cat-source
+      image: infra.5g-deployment.lab:8443/prega/prega-operator-index:v4.18
+      publisher: Red Hat
+      sourceType: grpc
+      updateStrategy:
+        registryPoll:
+          interval: 1h
+EOF
+-----
+
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cat <<EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+apiVersion: lcm.openshift.io/v1alpha1
+kind: ImageBasedGroupUpgrade
+metadata:
+  name: telco5g-lab
+  namespace: default
+spec:
+  clusterLabelSelectors: 
+    - matchExpressions:
+      - key: name
+        operator: In
+        values:
+        - sno2
+        - sno3
+  ibuSpec:
+    seedImageRef: 
+      image: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.8
+      version: 4.18.0-rc.8
+ #   extraManifests: 
+ #     - name: catalog-source-disconnected
+ #       namespace: openshift-lifecycle-agent
+  plan: 
+    - actions: ["Prep", "Upgrade", "FinalizeUpgrade"]
+      rolloutStrategy:
+        maxConcurrency: 10
+        timeout: 2400
+EOF
+-----
+
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+Every 2.0s: oc get ibgu,cgu -A                                                                                                                                                                             katatonic: Thu Feb 13 10:23:40 2025
+
+NAMESPACE   NAME                                                  AGE
+default     imagebasedgroupupgrade.lcm.openshift.io/telco5g-lab   102s
+
+NAMESPACE      NAME                                                                              AGE    STATE        DETAILS
+default        clustergroupupgrade.ran.openshift.io/telco5g-lab-prep-upgrade-finalizeupgrade-0   102s   InProgress   Rolling out manifestworks
+ztp-install    clustergroupupgrade.ran.openshift.io/local-cluster                                20h    Completed    All clusters already compliant with the specified managed policies
+ztp-install    clustergroupupgrade.ran.openshift.io/sno2                                         47m    Completed    All clusters are compliant with all the managed policies
+ztp-install    clustergroupupgrade.ran.openshift.io/sno3                                         12h    Completed    All clusters already compliant with the specified managed policies
+ztp-policies   clustergroupupgrade.ran.openshift.io/requirements-upgrade                         34m    Completed    All clusters are compliant with all the managed policies
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc get ibgu -n default telco5g-lab -ojson | jq .status                                                                                                                                                        
+{
+  "clusters": [
+    {
+      "currentAction": {
+        "action": "Prep"
+      },
+      "name": "sno2"
+    },
+    {
+      "currentAction": {
+        "action": "Prep"
+      },
+      "name": "sno3"
+    }
+  ],
+  "conditions": [
+    {
+      "lastTransitionTime": "2025-02-13T09:22:00Z",
+      "message": "Waiting for plan step 0 to be completed",
+      "reason": "InProgress",
+      "status": "True",
+      "type": "Progressing"
+    }
+  ],
+  "observedGeneration": 1
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig  get ibu -A
+NAME      AGE   DESIRED STAGE   STATE        DETAILS
+upgrade   36s   Prep            InProgress   Stateroot setup job in progress. job-name: lca-prep-stateroot-setup, job-namespace: openshift-lifecycle-agent
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig  get ibu -A
+NAME      AGE    DESIRED STAGE   STATE        DETAILS
+upgrade   118s   Prep            InProgress   Precache job in progress. job-name: lca-prep-precache, job-namespace: openshift-lifecycle-agent. total: 83 (pulled: 23, failed: 1)
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc get ibgu -n default telco5g-lab -ojson | jq .status                                                                                                                                                        
+{
+  "clusters": [
+    {
+      "completedActions": [
+        {
+          "action": "Prep"
+        }
+      ],
+      "currentAction": {
+        "action": "Upgrade"
+      },
+      "name": "sno2"
+    },
+    {
+      "currentAction": {
+        "action": "Prep"
+      },
+      "name": "sno3"
+    }
+  ],
+  "conditions": [
+    {
+      "lastTransitionTime": "2025-02-13T09:27:47Z",
+      "message": "Waiting for plan step 0 to be completed",
+      "reason": "InProgress",
+      "status": "True",
+      "type": "Progressing"
+    }
+  ],
+  "observedGeneration": 1
+}                                                                                                                                                                                                                   -----                                               	
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+[root@localhost active]# oc get jobs,pods -n openshift-lifecycle-agent
+NAME                                 STATUS    COMPLETIONS   DURATION   AGE
+job.batch/lca-prep-stateroot-setup   Running   0/1           29s        29s
+
+NAME                                                      READY   STATUS    RESTARTS   AGE
+pod/lca-prep-stateroot-setup-qkxf7                        1/1     Running   0          29s
+pod/lifecycle-agent-controller-manager-7c7f8b9c89-6vv7q   2/2     Running   0          12h
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc get ibgu -n default telco5g-lab -ojson | jq .status                                                                                                                                                        
+{
+  "clusters": [
+    {
+      "completedActions": [
+        {
+          "action": "Prep"
+        }
+      ],
+      "currentAction": {
+        "action": "Upgrade"
+      },
+      "name": "sno2"
+    },
+    {
+      "completedActions": [
+        {
+          "action": "Prep"
+        }
+      ],
+      "currentAction": {
+        "action": "Upgrade"
+      },
+      "name": "sno3"
+    }
+  ],
+  "conditions": [
+    {
+      "lastTransitionTime": "2025-02-13T09:27:47Z",
+      "message": "Waiting for plan step 0 to be completed",
+      "reason": "InProgress",
+      "status": "True",
+      "type": "Progressing"
+    }
+  ],
+  "observedGeneration": 1
+}
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc get ibgu -n default telco5g-lab -ojson | jq .status                                                                                                                                                        
+{
+  "clusters": [
+    {
+      "completedActions": [
+        {
+          "action": "Prep"
+        },
+	{
+          "action": "Upgrade"
+        },
+	{
+          "action": "FinalizeUpgrade"
+        }
+      ],
+      "name": "sno2"
+    },
+    {
+      "completedActions": [
+        {
+          "action": "Prep"
+        }
+      ],
+      "currentAction": {
+        "action": "Upgrade"
+      },
+      "name": "sno3"
+    }
+  ],
+  "conditions": [
+    {
+      "lastTransitionTime": "2025-02-13T09:27:47Z",
+      "message": "Waiting for plan step 0 to be completed",
+      "reason": "InProgress",
+      "status": "True",
+      "type": "Progressing"
+    }
+  ],
+  "observedGeneration": 1
+}
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc get ibgu -n default telco5g-lab -ojson | jq .status                                                                                                                                                        
+
+{
+  "clusters": [
+    {
+      "completedActions": [
+        {
+          "action": "Prep"
+        },
+	{
+          "action": "Upgrade"
+        },
+	{
+          "action": "FinalizeUpgrade"
+        }
+      ],
+      "name": "sno2"
+    },
+    {
+      "completedActions": [
+        {
+          "action": "Prep"
+        },
+	{
+          "action": "Upgrade"
+        }
+      ],
+      "currentAction": {
+        "action": "FinalizeUpgrade"
+      },
+      "name": "sno3"
+    }
+  ],
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc get ibgu -n default telco5g-lab -ojson | jq .status                                                                                                                                                        
+{
+  "clusters": [
+    {
+      "completedActions": [
+        {
+          "action": "Prep"
+        },
+	      {   
+          "action": "Upgrade"
+        },
+	      {
+          "action": "FinalizeUpgrade"
+        }
+      ],
+      "name": "sno2"
+    },
+    {
+      "completedActions": [
+        {
+          "action": "Prep"
+        },
+	{
+          "action": "Upgrade"
+        },
+	{
+          "action": "FinalizeUpgrade"
+        }
+      ],
+      "name": "sno3"
+    }
+  ],
+  "conditions": [
+    {
+      "lastTransitionTime": "2025-02-13T09:47:57Z",
+      "message": "All plan steps are completed",
+      "reason": "Completed",
+      "status": "False",
+      "type": "Progressing"
+    }
+  ],
+  "observedGeneration": 1
+}
+-----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+Every 2.0s: oc get ibgu,cgu -A                                                                                                                                                                             katatonic: Thu Feb 13 10:50:08 2025
+
+NAMESPACE   NAME                                                  AGE
+default     imagebasedgroupupgrade.lcm.openshift.io/telco5g-lab   22m
+
+NAMESPACE      NAME                                                                              AGE     STATE       DETAILS
+default        clustergroupupgrade.ran.openshift.io/telco5g-lab-prep-upgrade-finalizeupgrade-0   22m     Completed   All manifestworks rolled out successfully on all clusters
+ztp-install    clustergroupupgrade.ran.openshift.io/local-cluster                                20h     Completed   All clusters already compliant with the specified managed policies
+ztp-install    clustergroupupgrade.ran.openshift.io/sno2                                         6m49s   Completed   All clusters already compliant with the specified managed policies
+ztp-install    clustergroupupgrade.ran.openshift.io/sno3                                         3m59s   Completed   All clusters already compliant with the specified managed policies
+ztp-policies   clustergroupupgrade.ran.openshift.io/requirements-upgrade                         60m     Completed   All clusters are compliant with all the managed policies
+-----
+
+
+Then enforce the policies again
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cat <<EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+---
+apiVersion: ran.openshift.io/v1alpha1
+kind: ClusterGroupUpgrade
+metadata:
+  name: postupgrade-config
+  namespace: ztp-policies
+spec:
+  clusters:
+  - sno2
+  - sno3
+  managedPolicies:
+  - common-config-policy
+  - common-subscriptions-policy
+  - du-sno-group-policy
+  - du-sno-sites-sites-policy
+  remediationStrategy:
+    maxConcurrency: 2
+    timeout: 240
+EOF
+-----
+
+
+****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************
+
+[#upgrade-policy-creation]
+== Creating the upgrade PGT
+
+Create an upgrade PGT in inform mode, as usual, that will apply and upgrade the SNOs located in Europe (binding rule: `du-zone: "europe"`), SNO2 and SNO3 clusters. This file needs to be created in the ztp-repository Git repo that we have created.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{talm-update-file}
+---
+apiVersion: ran.openshift.io/v1
+kind: PolicyGenTemplate
+metadata:
+  name: "europe-upgrade-idle"
+  namespace: "ztp-policies"
+spec:
+  bindingRules:
+    du-zone: "europe"
+    logicalGroup: "active"
+  mcp: master
+  evaluationInterval:
+    compliant: 10s
+    noncompliant: 10s
+  sourceFiles:
+    - fileName: reference-crs/ibu/ImageBasedUpgrade.yaml
+      policyName: "{talm-update-policy-name}"
+      complianceType: mustonlyhave
+      spec:
+        stage: Idle
+        seedImageRef:
+          version: "{talm-update-version}"
+          image: "{talm-update-image}"
+EOF
+-----
+
+Modify the kustomization.yaml inside the site-policies folder, so it includes this new PGT and eventually will be applied by ArgoCD.
+
+NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gsed`. If you do not have it available, please install it: `brew install gnu-sed`.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+sed -i "/- group-du-sno.yaml/a \ \ - requirements-upgrade.yaml \n \ \- {talm-update-file}" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
+-----
+
+Then commit all the changes:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cd ~/5g-deployment-lab/ztp-repository/
+git add site-policies/fleet/active/{talm-update-file} site-policies/fleet/active/requirements-upgrade.yaml site-policies/fleet/active/kustomization.yaml
 git commit -m "adds upgrade policy"
 git push origin main 
 -----
@@ -162,13 +703,13 @@ Let's add the proper labels to the production cluster SNO1:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig label managedcluster sno1 du-zone=europe logicalGroup=active
+oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig label managedcluster sno3 du-zone=europe logicalGroup=active
 -----
 
 [console-input]
 [source,console]
 -----
-managedcluster.cluster.open-cluster-management.io/sno1 labeled
+managedcluster.cluster.open-cluster-management.io/sno3 labeled
 -----
 
 [#upgrade-cgu-creation]
@@ -223,11 +764,12 @@ spec:
     - csi-
     - hypershift
   additionalImages: []
+  spaceRequired: 30 GiB
 ---
 apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
 metadata:
-  name: update-europe-snos 
+  name: update-ibu-idle 
   namespace: ztp-policies
 spec:
   preCaching: true
@@ -236,11 +778,12 @@ spec:
     namespace: ztp-policies
   backup: true
   clusters:
-  - sno1
   - sno2
+  - sno3
   enable: false
   managedPolicies:
-  - europe-snos-upgrade-{talm-update-policy-name}
+  - lca-install-lca-subscription
+  - europe-upgrade-idle-{talm-update-policy-name}
   remediationStrategy:
     maxConcurrency: 2
     timeout: 240

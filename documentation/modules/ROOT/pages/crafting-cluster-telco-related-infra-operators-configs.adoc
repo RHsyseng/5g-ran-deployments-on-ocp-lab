@@ -42,7 +42,8 @@ spec:
       metadata:
         name: redhat-operator-index
       spec:
-        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:{catalogsource-index-image-tag}
+        #image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:{catalogsource-index-image-tag}
+        image: infra.5g-deployment.lab:8443/prega/prega-operator-index:{catalogsource-index-image-tag}
       policyName: config-policy
     - fileName: ReduceMonitoringFootprint.yaml
       policyName: config-policy
@@ -111,6 +112,8 @@ spec:
       policyName: "group-policy"
     - fileName: DisableOLMPprof.yaml # wave 10
       policyName: "group-policy"
+    # - fileName: ConsoleOperatorDisable.yaml
+    #  policyName: "group-policy"
     - fileName: SriovOperatorConfig.yaml
       policyName: "group-policy"
       # Using hub templating to obtain if the SR-IOV card is supported for this hw type
@@ -344,14 +347,14 @@ metadata:
     argocd.argoproj.io/sync-options: Replace=true
 data:
   # StorageLVMCluster.yaml
-  sno1-resourcename1: "igb-enp2s0"
-  sno1-resourcename2: "igb-enp3s0"
-  sno1-sriovnic1: "enp2s0"
-  sno1-sriovnic2: "enp3s0"
-  sno2-resourcename1: "virt-enp3s0"
-  sno2-resourcename2: "virt-enp2s0"
-  sno2-sriovnic1: "enp3s0"
-  sno2-sriovnic2: "enp2s0"
+  sno1-resourcename1: "igb-enp4s0"
+  sno1-resourcename2: "igb-enp5s0"
+  sno1-sriovnic1: "enp4s0"
+  sno1-sriovnic2: "enp5s0"
+  sno2-resourcename1: "virt-enp4s0"
+  sno2-resourcename2: "virt-enp5s0"
+  sno2-sriovnic1: "enp4s0"
+  sno2-sriovnic2: "enp5s0"
 EOF
 -----
 
