@@ -82,7 +82,7 @@ data:
     apiVersion: operators.coreos.com/v1alpha1
     kind: CatalogSource
     metadata:
-      name: cs-prega-operator-index-v4-18
+      name: redhat-operator-index
       namespace: openshift-marketplace
     spec:
       image: infra.5g-deployment.lab:8443/prega/prega-operator-index:v4.18

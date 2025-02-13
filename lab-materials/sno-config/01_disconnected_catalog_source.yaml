@@ -1,0 +1,15 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  annotations:
+    target.workload.openshift.io/management: '{"effect": "PreferredDuringScheduling"}'
+  name: redhat-operator-index
+  namespace: openshift-marketplace
+spec:
+  displayName: default-cat-source
+  image: infra.5g-deployment.lab:8443/prega/prega-operator-index:v4.18
+  publisher: Red Hat
+  sourceType: grpc
+  updateStrategy:
+    registryPoll:
+      interval: 1h
