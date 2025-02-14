@@ -58,6 +58,7 @@ spec:
       spec:
         channel: {lvms-channel}
         source: redhat-operator-index
+        installPlanApproval: Automatic
       policyName: subscriptions-policy
     - fileName: LVMOperatorStatus.yaml
       policyName: subscriptions-policy
@@ -73,6 +74,7 @@ spec:
           env:
             - name: "DEV_MODE"
               value: "TRUE"
+        installPlanApproval: Automatic
       policyName: "subscriptions-policy"
     - fileName: SriovOperatorStatus.yaml
       policyName: subscriptions-policy
@@ -355,6 +357,10 @@ data:
   sno2-resourcename2: "virt-enp5s0"
   sno2-sriovnic1: "enp4s0"
   sno2-sriovnic2: "enp5s0"
+  sno3-resourcename1: "virt-enp4s0"
+  sno3-resourcename2: "virt-enp5s0"
+  sno3-sriovnic1: "enp4s0"
+  sno3-sriovnic2: "enp5s0"
 EOF
 -----
 

@@ -324,20 +324,27 @@ data:
       updateStrategy:
         registryPoll:
           interval: 1h
-  cluster-monitoring-config.yaml: |
-    apiVersion: v1
-    kind: ConfigMap
+  lvmcluster.yaml: |
+    apiVersion: lvm.topolvm.io/v1alpha1
+    kind: LVMCluster
     metadata:
-      name: cluster-monitoring-config
-      namespace: openshift-monitoring
-    data:
-    config.yaml: |
-        alertmanagerMain:
-          enabled: false
-        telemeterClient:
-          enabled: false
-        prometheusK8s:
-          retention: 24h
+      name: lvmcluster
+      namespace: openshift-storage
+    spec:
+      storage:
+        deviceClasses:
+        - deviceSelector:
+            paths:
+            - /dev/vdb
+          fstype: xfs
+          name: vg1
+          thinPoolConfig:
+            chunkSizeCalculationPolicy: Static
+            metadataSizeCalculationPolicy: Host
+            name: thin-pool-1
+            overprovisionRatio: 10
+            sizePercent: 90
+
 EOF
 -----
 
@@ -445,6 +452,7 @@ metadata:
     common: "ocp418"
     logicalGroup: "active"
     group-du-sno: ""
+    hardware-type: "hw-type-platform-1"
 spec:
   hubAcceptsClient: true
 EOF

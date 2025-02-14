@@ -161,6 +161,62 @@ spec:
       policyName: config-policy
     - fileName: OadpBackupStorageLocationStatus.yaml
       policyName: config-policy
+    - fileName: ConfigMapGeneric.yaml
+      complianceType: mustonlyhave
+      policyName: "oadp-cm-policy"
+      metadata:
+        name: oadp-lvms
+        namespace: openshift-adp
+      data:
+        PlatformBackupRestoreLvms.yaml: |
+          ---
+          apiVersion: velero.io/v1
+          kind: Backup
+          metadata:
+            name: lvmcluster
+            namespace: openshift-adp
+            labels:
+              velero.io/storage-location: default
+          spec:
+            includedNamespaces:
+            - openshift-storage
+            includedNamespaceScopedResources:
+            - lvmclusters
+            - lvmvolumegroups
+            - lvmvolumegroupnodestatuses
+          ---
+          apiVersion: velero.io/v1
+          kind: Restore
+          metadata:
+            name: lvmcluster
+            namespace: openshift-adp
+            labels:
+              velero.io/storage-location: default
+            annotations:
+              lca.openshift.io/apply-wave: "2"
+          spec:
+            backupName:
+              lvmcluster
+    - fileName: ConfigMapGeneric.yaml
+      complianceType: mustonlyhave
+      policyName: "oadp-cm-policy"
+      metadata:
+        name: oadp-lvms
+        namespace: openshift-adp
+      data:
+        PlatformBackupRestoreWithIBGU.yaml: |
+           
+       
+#    - fileName: PlatformBackupRestoreWithIBGU.yaml
+#      metadata:
+#        annotations:
+#          ran.openshift.io/ztp-deploy-wave: "100"
+#      policyName: config-policy
+#    - fileName: PlatformBackupRestoreLvms.yaml
+#      metadata:
+#        annotations:
+#          ran.openshift.io/ztp-deploy-wave: "100"
+#      policyName: config-policy
 EOF
 -----
 
@@ -173,6 +229,34 @@ NOTE: If you're using MacOS and you're getting errors while running `sed -i` com
 -----
 sed -i "/- group-du-sno.yaml/a \ \ - requirements-upgrade.yaml" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
 -----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generators:
+  - common-418.yaml
+  - group-du-sno.yaml
+  - requirements-upgrade.yaml
+#  - group-du-sno-validator.yaml
+
+configMapGenerator:
+- files:
+  - source-crs/reference-crs/ibu/PlatformBackupRestoreWithIBGU.yaml
+  - source-crs/reference-crs/ibu/PlatformBackupRestoreLvms.yaml
+  name: oadp-cm
+  namespace: ztp-policies
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+  - group-hardware-types-configmap.yaml
+EOF
+-----
+
 
 Then commit all the changes:
 
@@ -272,6 +356,8 @@ EOF
 -----
 
 
+
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -295,7 +381,12 @@ spec:
       version: 4.18.0-rc.8
  #   extraManifests: 
  #     - name: catalog-source-disconnected
- #       namespace: openshift-lifecycle-agent
+ #       namespace: openshift-lifecycle-agent  
+  oadpContent: 
+    - name: oadp-cm-example
+      namespace: openshift-adp
+
+
   plan: 
     - actions: ["Prep", "Upgrade", "FinalizeUpgrade"]
       rolloutStrategy:
