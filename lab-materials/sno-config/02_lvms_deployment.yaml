@@ -4,6 +4,7 @@ metadata:
   name: openshift-storage
   labels:
     openshift.io/cluster-monitoring: "true"
+    workload.openshift.io/allowed: management
   annotations:
     workload.openshift.io/allowed: management
 ---
@@ -27,4 +28,3 @@ spec:
   source: redhat-operator-index
   sourceNamespace: openshift-marketplace
   installPlanApproval: Automatic
-
