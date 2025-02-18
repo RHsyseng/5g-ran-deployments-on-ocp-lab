@@ -747,7 +747,6 @@ data:
       name: cluster-monitoring-config
       namespace: openshift-monitoring
       annotations:
-        ran.openshift.io/ztp-deploy-wave: "1"
     data:
       config.yaml: |
         alertmanagerMain:
@@ -764,7 +763,6 @@ data:
       name: collect-profiles-config
       namespace: openshift-operator-lifecycle-manager
       annotations:
-        ran.openshift.io/ztp-deploy-wave: "10"
     data:
       pprof-config.yaml: |
         disabled: True
@@ -775,6 +773,20 @@ data:
     metadata:
       name: cluster
       annotations:
-        ran.openshift.io/ztp-deploy-wave: "10"
     spec:
       disableNetworkDiagnostics: true
+  ConsoleOperatorDisable.yaml: |
+    ---
+    apiVersion: operator.openshift.io/v1
+    kind: Console
+    metadata:
+      annotations:
+        include.release.openshift.io/ibm-cloud-managed: "false"
+        include.release.openshift.io/self-managed-high-availability: "false"
+        include.release.openshift.io/single-node-developer: "false"
+        release.openshift.io/create-only: "true"
+      name: cluster
+    spec:
+      logLevel: Normal
+      managementState: Removed
+      operatorLogLevel: Normal
