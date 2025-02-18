@@ -2,7 +2,10 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-When working on RAN environments there are a set of operators that will be common to almost all of them. In this section we will introduce what those operators are and what they are used for.
+When working on RAN environments there are a set of operators that will be common to almost all of them. In this section we will introduce the various OpenShift Container Platform components that you use to configure and deploy clusters to run telco RAN DU workloads.
+
+image::ran-du-components.png[Telco RAN DU RDS components]
+
 
 [#node-tuning-operator]
 == Node Tuning Operator
@@ -47,3 +50,30 @@ Some extra PTP information you may find useful:
 Specialized hardware devices can be used to accelerate 4G/LTE and 5G virtualized radio access networks (vRAN) workloads. The use of these devices increases the overall compute capacity of a commercial, off-the-shelf platform by offloading compute intensive tasks to dedicated hardware.
 
 In order to manage these devices, there are multiple accelerator operators that we may need to deploy in our OpenShift clusters.
+
+[#logging-operator]
+== Logging Operator
+
+The Logging Operator provides a set of APIs to control collection and forwarding of logs from all pods and nodes in a cluster. This includes application logs (from regular pods), infrastructure logs (from system pods and node logs), and audit logs (special node logs with legal/security implications). In telco RAN DU configurations logging is used to collect logs from the far edge node for remote analysis.
+
+The Logging Operator does not collect or forward logs itself: it starts, configures, monitors and manages the components that do the work. Notice that in the RAN use model the fluend log collector is deprecated in favor of Vector log collector.
+
+[#lifecycle-operator]
+== Lifecycle Agent Operator
+
+The Lifecycle Agent provides local lifecycle management services for single-node OpenShift clusters. The Lifecycle Agent is not applicable in multi-node clusters or single-node OpenShift clusters with an additional worker.
+
+From OpenShift Container Platform 4.14.13, the Lifecycle Agent provides you with an alternative way to upgrade the platform version of a single-node OpenShift cluster. The image-based upgrade is faster than the standard upgrade method and allows you to directly upgrade from OpenShift Container Platform <4.y> to <4.y+2>, and <4.y.z> to <4.y.z+n>. 
+
+You can read more about the image-based upgrade technology {ibu-docs}[here].
+
+[#lvm-operator]
+== LVM Storage Operator
+
+LVM Storage provides dynamic provisioning of block and file storage. LVM Storage creates logical volumes from local devices that can be used as PVC resources by applications. Volume expansion and snapshots are also possible.
+
+LVM Storage can be used as the local storage implementation for the RAN DU use case. When LVM Storage is used as the storage solution, it replaces the Local Storage Operator, and the CPU required is assigned to the management partition as platform overhead. 
+
+
+
+
