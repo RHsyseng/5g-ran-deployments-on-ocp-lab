@@ -2,32 +2,106 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-As mentioned, Zero Touch Provisioning (ZTP) leverages multiple products or link:ztp-at-scale.html[components] to deploy OpenShift Container Platform clusters using a GitOps approach. While the workflow starts when the site is connected to the network and ends with the CNF workload deployed and running on the site nodes, it can be logically divided into two different stages: provisioning of the SNO and applying the desired configuration, which in our case is applying the validated RAN DU profile.
+As mentioned, Zero Touch Provisioning (ZTP) leverages multiple products or link:ztp-at-scale.html[components] to deploy OpenShift Container Platform clusters using a GitOps approach. While the workflow starts when the site is connected to the network and ends with the CNF workload deployed and running on the site nodes, it can be logically divided into two different stages: provisioning of the SNO and applying the desired configuration, which in our case is applying the {rds-config}[Telco RAN DU reference configuration].
 
-IMPORTANT: The workflow does not need any intervention, so ZTP automatically will configure the SNO once it is provisioned. However, two stages are clearly differentiated.
+IMPORTANT: The workflow does not need any intervention, so ZTP automatically will configure the SNO once it is provisioned.
 
-The workflow is officially started by creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is described in a custom resource called `SiteConfig`. Note that, in a disconnected environment, there is a need for a container registry to deliver the OpenShift container images required for the installation. This task can be achieved by using {disconnected-registry-docs}[oc-mirror]. More information about disconnected environments can be found in link:deployment-considerations.html#disconnected-environments[Deployment Considerations section].
+[#deployment-methods]
+== Single-Node OpenShift Deployments
 
-WARNING: Depending on your specific environment, you might need a couple of extra services such as DHCP, DNS, NTP or HTTP. The latest will be needed for downloading the RHCOS live ISO and the RootFS image locally instead of the default http://mirror.openshift.com.
+Starting on OpenShift Container Platform 4.18 there are *two ZTP deployment flows* to provision single-node OpenShift clusters at scale.
+
+[#abi-deployment]
+=== Agent Based Installation
+
+The Agent Based Installation flow has been the only one available until the 4.18 OpenShift release. The link:ztp-at-scale.html#ai[Assisted Service] is at the heart of this deployment method.
+
+It is officially started by creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is described in a custom resource called `ClusterInstance`. Note that, in a disconnected environment, there is a need for a container registry to deliver the OpenShift container images required for the installation. This task can be achieved by using {disconnected-registry-docs}[oc-mirror]. More information about disconnected environments can be found in link:deployment-considerations.html#disconnected-environments[Deployment Considerations section].
+
+WARNING: Depending on your specific environment, you might need a couple of extra services such as DHCP, DNS, NTP or HTTP. The latest will be needed for downloading the RHCOS live ISO and the RootFS image locally instead of the default http://mirror.openshift.com site.
 
 Once the configuration is created you can push it to the Git repo where Argo CD is continuously looking to pull the new content:
 
 image::ztp_workflow_0.png[ZTP Workflow 0]
 
-
-Argo CD pulls the SiteConfig and uses a specific kustomize plugin called {cnf-features-siteconfig-plugin}[siteconfig-generator] to transform it into custom resources that are understood by the hub cluster (RHACM/MCE). A SiteConfig contains all the necessary information to provision your node or nodes. Basically, it will create ISO images with the defined configuration that are delivered to the edge nodes to begin the installation process. The images are used to repeatedly provision large numbers of nodes efficiently and quickly, allowing you keep up with requirements from the field for far edge nodes.
+Argo CD pulls the ClusterInstance CR that the link:ztp-at-scale.html#siteconfig[SiteConfig Operator] validates and transforms it into several custom resources that are understood by the link:ztp-at-scale.html#ai[Assisted Service] running on the hub cluster. A ClusterInstance contains all the necessary information to provision your node or nodes. Basically, it will create ISO images with the defined configuration that are delivered to the edge nodes to begin the installation process. The images are used to repeatedly provision large numbers of nodes efficiently and quickly, allowing you keep up with requirements from the field for far edge nodes.
 
 IMPORTANT: On telco use cases, clusters are mainly running on baremetal hosts. Therefore, the produced ISO images are mounted using remote virtual media features of the baseboard management controller (BMC).
 
-In the picture, these resulting manifests are called Cluster Installation CRs, but you can find them detailed in the previous link:ztp-at-scale.html#sitegen[SiteGen section]. Finally, the provisioning process starts.
-
 image::ztp_workflow_1.png[ZTP Workflow 1]
 
-The provisioning process includes installing the host operating system (RHCOS) on a blank server and deploying OpenShift Container Platform. This stage is managed mainly by the Infrastructure Operator. In the previous link:ztp-at-scale.html#ai[Infrastructure operator] section there is detailed information of the workflow controlled by this piece of software.
+These resulting resources depicted in the previous picture are called Installation Manifests. For this workflow they are:
 
-IMPORTANT: Notice, in the picture, how ZTP allows us to provision clusters at scale. Multiple SiteConfig CRs can be committed to Git simultaneously, or over time, to deploy multiple clusters.
+* AgentClusterInstall.
+* ClusterDeployment.
+* NMStateConfig.
+* KlusterletAddonConfig.
+* ManagedCluster.
+* InfraEnv.
+* BareMetalHost.
+* HostFirmwareSettings.
+* ConfigMap for extra-manifest configurations.
+
+Then, they are processed by the Assisted Service and the provisioning process starts.
 
 image::ztp_workflow_2.png[ZTP Workflow 2]
+
+The provisioning process includes installing the host operating system (RHCOS) on a blank server and deploying OpenShift Container Platform. This stage is managed mainly by the Assisted Service which is part of the Infrastructure Operator. In the previous link:ztp-at-scale.html#ai[Infrastructure operator] section there is detailed information of the workflow controlled by this piece of software.
+
+IMPORTANT: Notice, in the picture, how ZTP allows us to provision clusters at scale. Multiple ClusterInstance CRs can be committed to Git simultaneously, or over time, to deploy multiple clusters.
+
+
+[#ibi-deployment]
+=== Image Based Installation
+
+This approach enables the preinstallation of configured and validated instances of single-node OpenShift on target hosts. These preinstalled hosts can be rapidly reconfigured and deployed at the far edge of the network, including in disconnected environments, with minimal intervention. Image Based Installation flow significantly reduce the deployment time of single-node OpenShift clusters by streamlining the installation process.
+
+IMPORTANT: In telco environments, specially in RAN, the *Image Based Installation* deployment method is the preferred one due to the reduced installation times and the scalability requirements needed in edge deployments. Currently, only single-node OpenShift clusters can be installed using this workflow.
+
+To deploy a managed cluster using an imaged-based approach in combination with GitOps Zero Touch Provisioning (ZTP), you can use the link:ztp-at-scale.html#siteconfig[SiteConfig Operator]. Alternatively, you can manually deploy a preinstalled host for a cluster without using a hub cluster using the openshift-install installation program. For more information, see {ibi-openshift-install}[Deploying a single-node OpenShift cluster using the openshift-install program]. 
+
+In this lab, we are going to provision a cluster with the Image Based Installation deployment method using a GitOps approach with the SiteConfig Operator.
+
+*Image-based installation and deployment components*
+
+First, let's describe the components in an image-based installation and deployment.
+
+* *Seed image*. OCI container image generated from a dedicated cluster with the target OpenShift Container Platform version.
+* *Seed cluster*. Dedicated single-node OpenShift cluster that you use to create a seed image and is deployed with the target OpenShift Container Platform version.
+* *Lifecycle Agent Operator*. Generates the seed image.
+* *SiteConfig Operator*. Creates the installation ISO, and embeds the seed image URL in the live installation ISO. It also attaches the Installation ISO into the host about to provision.
+* *Image Based Install (IBI) Operator*. When you deploy managed clusters, the IBI Operator creates a configuration ISO from the site-specific resources you define in the hub cluster, and attaches the configuration ISO to the preinstalled host by using a bare-metal provisioning service.
+
+image::ibi-installation.png[ZTP Workflow 2]
+
+As show in the previous picture, the Preinstall host is deployed using the SiteConfig operator in this lab. Similar to the link:ztp-workflow.html#abi-deployment[Agent Based Installation] the SiteConfig Operator transforms the ClusterInstance CR into the following Installation Manifests:
+
+* *ImageClusterInstall*. This is the main difference in terms of manifests between Agent and Image Based Installations. 
+* ClusterDeployment.
+* NMStateConfig.
+* KlusterletAddonConfig.
+* ManagedCluster.
+* InfraEnv.
+* BareMetalHost.
+* HostFirmwareSettings.
+* ConfigMap for extra-manifest configurations.
+
+
+Using the Lifecycle Agent, you can generate an OCI container image that encapsulates an instance of a previous installed single-node OpenShift cluster. This image is derived from a dedicated cluster that you can configure with the *target* OpenShift Container Platform version.
+
+The following is a high-level overview of the image-based installation process:
+
+* Install a single-node OpenShift cluster with the target OpenShift version you want to install in the rest of future clusters.
+* Generate an image from that single-node OpenShift cluster.
+* Use the SiteConfig operator (ClusterInstance) or openshift-install program to embed the seed image URL, and other installation artifacts, in a live installation ISO.
+* Start the host using the live installation ISO to preinstall the host.
+* During this process, the openshift-install program installs Red Hat Enterprise Linux CoreOS (RHCOS) to the disk, pulls the image you generated, and precaches release container images to the disk.
+* When the preinstallation completes, the host is ready to for rapid reconfiguration and deployment.
+* Generate the Configuration ISO using the Image Based Install (IBI) Operator. This image contains specific information of the SNO cluster as opposed to the generic Installation ISO.
+* Attach the Configuration ISO to the host and let the reconfiguration process to finish.
+
+[#ztp-policies]
+== Deployment Configuration
 
 Once the clusters are provisioned, the day-2 configuration defined in one or multiple `PolicyGenTemplate` (PGTs) custom resources will be automatically applied. `PolicyGenTemplate` custom resource is understood by the ZTP using a specific kustomize plugin called {cnf-features-policygen-plugin}[policy-generator]. These templates generate Policy CRs on the hub cluster which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes, these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform level configuration.
 

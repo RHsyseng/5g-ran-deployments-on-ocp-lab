@@ -31,6 +31,9 @@
 ** xref:telco-related-infra-operators-intro.adoc#sriov-operator[SR-IOV Operator]
 ** xref:telco-related-infra-operators-intro.adoc#ptp-operator[PTP Operator]
 ** xref:telco-related-infra-operators-intro.adoc#accelerators-operators[Accelerators Operators]
+** xref:telco-related-infra-operators-intro.adoc#logging-operator[Logging Operator]
+** xref:telco-related-infra-operators-intro.adoc#lifecycle-operator[Lifecycle Agent Operator]
+** xref:telco-related-infra-operators-intro.adoc#lvm-operator[LVM Storage Operator]
 
 * xref:ztp-intro.adoc[Introduction to Zero Touch Provisioning (ZTP)]
 
@@ -46,6 +49,8 @@
 * xref:ztp-at-scale.adoc[Hub Management Components]
 ** xref:ztp-at-scale.adoc#rhacm[Red Hat Advanced Cluster Management]
 *** xref:ztp-at-scale.adoc#mce[Multicluster Engine]
+*** xref:ztp-at-scale.adoc#siteconfig[SiteConfig Operator]
+*** xref:ztp-at-scale.adoc#ibio[Image Based Install Operator]
 *** xref:ztp-at-scale.adoc#ai[Infrastructure Operator]
 ** xref:ztp-at-scale.adoc#gitops-operator[GitOps Operator]
 *** xref:ztp-at-scale.adoc#sitegen[SiteGen]
@@ -53,7 +58,12 @@
 ** xref:ztp-at-scale.adoc#talm[Topology Aware Lifecycle Manager]
 
 * xref:ztp-workflow.adoc[ZTP Workflow]
+** xref:ztp-workflow.adoc#deployment-methods[Single-Node OpenShift Deployments]
+*** xref:ztp-workflow.adoc#abi-deployment[Agent Based Installation]
+*** xref:ztp-workflow.adoc#ibi-deployment[Image Based Installation]
+** xref:ztp-workflow.adoc#ztp-policies[Deployment Configuration]
 ** xref:ztp-workflow.adoc#takeaways[Takeaways]
+
 
 * xref:rhacm-policies.adoc[RHACM Policies]
 ** xref:rhacm-policies.adoc#policy-framework[Policy Framework]

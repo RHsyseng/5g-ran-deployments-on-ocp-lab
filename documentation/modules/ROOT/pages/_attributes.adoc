@@ -7,7 +7,8 @@ code:experimental:
 :github-repo: https://github.com/{repo_user}/5g-ran-deployments-on-ocp-lab/blob/{branch}
 :profile: 5g-ran-lab
 :openshift-release: v4.18
-:rds-link: https://docs.google.com/document/d/1ntvZrwPe2w919JHS5MN23W7bVXubLk2z2r-6ZKvagM4
+:rds-link: https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-design-spec.html
+:rds-config: https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-crs.html
 :policygen-common-file: common-418.yaml
 :policygen-common-label: ocp418
 :lvms-channel: stable-4.18
@@ -76,4 +77,7 @@ code:experimental:
 :aap-get-manifest-docs: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/red_hat_ansible_automation_platform_operations_guide/assembly-aap-obtain-manifest-files
 :sriov-channel: stable
 :ibu-docs: https://docs.openshift.com/container-platform/4.17/edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.html
+:ibi-docs: https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html
+:ibi-openshift-install: https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install-standalone.html
+:ai-workflow: https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites
 :last-update-date: 2024-11-11

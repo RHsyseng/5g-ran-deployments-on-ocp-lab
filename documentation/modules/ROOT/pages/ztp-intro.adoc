@@ -6,7 +6,14 @@ Edge deployments of clusters are typically characterized by a large number of cl
 
 The *GitOps Zero Touch Provisioning (ZTP)* methodology is designed to provide a highly reliable way to manage a fleet of Edge deployed clusters that meets these requirements across the full lifecycle of the clusters. ZTP allows you to provision new edge sites using declarative specifications for the configuration of bare-metal equipment at remote sites following a GitOps deployment set of practices. Ongoing management of configuration is also managed through the declarative specifications in Git. The ZTP methodology leverages Red Hat Advanced Cluster Management (RHACM) to fully automate ("zero touch") the initial deployment and configuration of the clusters as well as to provide ongoing cluster management and observability.
 
-ZTP is a project to deploy and deliver OpenShift 4 in a hub-and-spoke architecture (in a relation of 1-N), where a single hub cluster manages many spoke clusters. The hub and the spokes will be based on OpenShift 4 but with the difference that the hub cluster will manage, deploy and control the lifecycle of the spokes using Red Hat Advanced Cluster Management (RHACM). So, hub clusters running RHACM apply radio access network (RAN) policies from predefined custom resources (CRs) and provision and deploy the spoke clusters using multiple products. We will take a closer look at these components in link:ztp-at-scale.html[ZTP components] section.
+[#what-is-ztp]
+== What is ZTP?
+
+ZTP is a project to deploy and deliver OpenShift 4 in a hub-and-spoke architecture (in a relation of 1-N), where a single hub cluster manages many spoke clusters. The hub and the spokes will be based on OpenShift 4 but with the difference that the hub cluster will manage, deploy and control the lifecycle of the spokes using Red Hat Advanced Cluster Management (RHACM). 
+
+Then, hub clusters running RHACM apply radio access network (RAN) policies from predefined custom resources (CRs) and provision and deploy the spoke clusters using multiple products. Those components are part of what is called Telco {rds-link}[RAN DU Reference Design Specification]. The RAN DU RDS captures the recommended, tested, and supported configurations to get reliable and repeatable performance for a cluster running the telco RAN DU profile.
+
+We will take a closer look at these components in the link:ztp-at-scale.html[Hub Management Components] section.
 
 IMPORTANT: ZTP can operate in both connected and disconnected environments. In the connected case, clusters have direct access to the Internet. The disconnected case, which uses a private registry accessible within the customer's network, is the most common in the telecom environment, and will be used in this lab.
 
