@@ -6,17 +6,17 @@ In RAN environments we will be managing thousands of Single Node OpenShift (SNO)
 
 By describing our infrastructure as code (IaC) the Git repository holds declarative state of the fleet. 
 
-[#introduction-to-siteconfig]
-== Introduction to the SiteConfig
+[#introduction-to-clusterinstance]
+== Introduction to the ClusterInstance
 
-The `SiteConfig` is an abstraction layer on top of the different components that are used to deploy an OpenShift cluster using the `Assisted Service`. For the ones familiar with the `Assisted Service`, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like: `ClusterDeployment`, `InfraEnv`, `AgentClusterInstall`, etc. Notice that `Assisted Service` now it is part of the MultiCluster Engine (MCE) operator.
+The `ClusterInstance` is an abstraction layer on top of the different components managed by the link:ztp-at-scale.html#siteconfig[SiteConfig Operator] used to deploy an OpenShift cluster using either the {ai-workflow}[Agent Based Installation] or {ibi-docs}[Image Based Installation] flow. For the ones familiar with the {ai-workflow}[Agent Based Instalation] and particularly with the `Assisted Service`, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like: `ClusterDeployment`, `InfraEnv`, `AgentClusterInstall`, etc.
 
-The SiteConfig simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place.
+The ClusterInstance simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place. In this {example-sno-clusterinstance-link}[link] you can find an example of a ClusterInstance for a SNO deployment. 
 
-In this {example-sno-siteconfig-link}[link] you can find an example of a SiteConfig for a SNO deployment. In the next section, we will create our own SiteConfig to deploy a SNO in our lab environment.
+In the next section, we will create our own ClusterInstance using the {ai-workflow}[Agent Based Installation] flow in order to deploy a SNO in our lab environment.
 
-[#crafting-our-own-siteconfig]
-== Crafting our own SiteConfig
+[#crafting-our-own-clusterinstance]
+== Crafting our own ClusterInstance (agent-based install)
 
 WARNING: In the e-mail you received with the credentials to access the lab, do not forget to add the line included to your workstation’s /etc/hosts for accessing the lab environment.
 
@@ -77,7 +77,7 @@ Let's replicate it:
 
 WARNING: If it is the first time that you are using `git` in your machine, a message requiring you to setup a Git Username and Email may be shown.
 
-IMPORTANT: The cluster name for the SNO that we will be deploying in the lab will be sno2, that's why that folder exists in the repository structure that we are creating.
+IMPORTANT: The cluster name for the SNO that we will be deploying in the lab will be **sno2**, that's why that folder exists in the repository structure that we are creating.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -102,11 +102,11 @@ The details for our baremetal node that we want to provision as SNO2 are the one
 * Primary disk: `/dev/vda`
 * BMC User: `admin`
 * BMC Password: `admin`
-
+link:ztp-at-scale.html#siteconfig
 [#pre-reqs]
 === Deployment Prerequisites
 
-Before we start working on the SiteConfig, let's add some information required for the deployment into the Git repository.
+Before we start working on the ClusterInstance, let's add some information required for the deployment into the Git repository.
 
 CAUTION: In a production environment you don't want to add sensitive information in plain text in your Git repository, for the sake of simplicity for this lab we are adding this information in plain text to the Git repo, so you don't have to care about it. This applies to things like pull secrets or BMC credentials.
 
@@ -191,10 +191,10 @@ resources:
 EOF
 -----
 
-[#siteconfig]
-=== SiteConfig
+[#clusterinstance]
+=== ClusterInstance
 
-Now that we have the pre-reqs, let's jump into the SiteConfig.
+Now that we have the pre-reqs, let's jump into the ClusterInstance.
 
 Copy the command below and refer to the comments in the code for explanations.
 
@@ -228,7 +228,7 @@ spec:
       hardware-type: "hw-type-platform-1"
   holdInstallation: false
   extraManifestsRefs:
-    - name: ran-rds-manifests
+    - name: {ran-rds-version-manifests}
   installConfigOverrides: |
     {
       "capabilities": {
@@ -323,7 +323,7 @@ spec:
           namespace: open-cluster-management
 EOF
 -----
-IMPORTANT: As of version 4.14 extraManifestPath is subject to a deprecation warning. While `extraManifestPath` is still supported, we recommend that you use `extraManifests.searchPaths`. It is strongly recommended that you extract the contents of `/extra-manifest` from the ztp-site-generate container and push it to the Git repository. Notice that the subdirectory names `/hub-1/extra-manifest` and `reference-manifest/` used throughout are example names only.
+IMPORTANT: Check that the above ClusterInstance CR is using the ai-node-templates-v1 (Agent Based Install) templates to deploy the sno2 OpenShift cluster. Also, we added an ignitionConfigOverride that creates a separate partition for the `/var/lib/containers` which is a pre-requisite for upgrading clusters using the image-based Upgrade method. We will deal with image-based upgrades later on in this lab, however, detailed information about the requirements needed can be found {ibu-var-lib-containers}[here]
 
 In our site, we defined `clusterImageSetNameRef: "active-ocp-version"` as for the release to use to deploy our site. This reference will point to the `active` release we are deploying our sites with. Let's create the `ClusterImageSet` in the repo:
 
@@ -343,9 +343,7 @@ EOF
 [#reference-manifest-siteconfig]
 === Reference Manifest Configuration
 
-Let's add the reference RAN configuration for the version of OCP we are about to deploy. In the workstation, run the following command to extract the reference ZTP {lab-major-version} RAN configuration. Notice that `reference-manifest/{lab-major-version}/` refers to the Git subdirectory that stores the contents of the RAN configuration for a specific version . This configuration is applied during installation. Those manifests are extracted from the `/extra-manifest` folder of the ztp-site-generate container.
-
-WARNING: If you get `ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 65536`: newuidmap: write to uid_map failed: Operation not permitted` when running podman commands, run them with sudo.
+Let's add the {rds-config}[reference RAN DU configuration] for the version of OCP we are about to deploy. In the workstation, run the following command to extract the reference ZTP {lab-major-version} RAN configuration. Those manifests are extracted from the `/extra-manifest` folder of the ztp-site-generate container.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -353,6 +351,12 @@ WARNING: If you get `ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100
 podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
 podman run --log-driver=none --rm --tls-verify=false {ztp-sitegenerate-disconnected-image} extract /home/ztp/extra-manifest --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-configs/reference-manifest/{lab-major-version}/
 -----
+
+Notice that `reference-manifest/{lab-major-version}/` refers to the Git subdirectory that stores the contents of the RAN configuration for a specific version, in this case {lab-major-version}. Different versions of the RAN DU configuration can coexist by extracting them from the appropriate ztp-site-generate container version to a different extra-manifest folder. Then, the user just needs to include the right reference-manifest version folder to the cluster version is installing.
+
+This configuration is applied during installation time. 
+
+WARNING: If you get `ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 65536`: newuidmap: write to uid_map failed: Operation not permitted` when running podman commands, run them with sudo.
 
 Our recommendation is to always create a reference and keep the reference and user defined manifests (see next section) separately. This makes later updates to the reference based on z-stream releases significantly easier (simply replace the contents of reference-manifests with updated content)
 
@@ -404,8 +408,7 @@ IMPORTANT: As of version 4.16 the default cgroups configuration is **cgroupsv2**
 [#preparing-installation]
 === Preparing for the Installation
 
-Finally, we will add the kustomizations for the SiteConfigs, we only have one site, but we will leave the repo ready to consume more than one.
-
+Finally, we will add the kustomizations for the ClusterInstance. Note that the link:crafting-deployments-iac.html#reference-manifest-siteconfig[Refence RAN DU] and the link:crafting-deployments-iac.html#extra-manifest-siteconfig[extra-manifests] configuration are included as a `configmap` custom resource named *{ran-rds-version-manifests}*.
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -453,7 +456,7 @@ configMapGenerator:
     - reference-manifest/4.18/99-sync-time-once-worker.yaml
     - hub-1/extra-manifest/enable-crun-master.yaml
     - hub-1/extra-manifest/enable-crun-worker.yaml
-    name: ran-rds-manifests
+    name: {ran-rds-version-manifests}
     namespace: sno2
 
 generatorOptions:
@@ -468,7 +471,7 @@ At this point we can push the changes to the repo and continue to the next secti
 -----
 cd ~/5g-deployment-lab/ztp-repository
 git add --all
-git commit -m 'Added SNO2 and 5GLab Site information'
+git commit -m 'Added SNO2 cluster using agent-based install flow'
 git push origin main
 cd ~
 -----

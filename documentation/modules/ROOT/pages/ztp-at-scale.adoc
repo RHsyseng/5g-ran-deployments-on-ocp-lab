@@ -42,7 +42,7 @@ MCE provides most of the functionality to provision OpenShift clusters, since it
 
 The SiteConfig Operator introduces a unified ClusterInstance API, which is derived from the SiteConfig API from the SiteConfig Generator kustomize plugin. This API decouples parameters that define a cluster from the manner in which the cluster is deployed. This separation removes certain limitations that are presented by the SiteConfig kustomize plugin in the current GitOps Zero Touch Provisioning (ZTP) flow.
 
-Because of this decoupling, the SiteConfig Operator allow deploying OpenShift clusters using either the {ai-workflow}[Agent Based Instalation] or {ibi-docs}[Image Based Installation] flows depending on the user's needs. See as well, that the operator is the entry point for any GitOps ZTP deployment.
+Because of this decoupling, the SiteConfig Operator allow deploying OpenShift clusters using either the {ai-workflow}[Agent Based Installation] or {ibi-docs}[Image Based Installation] flows depending on the user's needs. See as well, that the operator is the entry point for any GitOps ZTP deployment.
 
 IMPORTANT: In telco environments, specially in RAN, the *Image Based Installation* deployment method is the preferred one due to the reduced installation times and the scalability requirements required in edge deployments.
 

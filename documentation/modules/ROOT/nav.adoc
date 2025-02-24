@@ -140,14 +140,14 @@
 ** xref:lab-environment-introduction.adoc#automation-controller[AAP Automation Controller]
 
 * xref:crafting-deployments-iac.adoc[Crafting Deployment's IaC] 
-** xref:crafting-deployments-iac.adoc#introduction-to-siteconfig[Introduction to the SiteConfig]
-** xref:crafting-deployments-iac.adoc#crafting-our-own-siteconfig[Crafting our own SiteConfig]
+** xref:crafting-deployments-iac.adoc#introduction-to-clusterinstance[Introduction to the ClusterInstance]
+** xref:crafting-deployments-iac.adoc#crafting-our-own-clusterinstance[Crafting our own ClusterInstance]
 *** xref:crafting-deployments-iac.adoc#git-repository[Git Repository]
 *** xref:crafting-deployments-iac.adoc#baremetal-node-details[Bare Metal Node Details]
 *** xref:crafting-deployments-iac.adoc#pre-reqs[Deployment Prerequesites]
-*** xref:crafting-deployments-iac.adoc#siteconfig[SiteConfig]
+*** xref:crafting-deployments-iac.adoc#clusterinstance[ClusterInstance]
 *** xref:crafting-deployments-iac.adoc#reference-manifest-siteconfig[Reference Manifest Configuration]
-*** xref:crafting-deployments-iac.adoc#extra-manifest-siteconfig[Extra Manifest Configuration]
+*** xref:crafting-deployments-iac.adoc#extra-manifest-clusterinstance[Extra Manifest Configuration]
 *** xref:crafting-deployments-iac.adoc#preparing-installation[Preparing for the Installation]
 
 * xref:crafting-cluster-telco-related-infra-operators-configs.adoc[Crafting Cluster and Telco Related Infrastructure Operators Configs]

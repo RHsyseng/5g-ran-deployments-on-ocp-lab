@@ -9,13 +9,14 @@ code:experimental:
 :openshift-release: v4.18
 :rds-link: https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-design-spec.html
 :rds-config: https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-crs.html
+:ran-rds-version-manifests: ran-rds-418-manifests
 :policygen-common-file: common-418.yaml
 :policygen-common-label: ocp418
 :lvms-channel: stable-4.18
 // :catalogsource-index-image-tag: v4.17-1731286606
 :catalogsource-index-image-tag: v4.18
 :ztp-sitegenerate-disconnected-image: infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.17.0-25
-:example-sno-siteconfig-link: https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.17/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml
+:example-sno-clusterinstance-link: https://github.com/stolostron/siteconfig/blob/main/config/samples/siteconfig_v1alpha1_clusterinstance.yaml
 :example-groupdu-policygen-link: https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.17/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml
 :reference-documentation: https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-vdu-validating-cluster-tuning.html#ztp-du-firmware-config-reference_vdu-config-ref
 :hub-cluster-ocp-version: v4.18.0-rc.6
@@ -77,6 +78,7 @@ code:experimental:
 :aap-get-manifest-docs: https://access.redhat.com/documentation/en-us/red_hat_ansible_automation_platform/2.4/html/red_hat_ansible_automation_platform_operations_guide/assembly-aap-obtain-manifest-files
 :sriov-channel: stable
 :ibu-docs: https://docs.openshift.com/container-platform/4.17/edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.html
+:ibu-var-lib-containers: https://docs.openshift.com/container-platform/4.18/edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-shared-container-partition.html#cnf-image-based-upgrade-shared-container-partition_shared-container-partition
 :ibi-docs: https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html
 :ibi-openshift-install: https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install-standalone.html
 :ai-workflow: https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites
