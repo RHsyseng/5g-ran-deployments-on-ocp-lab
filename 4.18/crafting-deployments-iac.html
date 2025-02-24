@@ -513,11 +513,11 @@
     <a class="nav-link" href="crafting-deployments-iac.html">Crafting Deployment&#8217;s IaC</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#introduction-to-siteconfig">Introduction to the SiteConfig</a>
+    <a class="nav-link" href="#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#crafting-our-own-siteconfig">Crafting our own SiteConfig</a>
+    <a class="nav-link" href="#crafting-our-own-clusterinstance">Crafting our own ClusterInstance</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="#git-repository">Git Repository</a>
@@ -529,13 +529,13 @@
     <a class="nav-link" href="#pre-reqs">Deployment Prerequesites</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#siteconfig">SiteConfig</a>
+    <a class="nav-link" href="#clusterinstance">ClusterInstance</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="#reference-manifest-siteconfig">Reference Manifest Configuration</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#extra-manifest-siteconfig">Extra Manifest Configuration</a>
+    <a class="nav-link" href="#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="#preparing-installation">Preparing for the Installation</a>
@@ -799,21 +799,21 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="introduction-to-siteconfig"><a class="anchor" href="#introduction-to-siteconfig"></a>Introduction to the SiteConfig</h2>
+<h2 id="introduction-to-clusterinstance"><a class="anchor" href="#introduction-to-clusterinstance"></a>Introduction to the ClusterInstance</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <code>SiteConfig</code> is an abstraction layer on top of the different components that are used to deploy an OpenShift cluster using the <code>Assisted Service</code>. For the ones familiar with the <code>Assisted Service</code>, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like: <code>ClusterDeployment</code>, <code>InfraEnv</code>, <code>AgentClusterInstall</code>, etc. Notice that <code>Assisted Service</code> now it is part of the MultiCluster Engine (MCE) operator.</p>
+<p>The <code>ClusterInstance</code> is an abstraction layer on top of the different components managed by the <a href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a> used to deploy an OpenShift cluster using either the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> or <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html">Image Based Installation</a> flow. For the ones familiar with the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Instalation</a> and particularly with the <code>Assisted Service</code>, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like: <code>ClusterDeployment</code>, <code>InfraEnv</code>, <code>AgentClusterInstall</code>, etc.</p>
 </div>
 <div class="paragraph">
-<p>The SiteConfig simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place.</p>
+<p>The ClusterInstance simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place. In this <a href="https://github.com/stolostron/siteconfig/blob/main/config/samples/siteconfig_v1alpha1_clusterinstance.yaml">link</a> you can find an example of a ClusterInstance for a SNO deployment.</p>
 </div>
 <div class="paragraph">
-<p>In this <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.17/ztp/gitops-subscriptions/argocd/example/siteconfig/example-sno.yaml">link</a> you can find an example of a SiteConfig for a SNO deployment. In the next section, we will create our own SiteConfig to deploy a SNO in our lab environment.</p>
+<p>In the next section, we will create our own ClusterInstance using the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> flow in order to deploy a SNO in our lab environment.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="crafting-our-own-siteconfig"><a class="anchor" href="#crafting-our-own-siteconfig"></a>Crafting our own SiteConfig</h2>
+<h2 id="crafting-our-own-clusterinstance"><a class="anchor" href="#crafting-our-own-clusterinstance"></a>Crafting our own ClusterInstance (agent-based install)</h2>
 <div class="sectionbody">
 <div class="admonitionblock warning">
 <table>
@@ -938,7 +938,7 @@ If it is the first time that you are using <code>git</code> in your machine, a m
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-The cluster name for the SNO that we will be deploying in the lab will be sno2, that&#8217;s why that folder exists in the repository structure that we are creating.
+The cluster name for the SNO that we will be deploying in the lab will be <strong>sno2</strong>, that&#8217;s why that folder exists in the repository structure that we are creating.
 </td>
 </tr>
 </table>
@@ -976,15 +976,16 @@ git push origin main</code></pre>
 <p>BMC User: <code>admin</code></p>
 </li>
 <li>
-<p>BMC Password: <code>admin</code></p>
+<p>BMC Password: <code>admin</code>
+link:ztp-at-scale.html#siteconfig</p>
+<div id="pre-reqs" class="paragraph">
+<p>=== Deployment Prerequisites</p>
+</div>
 </li>
 </ul>
 </div>
-</div>
-<div class="sect2">
-<h3 id="pre-reqs"><a class="anchor" href="#pre-reqs"></a>Deployment Prerequisites</h3>
 <div class="paragraph">
-<p>Before we start working on the SiteConfig, let&#8217;s add some information required for the deployment into the Git repository.</p>
+<p>Before we start working on the ClusterInstance, let&#8217;s add some information required for the deployment into the Git repository.</p>
 </div>
 <div class="admonitionblock caution">
 <table>
@@ -1085,9 +1086,9 @@ EOF</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="siteconfig"><a class="anchor" href="#siteconfig"></a>SiteConfig</h3>
+<h3 id="clusterinstance"><a class="anchor" href="#clusterinstance"></a>ClusterInstance</h3>
 <div class="paragraph">
-<p>Now that we have the pre-reqs, let&#8217;s jump into the SiteConfig.</p>
+<p>Now that we have the pre-reqs, let&#8217;s jump into the ClusterInstance.</p>
 </div>
 <div class="paragraph">
 <p>Copy the command below and refer to the comments in the code for explanations.</p>
@@ -1121,7 +1122,7 @@ spec:
       hardware-type: "hw-type-platform-1"
   holdInstallation: false
   extraManifestsRefs:
-    - name: ran-rds-manifests
+    - name: ran-rds-418-manifests
   installConfigOverrides: |
     {
       "capabilities": {
@@ -1224,7 +1225,7 @@ EOF</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-As of version 4.14 extraManifestPath is subject to a deprecation warning. While <code>extraManifestPath</code> is still supported, we recommend that you use <code>extraManifests.searchPaths</code>. It is strongly recommended that you extract the contents of <code>/extra-manifest</code> from the ztp-site-generate container and push it to the Git repository. Notice that the subdirectory names <code>/hub-1/extra-manifest</code> and <code>reference-manifest/</code> used throughout are example names only.
+Check that the above ClusterInstance CR is using the ai-node-templates-v1 (Agent Based Install) templates to deploy the sno2 OpenShift cluster. Also, we added an ignitionConfigOverride that creates a separate partition for the <code>/var/lib/containers</code> which is a pre-requisite for upgrading clusters using the image-based Upgrade method. We will deal with image-based upgrades later on in this lab, however, detailed information about the requirements needed can be found <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-shared-container-partition.html#cnf-image-based-upgrade-shared-container-partition_shared-container-partition">here</a>
 </td>
 </tr>
 </table>
@@ -1249,7 +1250,19 @@ EOF</code></pre>
 <div class="sect2">
 <h3 id="reference-manifest-siteconfig"><a class="anchor" href="#reference-manifest-siteconfig"></a>Reference Manifest Configuration</h3>
 <div class="paragraph">
-<p>Let&#8217;s add the reference RAN configuration for the version of OCP we are about to deploy. In the workstation, run the following command to extract the reference ZTP 4.18 RAN configuration. Notice that <code>reference-manifest/4.18/</code> refers to the Git subdirectory that stores the contents of the RAN configuration for a specific version . This configuration is applied during installation. Those manifests are extracted from the <code>/extra-manifest</code> folder of the ztp-site-generate container.</p>
+<p>Let&#8217;s add the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-crs.html">reference RAN DU configuration</a> for the version of OCP we are about to deploy. In the workstation, run the following command to extract the reference ZTP 4.18 RAN configuration. Those manifests are extracted from the <code>/extra-manifest</code> folder of the ztp-site-generate container.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
+podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.17.0-25 extract /home/ztp/extra-manifest --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-configs/reference-manifest/4.18/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that <code>reference-manifest/4.18/</code> refers to the Git subdirectory that stores the contents of the RAN configuration for a specific version, in this case 4.18. Different versions of the RAN DU configuration can coexist by extracting them from the appropriate ztp-site-generate container version to a different extra-manifest folder. Then, the user just needs to include the right reference-manifest version folder to the cluster version is installing.</p>
+</div>
+<div class="paragraph">
+<p>This configuration is applied during installation time.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1262,12 +1275,6 @@ If you get <code>ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 
 </td>
 </tr>
 </table>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
-podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.17.0-25 extract /home/ztp/extra-manifest --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-configs/reference-manifest/4.18/</code></pre>
-</div>
 </div>
 <div class="paragraph">
 <p>Our recommendation is to always create a reference and keep the reference and user defined manifests (see next section) separately. This makes later updates to the reference based on z-stream releases significantly easier (simply replace the contents of reference-manifests with updated content)</p>
@@ -1328,7 +1335,7 @@ As of version 4.16 the default cgroups configuration is <strong>cgroupsv2</stron
 <div class="sect2">
 <h3 id="preparing-installation"><a class="anchor" href="#preparing-installation"></a>Preparing for the Installation</h3>
 <div class="paragraph">
-<p>Finally, we will add the kustomizations for the SiteConfigs, we only have one site, but we will leave the repo ready to consume more than one.</p>
+<p>Finally, we will add the kustomizations for the ClusterInstance. Note that the <a href="crafting-deployments-iac.html#reference-manifest-siteconfig">Refence RAN DU</a> and the <a href="crafting-deployments-iac.html#extra-manifest-siteconfig">extra-manifests</a> configuration are included as a <code>configmap</code> custom resource named <strong>ran-rds-418-manifests</strong>.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1376,7 +1383,7 @@ configMapGenerator:
     - reference-manifest/4.18/99-sync-time-once-worker.yaml
     - hub-1/extra-manifest/enable-crun-master.yaml
     - hub-1/extra-manifest/enable-crun-worker.yaml
-    name: ran-rds-manifests
+    name: ran-rds-418-manifests
     namespace: sno2
 
 generatorOptions:
@@ -1391,7 +1398,7 @@ EOF</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository
 git add --all
-git commit -m 'Added SNO2 and 5GLab Site information'
+git commit -m 'Added SNO2 cluster using agent-based install flow'
 git push origin main
 cd ~</code></pre>
 </div>

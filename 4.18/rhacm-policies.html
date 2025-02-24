@@ -513,11 +513,11 @@
     <a class="nav-link" href="crafting-deployments-iac.html">Crafting Deployment&#8217;s IaC</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-deployments-iac.html#introduction-to-siteconfig">Introduction to the SiteConfig</a>
+    <a class="nav-link" href="crafting-deployments-iac.html#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
   </li>
   <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-deployments-iac.html#crafting-our-own-siteconfig">Crafting our own SiteConfig</a>
+    <a class="nav-link" href="crafting-deployments-iac.html#crafting-our-own-clusterinstance">Crafting our own ClusterInstance</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="crafting-deployments-iac.html#git-repository">Git Repository</a>
@@ -529,13 +529,13 @@
     <a class="nav-link" href="crafting-deployments-iac.html#pre-reqs">Deployment Prerequesites</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#siteconfig">SiteConfig</a>
+    <a class="nav-link" href="crafting-deployments-iac.html#clusterinstance">ClusterInstance</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="crafting-deployments-iac.html#reference-manifest-siteconfig">Reference Manifest Configuration</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#extra-manifest-siteconfig">Extra Manifest Configuration</a>
+    <a class="nav-link" href="crafting-deployments-iac.html#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="crafting-deployments-iac.html#preparing-installation">Preparing for the Installation</a>
@@ -791,7 +791,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>As we mentioned in the <a href="ztp-workflow.html">ZTP Workflow</a> section, the Red Hat Advanced Cluster Management (RHACM) for Kubernetes allows us to <em>provision</em> and <em>configure</em> multiple clusters in a declarative way and can be easily coupled with GitOps. ZTP and ongoing configuration updates makes intensive use of RHACM Policies for managing the configuration of deployed clusters. In our telco use case, creation of these <code>Policies</code> is simplified with the policyGen kustomize plugin. This plugin translates the vRAN DU profile based on <code>PolicyGenTemplates</code> into multiple <code>Policies</code> that are understood by the hub cluster and applied to the managed clusters.</p>
+<p>As we mentioned in the <a href="ztp-workflow.html">ZTP Workflow</a> section, the Red Hat Advanced Cluster Management (RHACM) for Kubernetes allows us to <em>provision</em> and <em>configure</em> multiple clusters in a declarative way and can be easily coupled with GitOps. ZTP and ongoing configuration updates makes intensive use of RHACM Policies for managing the configuration of deployed clusters. In our telco use case, creation of these <code>Policies</code> is simplified with the policyGen kustomize plugin. This plugin translates the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-crs.html">Telco RAN DU reference configuration</a> based on <code>PolicyGenTemplates</code> into multiple <code>Policies</code> that are understood by the hub cluster and applied to the managed clusters.</p>
 </div>
 <div class="paragraph">
 <p>In this section, we provide an introduction to the concepts behind the <a href="https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/governance/governance">RHACM "Governance" pillar</a>. Furthermore, we are going to introduce the concept of a policy, which is key for managing the configuration lifecycle of our fleet of clusters.</p>
