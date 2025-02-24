@@ -504,7 +504,10 @@
     <a class="nav-link" href="#openshift-hub-cluster">OpenShift Hub Cluster</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#automation-controller">AAP Automation Controller</a>
+    <a class="nav-link" href="#s3-storage">S3 Storage Server</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#openshift-seed-sno">OpenShift Seed SNO Cluster</a>
   </li>
 </ul>
   </li>
@@ -883,21 +886,36 @@ If you receive an error message regarding the certificate please re-run update-c
 </div>
 </div>
 <div class="sect1">
-<h2 id="automation-controller"><a class="anchor" href="#automation-controller"></a>AAP Automation Controller</h2>
+<h2 id="s3-storage"><a class="anchor" href="#s3-storage"></a>S3 Storage Server</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The Automation Controller can be reached at <a href="https://automation-aap.apps.hub.5g-deployment.lab" class="bare">https://automation-aap.apps.hub.5g-deployment.lab</a></p>
-</div>
-<div class="paragraph">
-<p>Credentials for Automation Controller:</p>
+<p>An S3 storage server is running on the infrastructure host in order to provide s3 backup and restore capabilities for the image-based upgrade process. You can access the management console at <a href="http://infra.5g-deployment.lab:9001/login" class="bare">http://infra.5g-deployment.lab:9001/login</a>.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Username: <code>student</code></p>
+<p>Username: <code>admin</code></p>
 </li>
 <li>
-<p>Password: The password is randomly generated for each environment, and can be found in the following path: <code>/root/cred-dev.txt</code> in your hypervisor host or in the e-mail you received when the lab was ready.</p>
+<p>Password: <code>admin1234</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="openshift-seed-sno"><a class="anchor" href="#openshift-seed-sno"></a>OpenShift Seed SNO Cluster</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>A Single Node OpenShift cluster is running on the infrastructure host running version v4.18.0-rc.7 of OpenShift Container Platform. Its main purpose is act as a dedicated single-node OpenShift cluster that you use to create a seed image and is deployed with the target OpenShift Container Platform version. It aligns with the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">seed cluster guidelines</a> and includes the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#ztp-image-based-upgrade-prereqs_ibi-understanding-image-based-install">software prerequisites</a> for an image-based installation and deployment and the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-preparing-for-image-based-install.html#ztp-image-based-upgrade-seed-image-config-ran_ibi-preparing-image-based-install">RAN DU profile for a seed image</a>.</p>
+</div>
+<div class="paragraph">
+<p>Credentials for the seed SNO cluster:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Admin kubeconfig: It can be found either in the following path of the infrastructure host: /root/sno1kubeconfig or it can be downloaded from the RHACM Web Console.</p>
 </li>
 </ul>
 </div>
