@@ -10,6 +10,7 @@ on:
       - 'lab-4.15'
       - 'lab-4.16'
       - 'lab-4.17'
+      - 'lab-4.18'
 env:
   SITE_DIR: "gh-pages"
 jobs:
