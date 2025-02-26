@@ -2,11 +2,11 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-In the previous section, we created the infrastructure as code (IaC) for our `SNO2` cluster using the `SiteConfig` object. In this section, we are going to create the configuration as code (CaC) for our clusters by using multiple `PolicyGenTemplate` objects.
+In the previous section, we created the infrastructure as code (IaC) for our `SNO2` cluster using the `ClusterInstance` object. In this section, we are going to create the configuration as code (CaC) for our clusters by using multiple `PolicyGenTemplate` objects.
 
 We described how `PolicyGenTemplate` works in detail xref:policygen-deepdive.adoc#policies-templating[here], so let's jump directly to the creation of the different templates.
 
-NOTE: The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in xref:telco-related-infra-operators-intro.adoc[Introduction to Telco Related Infrastructure Operators]. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the {rds-link}[{openshift-release} Telco RAN Reference Design Specification] slide deck.
+NOTE: The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in xref:telco-related-infra-operators-intro.adoc[Introduction to Telco Related Infrastructure Operators]. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the {rds-link}[{openshift-release} Telco RAN Reference Design Specification] in the official documentation.
 
 IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
 
@@ -17,7 +17,7 @@ The common policies apply to every cluster in our infrastructure that matches ou
 
 These configs may vary from release to release, that's why we create a `{policygen-common-file}` file. We will likely have a common configuration profile for each release we deploy.
 
-IMPORTANT: If you check the binding rules, you see that we are targeting clusters labeled with `common: "{policygen-common-label}"` and `logicalGroup: "active"`. These labels were set in the `SiteConfig` definition in the link:crafting-deployments-iaac.html#siteconfig[previous section].
+IMPORTANT: If you check the binding rules, you see that we are targeting clusters labeled with `common: "{policygen-common-label}"` and `logicalGroup: "active"`. These labels were set in the `ClusterInstance` definition in the link:crafting-deployments-iaac.html#siteconfig[previous section].
 
 1. Create the `common` PolicyGenTemplate for {openshift-release} SNOs:
 +
@@ -114,8 +114,8 @@ spec:
       policyName: "group-policy"
     - fileName: DisableOLMPprof.yaml # wave 10
       policyName: "group-policy"
-    # - fileName: ConsoleOperatorDisable.yaml
-    #  policyName: "group-policy"
+    - fileName: ConsoleOperatorDisable.yaml
+      policyName: "group-policy"
     - fileName: SriovOperatorConfig.yaml
       policyName: "group-policy"
       # Using hub templating to obtain if the SR-IOV card is supported for this hw type
