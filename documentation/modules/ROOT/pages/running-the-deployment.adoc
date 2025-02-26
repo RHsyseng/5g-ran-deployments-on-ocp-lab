@@ -89,7 +89,7 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -k ~/5g-deployment-lab/
 [#deploying-sno-using-gitops-pipeline]
 == Deploying the SNO Cluster using the ZTP GitOps Pipeline
 
-When we applied the ZTP GitOps Pipeline configuration in the last section, that created two ArgoCD apps. One of the apps (clusters) take care of deploying the clusters defined in the `SiteConfig` while the other (policies) take care of deploying the policies defined in the different `PolicyGenTemplates`.
+When we applied the ZTP GitOps Pipeline configuration in the last section, that created two ArgoCD apps. One of the apps (clusters) take care of deploying the clusters defined in the `ClusterInstance` while the other (policies) take care of deploying the policies defined in the different `PolicyGenTemplates`.
 
 Since the apps have been created, ArgoCD started doing its magic which means that the cluster deployment should already be running, let's see what happened in Argo CD.
 
@@ -108,5 +108,3 @@ image::argocd-clusters-app.png[ArgoCD Clusters App]
 +
 image::argocd-policies-app.png[ArgoCD Policies App]
 +
-
-In the next section we will see how we can add extra automation by using Ansible Automation Platform integration.
