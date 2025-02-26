@@ -6,7 +6,7 @@
     <title>Introduction to the lab environment :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://labs.sysdeseng.com/4.18/lab-environment-introduction.html">
     <link rel="prev" href="deployment-considerations.html">
-    <link rel="next" href="crafting-deployments-iac.html">
+    <link rel="next" href="creating-seed-image.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
   </head>
@@ -504,10 +504,46 @@
     <a class="nav-link" href="#openshift-hub-cluster">OpenShift Hub Cluster</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#webserver">HTTP Server</a>
+  </li>
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#s3-storage">S3 Storage Server</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#openshift-seed-sno">OpenShift Seed SNO Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="creating-seed-image.html#introduction-to-seed-image">Introduction to the Seed Image Generation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="creating-seed-image.html#running-the-seed-generation">Running the Seed Image Generation</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html">Deploying an Image Based Install Cluster</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-installation-iso">Creating the Installation ISO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#preinstallation-process">PreInstalling the Host</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">Creating the Configuration ISO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#completing-install">Completing the Installation</a>
   </li>
 </ul>
   </li>
@@ -794,7 +830,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Before jumping into the hands-on sections let&#8217;s get familiar with the lab environment we have available.</p>
+<p>Before jumping into the hands-on sections, let&#8217;s get familiar with the lab environment we have available.</p>
 </div>
 <div class="admonitionblock caution">
 <table>
@@ -803,7 +839,7 @@
 <i class="fa icon-caution" title="Caution"></i>
 </td>
 <td class="content">
-The following lab sections rely on having a lab environment accessible in order to do the hands-on work. If you&#8217;re a Red Hatter you can order a lab environment already setup for you on the <a href="https://demo.redhat.com">Red Hat Demo Platform</a>. You just need to order the lab named <code>5G RAN Deployment on OpenShift</code>. Notice that it has a cost of ~ $56 to run through the lab. When the lab is launched, by default you will have 12 hours to complete it before it is destroyed. The estimated time to finish the lab might look like 12 hours total (2h provisioning time, 5h lab work, 5h margin). If you need further time, it can be manually extended up to 24h in total. If you still need to deploy a lab environment, follow the guide available <a href="lab-environment.html" class="xref page">here</a>.
+The following lab sections rely on having a lab environment accessible in order to do the hands-on work. If you&#8217;re a Red Hatter, you can order a lab environment already set up for you on the <a href="https://demo.redhat.com">Red Hat Demo Platform</a>. You just need to order the lab named <code>5G RAN Deployment on OpenShift</code>. Notice that it has a cost of ~ $56 to run through the lab. When the lab is launched, by default you will have 12 hours to complete it before it is destroyed. The estimated time to finish the lab might look like 12 hours total (2h provisioning time, 5h lab work, 5h margin). If you need further time, it can be manually extended up to 24h in total. If you still need to deploy a lab environment, follow the guide available <a href="lab-environment.html" class="xref page">here</a>.
 </td>
 </tr>
 </table>
@@ -814,7 +850,7 @@ The following lab sections rely on having a lab environment accessible in order 
 <h2 id="git-server"><a class="anchor" href="#git-server"></a>Git Server</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A <a href="https://github.com/go-gitea/gitea">gitea</a> server is running on the infrastructure host, you can reach it out at <a href="http://infra.5g-deployment.lab:3000/" class="bare">http://infra.5g-deployment.lab:3000/</a>.</p>
+<p>A <a href="https://github.com/go-gitea/gitea">gitea</a> server is running on the infrastructure host, you can reach it at <a href="http://infra.5g-deployment.lab:3000/" class="bare">http://infra.5g-deployment.lab:3000/</a>.</p>
 </div>
 <div class="paragraph">
 <p>Credentials for the git server:</p>
@@ -835,7 +871,7 @@ The following lab sections rely on having a lab environment accessible in order 
 <h2 id="container-registry"><a class="anchor" href="#container-registry"></a>Container Registry</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A <a href="https://docs.openshift.com/container-platform/4.13/installing/disconnected_install/installing-mirroring-creating-registry.html">container registry</a> is running on the infrastructure host, you can reach it out at <a href="https://infra.5g-deployment.lab:8443/" class="bare">https://infra.5g-deployment.lab:8443/</a>.</p>
+<p>A <a href="https://docs.openshift.com/container-platform/4.13/installing/disconnected_install/installing-mirroring-creating-registry.html">container registry</a> is running on the infrastructure host, you can reach it at <a href="https://infra.5g-deployment.lab:8443/" class="bare">https://infra.5g-deployment.lab:8443/</a>.</p>
 </div>
 <div class="paragraph">
 <p>Credentials for the container registry:</p>
@@ -868,7 +904,7 @@ If you receive an error message regarding the certificate please re-run update-c
 <h2 id="openshift-hub-cluster"><a class="anchor" href="#openshift-hub-cluster"></a>OpenShift Hub Cluster</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>An OpenShift cluster is running on the infrastructure host, you can reach it out at <a href="https://console-openshift-console.apps.hub.5g-deployment.lab" class="bare">https://console-openshift-console.apps.hub.5g-deployment.lab</a> and <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a></p>
+<p>An OpenShift cluster is running on the infrastructure host, you can reach it at <a href="https://console-openshift-console.apps.hub.5g-deployment.lab" class="bare">https://console-openshift-console.apps.hub.5g-deployment.lab</a> and <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a></p>
 </div>
 <div class="paragraph">
 <p>Credentials for the OCP cluster:</p>
@@ -886,10 +922,30 @@ If you receive an error message regarding the certificate please re-run update-c
 </div>
 </div>
 <div class="sect1">
+<h2 id="webserver"><a class="anchor" href="#webserver"></a>HTTP Server</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>An HTTP server is deployed on the infrastructure host to publish the Red Hat CoreOS ISO and Red Hat CoreOS Rootfs images locally. These images are required to deploy the already existing infrastructure and the OpenShift Clusters that will be deployed in our lab.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The HTTP server cannot be reached from outside the infrastructure node
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="s3-storage"><a class="anchor" href="#s3-storage"></a>S3 Storage Server</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>An S3 storage server is running on the infrastructure host in order to provide s3 backup and restore capabilities for the image-based upgrade process. You can access the management console at <a href="http://infra.5g-deployment.lab:9001/login" class="bare">http://infra.5g-deployment.lab:9001/login</a>.</p>
+<p>An S3 storage server is running on the infrastructure host in order to provide S3 backup and restore capabilities for the image-based upgrade process. You can access the management console at <a href="http://infra.5g-deployment.lab:9001/login" class="bare">http://infra.5g-deployment.lab:9001/login</a>.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -907,7 +963,7 @@ If you receive an error message regarding the certificate please re-run update-c
 <h2 id="openshift-seed-sno"><a class="anchor" href="#openshift-seed-sno"></a>OpenShift Seed SNO Cluster</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A Single Node OpenShift cluster is running on the infrastructure host running version v4.18.0-rc.7 of OpenShift Container Platform. Its main purpose is act as a dedicated single-node OpenShift cluster that you use to create a seed image and is deployed with the target OpenShift Container Platform version. It aligns with the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">seed cluster guidelines</a> and includes the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#ztp-image-based-upgrade-prereqs_ibi-understanding-image-based-install">software prerequisites</a> for an image-based installation and deployment and the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-preparing-for-image-based-install.html#ztp-image-based-upgrade-seed-image-config-ran_ibi-preparing-image-based-install">RAN DU profile for a seed image</a>.</p>
+<p>A Single Node OpenShift cluster is running on the infrastructure host running version v4.18.0-rc.7 of OpenShift Container Platform. Its main purpose is to act as a dedicated single-node OpenShift cluster that you use to create a seed image and is deployed with the target OpenShift Container Platform version. It aligns with the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">seed cluster guidelines</a> and includes the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#ztp-image-based-upgrade-prereqs_ibi-understanding-image-based-install">software prerequisites</a> for an image-based installation and deployment and the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-preparing-for-image-based-install.html#cnf-image-based-upgrade-generate-seed-image_ibi-preparing-image-based-install">RAN DU profile for a seed image</a>.</p>
 </div>
 <div class="paragraph">
 <p>Credentials for the seed SNO cluster:</p>
@@ -923,7 +979,7 @@ If you receive an error message regarding the certificate please re-run update-c
 </div>
 <nav class="pagination">
   <span class="prev"><a href="deployment-considerations.html">Deployment Considerations</a></span>
-  <span class="next"><a href="crafting-deployments-iac.html">Crafting Deployment&#8217;s IaC</a></span>
+  <span class="next"><a href="creating-seed-image.html">Creating the Seed Image</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

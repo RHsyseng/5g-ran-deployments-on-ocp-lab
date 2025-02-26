@@ -503,10 +503,46 @@
     <a class="nav-link" href="lab-environment-introduction.html#openshift-hub-cluster">OpenShift Hub Cluster</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#webserver">HTTP Server</a>
+  </li>
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="lab-environment-introduction.html#s3-storage">S3 Storage Server</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="lab-environment-introduction.html#openshift-seed-sno">OpenShift Seed SNO Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="creating-seed-image.html#introduction-to-seed-image">Introduction to the Seed Image Generation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="creating-seed-image.html#running-the-seed-generation">Running the Seed Image Generation</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html">Deploying an Image Based Install Cluster</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-installation-iso">Creating the Installation ISO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#preinstallation-process">PreInstalling the Host</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">Creating the Configuration ISO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#completing-install">Completing the Installation</a>
   </li>
 </ul>
   </li>
@@ -1374,7 +1410,7 @@ agent.agent-install.openshift.io/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201   sno1    
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig /root/sno1kubeconfig get nodes,clusterversion
 
 NAME                      STATUS   ROLES                         AGE     VERSION
-node/openshift-master-0   Ready    control-plane,master,worker   94m     v1.30.5
+node/openshift-master-0   Ready    control-plane,master,worker   94m     v1.31.4
 
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.18.0-rc.7    True        False         75m     Cluster version is 4.18.0-rc.7</code></pre>
