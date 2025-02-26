@@ -2,14 +2,14 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-Before jumping into the hands-on sections let's get familiar with the lab environment we have available.
+Before jumping into the hands-on sections, let's get familiar with the lab environment we have available.
 
-CAUTION: The following lab sections rely on having a lab environment accessible in order to do the hands-on work. If you're a Red Hatter you can order a lab environment already setup for you on the https://demo.redhat.com[Red Hat Demo Platform]. You just need to order the lab named `5G RAN Deployment on OpenShift`. Notice that it has a cost of ~ $56 to run through the lab. When the lab is launched, by default you will have 12 hours to complete it before it is destroyed. The estimated time to finish the lab might look like 12 hours total (2h provisioning time, 5h lab work, 5h margin). If you need further time, it can be manually extended up to 24h in total. If you still need to deploy a lab environment, follow the guide available xref:lab-environment.adoc[here].
+CAUTION: The following lab sections rely on having a lab environment accessible in order to do the hands-on work. If you're a Red Hatter, you can order a lab environment already set up for you on the https://demo.redhat.com[Red Hat Demo Platform]. You just need to order the lab named `5G RAN Deployment on OpenShift`. Notice that it has a cost of ~ $56 to run through the lab. When the lab is launched, by default you will have 12 hours to complete it before it is destroyed. The estimated time to finish the lab might look like 12 hours total (2h provisioning time, 5h lab work, 5h margin). If you need further time, it can be manually extended up to 24h in total. If you still need to deploy a lab environment, follow the guide available xref:lab-environment.adoc[here].
 
 [#git-server]
 == Git Server
 
-A https://github.com/go-gitea/gitea[gitea] server is running on the infrastructure host, you can reach it out at http://infra.5g-deployment.lab:3000/.
+A https://github.com/go-gitea/gitea[gitea] server is running on the infrastructure host, you can reach it at http://infra.5g-deployment.lab:3000/.
 
 Credentials for the git server:
 
@@ -19,7 +19,7 @@ Credentials for the git server:
 [#container-registry]
 == Container Registry
 
-A https://docs.openshift.com/container-platform/4.13/installing/disconnected_install/installing-mirroring-creating-registry.html[container registry] is running on the infrastructure host, you can reach it out at https://infra.5g-deployment.lab:8443/.
+A https://docs.openshift.com/container-platform/4.13/installing/disconnected_install/installing-mirroring-creating-registry.html[container registry] is running on the infrastructure host, you can reach it at https://infra.5g-deployment.lab:8443/.
 
 Credentials for the container registry:
 
@@ -31,17 +31,24 @@ NOTE: If you receive an error message regarding the certificate please re-run up
 [#openshift-hub-cluster]
 == OpenShift Hub Cluster
 
-An OpenShift cluster is running on the infrastructure host, you can reach it out at https://console-openshift-console.apps.hub.5g-deployment.lab and https://api.hub.5g-deployment.lab:6443
+An OpenShift cluster is running on the infrastructure host, you can reach it at https://console-openshift-console.apps.hub.5g-deployment.lab and https://api.hub.5g-deployment.lab:6443
 
 Credentials for the OCP cluster:
 
 * Username: `admin` 
 * Password: The password is randomly generated for each environment, and can be found in the following path: `/root/cred-admin.txt` in your hypervisor host or in the e-mail you received when the lab was ready.
 
+[#webserver]
+== HTTP Server
+
+An HTTP server is deployed on the infrastructure host to publish the Red Hat CoreOS ISO and Red Hat CoreOS Rootfs images locally. These images are required to deploy the already existing infrastructure and the OpenShift Clusters that will be deployed in our lab.
+
+IMPORTANT: The HTTP server cannot be reached from outside the infrastructure node
+
 [#s3-storage]
 == S3 Storage Server
 
-An S3 storage server is running on the infrastructure host in order to provide s3 backup and restore capabilities for the image-based upgrade process. You can access the management console at http://infra.5g-deployment.lab:9001/login. 
+An S3 storage server is running on the infrastructure host in order to provide S3 backup and restore capabilities for the image-based upgrade process. You can access the management console at http://infra.5g-deployment.lab:9001/login. 
 
 * Username: `admin` 
 * Password: `admin1234`
@@ -49,7 +56,7 @@ An S3 storage server is running on the infrastructure host in order to provide s
 [#openshift-seed-sno]
 == OpenShift Seed SNO Cluster
 
-A Single Node OpenShift cluster is running on the infrastructure host running version {sno-seed-version} of OpenShift Container Platform. Its main purpose is act as a dedicated single-node OpenShift cluster that you use to create a seed image and is deployed with the target OpenShift Container Platform version. It aligns with the {seed-guidelines}[seed cluster guidelines] and includes the {seed-prereq-software}[software prerequisites] for an image-based installation and deployment and the {seed-prereq-config}[RAN DU profile for a seed image].
+A Single Node OpenShift cluster is running on the infrastructure host running version {sno-seed-version} of OpenShift Container Platform. Its main purpose is to act as a dedicated single-node OpenShift cluster that you use to create a seed image and is deployed with the target OpenShift Container Platform version. It aligns with the {seed-guidelines}[seed cluster guidelines] and includes the {seed-prereq-software}[software prerequisites] for an image-based installation and deployment and the {seed-prereq-config}[RAN DU profile for a seed image].
 
 Credentials for the seed SNO cluster:
 
