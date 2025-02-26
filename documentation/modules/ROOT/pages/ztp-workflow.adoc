@@ -54,7 +54,7 @@ IMPORTANT: Notice, in the picture, how ZTP allows us to provision clusters at sc
 [#ibi-deployment]
 === Image Based Installation
 
-This approach enables the preinstallation of configured and validated instances of single-node OpenShift on target hosts. These preinstalled hosts can be rapidly reconfigured and deployed at the far edge of the network, including in disconnected environments, with minimal intervention. Image Based Installation flow significantly reduce the deployment time of single-node OpenShift clusters by streamlining the installation process.
+This approach enables the preinstallation of configured and validated instances of single-node OpenShift on target hosts. These preinstalled hosts can be rapidly reconfigured and deployed at the far edge of the network, including in disconnected environments, with minimal intervention. Image Based Installation flow significantly reduces deployment time of single-node OpenShift clusters by streamlining the installation process.
 
 IMPORTANT: In telco environments, specially in RAN, the *Image Based Installation* deployment method is the preferred one due to the reduced installation times and the scalability requirements needed in edge deployments. Currently, only single-node OpenShift clusters can be installed using this workflow.
 
@@ -67,10 +67,10 @@ In this lab, we are going to provision a cluster with the Image Based Installati
 First, let's describe the components in an image-based installation and deployment.
 
 * *Seed image*. OCI container image generated from a dedicated cluster with the target OpenShift Container Platform version.
-* *Seed cluster*. Dedicated single-node OpenShift cluster that you use to create a seed image and is deployed with the target OpenShift Container Platform version.
-* *Lifecycle Agent Operator*. Generates the seed image.
-* *SiteConfig Operator*. Creates the installation ISO, and embeds the seed image URL in the live installation ISO. It also attaches the Installation ISO into the host about to provision.
+* *Seed cluster*. Dedicated single-node OpenShift cluster that is used to create the seed image, and is deployed with the target OpenShift Container Platform version.
+* *Lifecycle Agent Operator*. Operator deployed on the seed cluster that generates the seed image from it.
 * *Image Based Install (IBI) Operator*. When you deploy managed clusters, the IBI Operator creates a configuration ISO from the site-specific resources you define in the hub cluster, and attaches the configuration ISO to the preinstalled host by using a bare-metal provisioning service.
+* *openshift-install Binary*. Creates the pre-installation ISO by embedding the seed image in the live installation ISO.
 
 image::ibi-installation.png[ZTP Workflow 2]
 
@@ -93,21 +93,21 @@ The following is a high-level overview of the image-based installation process:
 
 * Install a single-node OpenShift cluster with the target OpenShift version you want to install in the rest of future clusters.
 * Generate an image from that single-node OpenShift cluster.
-* Use the SiteConfig operator (ClusterInstance) or openshift-install program to embed the seed image URL, and other installation artifacts, in a live installation ISO.
+* Use the openshift-install program to embed the seed image URL, and other installation artifacts, in a live installation ISO.
 * Start the host using the live installation ISO to preinstall the host.
 * During this process, the openshift-install program installs Red Hat Enterprise Linux CoreOS (RHCOS) to the disk, pulls the image you generated, and precaches release container images to the disk.
-* When the preinstallation completes, the host is ready to for rapid reconfiguration and deployment.
+* When the preinstallation completes, the host is ready for quick reconfiguration and deployment.
 * Generate the Configuration ISO using the Image Based Install (IBI) Operator. This image contains specific information of the SNO cluster as opposed to the generic Installation ISO.
-* Attach the Configuration ISO to the host and let the reconfiguration process to finish.
+* Attach the Configuration ISO to the host and let the reconfiguration process finish.
 
 [#ztp-policies]
 == Deployment Configuration
 
-Once the clusters are provisioned, the day-2 configuration defined in one or multiple `PolicyGenTemplate` (PGTs) custom resources will be automatically applied. `PolicyGenTemplate` custom resource is understood by the ZTP using a specific kustomize plugin called {cnf-features-policygen-plugin}[policy-generator]. These templates generate Policy CRs on the hub cluster which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes, these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform level configuration.
+Once the clusters are provisioned, the day-2 configuration defined in one or multiple `PolicyGenTemplate` (PGTs) custom resources will be automatically applied. `PolicyGenTemplate` custom resource is understood by the ZTP pipeline using a specific kustomize plugin called {cnf-features-policygen-plugin}[policy-generator]. These templates generate Policy CRs on the hub cluster which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes, these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform level configurations.
 
 image::ztp_workflow_3.png[ZTP Workflow 3]
 
-Notice that if, later on, you want to apply a new configuration or replace an existing configuration you can update the PolicyGenTemplate in Git which will automatically propagate to the Policy CRs on the hub cluster.
+Notice that if, later on, you want to apply a new configuration or replace an existing configuration you can update the PolicyGenTemplate in Git which will automatically propagate to the Policy CRs on the hub cluster. After that, user will decide when those updated policies are applied using TALM.
 
 [#takeaways]
 == Takeaways
@@ -117,7 +117,7 @@ Summing up, the deployment of the clusters includes:
 * Leveraging a GitOps methodology for a scalable, traceable and reliable deployment model.
 * Installing the host operating system (RHCOS) on a blank server.
 * Deploying OpenShift Container Platform.
-* Creating cluster policies via `PolicyGenTemplate` and site subscriptions via `SiteConfig`.
+* Creating cluster policies via `PolicyGenTemplate` and site subscriptions via `ClusterInstance`.
 * Making the necessary network configurations to the server operating system.
 * Deploying profile operators and performing any needed software-related configuration, such as performance profile, PTP, and SR-IOV.
 * Downloading images needed to run workloads (CNFs).

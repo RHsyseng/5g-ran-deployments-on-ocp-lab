@@ -162,5 +162,3 @@ The difference in behavior between inform and enforce is used by the GitOps ZTP 
 With that, we have covered the basics of what a Policy in RHACM is, and how it works.
 
 A more in-detail explanation of the RHACM policies is covered in this training recording https://videos.learning.redhat.com/media/GitOps%20and%20policy%20manifests%20-%20How%20policies%20work/1_pi42cmgb[GitOps and policy manifests - How policies work].
-
-[1] https://github.com/stolostron/policy-collection

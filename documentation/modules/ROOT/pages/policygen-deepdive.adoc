@@ -11,18 +11,14 @@ In this section, we are going to get into the implementation details of the Poli
 
 The policy generator is implemented as a Kustomize generator plugin. This allows for any Kustomize configuration (e.g. patches, common labels) to be applied to the generated policies. This also means that the policy generator can be integrated into existing GitOps processes that support Kustomize, such as RHACM Application Lifecycle Management and OpenShift GitOps (i.e. ArgoCD).
 
-There are two Kustomize plugins, we refer to them as PolicyGenTool, but each has its own name and mission:
-
-* **SiteConfig Generator**. Reads the SiteConfig manifest and generates the required Kubernetes manifests to run a RAN-enabled OpenShift deployment using RHACM. Code is located {cnf-features-siteconfig-gen}[here].
-* **Policy Generator**. Reads the PolicyGenTemplate manifest and generates the required Kubernetes manifest to configure an RHACM Policy targeting a set of clusters. Code is located {cnf-features-policy-gen}[here].
-
+The `PolicyGenerator` plugin reads the PolicyGenTemplate manifest and generates the required Kubernetes manifest to configure an RHACM Policy targeting a set of clusters. Code is located {cnf-features-policy-gen}[here].
 
 [#kustomize-plugins]
 == Kustomize Plugins
 
-As we already said, PolicyGenTool is a collection of Kustomize plugins. Kustomize plugins work as described below.
+As we already said, PolicyGenerator is a Kustomize plugin. Kustomize plugins work as described below.
 
-IMPORTANT: When installing these tools in ArgoCD running on a hub cluster the configuration described in this section is handled automatically. The ArgoCD operator will find the plugin binaries and use them to generate CRs from SiteConfig and PolicyGenTemplates. This section is provided as background/reference.
+IMPORTANT: When installing these tools in ArgoCD running on a hub cluster the configuration described in this section is handled automatically. The ArgoCD operator will find the plugin binaries and use them to generate CRs from PolicyGenTemplates. This section is provided as background/reference.
 
 The user has a path configured in Kustomize for plugins (defaults to `~/.config/kustomize/plugin/`), inside this path different folders are configured in a way that Kustomize can understand what plugin needs to be executed under which situation. Let's explain this.
 
@@ -34,20 +30,10 @@ If we look at this `kustomization.yaml`:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 generators:
-  - ztp-sno-lab.yaml
   - common-policies/common.yaml
 -----
 
-We see that under `generators` section we have two yaml files, _generators_ tell Kustomize that some plugin needs to be run to interpret these files. The way Kustomize knows which plugin needs to be executed is by looking at the `GroupVersionKind (GVK)` of the files. Following with above example we will see the following GVKs:
-
-**ztp-sno-lab.yaml**
-
-[console-input]
-[source,yaml,subs="attributes+,+macros"]
------
-apiVersion: ran.openshift.io/v1
-kind: SiteConfig
------
+We see that under `generators` section we have a yaml file, _generators_ tell Kustomize that some plugin needs to be run to interpret these files. The way Kustomize knows which plugin needs to be executed is by looking at the `GroupVersionKind (GVK)` of the files. Following with above example we will see the following GVK:
 
 **common-policies/common.yaml**
 
@@ -58,22 +44,13 @@ apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
 -----
 
-As we can see the group is `ran.openshift.io`, version is `v1` and kind are `SiteConfig` and `PolicyGenTemplate`.
+As we can see the group is `ran.openshift.io`, version is `v1` and kind is `PolicyGenTemplate`.
 
-Earlier, we talked about the Kustomzie plugins path, and how it is required to have a proper folder structure so Kustomize knows which plugin needs to be executed. Using the examples above we can explain what Kustomize will do for generating these two files.
-
-**ztp-sno-lab.yaml**
-
-Kustomize will get the GVK and after that will go to the plugins path and execute the plugin binary, the path for the binary is `$KUSTOMIZE_PLUGINS_PATH/<group>/<version>/<kind>/<pluginbinary>`. In this case Kustomize will execute the binary at `~/.config/kustomize/plugin/ran.openshift.io/v1/siteconfig/SiteConfig`.
+Earlier, we talked about the Kustomzie plugins path, and how it is required to have a proper folder structure so Kustomize knows which plugin needs to be executed. Using the example above we can explain what Kustomize will do for generating this file.
 
 **common-policies/common.yaml**
 
 Kustomize will get the GVK and after that will go to the plugins path and execute the plugin binary, the path for the binary is `$KUSTOMIZE_PLUGINS_PATH/<group>/<version>/<kind>/<pluginbinary>`. In this case Kustomize will execute the binary at `~/.config/kustomize/plugin/ran.openshift.io/v1/policygentemplate/PolicyGenTemplate`.
-
-[#siteconfig-generator]
-=== SiteConfigGenerator
-
-The SiteConfigGenerator reads the SiteConfig manifest and uses the information provided in that file to output a set of manifests that will be used for running a cluster installation. The manifests templates can be found {cnf-features-clustersgo}[here].
 
 [#policy-generator]
 === Policy Generator
@@ -93,7 +70,7 @@ image::pgt_ran_du_profile.png[validated vRAN DU profile]
 
 Above picture describes what areas are covered by the 5G Ran profile. Red Hat covers all layers but the two on the top which are part of the application domain. Below the different 5G RAN profile configurations are described.
 
-A more in-detail explanation of the 5G RAN Profile is covered in this https://videos.learning.redhat.com/media/CNF+RAN+validated+pattern/1_x32rfqrs/253048913[training material].
+A more in-detail explanation of the 5G RAN Profile is covered in the {rds-components}[Telco RAN DU reference design components].
 
 [#workload-partitioning]
 === Workload Partitioning
@@ -235,11 +212,6 @@ For optimal cluster performance, it enables `crun` as container runtime instead 
 {cnf-features-source-crs}/optional-extra-manifest/enable-crun-master.yaml[Manifest]
 
 {cnf-features-source-crs}/optional-extra-manifest/enable-crun-master.yaml[Manifest]
-
-[#siteconfig-templating]
-== SiteConfig Templating
-
-The SiteConfig templating is pretty straightforward, whatever information we put into our SiteConfig manifest will be translated to the required manifests to initiate the cluster installation. You can find a SiteConfig example {example-sno-siteconfig-link}[here].
 
 [#policies-templating]
 == Policies Templating

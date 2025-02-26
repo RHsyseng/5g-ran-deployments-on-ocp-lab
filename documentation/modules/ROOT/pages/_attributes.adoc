@@ -9,6 +9,7 @@ code:experimental:
 :openshift-release: v4.18
 :rds-link: https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-design-spec.html
 :rds-config: https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-crs.html
+:rds-components: https://docs.openshift.com/container-platform/4.17/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html
 :ran-rds-version-manifests: ran-rds-418-manifests
 :policygen-common-file: common-418.yaml
 :policygen-common-label: ocp418
