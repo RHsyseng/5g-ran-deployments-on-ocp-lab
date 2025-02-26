@@ -63,7 +63,7 @@ code:experimental:
 :talm-cluster-upgrades-doc: https://docs.openshift.com/container-platform/4.17/scalability_and_performance/ztp_far_edge/cnf-talm-for-cluster-upgrades.html
 :talm-upstream-project: https://github.com/openshift-kni/cluster-group-upgrades-operator
 :talm-precachingconfig-doc: https://docs.openshift.com/container-platform/4.17/edge_computing/policygenerator_for_ztp/ztp-talm-updating-managed-policies-pg.html#talm-prechache-user-specified-images-concept_ztp-talm-pg
-:workload-hints-doc: https://docs.openshift.com/container-platform/4.17/scalability_and_performance/cnf-low-latency-tuning.html#cnf-understanding-workload-hints_cnf-master
+:workload-hints-doc: https://docs.openshift.com/container-platform/4.17/scalability_and_performance/cnf-understanding-low-latency.html
 :ztp-gitops-docs: https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-preparing-the-hub-cluster.html#installing-disconnected-rhacm_ztp-preparing-the-hub-cluster
 :nto-docs: https://docs.openshift.com/container-platform/4.17/scalability_and_performance/using-node-tuning-operator.html
 :sriov-docs: https://docs.openshift.com/container-platform/4.17/networking/hardware_networks/about-sriov.html

@@ -1,5 +1,6 @@
 * xref:index.adoc[Welcome]
-** xref:index.adoc#contributors[Contributors]
+** xref:index.adoc#current-contributors[Current Contributors]
+** xref:index.adoc#past-contributors[Past Contributors]
 
 * xref:introduction.adoc[Introduction]
 ** xref:introduction.adoc#lab-aim[Who is this lab aimed at? ]
