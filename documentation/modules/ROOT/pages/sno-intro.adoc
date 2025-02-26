@@ -34,7 +34,7 @@ IMPORTANT: The use of OpenShiftSDN with single-node OpenShift is not supported. 
 
 Requirements for SNO are:
 
-* Single-node OpenShift requires the following minimum host resources: vCPU: 8, VirtualRAM: 16 GB, Storage: 120 GB. 
+* Single-node OpenShift requires the following minimum host resources: vCPU: 8, RAM: 16 GB, Storage: 120 GB. 
 * Single-node OpenShift isn’t highly-available. It explicitly does not assume zero downtime of the Kubernetes API.
 * The server must have access to the internet or access to a local (disconnected) registry if it is not connected to an externally routable network.
 * The server must have a DHCP reservation or a static IP address for the Kubernetes API, ingress route, and cluster node domain names. You must also configure the proper DNS records to resolve the previous reservations. More information with regards to the DNS records that must be configured can be found in the official documentation, specifically at {sno-preparing-docs}[Requirements for installing OpenShift on a single node] section. Notice that all the DNS records must be subdomains of the same base domain.

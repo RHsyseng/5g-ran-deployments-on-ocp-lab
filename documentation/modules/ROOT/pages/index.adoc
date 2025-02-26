@@ -1,5 +1,4 @@
 = Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift
-:page-layout: home
 :!sectids:
 
 [.text-center.strong]
@@ -9,8 +8,26 @@ This lab will guide you through the deployment of a RAN ready infrastructure.
 
 IMPORTANT: This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
 
-[#contributors]
-== Contributors
+[#current-contributors]
+== Current Contributors
+
+[cols="1,1"]
+|===
+|Name |Role
+
+|Alberto Losada
+|Lab Developer / Maintainer
+
+|Ian Miller
+|Lab Reviewer / CNF Developer
+
+|Mario Vázquez
+|Lab Developer / Maintainer
+
+|===
+
+[#past-contributors]
+== Past Contributors
 
 [cols="1,1"]
 |===
