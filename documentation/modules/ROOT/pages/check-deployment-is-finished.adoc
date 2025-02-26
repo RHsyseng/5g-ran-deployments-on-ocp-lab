@@ -4,7 +4,7 @@ include::_attributes.adoc[]
 
 In the previous section we have learned how to follow the cluster deployment process, but the cluster finished its deployment doesn't mean that the SNO deployment is complete.
 
-We say that the SNO deployment finished when the SNO cluster has been deployed *and* day2 configurations have been applied. In this section we will learn how to verify that the configs have been applied and our SNO is ready to run 5G RAN workloads.
+We say that the SNO deployment finished when the SNO cluster has been deployed *and* day2 configurations have been applied. In this section we will learn how to verify that the configs have been applied and our sno2 is ready to run 5G RAN workloads.
 
 [#check-sno-deployment-webui]
 == Check SNO Deployment has Finished via the WebUI
@@ -14,13 +14,18 @@ We say that the SNO deployment finished when the SNO cluster has been deployed *
 +
 image::acm-sno2-ztp-done.png[RHACM SNO2 ztp-done]
 +
-3. Additionally, we can verify that all policies are compliant for our SNO cluster. On the RHACM WebUI go to `Governance` -> `Policies` and you will see the following screen where we can see all policies are green:
+3. Additionally, we can verify that all policies are compliant for our `sno2` cluster and also the image-based installed `sno3`. On the RHACM WebUI go to `Governance` -> `Policies` and you will see the following screen where we can see all policies are green:
 +
 IMPORTANT: Applying policies on `sno2` can take up to 15 minutes after cluster has been fully deployed.
 +
+Notice that the sno3 node was already deployed and configured with the telco RAN DU profile previously in link:installing-imagebaseinstall-cluster.html[Deploying an Image Based Install Cluster]. So it is ready to run telco CNF applications as well.
++
 image::acm-sno2-policies-done.png[RHACM SNO2 policies done]
 +
-4. At this point the SNO is ready to run 5G RAN workloads.
+IMPORTANT: See that the policies in the Governance section are also compliant for the `sno3` cluster even they were not applied via RHACM Policies. They were included in the seed image that was used to provision it and afterwards executed the reconfiguration process using the link:installing-imagebaseinstall-cluster.html#creating-the-configuration-iso[configuration ISO].
++
+4. At this point the `sno2` is ready to run 5G RAN workloads *too*.
+
 
 [#check-sno-deployment-cli]
 == Check SNO Deployment has Finished via the CLI
@@ -34,7 +39,7 @@ IMPORTANT: Below commands must be executed from the workstation host if not spec
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get managedcluster sno2 --show-labels
+oc --kubeconfig ~/hub-kubeconfig get managedcluster sno2 --show-labels
 -----
 +
 [console-input]
@@ -49,7 +54,7 @@ sno2   true           https://api.sno2.5g-deployment.lab:6443   True     True   
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get policies
+oc --kubeconfig ~/hub-kubeconfig -n sno2 get policies
 -----
 +
 IMPORTANT: Applying policies on `sno2` can take up to 15 minutes after cluster has been fully deployed.
@@ -64,29 +69,29 @@ ztp-policies.du-sno-group-policies          inform               Compliant      
 ztp-policies.du-sno-sites-sites-policy      inform               Compliant          74m
 -----
 
-3. At this point the SNO is ready to run 5G RAN workloads.
+3. At this stage both `sno2` and `sno3` OpenShift Single-Node clusters are ready to run 5G RAN workloads.
 
-[#ensure-automation-ran-successfully]
-== Ensure AAP Automation Ran Successfully
-
-Now that SNO deployment is finished, automation should run as soon as the cluster is marked with the `ztp-done` label. We can easily check the labels on our `sno2` cluster via the OpenShift web console, under the `Infrastructure` > `Clusters` tab.
-
-There are a couple ways to ensure automation has run successfully.
-
-First, the Ansible job template used in this lab was configured to add an `aap-done` label to a cluster after it has run automation on it successfully, so notice that our `sno1` and `sno2` clusters now have the label `aap-done`.
-
-image::aap-done-label-sno1-sno2.png[SNO1/SNO2 AAP Done Label]
-
-Additionally, under the Applications tab on our OpenShift web console, if we search for `monitor-ztp-done`, we will see our automation Application. Let's take a look at this Application by clicking on its name. Notice the green check next to `Cluster resource status`, indicating automation has ran successfully. Now, navigating to the Topology tab we see a visual representation of the automation that has ran.
-
-image::aap-app.png[AAP Application]
-
-image::aap-app-topology.png[AAP Topology]
-
-Lastly, to view status and logs for the actual Ansible Controller job that ran, we can navigate to https://automation-aap.apps.hub.5g-deployment.lab, click on the "Jobs" tab, and view the latest job that ran.
-
-image::aap-jobs.png[AAP Jobs]
-
-image::aap-single-job.png[Single AAP Job]
-
-NOTE: As we can see the automation has run on every managed cluster with the label `ztp-done` and that is not the Hub cluster itself. This model of maintain one automation application for day 2 operations for N clusters makes utilizing ZTP and AAP automation together in a 5G RAN environment great at scale while also maintaining configuration control, as controlling which clusters run automation is as simple as adjusting the automation application's PlacementRule.
+//[#ensure-automation-ran-successfully]
+//== Ensure AAP Automation Ran Successfully
+//
+//Now that SNO deployment is finished, automation should run as soon as the cluster is marked with the `ztp-done` label. We can easily check the labels on our `sno2` cluster via the OpenShift web console, under the `Infrastructure` > `Clusters` tab.
+//
+//There are a couple ways to ensure automation has run successfully.
+//
+//First, the Ansible job template used in this lab was configured to add an `aap-done` label to a cluster after it has run automation on it successfully, so notice that our `sno1` and `sno2` clusters now have the label `aap-done`.
+//
+//image::aap-done-label-sno1-sno2.png[SNO1/SNO2 AAP Done Label]
+//
+//Additionally, under the Applications tab on our OpenShift web console, if we search for `monitor-ztp-done`, we will see our automation Application. Let's take a look at this Application by clicking on its name. Notice the green check next to `Cluster resource status`, indicating automation has ran successfully. Now, navigating to the Topology tab we see a visual representation of the automation that has ran.
+//
+//image::aap-app.png[AAP Application]
+//
+//image::aap-app-topology.png[AAP Topology]
+//
+//Lastly, to view status and logs for the actual Ansible Controller job that ran, we can navigate to https://automation-aap.apps.hub.5g-deployment.lab, click on the "Jobs" tab, and view the latest job that ran.
+//
+//image::aap-jobs.png[AAP Jobs]
+//
+//image::aap-single-job.png[Single AAP Job]
+//
+//NOTE: As we can see the automation has run on every managed cluster with the label `ztp-done` and that is not the Hub cluster itself. This model of maintain one automation application for day 2 operations for N clusters makes utilizing ZTP and AAP automation together in a 5G RAN environment great at scale while also maintaining configuration control, as controlling which clusters run automation is as simple as adjusting the automation application's PlacementRule.

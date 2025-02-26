@@ -182,12 +182,12 @@
 ** xref:monitoring-the-deployment.adoc#monitoring-deployment-webui[Monitoring the Deployment via the WebUI]
 ** xref:monitoring-the-deployment.adoc#monitoring-deployment-cli[Monitoring the Deployment via the CLI]
 
-* xref:managing-existing-clusters.adoc[Managing Existing Clusters]
+//* xref:managing-existing-clusters.adoc[Managing Existing Clusters]
 
 * xref:check-deployment-is-finished.adoc[Check SNO Deployment is finished]
 ** xref:check-deployment-is-finished.adoc#check-sno-deployment-webui[Check SNO Deployment has Finished via the WebUI]
 ** xref:check-deployment-is-finished.adoc#check-sno-deployment-cli[Check SNO Deployment has Finished via the CLI]
-** xref:check-deployment-is-finished.adoc#ensure-automation-ran-successfully[Ensure AAP Automation Ran Successfully]
+//** xref:check-deployment-is-finished.adoc#ensure-automation-ran-successfully[Ensure AAP Automation Ran Successfully]
 
 * xref:using-talm-to-update-clusters.adoc[Using TALM to update clusters]
 ** xref:using-talm-to-update-clusters.adoc#verify-talm[Verifying the TALM state]
