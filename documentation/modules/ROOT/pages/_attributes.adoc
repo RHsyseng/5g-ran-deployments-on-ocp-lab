@@ -24,7 +24,7 @@ code:experimental:
 :sno-cluster-version1: v4.18.0-rc.7
 :sno-cluster-version2: v4.18.0-rc.8
 :sno-seed-version: v4.18.0-rc.7
-:sno-cluster-version1-kubeversion: v1.30.5
+:sno-cluster-version1-kubeversion: v1.31.4
 :sno-cluster-version2-kubeversion: v1.30.5
 :sno-cluster-version1-cvo: 4.18.0-rc.7
 :sno-cluster-version2-cvo: 4.18.0-rc.8
@@ -85,5 +85,7 @@ code:experimental:
 :ai-workflow: https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites
 :seed-guidelines: https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines
 :seed-prereq-software: https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#ztp-image-based-upgrade-prereqs_ibi-understanding-image-based-install
-:seed-prereq-config: https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-preparing-for-image-based-install.html#ztp-image-based-upgrade-seed-image-config-ran_ibi-preparing-image-based-install
+:seed-prereq-config: https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-preparing-for-image-based-install.html#cnf-image-based-upgrade-generate-seed-image_ibi-preparing-image-based-install
+:seed-extramanifests: https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install.html#ibi-create-extra-manifest-configmap_ibi-edge-image-based-install
+#:seed-prereq-config-du-profile: https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-preparing-for-image-based-install.html#ztp-image-based-upgrade-seed-image-config-ran_ibi-preparing-image-based-install
 :last-update-date: 2024-11-11

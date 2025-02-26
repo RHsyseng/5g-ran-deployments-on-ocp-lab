@@ -137,8 +137,20 @@
 ** xref:lab-environment-introduction.adoc#git-server[Git Server]
 ** xref:lab-environment-introduction.adoc#container-registry[Container Registry]
 ** xref:lab-environment-introduction.adoc#openshift-hub-cluster[OpenShift Hub Cluster]
+** xref:lab-environment-introduction.adoc#webserver[HTTP Server]
 ** xref:lab-environment-introduction.adoc#s3-storage[S3 Storage Server]
 ** xref:lab-environment-introduction.adoc#openshift-seed-sno[OpenShift Seed SNO Cluster]
+
+* xref:creating-seed-image.adoc[Creating the Seed Image]
+** xref:creating-seed-image.adoc#introduction-to-seed-image[Introduction to the Seed Image Generation]
+** xref:creating-seed-image.adoc#running-the-seed-generation[Running the Seed Image Generation]
+
+* xref:installing-imagebaseinstall-cluster.adoc[Deploying an Image Based Install Cluster]
+** xref:installing-imagebaseinstall-cluster.adoc#introduction[Introduction]
+** xref:installing-imagebaseinstall-cluster.adoc#creating-the-installation-iso[Creating the Installation ISO]
+** xref:installing-imagebaseinstall-cluster.adoc#preinstallation-process[PreInstalling the Host]
+** xref:installing-imagebaseinstall-cluster.adoc#creating-the-configuration-iso[Creating the Configuration ISO]
+** xref:installing-imagebaseinstall-cluster.adoc#completing-install[Completing the Installation]
 
 * xref:crafting-deployments-iac.adoc[Crafting Deployment's IaC] 
 ** xref:crafting-deployments-iac.adoc#introduction-to-clusterinstance[Introduction to the ClusterInstance]
