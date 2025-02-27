@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Check SNO Deployment is Finished :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://labs.sysdeseng.com/4.18/check-deployment-is-finished.html">
-    <link rel="prev" href="managing-existing-clusters.html">
+    <link rel="prev" href="monitoring-the-deployment.html">
     <link rel="next" href="using-talm-to-update-clusters.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
@@ -582,9 +582,10 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="managing-existing-clusters.html">Managing Existing Clusters</a>
+</ul>
   </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
   <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="check-deployment-is-finished.html">Check SNO Deployment is finished</a>
@@ -594,9 +595,6 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#ensure-automation-ran-successfully">Ensure AAP Automation Ran Successfully</a>
   </li>
 </ul>
   </li>
@@ -781,7 +779,7 @@
 <p>In the previous section we have learned how to follow the cluster deployment process, but the cluster finished its deployment doesn&#8217;t mean that the SNO deployment is complete.</p>
 </div>
 <div class="paragraph">
-<p>We say that the SNO deployment finished when the SNO cluster has been deployed <strong>and</strong> day2 configurations have been applied. In this section we will learn how to verify that the configs have been applied and our SNO is ready to run 5G RAN workloads.</p>
+<p>We say that the SNO deployment finished when the SNO cluster has been deployed <strong>and</strong> day2 configurations have been applied. In this section we will learn how to verify that the configs have been applied and our sno2 is ready to run 5G RAN workloads.</p>
 </div>
 </div>
 </div>
@@ -802,7 +800,7 @@
 </div>
 </li>
 <li>
-<p>Additionally, we can verify that all policies are compliant for our SNO cluster. On the RHACM WebUI go to <code>Governance</code> &#8594; <code>Policies</code> and you will see the following screen where we can see all policies are green:</p>
+<p>Additionally, we can verify that all policies are compliant for our <code>sno2</code> cluster and also the image-based installed <code>sno3</code>. On the RHACM WebUI go to <code>Governance</code> &#8594; <code>Policies</code> and you will see the following screen where we can see all policies are green:</p>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -815,14 +813,29 @@ Applying policies on <code>sno2</code> can take up to 15 minutes after cluster h
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>Notice that the sno3 node was already deployed and configured with the telco RAN DU profile previously in <a href="installing-imagebaseinstall-cluster.html">Deploying an Image Based Install Cluster</a>. So it is ready to run telco CNF applications as well.</p>
+</div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/acm-sno2-policies-done.png" alt="RHACM SNO2 policies done">
 </div>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+See that the policies in the Governance section are also compliant for the <code>sno3</code> cluster even they were not applied via RHACM Policies. They were included in the seed image that was used to provision it and afterwards executed the reconfiguration process using the <a href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">configuration ISO</a>.
+</td>
+</tr>
+</table>
+</div>
 </li>
 <li>
-<p>At this point the SNO is ready to run 5G RAN workloads.</p>
+<p>At this point the <code>sno2</code> is ready to run 5G RAN workloads <strong>too</strong>.</p>
 </li>
 </ol>
 </div>
@@ -861,7 +874,7 @@ Below commands must be executed from the workstation host if not specified other
 <p>Check the <code>ManagedCluster</code> for SNO2 cluster (including its labels). You should see the <code>ztp-done</code> label, just as we saw in the WebUI.</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get managedcluster sno2 --show-labels</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get managedcluster sno2 --show-labels</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -875,7 +888,7 @@ sno2   true           https://api.sno2.5g-deployment.lab:6443   True     True   
 <p>Check the policies are compliant for our SNO cluster.</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get policies</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno2 get policies</code></pre>
 </div>
 </div>
 <div class="admonitionblock important">
@@ -901,71 +914,14 @@ ztp-policies.du-sno-sites-sites-policy      inform               Compliant      
 </div>
 </li>
 <li>
-<p>At this point the SNO is ready to run 5G RAN workloads.</p>
+<p>At this stage both <code>sno2</code> and <code>sno3</code> OpenShift Single-Node clusters are ready to run 5G RAN workloads.</p>
 </li>
 </ol>
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="ensure-automation-ran-successfully"><a class="anchor" href="#ensure-automation-ran-successfully"></a>Ensure AAP Automation Ran Successfully</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Now that SNO deployment is finished, automation should run as soon as the cluster is marked with the <code>ztp-done</code> label. We can easily check the labels on our <code>sno2</code> cluster via the OpenShift web console, under the <code>Infrastructure</code> &gt; <code>Clusters</code> tab.</p>
-</div>
-<div class="paragraph">
-<p>There are a couple ways to ensure automation has run successfully.</p>
-</div>
-<div class="paragraph">
-<p>First, the Ansible job template used in this lab was configured to add an <code>aap-done</code> label to a cluster after it has run automation on it successfully, so notice that our <code>sno1</code> and <code>sno2</code> clusters now have the label <code>aap-done</code>.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/aap-done-label-sno1-sno2.png" alt="SNO1/SNO2 AAP Done Label">
-</div>
-</div>
-<div class="paragraph">
-<p>Additionally, under the Applications tab on our OpenShift web console, if we search for <code>monitor-ztp-done</code>, we will see our automation Application. Let&#8217;s take a look at this Application by clicking on its name. Notice the green check next to <code>Cluster resource status</code>, indicating automation has ran successfully. Now, navigating to the Topology tab we see a visual representation of the automation that has ran.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/aap-app.png" alt="AAP Application">
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/aap-app-topology.png" alt="AAP Topology">
-</div>
-</div>
-<div class="paragraph">
-<p>Lastly, to view status and logs for the actual Ansible Controller job that ran, we can navigate to <a href="https://automation-aap.apps.hub.5g-deployment.lab" class="bare">https://automation-aap.apps.hub.5g-deployment.lab</a>, click on the "Jobs" tab, and view the latest job that ran.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/aap-jobs.png" alt="AAP Jobs">
-</div>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/aap-single-job.png" alt="Single AAP Job">
-</div>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-As we can see the automation has run on every managed cluster with the label <code>ztp-done</code> and that is not the Hub cluster itself. This model of maintain one automation application for day 2 operations for N clusters makes utilizing ZTP and AAP automation together in a 5G RAN environment great at scale while also maintaining configuration control, as controlling which clusters run automation is as simple as adjusting the automation application&#8217;s PlacementRule.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
 <nav class="pagination">
-  <span class="prev"><a href="managing-existing-clusters.html">Managing Existing Clusters</a></span>
+  <span class="prev"><a href="monitoring-the-deployment.html">Monitoring the Deployment</a></span>
   <span class="next"><a href="using-talm-to-update-clusters.html">Using TALM to update clusters</a></span>
 </nav>
 </article>

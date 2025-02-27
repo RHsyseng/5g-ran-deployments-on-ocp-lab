@@ -582,9 +582,10 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="managing-existing-clusters.html">Managing Existing Clusters</a>
+</ul>
   </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="check-deployment-is-finished.html">Check SNO Deployment is finished</a>
@@ -594,9 +595,6 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="check-deployment-is-finished.html#ensure-automation-ran-successfully">Ensure AAP Automation Ran Successfully</a>
   </li>
 </ul>
   </li>
@@ -778,7 +776,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the previous section, we created the infrastructure as code (IaC) for our <code>SNO2</code> cluster using the <code>SiteConfig</code> object. In this section, we are going to create the configuration as code (CaC) for our clusters by using multiple <code>PolicyGenTemplate</code> objects.</p>
+<p>In the previous section, we created the infrastructure as code (IaC) for our <code>SNO2</code> cluster using the <code>ClusterInstance</code> object. In this section, we are going to create the configuration as code (CaC) for our clusters by using multiple <code>PolicyGenTemplate</code> objects.</p>
 </div>
 <div class="paragraph">
 <p>We described how <code>PolicyGenTemplate</code> works in detail <a href="policygen-deepdive.html#policies-templating" class="xref page">here</a>, so let&#8217;s jump directly to the creation of the different templates.</p>
@@ -790,7 +788,7 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in <a href="telco-related-infra-operators-intro.html" class="xref page">Introduction to Telco Related Infrastructure Operators</a>. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-design-spec.html">v4.18 Telco RAN Reference Design Specification</a> slide deck.
+The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in <a href="telco-related-infra-operators-intro.html" class="xref page">Introduction to Telco Related Infrastructure Operators</a>. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_reference_design_specs/telco-ran-du-rds.html">v4.18 Telco RAN Reference Design Specification</a> in the official documentation.
 </td>
 </tr>
 </table>
@@ -825,7 +823,7 @@ Below commands must be executed from the workstation host if not specified other
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-If you check the binding rules, you see that we are targeting clusters labeled with <code>common: "ocp418"</code> and <code>logicalGroup: "active"</code>. These labels were set in the <code>SiteConfig</code> definition in the <a href="crafting-deployments-iaac.html#siteconfig">previous section</a>.
+If you check the binding rules, you see that we are targeting clusters labeled with <code>common: "ocp418"</code> and <code>logicalGroup: "active"</code>. These labels were set in the <code>ClusterInstance</code> definition in the <a href="crafting-deployments-iaac.html#siteconfig">previous section</a>.
 </td>
 </tr>
 </table>
@@ -944,8 +942,8 @@ spec:
       policyName: "group-policy"
     - fileName: DisableOLMPprof.yaml # wave 10
       policyName: "group-policy"
-    # - fileName: ConsoleOperatorDisable.yaml
-    #  policyName: "group-policy"
+    - fileName: ConsoleOperatorDisable.yaml
+      policyName: "group-policy"
     - fileName: SriovOperatorConfig.yaml
       policyName: "group-policy"
       # Using hub templating to obtain if the SR-IOV card is supported for this hw type

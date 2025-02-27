@@ -582,9 +582,10 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
-    <a class="nav-link" href="managing-existing-clusters.html">Managing Existing Clusters</a>
+</ul>
   </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="check-deployment-is-finished.html">Check SNO Deployment is finished</a>
@@ -594,9 +595,6 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="check-deployment-is-finished.html#ensure-automation-ran-successfully">Ensure AAP Automation Ran Successfully</a>
   </li>
 </ul>
   </li>
@@ -930,7 +928,7 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 <h2 id="deploying-sno-using-gitops-pipeline"><a class="anchor" href="#deploying-sno-using-gitops-pipeline"></a>Deploying the SNO Cluster using the ZTP GitOps Pipeline</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>When we applied the ZTP GitOps Pipeline configuration in the last section, that created two ArgoCD apps. One of the apps (clusters) take care of deploying the clusters defined in the <code>SiteConfig</code> while the other (policies) take care of deploying the policies defined in the different <code>PolicyGenTemplates</code>.</p>
+<p>When we applied the ZTP GitOps Pipeline configuration in the last section, that created two ArgoCD apps. One of the apps (clusters) take care of deploying the clusters defined in the <code>ClusterInstance</code> while the other (policies) take care of deploying the policies defined in the different <code>PolicyGenTemplates</code>.</p>
 </div>
 <div class="paragraph">
 <p>Since the apps have been created, ArgoCD started doing its magic which means that the cluster deployment should already be running, let&#8217;s see what happened in Argo CD.</p>
@@ -968,9 +966,6 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 <div class="content">
 <img src="_images/argocd-policies-app.png" alt="ArgoCD Policies App">
 </div>
-</div>
-<div class="paragraph">
-<p>In the next section we will see how we can add extra automation by using Ansible Automation Platform integration.</p>
 </div>
 </li>
 </ol>
