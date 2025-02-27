@@ -40,9 +40,9 @@ MCE provides most of the functionality to provision OpenShift clusters, since it
 [#siteconfig]
 === SiteConfig Operator
 
-The SiteConfig Operator introduces a unified ClusterInstance API, which is derived from the SiteConfig API from the SiteConfig Generator kustomize plugin. This API decouples parameters that define a cluster from the manner in which the cluster is deployed. This separation removes certain limitations that are presented by the SiteConfig kustomize plugin in the current GitOps Zero Touch Provisioning (ZTP) flow.
+The SiteConfig Operator introduces a unified ClusterInstance API, which is derived from the SiteConfig API from the SiteConfig Generator kustomize plugin. This API decouples parameters that define a cluster from the manner in which the cluster is deployed. This separation removed certain limitations that were presented by the SiteConfig kustomize plugin in the past.
 
-Because of this decoupling, the SiteConfig Operator allow deploying OpenShift clusters using either the {ai-workflow}[Agent Based Installation] or {ibi-docs}[Image Based Installation] flows depending on the user's needs. See as well, that the operator is the entry point for any GitOps ZTP deployment.
+Because of this decoupling, the SiteConfig Operator allows deploying OpenShift clusters using either the {ai-workflow}[Agent Based Installation] or {ibi-docs}[Image Based Installation] flows depending on the user's needs. See as well, that the operator is the entry point for any GitOps ZTP deployment.
 
 IMPORTANT: In telco environments, specially in RAN, the *Image Based Installation* deployment method is the preferred one due to the reduced installation times and the scalability requirements required in edge deployments.
 
@@ -63,20 +63,19 @@ image:siteconfig-operator-flow.png[SiteConfig Operator flow]
 [#ibio]
 === Image Based Install Operator
 
-WARNING: The IBI Operator requires an Installation ISO preinstalled on the host we want to deploy before creating the configuration ISO. The installation ISO and seed image process creation is dealt with in the link:ztp-workflow.html[ZTP worflow] section.
+WARNING: The IBI Operator requires an Installation ISO preinstalled on the host we want to deploy before creating the configuration ISO. The installation ISO and seed image process creation is described in the link:ztp-workflow.html[ZTP worflow] section.
 
 The Image Based Install (IBI) Operator creates a *configuration ISO* from the installation manifests created by the link:ztp-at-scale.html#siteconfig[SiteConfig Operator]. Then automatically boots the host with the configuration ISO attached. The host mounts the configuration ISO and runs the reconfiguration process. When the reconfiguration completes, the single-node OpenShift cluster is ready.
 
 See the following high-level steps to deploy a preinstalled host in a cluster with a hub-and-spoke architecture:
 
-* A host with the version we want to deploy of the Installation ISO is preinstalled.
+* A host with the version we want to deploy is preinstalled with the pre-installation ISO.
 * Install the IBI Operator on the hub cluster.
 * Create site-specific configuration resources in the hub cluster for each host.
 * The IBI Operator creates a configuration ISO from these resources and boots the target host with the configuration ISO attached.
 * The host mounts the configuration ISO and runs the reconfiguration process. When the reconfiguration completes, the single-node OpenShift cluster is ready.
 
-IMPORTANT: Currently, The IBI Operator can install Single-Node OpenShift (SNO) clusters.
-
+IMPORTANT: Currently, The IBI Operator can only install Single-Node OpenShift (SNO) clusters.
 
 [#ai]
 === Infrastructure Operator
@@ -102,7 +101,7 @@ Red Hat OpenShift uses Argo CD to maintain cluster resources. Argo CD is an open
 
 IMPORTANT: Argo CD can pull and apply any Kubernetes custom resource, however, for ZTP we are mainly focusing on `ClusterInstance` and `PolicyGenTemplates` manifests, but Argo CD is not restricted to them.
 
-We have been talking during this lab how a ClusterInstance manifest describes the way OpenShift cluster is going to be provisioned. While one or multiples policyGenTemplates describe/s the configuration that will be applied to the provisioned cluster. 
+We have been talking during this lab how a ClusterInstance manifest describes the way OpenShift cluster is going to be provisioned. While one or multiples PolicyGenTemplates describes the configuration that will be applied to the provisioned cluster. 
 
 However, certainly, both are high level manifests that are not understood by the hub cluster. There is something in between that will translate those high level definitions into something that RHACM (including MCE) recognizes. We are referring to the link:ztp-at-scale.html#siteconfig[SiteConfig Operator] when deploying clusters and {cnf-features-policygen-plugin}[Policy generator kustomize plugin] when configuring it.
 
