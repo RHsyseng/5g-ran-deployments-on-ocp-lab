@@ -81,8 +81,11 @@ code:experimental:
 :sriov-channel: stable
 :ibu-docs: https://docs.openshift.com/container-platform/4.17/edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.html
 :ibu-var-lib-containers: https://docs.openshift.com/container-platform/4.18/edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-shared-container-partition.html#cnf-image-based-upgrade-shared-container-partition_shared-container-partition
+:ibu-oadp: https://docs.openshift.com/container-platform/4.18/backup_and_restore/application_backup_and_restore/oadp-intro.html
+:ibu-oadp-prereq: https://docs.openshift.com/container-platform/4.18/edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-prep-resources.html#cnf-image-based-upgrade-prep-oadp_cnf-non-gitops
+:ibi-minimum-software: https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#ztp-image-based-upgrade-prereqs_ibi-understanding-image-based-install
 :ibi-docs: https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html
-:ibi-openshift-install: https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install-standalone.html
+:ibi-openshift-install: https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install-standalone.html
 :ai-workflow: https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites
 :seed-guidelines: https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines
 :seed-prereq-software: https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#ztp-image-based-upgrade-prereqs_ibi-understanding-image-based-install

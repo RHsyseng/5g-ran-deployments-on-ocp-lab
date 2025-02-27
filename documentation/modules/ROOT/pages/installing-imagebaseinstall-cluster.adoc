@@ -100,9 +100,6 @@ networkConfig:
           enabled: true
           dhcp: true
           auto-dns: true
-          address:
-            - ip: 192.168.125.40
-              prefix-length: 24
         ipv6:
           enabled: false
     routes:
@@ -134,7 +131,7 @@ additionalTrustBundle: |
   MC/FB0bgZZ1VhqpL+7+W98+HEYVZRuK9IKjGRfen9wOrLI6hc6zZYOwMDJgfuFwd
   X6qv/HZKp+TfZrFu1IhgDeTPkJX7t7ECD63BgOSNc8OgmGL34dP5qCB3qaSzuP9x
   mukIAZyvHwf2ZfWzrpvR9GLzTuh01GHqQyojC9ntWvlzgKec3nZNFt8tWRyMraAr
-  C/a+\++HeOlZCeRtH9gSOy49H1B7/kfTwFw/Y/h0oVMpH6x8dewyuefe8Q5fvURO3T
+  C/a++HeOlZCeRtH9gSOy49H1B7/kfTwFw/Y/h0oVMpH6x8dewyuefe8Q5fvURO3T
   y4B/esUA9R/h971BGIoYk5pAZAJdkD8GAmegyj47vFg6mw095dwB1eNAD7ddqdQn
   RCqwrqYEV1TExI23mC0oiDck0RY8FWI+Q034MOnZFn6Dv6EYMF4IBjJIJICMqvSf
   MA/AXZ111P5/5j+qODTwJ/IDhiT46HMY/SN3MW96uZuJKchJchMNQG+MOuTJb6gd
@@ -711,6 +708,12 @@ dataimage.metal3.io/ocp-sno3   32m
 Notice that the Red Hat ACM console will show the sno3 OpenShift cluster as Ready:
 
 image::ibi-acm-reconfig02.png[IBI Installation completed]
+
+
+The Add-ons applied via KlusterletAddonConfig CR are also installed and available:
+
+image::ibi-acm-reconfig03.png[IBI Add-ons installed]
+
 
 [#verifying-install]
 == Verifying the RAN DU Configuration
