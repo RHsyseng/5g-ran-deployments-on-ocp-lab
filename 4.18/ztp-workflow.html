@@ -314,21 +314,6 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="talm.html#waves">Policy Waves</a>
   </li>
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="talm.html#talm-precache">Precaching</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="talm.html#talm-precaching-without-precachingconfig">Precaching without PreCachingConfig Example</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="talm.html#talm-precaching-with-precachingconfig">Precaching with PreCachingConfig Example</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="talm.html#talm-backup">Backup &amp; Recovery</a>
-  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -342,9 +327,6 @@
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="policygen-deepdive.html#kustomize-plugins">Kustomize Plugins</a>
 <ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="policygen-deepdive.html#siteconfig-generator">SiteConfigGenerator</a>
-  </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="policygen-deepdive.html#policy-generator">Policy Generator</a>
   </li>
@@ -927,7 +909,7 @@ Notice, in the picture, how ZTP allows us to provision clusters at scale. Multip
 <div class="sect2">
 <h3 id="ibi-deployment"><a class="anchor" href="#ibi-deployment"></a>Image Based Installation</h3>
 <div class="paragraph">
-<p>This approach enables the preinstallation of configured and validated instances of single-node OpenShift on target hosts. These preinstalled hosts can be rapidly reconfigured and deployed at the far edge of the network, including in disconnected environments, with minimal intervention. Image Based Installation flow significantly reduce the deployment time of single-node OpenShift clusters by streamlining the installation process.</p>
+<p>This approach enables the preinstallation of configured and validated instances of single-node OpenShift on target hosts. These preinstalled hosts can be rapidly reconfigured and deployed at the far edge of the network, including in disconnected environments, with minimal intervention. Image Based Installation flow significantly reduces deployment time of single-node OpenShift clusters by streamlining the installation process.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -959,16 +941,16 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 <p><strong>Seed image</strong>. OCI container image generated from a dedicated cluster with the target OpenShift Container Platform version.</p>
 </li>
 <li>
-<p><strong>Seed cluster</strong>. Dedicated single-node OpenShift cluster that you use to create a seed image and is deployed with the target OpenShift Container Platform version.</p>
+<p><strong>Seed cluster</strong>. Dedicated single-node OpenShift cluster that is used to create the seed image, and is deployed with the target OpenShift Container Platform version.</p>
 </li>
 <li>
-<p><strong>Lifecycle Agent Operator</strong>. Generates the seed image.</p>
-</li>
-<li>
-<p><strong>SiteConfig Operator</strong>. Creates the installation ISO, and embeds the seed image URL in the live installation ISO. It also attaches the Installation ISO into the host about to provision.</p>
+<p><strong>Lifecycle Agent Operator</strong>. Operator deployed on the seed cluster that generates the seed image from it.</p>
 </li>
 <li>
 <p><strong>Image Based Install (IBI) Operator</strong>. When you deploy managed clusters, the IBI Operator creates a configuration ISO from the site-specific resources you define in the hub cluster, and attaches the configuration ISO to the preinstalled host by using a bare-metal provisioning service.</p>
+</li>
+<li>
+<p><strong>openshift-install Binary</strong>. Creates the pre-installation ISO by embedding the seed image in the live installation ISO.</p>
 </li>
 </ul>
 </div>
@@ -1026,7 +1008,7 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 <p>Generate an image from that single-node OpenShift cluster.</p>
 </li>
 <li>
-<p>Use the SiteConfig operator (ClusterInstance) or openshift-install program to embed the seed image URL, and other installation artifacts, in a live installation ISO.</p>
+<p>Use the openshift-install program to embed the seed image URL, and other installation artifacts, in a live installation ISO.</p>
 </li>
 <li>
 <p>Start the host using the live installation ISO to preinstall the host.</p>
@@ -1035,13 +1017,13 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 <p>During this process, the openshift-install program installs Red Hat Enterprise Linux CoreOS (RHCOS) to the disk, pulls the image you generated, and precaches release container images to the disk.</p>
 </li>
 <li>
-<p>When the preinstallation completes, the host is ready to for rapid reconfiguration and deployment.</p>
+<p>When the preinstallation completes, the host is ready for quick reconfiguration and deployment.</p>
 </li>
 <li>
 <p>Generate the Configuration ISO using the Image Based Install (IBI) Operator. This image contains specific information of the SNO cluster as opposed to the generic Installation ISO.</p>
 </li>
 <li>
-<p>Attach the Configuration ISO to the host and let the reconfiguration process to finish.</p>
+<p>Attach the Configuration ISO to the host and let the reconfiguration process finish.</p>
 </li>
 </ul>
 </div>
@@ -1052,7 +1034,7 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 <h2 id="ztp-policies"><a class="anchor" href="#ztp-policies"></a>Deployment Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Once the clusters are provisioned, the day-2 configuration defined in one or multiple <code>PolicyGenTemplate</code> (PGTs) custom resources will be automatically applied. <code>PolicyGenTemplate</code> custom resource is understood by the ZTP using a specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.17/ztp/policygenerator-kustomize-plugin">policy-generator</a>. These templates generate Policy CRs on the hub cluster which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes, these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform level configuration.</p>
+<p>Once the clusters are provisioned, the day-2 configuration defined in one or multiple <code>PolicyGenTemplate</code> (PGTs) custom resources will be automatically applied. <code>PolicyGenTemplate</code> custom resource is understood by the ZTP pipeline using a specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.17/ztp/policygenerator-kustomize-plugin">policy-generator</a>. These templates generate Policy CRs on the hub cluster which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes, these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform level configurations.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1060,7 +1042,7 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that if, later on, you want to apply a new configuration or replace an existing configuration you can update the PolicyGenTemplate in Git which will automatically propagate to the Policy CRs on the hub cluster.</p>
+<p>Notice that if, later on, you want to apply a new configuration or replace an existing configuration you can update the PolicyGenTemplate in Git which will automatically propagate to the Policy CRs on the hub cluster. After that, user will decide when those updated policies are applied using TALM.</p>
 </div>
 </div>
 </div>
@@ -1082,7 +1064,7 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 <p>Deploying OpenShift Container Platform.</p>
 </li>
 <li>
-<p>Creating cluster policies via <code>PolicyGenTemplate</code> and site subscriptions via <code>SiteConfig</code>.</p>
+<p>Creating cluster policies via <code>PolicyGenTemplate</code> and site subscriptions via <code>ClusterInstance</code>.</p>
 </li>
 <li>
 <p>Making the necessary network configurations to the server operating system.</p>

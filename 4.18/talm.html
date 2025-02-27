@@ -314,21 +314,6 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#waves">Policy Waves</a>
   </li>
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#talm-precache">Precaching</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#talm-precaching-without-precachingconfig">Precaching without PreCachingConfig Example</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#talm-precaching-with-precachingconfig">Precaching with PreCachingConfig Example</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#talm-backup">Backup &amp; Recovery</a>
-  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -342,9 +327,6 @@
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="policygen-deepdive.html#kustomize-plugins">Kustomize Plugins</a>
 <ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="policygen-deepdive.html#siteconfig-generator">SiteConfigGenerator</a>
-  </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="policygen-deepdive.html#policy-generator">Policy Generator</a>
   </li>
@@ -799,7 +781,7 @@
 <p>Leveraging TALM we can manage the lifecycle of thousands of clusters at scale in a constrained operational environment. This is required when working in telecom (eg RAN) or other environments where service level agreements require managed updates to a fleet of clusters.</p>
 </div>
 <div class="paragraph">
-<p>Remember that <a href="ztp-workflow.html">ZTP</a> generates installation and configuration resources from manifests (<code>siteConfig</code> and <code>policyGenTemplates</code>) stored in Git. These artifacts are applied to a centralized hub cluster where a combination of OpenShift GitOps, Red Hat Advanced Cluster Management, the Assisted Service deployed by the Infrastructure Operator, and the Topology Aware Lifecycle Manager (TALM) use them to install and configure the cluster. See <a href="ztp-at-scale.html">ZTP components</a> chapter.</p>
+<p>Remember that <a href="ztp-workflow.html">ZTP</a> generates installation and configuration resources from manifests (<code>ClusterInstances</code> and <code>PolicyGenTemplates</code>) stored in Git. These artifacts are applied to a centralized hub cluster where a combination of OpenShift GitOps, Red Hat Advanced Cluster Management, the Assisted Service deployed by the Infrastructure Operator, and the Topology Aware Lifecycle Manager (TALM) use them to install and configure the cluster. See <a href="ztp-at-scale.html">ZTP components</a> chapter.</p>
 </div>
 <div class="paragraph">
 <p>TALM is responsible for managing the rollout of configuration throughout the lifecycle of the fleet of clusters. During initial deployment, the configuration phase of this ZTP process depends on TALM to orchestrate the application of the configuration custom resources to the cluster. When day-N configuration changes need to be rolled out to the fleet, TALM will manage that rollout in progressive limited size batches of clusters. When upgrades to OpenShift or the day-two operators are needed, TALM will progressively roll those out as well. There are several key integration points between GitOps, RHACM Policy, and TALM.</p>
@@ -980,212 +962,6 @@ All CRs in the same policy must have the same setting for the ztp-deploy-wave an
 </td>
 </tr>
 </table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="talm-precache"><a class="anchor" href="#talm-precache"></a>Precaching</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Clusters might have limited bandwidth to access the container image registry, which can cause a timeout before the updates are completed. This feature help us to schedule cluster upgrades to newer OCP releases in an organized manner and within the maintenance window assigned. Notice in the following picture, how the upgrade can be orchestrated depending on our requirements. See that prior to the maintenance window in which the upgrade will occur, TALM was configured to initiate pre-caching of all the artifacts needed for the upgrade. When the precaching status shows complete the actual upgrade can be enabled during a subsequent maintenance window.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/talm_precache.png" alt="ACM architecture">
-</div>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Precaching currently only targets Single Node OpenShift clusters.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>By enabling precache feature without enabling the CGU, the first thing is going to happen is a pull operation for all the container images required for the OCP release we are about to upgrade in the target cluster. So, we will have all required images already downloaded in our container-storage location, by default '/var/lib/containers', before even starting the upgrade task.</p>
-</div>
-<div class="paragraph">
-<p>Starting in OCP 4.14+ a new CRD has been added in TALM, <code>PreCachingConfig</code>, this CRD enables fine-grained control over what artifacts must be pre-cached before the update gets triggered.</p>
-</div>
-<div class="paragraph">
-<p>It&#8217;s not mandatory to define a <code>PreCachingConfig</code>, if we don&#8217;t define one and we configure the <code>preCaching: true</code> in the <code>ClusterGroupUpgrade</code> the behavior will be the same as it was in previous versions where everything in the release was precached.</p>
-</div>
-<div class="paragraph">
-<p>Extended documentation on how the <code>PreCachingConfig</code> works can be found <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/policygentemplate_for_ztp/ztp-talm-updating-managed-policies.html#talm-prechache-user-specified-images-concept_ztp-talm">here</a>.</p>
-</div>
-<div class="paragraph">
-<p>Once the container images are precached, we just need to enable the CGU by setting <code>enabled: true</code>. Then, a regular platform upgrade managed by the TALM operator will start. This time the update will be faster and resilient to transient network issues since the container images are stored locally.</p>
-</div>
-<div class="admonitionblock caution">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-caution" title="Caution"></i>
-</td>
-<td class="content">
-If both policy and precaching are enabled, the upgrade will be executed immediately after the precache is done successfully.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>A more in-detail explanation of the Precaching feature is covered in <a href="https://videos.learning.redhat.com/media/OCP+TALO+precache+sequential+platform+upgrade/1_7kgh6jze/253048913">training material</a>: "Precaching and sequential platform upgrades using TALM" recording.</p>
-</div>
-<div class="sect2">
-<h3 id="talm-precaching-without-precachingconfig"><a class="anchor" href="#talm-precaching-without-precachingconfig"></a>Precaching without PreCachingConfig Example</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ran.openshift.io/v1alpha1
-kind: ClusterGroupUpgrade
-metadata:
-  name: du-upgrade
-  namespace: ztp-group-du-sno
-spec:
-  preCaching: true #precache configuration
-  backup: true
-  deleteObjectsOnCompletion: true
-  clusters:
-  - cnfdb1
-  - cnfdb2
-  enable: false #precache only
-  managedPolicies:
-  - du-upgrade-platform-upgrade
-  remediationStrategy:
-    maxConcurrency: 2
-    timeout: 240</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="talm-precaching-with-precachingconfig"><a class="anchor" href="#talm-precaching-with-precachingconfig"></a>Precaching with PreCachingConfig Example</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ran.openshift.io/v1alpha1
-kind: PreCachingConfig
-metadata:
-  name: du-upgrade
-  namespace: ztp-group-du-sno
-spec:
-  overrides:
-    platformImage: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.6
-    operatorsIndexes:
-      - registry.example.com:5000/custom-redhat-operators:1.0.0
-    operatorsPackagesAndChannels:
-      - local-storage-operator: stable
-      - ptp-operator: stable
-      - sriov-network-operator: stable
-  spaceRequired: 30 Gi
-  excludePrecachePatterns:
-    - aws
-    - vsphere
-  additionalImages:
-    - quay.io/exampleconfig/application1@sha256:3d5800990dee7cd4727d3fe238a97e2d2976d3808fc925ada29c559a47e2e1ef
-    - quay.io/exampleconfig/application2@sha256:3d5800123dee7cd4727d3fe238a97e2d2976d3808fc925ada29c559a47adfaef
-    - quay.io/exampleconfig/applicationN@sha256:4fe1334adfafadsf987123adfffdaf1243340adfafdedga0991234afdadfsa09</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ran.openshift.io/v1alpha1
-kind: ClusterGroupUpgrade
-metadata:
-  name: du-upgrade
-  namespace: ztp-group-du-sno
-spec:
-  preCaching: true #precache configuration
-  preCachingConfigRef: #reference to precacheconfiguration
-    name: du-upgrade
-    namespace: ztp-group-du-sno
-  backup: true
-  deleteObjectsOnCompletion: true
-  clusters:
-  - cnfdb1
-  - cnfdb2
-  enable: false #precache only
-  managedPolicies:
-  - du-upgrade-platform-upgrade
-  remediationStrategy:
-    maxConcurrency: 2
-    timeout: 240</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="talm-backup"><a class="anchor" href="#talm-backup"></a>Backup and Recovery</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Backup &amp; recovery feature creates a pre-upgrade backup and provides a procedure for rapid recovery of a SNO in the event of a failed upgrade. In such cases, this feature allows the SNO to be restored to a working state with the previous version of OCP without requiring a re-provision of the application(s).</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Backup &amp; recovery currently only targets Single Node OpenShift clusters.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Backup workload is a one-shot task created on each of the managed clusters to trigger backup and keep the backup and system resources in the recovery partition in order to recovery a failed upgrade. For SNO managed clusters it is realized as a batch/v1 job.</p>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-It is highly recommended to create a recovery partition at install time if opted to use this feature.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>Below we can see the same CGU shown in the previous section, but this time the CGU is enabled. So, if the CGU and backup specs are enabled, then backup task is executed prior to the platform upgrade. If the backup finishes successfully, the upgrade task is started.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: ran.openshift.io/v1alpha1
-kind: ClusterGroupUpgrade
-metadata:
-  name: du-upgrade
-  namespace: ztp-group-du-sno
-spec:
-  preCaching: true #precache was done
-  backup: true #backup feature enabled
-  deleteObjectsOnCompletion: true
-  clusters:
-  - cnfdb1
-  - cnfdb2
-  enable: true #backup is triggered when CGU is enabled
-  managedPolicies:
-  - du-upgrade-platform-upgrade
-  remediationStrategy:
-    maxConcurrency: 2
-    timeout: 240</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The backup workload generates a utility called <code>upgrade-recovery.sh</code> in the recovery partition or at the recovery folder at <code>/var/recovery</code> and takes the pre-upgrade backup. In addition, the active OS deployment is pinned using ostree and the standby deployments are removed.</p>
-</div>
-<div class="paragraph">
-<p>In case, the upgrade failed in a managed cluster, the TALM CGU needs to be deleted in the hub cluster and an admin needs to log in to the spoke cluster to start the recovery process. The process is detailed in the <a href="https://docs.openshift.com/container-platform/4.17/scalability_and_performance/ztp_far_edge/cnf-talm-for-cluster-upgrades.html#talo-backup-recovery_cnf-topology-aware-lifecycle-manager">Recovery from Upgrade failure</a> documentation.</p>
-</div>
-<div class="paragraph">
-<p>A more in-detail explanation of the Backup &amp; Recovery is covered in this <a href="https://videos.learning.redhat.com/media/Upgrade%2C+backup+and+recovery+with+TALO/1_27k8gb8m/253048913">training material</a>: "Upgrade, backup and recover your cluster with TALM" recording.</p>
-</div>
-<div class="paragraph">
-<p>You can read more about it <a href="https://docs.openshift.com/container-platform/4.17/scalability_and_performance/ztp_far_edge/cnf-talm-for-cluster-upgrades.html">here</a> and <a href="https://videos.learning.redhat.com/media/Using+TALO+to+perform+OCP+upgrades+via+RHACM/1_ozf040n9/253048913">here</a>.</p>
 </div>
 </div>
 </div>
