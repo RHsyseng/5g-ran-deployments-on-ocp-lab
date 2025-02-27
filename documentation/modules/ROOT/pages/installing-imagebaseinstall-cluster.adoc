@@ -36,9 +36,8 @@ cd ~/imagebaseinstall/
 
 Let's create the `ImageBasedInstallationConfig`. Notice that the `seedImage` spec is pointing at the container registry where the seed image that we created was pushed.
 
-
 [.console-input]
-[source,bash,subs="attributes+,+macros"]
+[source,bash,subs="attributes+"]
 -----
 cat <<EOF > ~/imagebaseinstall/ibi-iso-workdir/image-based-installation-config.yaml
 ---
@@ -50,7 +49,7 @@ seedImage: infra.5g-deployment.lab:8443/ibi/lab5gran:{sno-cluster-version1}
 seedVersion: {sno-cluster-version1-cvo}
 extraPartitionStart: "-60G"
 installationDisk: "/dev/vda"
-sshKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5pFKFLOuxrd9Q/TRu9sRtwGg2PV+kl2MHzBIGUhCcR0LuBJk62XG9tQWPQYTQ3ZUBKb6pRTqPXg+cDu5FmcpTwAKzqgUb6ArnjECxLJzJvWieBJ7k45QzhlZPeiN2Omik5bo7uM/P1YIo5pTUdVk5wJjaMOb7Xkcmbjc7r22xY54cce2Wb7B1QDtLWJkq+\++eJHSX2GlEjfxSlEvQzTN7m2N5pmoZtaXpLKcbOqtuSQSVKC4XPgb57hgEs/ZZy/LbGGHZyLAW5Tqfk1JCTFGm6Q+oOd3wAOF1SdUxM7frdrN3UOB12u/E6YuAx3fDvoNZvcrCYEpjkfrsjU91oz78aETZV43hOK9NWCOhdX5djA7G35/EMn1ifanVoHG34GwNuzMdkb7KdYQUztvsXIC792E2XzWfginFZha6kORngokZ2DwrzFj3wgvmVyNXyEOqhwi6LmlsYdKxEvUtiYhdISvh2Y9GPrFcJ5DanXe7NVAKXe5CyERjBnxWktqAPBzXJa36FKIlkeVF5G+NWgufC6ZWkDCD98VZDiPP9sSgqZF8bSR4l4/vxxAW4knKIZv11VX77Sa1qZOR9Ml12t5pNGT7wDlSOiDqr5EWsEexga/2s/t9itvfzhcWKt+k66jd8tdws2dw6+8JYJeiBbU63HBjxCX+vCVZASrNBjiXhFw=="
+sshKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5pFKFLOuxrd9Q/TRu9sRtwGg2PV+kl2MHzBIGUhCcR0LuBJk62XG9tQWPQYTQ3ZUBKb6pRTqPXg+cDu5FmcpTwAKzqgUb6ArnjECxLJzJvWieBJ7k45QzhlZPeiN2Omik5bo7uM/P1YIo5pTUdVk5wJjaMOb7Xkcmbjc7r22xY54cce2Wb7B1QDtLWJkq++eJHSX2GlEjfxSlEvQzTN7m2N5pmoZtaXpLKcbOqtuSQSVKC4XPgb57hgEs/ZZy/LbGGHZyLAW5Tqfk1JCTFGm6Q+oOd3wAOF1SdUxM7frdrN3UOB12u/E6YuAx3fDvoNZvcrCYEpjkfrsjU91oz78aETZV43hOK9NWCOhdX5djA7G35/EMn1ifanVoHG34GwNuzMdkb7KdYQUztvsXIC792E2XzWfginFZha6kORngokZ2DwrzFj3wgvmVyNXyEOqhwi6LmlsYdKxEvUtiYhdISvh2Y9GPrFcJ5DanXe7NVAKXe5CyERjBnxWktqAPBzXJa36FKIlkeVF5G+NWgufC6ZWkDCD98VZDiPP9sSgqZF8bSR4l4/vxxAW4knKIZv11VX77Sa1qZOR9Ml12t5pNGT7wDlSOiDqr5EWsEexga/2s/t9itvfzhcWKt+k66jd8tdws2dw6+8JYJeiBbU63HBjxCX+vCVZASrNBjiXhFw=="
 pullSecret: '{"auths": {"infra.5g-deployment.lab:8443": {"auth": "YWRtaW46cjNkaDR0MSE="}}}'
 shutdown: true
 imageDigestSources:
@@ -124,7 +123,7 @@ additionalTrustBundle: |
   kkKWdf4wPwE1/LrbcjxpcUwJysy+oOmowYhx8X8GUUBZk8ejupYkg/gGop2F9JWD
   sOwmWqRBqn7yKJF4GyJZ0h62xhEfQdBHKub6VLfh6GFNrNHvNpy+DFq3nWGKnV7j
   y5wxx2bR5exN/qZ8wyaFq5k9tVLFd1CMAzQkWkmT9EpI6y4Ux9tPGXgB6h6yjjnK
-  gxbLH84ejwDaaiSc2NBVP+47b7Vhoiw4+\++hNBqcCAwEAAaN3MHUwHQYDVR0OBBYE
+  gxbLH84ejwDaaiSc2NBVP+47b7Vhoiw4++hNBqcCAwEAAaN3MHUwHQYDVR0OBBYE
   FGQeCqTJ5HZJIXNKx2t7dY+fRYo1MB8GA1UdIwQYMBaAFGQeCqTJ5HZJIXNKx2t7
   dY+fRYo1MA8GA1UdEwEB/wQFMAMBAf8wIgYDVR0RBBswGYIXaW5mcmEuNWctZGVw
   bG95bWVudC5sYWIwDQYJKoZIhvcNAQELBQADggIBAEvsOv4uVMHUZrFQrwUYJRV7
@@ -170,13 +169,15 @@ At this stage we are ready to manually boot the sno3 with the Installation ISO w
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cp ~/imagebaseinstall/ibi-iso-workdir/rhcos-ibi.iso /opt/webcache/data/.
+cp ~/imagebaseinstall/ibi-iso-workdir/rhcos-ibi.iso /opt/webcache/data/
 -----
 
 [#preinstallation-process]
 == PreInstalling the Host
 
 Now we are ready to boot sno3 with the Installation ISO. Run the following command from the infrastructure host:
+
+IMPORTANT: We are using kcli tool to boot the server from the ISO by leveraging the RedFish API. You can boot the server following other methods at your disposal.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
