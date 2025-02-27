@@ -922,14 +922,14 @@ additionalTrustBundle: |
   kkKWdf4wPwE1/LrbcjxpcUwJysy+oOmowYhx8X8GUUBZk8ejupYkg/gGop2F9JWD
   sOwmWqRBqn7yKJF4GyJZ0h62xhEfQdBHKub6VLfh6GFNrNHvNpy+DFq3nWGKnV7j
   y5wxx2bR5exN/qZ8wyaFq5k9tVLFd1CMAzQkWkmT9EpI6y4Ux9tPGXgB6h6yjjnK
-  gxbLH84ejwDaaiSc2NBVP+47b7Vhoiw4\+hNBqcCAwEAAaN3MHUwHQYDVR0OBBYE
+  gxbLH84ejwDaaiSc2NBVP+47b7Vhoiw4++hNBqcCAwEAAaN3MHUwHQYDVR0OBBYE
   FGQeCqTJ5HZJIXNKx2t7dY+fRYo1MB8GA1UdIwQYMBaAFGQeCqTJ5HZJIXNKx2t7
   dY+fRYo1MA8GA1UdEwEB/wQFMAMBAf8wIgYDVR0RBBswGYIXaW5mcmEuNWctZGVw
   bG95bWVudC5sYWIwDQYJKoZIhvcNAQELBQADggIBAEvsOv4uVMHUZrFQrwUYJRV7
   MC/FB0bgZZ1VhqpL+7+W98+HEYVZRuK9IKjGRfen9wOrLI6hc6zZYOwMDJgfuFwd
   X6qv/HZKp+TfZrFu1IhgDeTPkJX7t7ECD63BgOSNc8OgmGL34dP5qCB3qaSzuP9x
   mukIAZyvHwf2ZfWzrpvR9GLzTuh01GHqQyojC9ntWvlzgKec3nZNFt8tWRyMraAr
-  C/a+HeOlZCeRtH9gSOy49H1B7/kfTwFw/Y/h0oVMpH6x8dewyuefe8Q5fvURO3T
+  C/a++HeOlZCeRtH9gSOy49H1B7/kfTwFw/Y/h0oVMpH6x8dewyuefe8Q5fvURO3T
   y4B/esUA9R/h971BGIoYk5pAZAJdkD8GAmegyj47vFg6mw095dwB1eNAD7ddqdQn
   RCqwrqYEV1TExI23mC0oiDck0RY8FWI+Q034MOnZFn6Dv6EYMF4IBjJIJICMqvSf
   MA/AXZ111P5/5j+qODTwJ/IDhiT46HMY/SN3MW96uZuJKchJchMNQG+MOuTJb6gd
@@ -968,7 +968,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cp ~/imagebaseinstall/ibi-iso-workdir/rhcos-ibi.iso /opt/webcache/data/.</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cp ~/imagebaseinstall/ibi-iso-workdir/rhcos-ibi.iso /opt/webcache/data/</code></pre>
 </div>
 </div>
 </div>
@@ -978,6 +978,18 @@ EOF</code></pre>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Now we are ready to boot sno3 with the Installation ISO. Run the following command from the infrastructure host:</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+We are using kcli tool to boot the server from the ISO by leveraging the RedFish API. You can boot the server following other methods at your disposal.
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock console-input">
 <div class="content">

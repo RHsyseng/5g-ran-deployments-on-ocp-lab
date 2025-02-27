@@ -830,9 +830,21 @@ During the deployment of this lab we already ensured that the seed SNO cluster i
 <div class="paragraph">
 <p>Connect to the seed SNO cluster and check that OpenShift ADP and Lifecycle-Agent (LCA) operators are installed as required operators to create a seed image. Notice that the SR-IOV and LVM operators are installed too. In this case we want them as part of the seed image because the SNO clusters that are going to use this seed image will require these operators to run their workloads.</p>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+If below command throws an error saying: <code>The connection to the server api.sno1.5g-deployment.lab:6443 was refused - did you specify the right host or port?</code>. Wait up to 10 minutes, the cluster may be restarting its API.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-kubeconfig get csv -A</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get csv -A</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -846,11 +858,17 @@ openshift-storage                      lvms-operator.v4.18.0                    
 </div>
 </div>
 <div class="paragraph">
-<p>Check that the OpenShift Container Platform version of the seed SNO cluster is $v4.18.0-rc.7</p>
+<p>Check that the OpenShift Container Platform version of the seed SNO cluster is v4.18.0-rc.7</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-kubeconfig get clusterversion</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get clusterversion</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME      VERSION       AVAILABLE   PROGRESSING   SINCE   STATUS
+version   v4.18.0-rc.7  True        False         13m     Cluster version is v4.18.0-rc.7</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -858,7 +876,7 @@ openshift-storage                      lvms-operator.v4.18.0                    
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/seed-kubeconfig apply -f -
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/sno1kubeconfig apply -f -
 ---
 apiVersion: v1
 kind: Secret
@@ -866,8 +884,8 @@ metadata:
   name: seedgen
   namespace: openshift-lifecycle-agent
 type: Opaque
-data:
-  seedAuth: 'eyJhdXRocyI6IHsiaW5mcmEuNWctZGVwbG95bWVudC5sYWI6ODQ0MyI6IHsiYXV0aCI6ICJZV1J0YVc0NmNqTmthRFIwTVNFPSJ9fX0='
+stringData:
+  seedAuth: '{"auths": {"infra.5g-deployment.lab:8443": {"auth": "YWRtaW46cjNkaDR0MSE="}}}'
 EOF</code></pre>
 </div>
 </div>
@@ -888,7 +906,7 @@ A good practice is to tag the seed container image with the OpenShift version of
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/seed-kubeconfig apply -f -
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/sno1kubeconfig apply -f -
 ---
 apiVersion: lca.openshift.io/v1
 kind: SeedGenerator
@@ -904,7 +922,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-kubeconfig get seedgen -A</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get seedgen -A</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -915,7 +933,7 @@ seedimage   47s   SeedGenInProgress   Cleaning cluster resources</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-kubeconfig logs -f lifecycle-agent-controller-manager-698c564f9b-qwvg7 -c manager</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig -n openshift-lifecycle-agent logs -f deployment/lifecycle-agent-controller-manager -c manager</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -944,14 +962,14 @@ INFO[57054] Executing /usr/bin/env with args [-- systemd-run --collect --wait --
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-The cluster reboots and loses API capabilities while the Lifecycle Agent generates the seed image. Applying the SeedGenerator CR stops the kubelet and the CRI-O operations, then it starts the image generation.
+The cluster reboots and loses API capabilities while the Lifecycle Agent generates the seed image. Applying the SeedGenerator CR stops the kubelet and the CRI-O operations, then it starts the image generation. This process may take up to 10 minutes.
 </td>
 </tr>
 </table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-kubeconfig get seedgen -A</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get seedgen -A</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -964,7 +982,7 @@ The cluster reboots and loses API capabilities while the Lifecycle Agent generat
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-kubeconfig get seedgenerator seedimage -ojson | jq .status</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get seedgenerator seedimage -o json | jq '.status'</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -994,7 +1012,7 @@ The cluster reboots and loses API capabilities while the Lifecycle Agent generat
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-kubeconfig get seedgenerator</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get seedgenerator</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -1008,20 +1026,20 @@ seedimage   12s   SeedGenCompleted   Seed Generation completed</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-kubeconfig get clusterversion,nodes</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get clusterversion,nodes</code></pre>
 </div>
 </div>
 <div class="listingblock console">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                                         VERSION       AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   v4.18.0-rc.7   False       False         16h     Cluster version is v4.18.0-rc.7
+clusterversion.config.openshift.io/version   v4.18.0-rc.7  False       False         16h     Cluster version is v4.18.0-rc.7
 
 NAME                      STATUS   ROLES                         AGE   VERSION
 node/openshift-master-0   Ready    control-plane,master,worker   16h   v1.31.4</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>At this point, the seed image is created, pushed to our container registry at <code>infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.7</code>, and ready to be used as an image-based installation for a new Single-Node OpenShift Cluster.</p>
+<p>At this point, the seed image was created and pushed to our container registry under <code>infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.7</code>. The seed image is ready to be used as for new SNO clusters using the IBI installation method.</p>
 </div>
 </div>
 </div>
