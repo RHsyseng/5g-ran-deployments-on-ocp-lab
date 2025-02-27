@@ -23,10 +23,12 @@ IMPORTANT: During the deployment of this lab we already ensured that the seed SN
 
 Connect to the seed SNO cluster and check that OpenShift ADP and Lifecycle-Agent (LCA) operators are installed as required operators to create a seed image. Notice that the SR-IOV and LVM operators are installed too. In this case we want them as part of the seed image because the SNO clusters that are going to use this seed image will require these operators to run their workloads.
 
+IMPORTANT: If below command throws an error saying: `The connection to the server api.sno1.5g-deployment.lab:6443 was refused - did you specify the right host or port?`. Wait up to 10 minutes, the cluster may be restarting its API.
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/seed-kubeconfig get csv -A
+oc --kubeconfig ~/sno1kubeconfig get csv -A
 -----
 
 [.console]
@@ -40,12 +42,19 @@ openshift-sriov-network-operator       sriov-network-operator.v4.18.0-2025021215
 openshift-storage                      lvms-operator.v4.18.0                         LVM Storage               4.18.0                           Succeeded
 -----
 
-Check that the OpenShift Container Platform version of the seed SNO cluster is ${sno-cluster-version1}
+Check that the OpenShift Container Platform version of the seed SNO cluster is {sno-cluster-version1}
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/seed-kubeconfig get clusterversion
+oc --kubeconfig ~/sno1kubeconfig get clusterversion
+-----
+
+[console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+NAME      VERSION       AVAILABLE   PROGRESSING   SINCE   STATUS
+version   {sno-cluster-version1}  True        False         13m     Cluster version is {sno-cluster-version1}
 -----
 
 Create the Secret object that contains the container registry credentials where you can push the seed image:
@@ -53,7 +62,7 @@ Create the Secret object that contains the container registry credentials where 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF | oc --kubeconfig ~/seed-kubeconfig apply -f -
+cat <<EOF | oc --kubeconfig ~/sno1kubeconfig apply -f -
 ---
 apiVersion: v1
 kind: Secret
@@ -61,8 +70,8 @@ metadata:
   name: seedgen
   namespace: openshift-lifecycle-agent
 type: Opaque
-data:
-  seedAuth: 'eyJhdXRocyI6IHsiaW5mcmEuNWctZGVwbG95bWVudC5sYWI6ODQ0MyI6IHsiYXV0aCI6ICJZV1J0YVc0NmNqTmthRFIwTVNFPSJ9fX0='
+stringData:
+  seedAuth: '{"auths": {"infra.5g-deployment.lab:8443": {"auth": "YWRtaW46cjNkaDR0MSE="}}}'
 EOF
 -----
 
@@ -73,7 +82,7 @@ IMPORTANT: A good practice is to tag the seed container image with the OpenShift
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF | oc --kubeconfig ~/seed-kubeconfig apply -f -
+cat <<EOF | oc --kubeconfig ~/sno1kubeconfig apply -f -
 ---
 apiVersion: lca.openshift.io/v1
 kind: SeedGenerator
@@ -89,7 +98,7 @@ You can follow the progress by checking the logs of the lifecycle-agent-controll
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/seed-kubeconfig get seedgen -A
+oc --kubeconfig ~/sno1kubeconfig get seedgen -A
 -----
 [.console]
 [source,bash,subs="attributes+,+macros"]
@@ -101,7 +110,7 @@ seedimage   47s   SeedGenInProgress   Cleaning cluster resources
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/seed-kubeconfig logs -f lifecycle-agent-controller-manager-698c564f9b-qwvg7 -c manager
+oc --kubeconfig ~/sno1kubeconfig -n openshift-lifecycle-agent logs -f deployment/lifecycle-agent-controller-manager -c manager
 -----
 
 [.console]
@@ -124,12 +133,12 @@ INFO[0000] Executing /usr/bin/env with args [-- systemctl cat var-lib-containers
 INFO[57054] Executing /usr/bin/env with args [-- systemd-run --collect --wait --unit lca-generate-seed-image --setenv HTTP_PROXY --setenv HTTPS_PROXY --setenv NO_PROXY podman run --privileged --pid=host --name=lca_image_builder --replace --net=host --http-proxy=true -v /etc:/etc -v /var:/var -v /var/run:/var/run -v /run/systemd/journal/socket:/run/systemd/journal/socket -v /var/lib/lca/ibu-seedgen-orch/auth.json:/var/lib/lca/ibu-seedgen-orch/auth.json --entrypoint lca-cli registry.redhat.io/openshift4/lifecycle-agent-rhel9-operator@sha256:7c5bed953d0f2a774bc099c22d3c520f98cad0605723218624cc3737be4086ac create --authfile /var/lib/lca/ibu-seedgen-orch/auth.json --image infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.6 --recert-image registry.redhat.io/openshift4/recert-rhel9@sha256:f78fd5c29b78bf429596679d8104cd629bf2dca1265638824b39ed56cb3dbb13] 
 -----
 
-IMPORTANT: The cluster reboots and loses API capabilities while the Lifecycle Agent generates the seed image. Applying the SeedGenerator CR stops the kubelet and the CRI-O operations, then it starts the image generation.
+IMPORTANT: The cluster reboots and loses API capabilities while the Lifecycle Agent generates the seed image. Applying the SeedGenerator CR stops the kubelet and the CRI-O operations, then it starts the image generation. This process may take up to 10 minutes.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/seed-kubeconfig get seedgen -A
+oc --kubeconfig ~/sno1kubeconfig get seedgen -A
 -----
 [.console]
 [source,bash,subs="attributes+,+macros"]
@@ -142,7 +151,7 @@ After the cluster recovers and is available, you can continue checking the statu
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/seed-kubeconfig get seedgenerator seedimage -ojson | jq .status
+oc --kubeconfig ~/sno1kubeconfig get seedgenerator seedimage -o json | jq '.status'
 -----
 [.console]
 [source,bash,subs="attributes+,+macros"]
@@ -173,7 +182,7 @@ oc --kubeconfig ~/seed-kubeconfig get seedgenerator seedimage -ojson | jq .statu
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/seed-kubeconfig get seedgenerator
+oc --kubeconfig ~/sno1kubeconfig get seedgenerator
 -----
 [.console]
 [source,bash,subs="attributes+,+macros"]
@@ -187,16 +196,16 @@ Once the SeedGenerator CR shows the state as `SeedGenCompleted`, the image creat
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/seed-kubeconfig get clusterversion,nodes
+oc --kubeconfig ~/sno1kubeconfig get clusterversion,nodes
 -----
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----
 NAME                                         VERSION       AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   {sno-cluster-version1}   False       False         16h     Cluster version is {sno-cluster-version1}
+clusterversion.config.openshift.io/version   {sno-cluster-version1}  False       False         16h     Cluster version is {sno-cluster-version1}
 
 NAME                      STATUS   ROLES                         AGE   VERSION
 node/openshift-master-0   Ready    control-plane,master,worker   16h   {sno-cluster-version1-kubeversion}
 -----
 
-At this point, the seed image is created, pushed to our container registry at `infra.5g-deployment.lab:8443/ibi/lab5gran:{sno-seed-version}`, and ready to be used as an image-based installation for a new Single-Node OpenShift Cluster.
+At this point, the seed image was created and pushed to our container registry under `infra.5g-deployment.lab:8443/ibi/lab5gran:{sno-seed-version}`. The seed image is ready to be used as for new SNO clusters using the IBI installation method.
