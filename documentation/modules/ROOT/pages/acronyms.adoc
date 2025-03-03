@@ -24,6 +24,9 @@ include::_attributes.adoc[]
 |GVK
 |Group Version Kind
 
+|LCA
+|Lifecycle Agent (Operator)
+
 |MCE
 |Multicluster Engine for Kubernetes
 

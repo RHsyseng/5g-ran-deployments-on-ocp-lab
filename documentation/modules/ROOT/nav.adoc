@@ -15,7 +15,6 @@
 ** xref:5g-ran-context.adoc#cpu-pinning[CPU Pinning]
 ** xref:5g-ran-context.adoc#irq-load-balancing[IRQ Load Balancing]
 ** xref:5g-ran-context.adoc#dpdk[DPDK]
-** xref:5g-ran-context.adoc#oot-drivers[OoT Drivers]
 ** xref:5g-ran-context.adoc#cpu-reduction-tuning[Tuning for CPU Reduction]
 ** xref:5g-ran-context.adoc#vran-accelerators[vRAN Dedicated Accelerators]
 ** xref:5g-ran-context.adoc#ptp[PTP]
@@ -37,6 +36,7 @@
 ** xref:telco-related-infra-operators-intro.adoc#lvm-operator[LVM Storage Operator]
 
 * xref:ztp-intro.adoc[Introduction to Zero Touch Provisioning (ZTP)]
+** xref:ztp-intro.adoc#what-is-ztp[What is ZTP?]
 
 * xref:ocp-gitops.adoc[OpenShift GitOps]
 ** xref:ocp-gitops.adoc#gitops[GitOps]
@@ -62,20 +62,27 @@
 ** xref:ztp-workflow.adoc#deployment-methods[Single-Node OpenShift Deployments]
 *** xref:ztp-workflow.adoc#abi-deployment[Agent Based Installation]
 *** xref:ztp-workflow.adoc#ibi-deployment[Image Based Installation]
+**** xref:ztp-workflow.adoc#ibi-deploy-components[Image Based Installation and Deployment Components]
 ** xref:ztp-workflow.adoc#ztp-policies[Deployment Configuration]
 ** xref:ztp-workflow.adoc#takeaways[Takeaways]
 
-
-* xref:rhacm-policies.adoc[RHACM Policies]
+* xref:rhacm-policies.adoc[RHACM Governance Policy Framework]
 ** xref:rhacm-policies.adoc#policy-framework[Policy Framework]
 ** xref:rhacm-policies.adoc#policies[Policies]
 *** xref:rhacm-policies.adoc#policy-status[Policy Status]
 *** xref:rhacm-policies.adoc#policy-remediation[Policy Remediation]
+** xref:rhacm-policies.adoc#rhacm-policies-takeaways[Takeaways]
 
 * xref:managing-at-scale.adoc[Managing at Scale]
 ** xref:managing-at-scale.adoc#inform-policies[Inform Policies]
 ** xref:managing-at-scale.adoc#olm-subscriptions[OLM Subscriptions]
 ** xref:managing-at-scale.adoc#cluster-policies[Cluster Policies]
+
+* xref:lca.adoc[Lifecycle Agent Operator (LCA)]
+** xref:lca.adoc#seed-image-generation[Seed Image Generation]
+** xref:lca.adoc#image-based-installation[Image Based Installation]
+** xref:lca.adoc#image-based-upgrades[Image Based Upgrades]
+** xref:lca.adoc#image-based-upgrades-at-scale[Image Based Upgrades at Scale]
 
 * xref:talm.adoc[Topology Aware Lifecycle Manager (TALM)]
 ** xref:talm.adoc#inform-policies[Default Inform Policies]
@@ -83,6 +90,7 @@
 *** xref:talm.adoc#autocreation-cgu[Auto Creation of CGUs]
 ** xref:talm.adoc#phase-labels[Phase labels]
 ** xref:talm.adoc#waves[Policy Waves]
+** xref:talm.adoc#sno-upgrades-at-scale[SNO Upgrades at Scale]
 
 * xref:policygen-deepdive.adoc[PolicyGen Deepdive]
 ** xref:policygen-deepdive.adoc#policygen-implementation[PolicyGen Implementation]
@@ -136,17 +144,17 @@
 ** xref:lab-environment-introduction.adoc#s3-storage[S3 Storage Server]
 ** xref:lab-environment-introduction.adoc#openshift-seed-sno[OpenShift Seed SNO Cluster]
 
-* xref:crafting-deployments-iac.adoc[Preparing the ZTP GitOps Pipeline] 
-** xref:crafting-deployments-iac.adoc#introduction-to-clusterinstance[Introduction to the ClusterInstance]
-** xref:crafting-deployments-iac.adoc#git-repository[Git Repository]
-** xref:crafting-deployments-iac.adoc#deploying-ztp-gitops-pipeline[Deploying the ZTP GitOps Pipeline]
+* xref:preparing-ztp-pipeline.adoc[Preparing the ZTP GitOps Pipeline] 
+** xref:preparing-ztp-pipeline.adoc#introduction-to-clusterinstance[Introduction to the ClusterInstance]
+** xref:preparing-ztp-pipeline.adoc#git-repository[Git Repository]
+** xref:preparing-ztp-pipeline.adoc#deploying-ztp-gitops-pipeline[Deploying the ZTP GitOps Pipeline]
 
 * xref:crafting-cluster-telco-related-infra-operators-configs.adoc[Crafting the Telco RAN Reference Design Specification]
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#crafting-common-policies[Crafting Common Policies]
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#crafting-group-policies[Crafting Group Policies]
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#crafting-site-policies[Crafting Site Policies]
-** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#crafting-custom-policies[Adding custom content]
-** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#crafting-testing-policies[Crafting testing Policies]
+** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#adding-custom-policies[Adding Custom Content]
+** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#crafting-testing-policies[Crafting Testing Policies]
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#configure-kustomization-for-policies[Configure Kustomization for Policies]
 ** xref:crafting-cluster-telco-related-infra-operators-configs.adoc#deploying-policies-using-gitops-pipeline[Deploying the Telco 5G RAN RDS using the ZTP GitOps Pipeline]
 
@@ -156,13 +164,14 @@
 ** xref:installing-agentbasedinstall-cluster.adoc#baremetal-node-details[Bare Metal Node Details]
 ** xref:installing-agentbasedinstall-cluster.adoc#pre-reqs[Deployment Prerequisites]
 ** xref:installing-agentbasedinstall-cluster.adoc#clusterinstance[ClusterInstance]
-** xref:installing-agentbasedinstall-cluster.adoc#reference-manifest-siteconfig[Reference Manifest Configuration]
+** xref:installing-agentbasedinstall-cluster.adoc#reference-manifest-clusterinstance[Reference Manifest Configuration]
 ** xref:installing-agentbasedinstall-cluster.adoc#extra-manifest-clusterinstance[Extra Manifest Configuration]
 ** xref:installing-agentbasedinstall-cluster.adoc#preparing-installation[Get Ready for the Installation]
 ** xref:installing-agentbasedinstall-cluster.adoc#deploying-sno-using-gitops-pipeline[Deploying the SNO Cluster using the ZTP GitOps Pipeline]
 ** xref:installing-agentbasedinstall-cluster.adoc#monitoring-deployment[Monitoring the Deployment]
 *** xref:installing-agentbasedinstall-cluster.adoc#monitoring-deployment-webui[Monitoring the Deployment via the WebUI]
 *** xref:installing-agentbasedinstall-cluster.adoc#monitoring-deployment-cli[Monitoring the Deployment via the CLI]
+
 
 //* xref:running-the-deployment.adoc[Running the Deployment]
 //** xref:running-the-deployment.adoc#deploying-ztp-gitops-pipeline[Deploying the ZTP GitOps Pipeline]
@@ -177,17 +186,18 @@
 //* xref:managing-existing-clusters.adoc[Managing Existing Clusters]
 
 * xref:creating-seed-image.adoc[Creating the Seed Image]
-** xref:creating-seed-image.adoc#introduction-to-seed-image[Introduction to the Seed Image Generation]
-** xref:creating-seed-image.adoc#running-the-seed-generation[Running the Seed Image Generation]
+** xref:creating-seed-image.adoc#intro-to-seed-image-gen[Introduction to the Seed Image Generation]
+** xref:creating-seed-image.adoc#running-seed-image-genn[Running the Seed Image Generation]
 
 * xref:installing-imagebaseinstall-cluster.adoc[Deploying an Image Based Install Cluster]
 ** xref:installing-imagebaseinstall-cluster.adoc#introduction[Introduction]
 ** xref:installing-imagebaseinstall-cluster.adoc#baremetal-node-details[Bare Metal Node Details]
 ** xref:installing-imagebaseinstall-cluster.adoc#creating-the-installation-iso[Creating the Installation ISO]
-** xref:installing-imagebaseinstall-cluster.adoc#preinstallation-process[PreInstalling the Host]
+** xref:installing-imagebaseinstall-cluster.adoc#preinstallation-process[Pre-Installing the Host]
 ** xref:installing-imagebaseinstall-cluster.adoc#creating-the-configuration-iso[Creating the Configuration ISO]
 ** xref:installing-imagebaseinstall-cluster.adoc#deploying-sno-using-gitops-pipeline[Deploying the SNO Cluster using the ZTP GitOps Pipeline]
 ** xref:installing-imagebaseinstall-cluster.adoc#completing-install[Completing the Installation]
+** xref:installing-imagebaseinstall-cluster.adoc#verifying-install[Verifying the RAN DU Configuration]
 
 * xref:check-deployment-is-finished.adoc[Check SNO Deployment is finished]
 ** xref:check-deployment-is-finished.adoc#check-sno-deployment-webui[Check SNO Deployment has Finished via the WebUI]
@@ -210,7 +220,6 @@
 ** xref:troubleshooting-tips.adoc#sno2-down[SNO2 is down after syncing Argo applications]
 ** xref:troubleshooting-tips.adoc#policies-blank[Policies not showing in the Governance console]
 ** xref:troubleshooting-tips.adoc#policies-not-applied[Policies not applied]
-** xref:troubleshooting-tips.adoc#olm-bug[OLM Bug]
 
 * xref:common-pitfalls.adoc[Common Pitfalls]
 ** xref:common-pitfalls.adoc#exec-probes-cpu-pinning[Exec Probes and CPU Pinning]
@@ -230,6 +239,7 @@
 *** xref:lab-environment.adoc#configure-local-dns-dhcp-server[Configure Local DNS/DHCP Server]
 *** xref:lab-environment.adoc#configure-local-dns-as-primary-server[Configure Local DNS as Primary Server]
 *** xref:lab-environment.adoc#disable-firewall[Disable Firewall]
+*** xref:lab-environment.adoc#configure-webcache[Configure Webcache]
 *** xref:lab-environment.adoc#install-ksushytools[Install Ksushy Tool]
 *** xref:lab-environment.adoc#configure-disconnected-registry[Configure Disconnected Registry]
 *** xref:lab-environment.adoc#configure-git-server[Configure Git Server]
@@ -240,4 +250,4 @@
 *** xref:lab-environment.adoc#configure-openshift-hub-cluster[Configure OpenShift Hub Cluster]
 *** xref:lab-environment.adoc#deploy-openshift-hub-cluster-operators[Deploy OpenShift HUB Cluster Operators]
 *** xref:lab-environment.adoc#deploy-sno1-cluster-without-ztp[Deploy SNO1 Cluster (without ZTP)]
-*** xref:lab-environment.adoc#configure-aap[Configure Ansible Automation Platform]
+//*** xref:lab-environment.adoc#configure-aap[Configure Ansible Automation Platform]

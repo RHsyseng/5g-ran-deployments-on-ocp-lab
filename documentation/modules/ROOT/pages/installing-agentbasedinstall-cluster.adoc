@@ -255,7 +255,7 @@ spec:
   releaseImage: {active-ocp-version-clusterimageset}
 EOF
 -----
-[#reference-manifest-siteconfig]
+[#reference-manifest-clusterinstance]
 == Reference Manifest Configuration
 
 Let's add the {rds-config}[reference RAN DU configuration] for the version of OCP we are about to deploy. In the workstation, run the following command to extract the reference ZTP {lab-major-version} RAN configuration. Those manifests are extracted from the `/extra-manifest` folder of the ztp-site-generate container.
@@ -275,8 +275,7 @@ WARNING: If you get `ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100
 
 Our recommendation is to always create a reference and keep the reference and user defined manifests (see next section) separately. This makes later updates to the reference based on z-stream releases significantly easier (simply replace the contents of reference-manifests with updated content)
 
-
-[#extra-manifest-siteconfig]
+[#extra-manifest-clusterinstance]
 == Extra Manifest Configuration
 
 Now, let's add the **extra** or **custom** RAN configuration to the cluster. It is strongly recommended to include crun manifests as part of the additional install-time manifests for 4.13+. So let's create proper machine configuration in the extra manifest folder:
@@ -319,11 +318,11 @@ EOF
 
 IMPORTANT: As of version 4.16 the default cgroups configuration is **cgroupsv2**. If there is a need to run cgroupsv1 instead, please add the https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.15/ztp/source-crs/extra-manifest/enable-cgroups-v1.yaml[enable-cgroups-v1.yaml] extra-manifest to the same `extra-manifest` folder where crun is configured.
 
-
 [#preparing-installation]
 == Get Ready for the Installation
 
-Finally, we will add the kustomizations for the ClusterInstance. Note that the link:crafting-deployments-iac.html#reference-manifest-siteconfig[Refence RAN DU] and the link:crafting-deployments-iac.html#extra-manifest-siteconfig[extra-manifests] configuration are included as a `configmap` custom resource named *{ran-rds-version-manifests}*.
+Finally, we will add the kustomizations for the ClusterInstance. Note that the Refence RAN DU and the extra-manifests configuration are included as a `ConfigMap` custom resource named *{ran-rds-version-manifests}*.
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----

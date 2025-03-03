@@ -50,7 +50,6 @@ The provisioning process includes installing the host operating system (RHCOS) o
 
 IMPORTANT: Notice, in the picture, how ZTP allows us to provision clusters at scale. Multiple ClusterInstance CRs can be committed to Git simultaneously, or over time, to deploy multiple clusters.
 
-
 [#ibi-deployment]
 === Image Based Installation
 
@@ -62,7 +61,8 @@ To deploy a managed cluster using an imaged-based approach in combination with G
 
 In this lab, we are going to provision a cluster with the Image Based Installation deployment method using a GitOps approach with the SiteConfig Operator.
 
-*Image-based installation and deployment components*
+[#ibi-deploy-components]
+==== Image Based Installation and Deployment Components
 
 First, let's describe the components in an image-based installation and deployment.
 
@@ -85,7 +85,6 @@ As show in the previous picture, the Preinstall host is deployed using the SiteC
 * BareMetalHost.
 * HostFirmwareSettings.
 * ConfigMap for extra-manifest configurations.
-
 
 Using the Lifecycle Agent, you can generate an OCI container image that encapsulates an instance of a previous installed single-node OpenShift cluster. This image is derived from a dedicated cluster that you can configure with the *target* OpenShift Container Platform version.
 
@@ -121,4 +120,3 @@ Summing up, the deployment of the clusters includes:
 * Making the necessary network configurations to the server operating system.
 * Deploying profile operators and performing any needed software-related configuration, such as performance profile, PTP, and SR-IOV.
 * Downloading images needed to run workloads (CNFs).
-

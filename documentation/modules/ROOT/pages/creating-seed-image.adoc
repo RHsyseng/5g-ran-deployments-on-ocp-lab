@@ -1,8 +1,9 @@
-# Creating the Seed Image
+= Creating the Seed Image
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-## Introduction to the Seed Image Generation
+[#intro-to-seed-image-gen]
+== Introduction to the Seed Image Generation
 
 In this section we are going to create a seed image from the link:lab-environment-introduction.html#openshift-seed-sno[Seed single-node OpenShift cluster]. This seed cluster has the same hardware and a similar cluster configuration as the OpenShift clusters we are going to create and upgrade later on in this lab. More information on the allowed configuration of the seed SNO cluster can be found {seed-prereq-config}[here].
 
@@ -19,7 +20,8 @@ We are going to use the Lifecycle Agent to generate a seed image from a managed 
 
 IMPORTANT: During the deployment of this lab we already ensured that the seed SNO cluster is ready to run a seed image generation.
 
-## Running the Seed Image Generation
+[#running-seed-image-gen]
+== Running the Seed Image Generation
 
 Connect to the seed SNO cluster and check that OpenShift ADP and Lifecycle-Agent (LCA) operators are installed as required operators to create a seed image. Notice that the SR-IOV and LVM operators are installed too. In this case we want them as part of the seed image because the SNO clusters that are going to use this seed image will require these operators to run their workloads.
 

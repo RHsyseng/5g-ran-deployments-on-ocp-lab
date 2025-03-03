@@ -60,4 +60,4 @@ A Single Node OpenShift cluster is running on the infrastructure host running ve
 
 Credentials for the seed SNO cluster:
 
-* Admin kubeconfig: It can be found either in the following path of the infrastructure host: /root/sno1kubeconfig or it can be downloaded from the RHACM Web Console.
+* Admin kubeconfig: It can be found either in the following path of the infrastructure host: {seed-cluster-kubeconfig} or it can be downloaded from the RHACM Web Console.

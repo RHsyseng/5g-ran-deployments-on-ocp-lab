@@ -93,7 +93,6 @@ A high overview of the basic flow is as follows. Note that in the solution prese
 
 The Assisted Service can currently install clusters with highly-available control planes (3 hosts and above) and can also install Single-Node OpenShift (SNO).
 
-
 [#gitops-operator]
 == GitOps Operator
 

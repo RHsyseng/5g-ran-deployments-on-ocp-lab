@@ -14,6 +14,7 @@ code:experimental:
 :policygen-common-file: common-418.yaml
 :policygen-common-label: ocp418
 :lvms-channel: stable-4.18
+:seed-cluster-kubeconfig: /root/seed-cluster-kubeconfig
 // :catalogsource-index-image-tag: v4.17-1731286606
 :catalogsource-index-image-tag: v4.18
 :ztp-sitegenerate-disconnected-image: infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.17.0-25

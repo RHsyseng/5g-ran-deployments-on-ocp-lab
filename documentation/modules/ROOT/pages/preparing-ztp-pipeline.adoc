@@ -194,5 +194,4 @@ IMPORTANT: Notice that there is nothing to deploy in any of the previous ArgoCD 
 
 image::ztp-pipeline-clusters.png[ZTP clusters app]
 
-
 image::ztp-pipeline-policies.png[ZTP policies app]

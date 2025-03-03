@@ -6,7 +6,6 @@ When working on RAN environments there are a set of operators that will be commo
 
 image::ran-du-components.png[Telco RAN DU RDS components]
 
-
 [#node-tuning-operator]
 == Node Tuning Operator
 
@@ -73,7 +72,3 @@ You can read more about the image-based upgrade technology {ibu-docs}[here].
 LVM Storage provides dynamic provisioning of block and file storage. LVM Storage creates logical volumes from local devices that can be used as PVC resources by applications. Volume expansion and snapshots are also possible.
 
 LVM Storage can be used as the local storage implementation for the RAN DU use case. When LVM Storage is used as the storage solution, it replaces the Local Storage Operator, and the CPU required is assigned to the management partition as platform overhead. 
-
-
-
-

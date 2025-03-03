@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-In the previous section, the link:crafting-deployments-iac.html[ZTP GitOps pipeline] was put in place to deploy our Infrastructure as Code (IaC) and Configuration as Code (CaC). In this one, we are going to focus on creating the Configuration as Code (CaC) for the OpenShift that will be installed in the following sections. The configuration of the Telco RAN Reference Design Specification is applied using multiple `PolicyGenTemplate` objects.
+In the previous section, the link:preparing-ztp-pipeline.html[ZTP GitOps pipeline] was put in place to deploy our Infrastructure as Code (IaC) and Configuration as Code (CaC). In this one, we are going to focus on creating the Configuration as Code (CaC) for the OpenShift that will be installed in the following sections. The configuration of the Telco RAN Reference Design Specification is applied using multiple `PolicyGenTemplate` objects.
 
 We described how `PolicyGenTemplate` works in detail xref:policygen-deepdive.adoc#policies-templating[here], so let's jump directly to the creation of the different templates.
 
@@ -17,7 +17,7 @@ The common policies apply to every cluster in our infrastructure that matches ou
 
 These configs may vary from release to release, that's why we create a `{policygen-common-file}` file. We will likely have a common configuration profile for each release we deploy.
 
-IMPORTANT: If you check the binding rules, you see that we are targeting clusters labeled with `common: "{policygen-common-label}"` and `logicalGroup: "active"`. These labels were set in the `ClusterInstance` definition in the link:crafting-deployments-iaac.html#siteconfig[previous section].
+IMPORTANT: If you check the binding rules, you see that we are targeting clusters labeled with `common: "{policygen-common-label}"` and `logicalGroup: "active"`. These labels are set in the `ClusterInstance` definition.
 
 1. Create the `common` PolicyGenTemplate for {openshift-release} SNOs:
 +
@@ -88,7 +88,7 @@ The group policies apply to a group of clusters that typically have something in
 
 The CNF team has prepared some common tuning configurations that should be applied on every SNO DU deployed with similar hardware. In this section, we will be crafting these configurations.
 
-IMPORTANT: If you check the binding rules you can see that we are targeting clusters labeled with `group-du-sno: ""`, `logicalGroup: "active"` and `hardware-type: "hw-type-platform-1"`. These labels were set in the `SiteConfig` definition in the link:crafting-deployments-iaac.html#siteconfig[previous section].
+IMPORTANT: If you check the binding rules you can see that we are targeting clusters labeled with `group-du-sno: ""`, `logicalGroup: "active"` and `hardware-type: "hw-type-platform-1"`. These labels are set in the `ClusterInstance` definition.
 
 1. Create the `group` PolicyGenTemplate for SNOs:
 +
@@ -185,9 +185,10 @@ spec:
               service.chronyd=stop,disable
 EOF
 -----
++
 IMPORTANT: By leveraging hub site templating we are reducing the number of policies on our hub cluster. This makes the clusters's deployment and maintenance process simpler. Notice that with large fleets of clusters, it can quickly become hard to maintain per-site configurations.
-
-2. We're using policy templating, so we need to create a `ConfigMap` with the templating values to be used. Notice that the following resource contains values for multiple hardware specifications that we may have in our infrastructure. In the policy we have just applied we are obtaining the value for tuning our SNO by obtaining the value of the label `hardware-type` that each cluster was assigned to. This label was set in the `SiteConfig` definition in the link:crafting-deployments-iaac.html#siteconfig[previous section]. This means that the `SNO2` will be configured accordingly to `hw-type-platform-1` group of servers. More information about Template processing can be found in {rhacm-template-processing}[Red Hat Advanced Cluster Management documentation].
++
+2. We're using policy templating, so we need to create a `ConfigMap` with the templating values to be used. Notice that the following resource contains values for multiple hardware specifications that we may have in our infrastructure. In the policy we have just applied we are obtaining the value for tuning our SNO by obtaining the value of the label `hardware-type` that each cluster was assigned to. This label is set in the `ClusterInstance` definition. This means that the `SNO2` will be configured accordingly to `hw-type-platform-1` group of servers. More information about Template processing can be found in {rhacm-template-processing}[Red Hat Advanced Cluster Management documentation].
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -280,7 +281,7 @@ spec:
         name: "sriov-nw-du-netdev"
       spec:  
         ipam: '{"type": "host-local","ranges": [[{"subnet": "192.168.100.0/24"}]],"dataDir":
-      "/run/my-orchestrator/container-ipam-state-1"}'
+      "/run/my-orchestrator/container-ipam-state-1"}'
         resourceName: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename1" .ManagedClusterName) hub}}'
         spoofChk: "off"
         trust: "on"
@@ -308,7 +309,7 @@ spec:
         name: "sriov-nw-du-vfio"
       spec:
         ipam: '{"type": "host-local","ranges": [[{"subnet": "192.168.100.0/24"}]],"dataDir":
-      "/run/my-orchestrator/container-ipam-state-1"}'
+      "/run/my-orchestrator/container-ipam-state-1"}'
         resourceName: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename2" .ManagedClusterName) hub}}'
         spoofChk: "off"
         trust: "on"
@@ -366,8 +367,8 @@ EOF
 
 More information about Template processing can be found in {rhacm-template-processing}[Red Hat Advanced Cluster Management documentation].
 
-[#crafting-custom-policies]
-== Adding custom content (source-crs)
+[#adding-custom-policies]
+== Adding Custom Content (source-crs)
 
 If you require cluster configuration changes outside of the base GitOps Zero Touch Provisioning (ZTP) pipeline configuration, you can add content to the GitOps ZTP library. The base source custom resources (CRs) that are included in the ztp-generate container that you deploy with the GitOps ZTP pipeline can be augmented with custom content as required.
 
@@ -384,9 +385,8 @@ podman run --log-driver=none --rm --tls-verify=false {ztp-sitegenerate-disconnec
 
 Notice that we can add content not included in the ZTP container image by creating the required source CR in the `source-crs/custom-crs` folder. Once pushed to our Git repo, we can reference it in any of the common, group or site `PolicyGenTemplates` we have already created. More information on Deploying additional changes to cluster can be found in the {advanced-ztp-policy-config}[docs]
 
-
 [#crafting-testing-policies]
-== Crafting testing Policies
+== Crafting Testing Policies
 
 Testing policies before applying them to our production clusters is a must, in order to do that we will create a set of testing policies (which usually will be very similar to the production ones) and these policies will target clusters labeled with `logicalGroup: "testing"`. We won't go over every file, if you check the files that will be created those are the same as in `active`, also known as `production`, but with different names and binding policies.
 
@@ -703,4 +703,3 @@ The resulting policies can be seen from the https://console-openshift-console.ap
 IMPORTANT: The Telco 5G RAN RDS policies are ready but they are not being applied or compared to any cluster yet. That's because we did not provision any SNO cluster. Let's fix that by moving to the next section and deploy the our first one.
 
 image::crafting-rds-acm.png[ArgoCD Policies App]
-

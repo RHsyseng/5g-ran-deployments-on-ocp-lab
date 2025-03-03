@@ -74,7 +74,7 @@ pod/openshift-gitops-operator-controller-manager-6794f4f9cc-vpm2b   2/2     Runn
 [#getting-snos-kubeconfigs]
 == Verifying managed clusters requirements
 
-In the previous sections we have deployed the `sno2` cluster using an link:crafting-deployments-iac.html#crafting-our-own-clusterinstance[agent-based installation] and the `sno3` cluster following an link:installing-imagebaseinstall-cluster.html[image-based methodology]. Before we start the upgrade we need to check if the Lifecycle Agent and OpenShift API for Data Protection operators are installed in the target clusters.
+In the previous sections we have deployed the `sno2` cluster using the agent-based installation and the `sno3` cluster using the image-based installation. Before we start the upgrade we need to check if the Lifecycle Agent and OpenShift API for Data Protection operators are installed in the target clusters.
 
 WARNING: We know that both SNO clusters meet the {seed-guidelines}[Seed cluster guidelines], has the same combination of hardware, Day 2 Operators, and cluster configuration as the target seed cluster from where the seed image version {sno-cluster-version2} was obtained.
 

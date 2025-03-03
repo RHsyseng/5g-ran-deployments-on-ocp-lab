@@ -57,7 +57,6 @@ dnf -y install bash-completion vim jq tar git ipcalc pip {kcli-rpm}
 pip install pyopenssl
 -----
 
-
 [#install-oc-kubectl]
 === Install oc/kubectl CLIs
 
@@ -127,7 +126,6 @@ systemctl restart dnsmasq-virt.service
 
 Verify that the dnsmasq-virt service has started successfully this time.
 
-
 [#configure-local-dns-as-primary-server]
 === Configure Local DNS as Primary Server
 
@@ -175,7 +173,6 @@ systemctl enable podman-webcache --now
 -----
 
 Verify that the webcache container has started successfully by executing `podman ps`. If it is not running, check the status of the podman-webcache systemd unit.
-
 
 [#install-ksushytool]
 === Install Ksushy Tool
@@ -332,7 +329,6 @@ If you need or want to connect to any of the VMs, once they are started, you can
 kcli ssh <VM_name>
 -----
 
-
 [#deploy-openshift-hub-cluster]
 === Deploy OpenShift Hub Cluster
 
@@ -375,7 +371,6 @@ Plan hub deleted!
 -----
 
 And then create the VMs again as explained in the previous section link:lab-environment.html#create-openshift-nodes-vms[Deploy OpenShift Hub Cluster].
-
 
 [#configure-openshift-hub-cluster]
 === Configure OpenShift Hub Cluster
@@ -449,34 +444,34 @@ NAME                                         VERSION   AVAILABLE   PROGRESSING  
 clusterversion.config.openshift.io/version   {sno-cluster-version1-cvo}    True        False         75m     Cluster version is {sno-cluster-version1-cvo}
 -----
 
-[#configure-aap]
-=== Configure Ansible Automation Platform
-
-IMPORTANT: This step requires a valid Ansible Automation Platform Manifest. You can {aap-get-manifest-docs}[read the official docs to get one].
-
-Before proceeding, you need to wait for the AAP to be fully deployed in the Hub cluster.
-
-This configuration requires of having ansible deployed in the hypervisor host along with some ansible collections.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-dnf install ansible-core python3.11-pip -y
-python3.11 -m pip install kubernetes
-ansible-galaxy collection install awx.awx
-ansible-galaxy collection install infra.controller_configuration
-ansible-galaxy collection install kubernetes.core
------
-
-Next, let's create a playbook that will configure the automation controller for us:
-
-NOTE: Change the `aap_manifest_file_path` var value to match the path where you stored the manifest in the hypervisor host and change the `strong_student_password` var to set a password for the AAP `student` user.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-curl -L https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/aap2/configure-aap.yaml -o /root/configure-aap.yaml
-ansible-playbook /root/configure-aap.yaml -e strong_student_password=yourstrongstudentpassword -e aap_manifest_file_path=/path/to/your/manifest -e ansible_python_interpreter=/usr/bin/python3.11
------
-
-Once the playbook finishes you should have access to the AAP Controller at https://automation-aap.apps.hub.5g-deployment.lab with the student user and the password you configured.
+// [#configure-aap]
+// === Configure Ansible Automation Platform
+// 
+// IMPORTANT: This step requires a valid Ansible Automation Platform Manifest. You can {aap-get-manifest-docs}[read the official docs to get one].
+// 
+// Before proceeding, you need to wait for the AAP to be fully deployed in the Hub cluster.
+// 
+// This configuration requires of having ansible deployed in the hypervisor host along with some ansible collections.
+// 
+// [.console-input]
+// [source,bash,subs="attributes+,+macros"]
+// -----
+// dnf install ansible-core python3.11-pip -y
+// python3.11 -m pip install kubernetes
+// ansible-galaxy collection install awx.awx
+// ansible-galaxy collection install infra.controller_configuration
+// ansible-galaxy collection install kubernetes.core
+// -----
+// 
+// Next, let's create a playbook that will configure the automation controller for us:
+// 
+// NOTE: Change the `aap_manifest_file_path` var value to match the path where you stored the manifest in the hypervisor host and change the `strong_student_password` var to set a password for the AAP `student` user.
+// 
+// [.console-input]
+// [source,bash,subs="attributes+,+macros"]
+// -----
+// curl -L https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/aap2/configure-aap.yaml -o /root/configure-aap.yaml
+// ansible-playbook /root/configure-aap.yaml -e strong_student_password=yourstrongstudentpassword -e aap_manifest_file_path=/path/to/your/manifest -e ansible_python_interpreter=/usr/bin/python3.11
+// -----
+// 
+// Once the playbook finishes you should have access to the AAP Controller at https://automation-aap.apps.hub.5g-deployment.lab with the student user and the password you configured.

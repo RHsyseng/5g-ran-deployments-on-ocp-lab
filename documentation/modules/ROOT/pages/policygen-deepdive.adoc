@@ -120,7 +120,7 @@ Reduce footprint of the monitoring stack by:
 [#ocp-console]
 === Console Operator
 
-As part of the composable OpenShift Settings the Console Operator can be enabled-disabled. The `SiteConfig` CR allows to define these settings via the `installConfigOverrides`.
+As part of the composable OpenShift Settings the Console Operator can be enabled-disabled. The `ClusterInstance` CR allows to define these settings via the `installConfigOverrides`.
 
 Since the DUs are being centrally managed from a RHACM hub, the local console will be disabled to reduce resource consumption.
 

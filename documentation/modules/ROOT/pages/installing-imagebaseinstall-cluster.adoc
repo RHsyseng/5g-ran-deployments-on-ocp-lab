@@ -5,7 +5,7 @@ include::_attributes.adoc[]
 [#introduction]
 == Introduction
 
-In the previous section, link:crafting-cluster-telco-related-infra-operators-configs.html,[Creating the Seed Image], we created a seed image of a Single Node OpenShift cluster version {sno-cluster-version1}. That seed image will be used to deploy a new SNO in less than 20 minutes, that's why, specially in telco RAN environments where we are managing thousands of clusters , this deployment method is the preferred one.
+In the previous section, link:creating-seed-image.html[Creating the Seed Image], we created a seed image of a Single Node OpenShift cluster version {sno-cluster-version1}. That seed image will be used to deploy a new SNO in less than 20 minutes, that's why, specially in telco RAN environments where we are managing thousands of clusters , this deployment method is the preferred one.
 
 The following picture describe the process we are going to follow to deploy and configure the *sno3* OpenShift Clusters with the RAN DU profile configured:
 
@@ -184,7 +184,7 @@ cp ~/imagebaseinstall/ibi-iso-workdir/rhcos-ibi.iso /opt/webcache/data/
 -----
 
 [#preinstallation-process]
-== PreInstalling the Host
+== Pre-Installing the Host
 
 Now we are ready to boot sno3 with the Installation ISO. Run the following command from the infrastructure host:
 
@@ -198,7 +198,7 @@ kcli start baremetal -u admin -p admin -P iso_url=http://192.168.125.1:8080/rhco
 
 Then, the sno3 will boot and the preinstallation process will start. We can take a look at the process by connecting to the sno3 via ssh. Something similar to the following output will be shown in the terminal. 
 
-WARNING: The preinstallation process is finished once the sno3 is automatically powered off.
+WARNING: The pre-installation process is finished once the sno3 is automatically powered off.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -211,7 +211,8 @@ ssh -i ~/.ssh/snokey core@192.168.125.50
 -----
 journalctl -f
 -----
-[.console]
+
+[console]
 [source,bash,subs="attributes+,+macros"]
 -----
 ...
@@ -251,9 +252,9 @@ Feb 04 10:41:22 ocp-sno3 ostree[5337]: Completed syncfs() for system root in 1 m
 Feb 04 10:41:22 ocp-sno3 ostree[5337]: Starting freeze/thaw cycle for system root
 Feb 04 10:41:22 ocp-sno3 ostree[5337]: Completed freeze/thaw cycle for system root in 31 ms
 Feb 04 10:41:22 ocp-sno3 ostree[5337]: Bootloader updated; bootconfig swap: yes; bootversion: boot.1.1, deployment count change: -1
-..
+...
 Broadcast message from root@localhost (Tue 2025-02-04 10:41:25 UTC):
-..
+...
 The system will power off now!
 -----
 
@@ -327,7 +328,7 @@ type: Opaque
 EOF
 -----
 
-Next, we have to create a `configMap` resource to define additional manifests in our image-based deployment. Based on our seed image we have to define:
+Next, we have to create a `ConfigMap` resource to define additional manifests in our image-based deployment. Based on our seed image we have to define:
 
 * The disconnected catalog source that we will allow us to install additional operators in the target SNO cluster.
 * The LVMCluster configuration for the LVM Operator. Note that the LVM Operator was included in the seed image.
@@ -598,7 +599,7 @@ Once the changes were commited and pushed to the Git repository, the link:ocp-gi
 -----
 oc --kubeconfig ~/hub-kubeconfig -n sno3 get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage
 -----
-[.console-input]
+[console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 NAMESPACE   NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
@@ -682,7 +683,7 @@ WARNING: Confirm that the `clusterInstance` is shown as "Provisioning completed"
 -----
 oc --kubeconfig ~/hub-kubeconfig -n sno3 get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage
 -----
-[.console-input]
+[console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
@@ -709,7 +710,6 @@ image::ibi-acm-reconfig02.png[IBI Installation completed]
 The Add-ons applied via KlusterletAddonConfig CR are also installed and available:
 
 image::ibi-acm-reconfig03.png[IBI Add-ons installed]
-
 
 [#verifying-install]
 == Verifying the RAN DU Configuration

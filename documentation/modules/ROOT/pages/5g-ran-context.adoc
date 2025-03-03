@@ -43,12 +43,10 @@ However, specific applications can benefit from using larger page sizes in certa
 
 You can learn more about huge pages in Linux https://kerneltalks.com/services/what-is-huge-pages-in-linux/[here].
 
-
 [#cpu-pinning]
 == CPU Pinning
 
 When running workloads in Linux these processes can be executed on any of multiple CPUs, the scheduler will assign CPUs to get the job done. While this may be good enough for general-purpose workloads, in latency sensitive environments that's not usually the case. With CPU pinning we can restrict our workload to a given set of CPUs that will be dedicated to run our workload and nothing else, avoiding noisy neighbors and having access to the same compute power at any given time.
-
 
 [#irq-load-balancing]
 == IRQ Load Balancing
