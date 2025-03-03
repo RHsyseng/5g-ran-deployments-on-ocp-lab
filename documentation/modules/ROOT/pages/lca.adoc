@@ -38,6 +38,10 @@ During the upgrade, the LCA will orchestrate the process during the following st
 * Upgrade
 * Rollback (Optional)
 
+Below diagram shows the different stages:
+
+image::ibu-stages.png[IBU Stages Diagram]
+
 For more detailed information on the stages, check the {lca-ibu-stages}[stages of the image-based upgrade] on the official docs.
 
 During the upgrade, LCA can also backup and restore cluster configurations and workloads. Check the {lca-backup-restore}[backup and restore guidelines] on the official docs.
@@ -45,4 +49,4 @@ During the upgrade, LCA can also backup and restore cluster configurations and w
 [#image-based-upgrades-at-scale]
 == Image Based Upgrades at Scale
 
-LCA operator cannot manage image-based upgrades at scale, in order to run IBU at scale, we leverage another operator, TALM. We will talk about `ImageBasedGroupUpgrade` API and how TALM orchestrates such upgrades in the TALM section of the lab.
+LCA operator cannot manage image-based upgrades at scale, in order to run IBU at scale, we leverage another operator, TALM. We will talk about `ImageBasedGroupUpgrade` API and how TALM orchestrates such upgrades in the TALM section of the lab. In any case, the recommended upgrade method for Telco 5G RAN SNOs is image-based upgrade flow, concretely leveraging the Image Based Group Upgrade (IBGU) CR provided by TALM.
