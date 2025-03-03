@@ -1,0 +1,48 @@
+= Lifecycle Agent Operator (LCA)
+include::_attributes.adoc[]
+:profile: 5g-ran-lab
+
+The Lifecycle Agent Operator (LCA) provides local (on cluster) lifecycle management services for Single Node OpenShift (SNO). These management services include the following operations:
+
+* Seed Image generation for Image Based Installations and Image Based Upgrades.
+* Image Based Upgrades Orchestration.
+* Backup and Restore orchestration during Image Based Upgrades.
+
+[#seed-image-generation]
+== Seed Image Generation
+
+The seed image generation requires of an existing SNO cluster, this cluster is called _seed cluster_. The SNO cluster needs to follow specific guidelines to be used as seed cluster, you can check the full list {lca-seed-cluster-guidelines}[here].
+
+Some of the guidelines include:
+
+* Share hardware configuration as the rest of the nodes that will be installed with the generated Seed Image.
+* Shared `/var/lib/containers` partition.
+
+When the LifeCycle Agent Operator runs the seed image generation, the orchestrator will run its system config validation checks to ensure the required seed SNO configuration is present. In case there is some blocking configuration, the relevant information will be stored in the `SeedGenerator` custom resource.
+
+[#image-based-installation]
+== Image Based Installation
+
+The role of LCA during IBI deployments is just the generation of the seed image that will be used during the final install. As we will see in future sections, IBI deployments require booting the hardware with a _pre-installation iso_ that leverages the seed image. 
+
+
+[#image-based-upgrades]
+== Image Based Upgrades
+
+The role of LCA during IBU operations includes the generation of the seed image that will be used during the upgraded, as well as the orchestration of the upgrade process itself, including backup and restore of cluster configurations and running workloads.
+
+During the upgrade, the LCA will orchestrate the process during the following stages:
+
+* Idle
+* Prep
+* Upgrade
+* Rollback (Optional)
+
+For more detailed information on the stages, check the {lca-ibu-stages}[stages of the image-based upgrade] on the official docs.
+
+During the upgrade, LCA can also backup and restore cluster configurations and workloads. Check the {lca-backup-restore}[backup and restore guidelines] on the official docs.
+
+[#image-based-upgrades-at-scale]
+== Image Based Upgrades at Scale
+
+LCA operator cannot manage image-based upgrades at scale, in order to run IBU at scale, we leverage another operator, TALM. We will talk about `ImageBasedGroupUpgrade` API and how TALM orchestrates such upgrades in the TALM section of the lab.

@@ -92,4 +92,8 @@ code:experimental:
 :seed-prereq-config: https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-preparing-for-image-based-install.html#cnf-image-based-upgrade-generate-seed-image_ibi-preparing-image-based-install
 :seed-extramanifests: https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install.html#ibi-create-extra-manifest-configmap_ibi-edge-image-based-install
 #:seed-prereq-config-du-profile: https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-preparing-for-image-based-install.html#ztp-image-based-upgrade-seed-image-config-ran_ibi-preparing-image-based-install
+:lca-seed-cluster-guidelines: https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html#ibi-image-based-install-cluster-guide_ibi-understanding-image-based-install
+:lca-ibu-stages: https://docs.openshift.com/container-platform/4.17/edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.html#cnf-image-based-upgrade_understanding-image-based-upgrade
+:lca-backup-restore: https://docs.openshift.com/container-platform/4.17/edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.html#ztp-image-based-upgrade-backup-guide_understanding-image-based-upgrade
+:talm-ibgu-docs: https://docs.openshift.com/container-platform/4.17/edge_computing/image_based_upgrade/ztp-image-based-upgrade.html
 :last-update-date: 2024-11-11

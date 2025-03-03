@@ -48,7 +48,7 @@ spec:
     timeout: 240
 -----
 
-WARNING: TALM does not only deal with OpenShift release upgrades, when we talk about upgrades in this section, we mean all kind of modifications to the managed clusters. Essentially, a CGU must be created everytime we want to enforce a policy.
+WARNING: TALM does not only deal with OpenShift release upgrades, when we talk about upgrades in this section, we mean all kind of modifications to the managed clusters. Essentially, a CGU must be created every time we want to enforce a policy.
 
 [#autocreation-cgu]
 === Auto creation of CGU
@@ -100,3 +100,8 @@ When TALM builds the auto-generated CGU as part of the ZTP phase, the included p
 As TALM works through the list of managedPolicies included in the CGU it will wait for each policy to be compliant before moving to the next policy. It is important to ensure that the order in which policies are listed under managedPolicies (and thus also the wave annotation used in populating this list during ZTP) takes into account any pre-requisites for the CRs in those policies to be applied to the cluster. For example an operator must be installed before, or concurrently with, the configuration for the operator.
 
 WARNING: All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate. Default ztp-deploy-wave value can be found on the proper {cnf-features-source-crs}[source crs].
+
+[#sno-upgrades-at-scale]
+== SNO Upgrades at Scale
+
+TALM helps with the orchestration of SNO clusters upgrades at scale. The recommended upgrade method for SNOs is the Image Based Upgrade (IBU), but as we described in the link:lca.html[LCA section], LCA works at a single cluster level. TALM runs on the Hub cluster and can handle the upgrade of multiple clusters. In order to orchestrate such upgrades, the `ImageBasedGroupUpgrade` API can be used. We will see how to leverage this API in the hands-on section of the lab. You can read more on Image Based Group Upgrades on {talm-ibgu-docs}[the official docs].
