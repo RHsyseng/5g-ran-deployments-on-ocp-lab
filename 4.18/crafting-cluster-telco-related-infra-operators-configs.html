@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Crafting the Cluster Telco Related Infrastructure Operators Configs :: LAB - 5G RAN Deployments on OpenShift</title>
+    <title>Crafting the Telco RAN Reference Design Specification :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://labs.sysdeseng.com/4.18/crafting-cluster-telco-related-infra-operators-configs.html">
     <link rel="prev" href="crafting-deployments-iac.html">
-    <link rel="next" href="running-the-deployment.html">
+    <link rel="next" href="installing-agentbasedinstall-cluster.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
   </head>
@@ -384,9 +384,6 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="policygen-deepdive.html#siteconfig-templating">SiteConfig Templating</a>
-  </li>
-  <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="policygen-deepdive.html#policies-templating">Policies Templating</a>
 <ul class="nav-list">
@@ -463,76 +460,22 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="creating-seed-image.html#introduction-to-seed-image">Introduction to the Seed Image Generation</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="creating-seed-image.html#running-the-seed-generation">Running the Seed Image Generation</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html">Deploying an Image Based Install Cluster</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#introduction">Introduction</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-installation-iso">Creating the Installation ISO</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#preinstallation-process">PreInstalling the Host</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">Creating the Configuration ISO</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#completing-install">Completing the Installation</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-deployments-iac.html">Crafting Deployment&#8217;s IaC</a>
+    <a class="nav-link" href="crafting-deployments-iac.html">Preparing the ZTP GitOps Pipeline</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="crafting-deployments-iac.html#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-deployments-iac.html#crafting-our-own-clusterinstance">Crafting our own ClusterInstance</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="crafting-deployments-iac.html#git-repository">Git Repository</a>
   </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#baremetal-node-details">Bare Metal Node Details</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#pre-reqs">Deployment Prerequesites</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#clusterinstance">ClusterInstance</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#reference-manifest-siteconfig">Reference Manifest Configuration</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#preparing-installation">Preparing for the Installation</a>
-  </li>
-</ul>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-deployments-iac.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
   </li>
 </ul>
   </li>
   <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting the Telco RAN Reference Design Specification</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#crafting-common-policies">Crafting Common Policies</a>
@@ -552,17 +495,50 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#deploying-policies-using-gitops-pipeline">Deploying the Telco 5G RAN RDS using the ZTP GitOps Pipeline</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="running-the-deployment.html">Running the Deployment</a>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html">Deploying an Agent Based Install Cluster</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="running-the-deployment.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#introduction">Introduction</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="running-the-deployment.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#baremetal-node-details">Bare Metal Node Details</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#pre-reqs">Deployment Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#clusterinstance">ClusterInstance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#reference-manifest-siteconfig">Reference Manifest Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#preparing-installation">Get Ready for the Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment">Monitoring the Deployment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment-webui">Monitoring the Deployment via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment-cli">Monitoring the Deployment via the CLI</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -572,20 +548,43 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="monitoring-the-deployment.html">Monitoring the Deployment</a>
+    <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="monitoring-the-deployment.html#monitoring-deployment-webui">Monitoring the Deployment via the WebUI</a>
+    <a class="nav-link" href="creating-seed-image.html#introduction-to-seed-image">Introduction to the Seed Image Generation</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="monitoring-the-deployment.html#monitoring-deployment-cli">Monitoring the Deployment via the CLI</a>
+    <a class="nav-link" href="creating-seed-image.html#running-the-seed-generation">Running the Seed Image Generation</a>
   </li>
 </ul>
   </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html">Deploying an Image Based Install Cluster</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#baremetal-node-details">Bare Metal Node Details</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-installation-iso">Creating the Installation ISO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#preinstallation-process">PreInstalling the Host</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">Creating the Configuration ISO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#completing-install">Completing the Installation</a>
+  </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="check-deployment-is-finished.html">Check SNO Deployment is finished</a>
@@ -600,25 +599,19 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="using-talm-to-update-clusters.html">Using TALM to update clusters</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html">Image-based upgrade for single-node OpenShift clusters</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifying the TALM state</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifying hub software requirements</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the upgrade PGT</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Verifying managed clusters requirements</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-cgu-creation">Applying the upgrade</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#talm-backup-precache">Backup and pre-cache</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html#install-lca">Preparing managed clusters for upgrade</a>
   </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#talm-upgrade">Triggering the upgrade</a>
-  </li>
-</ul>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the Image Base Group Upgrade</a>
   </li>
 </ul>
   </li>
@@ -765,18 +758,18 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a></li>
+    <li><a href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting the Telco RAN Reference Design Specification</a></li>
   </ul>
 </nav>
   <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/lab-4.18/documentation/modules/ROOT/pages/crafting-cluster-telco-related-infra-operators-configs.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Crafting the Cluster Telco Related Infrastructure Operators Configs</h1>
+<h1 class="page">Crafting the Telco RAN Reference Design Specification</h1>
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the previous section, we created the infrastructure as code (IaC) for our <code>SNO2</code> cluster using the <code>ClusterInstance</code> object. In this section, we are going to create the configuration as code (CaC) for our clusters by using multiple <code>PolicyGenTemplate</code> objects.</p>
+<p>In the previous section, the <a href="crafting-deployments-iac.html">ZTP GitOps pipeline</a> was put in place to deploy our Infrastructure as Code (IaC) and Configuration as Code (CaC). In this one, we are going to focus on creating the Configuration as Code (CaC) for the OpenShift that will be installed in the following sections. The configuration of the Telco RAN Reference Design Specification is applied using multiple <code>PolicyGenTemplate</code> objects.</p>
 </div>
 <div class="paragraph">
 <p>We described how <code>PolicyGenTemplate</code> works in detail <a href="policygen-deepdive.html#policies-templating" class="xref page">here</a>, so let&#8217;s jump directly to the creation of the different templates.</p>
@@ -800,7 +793,7 @@ The configuration defined through these PolicyGenTemplate CRs is only a subset o
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Below commands must be executed from the workstation host if not specified otherwise.
+Below commands must be executed from the infrastructure host if not specified otherwise.
 </td>
 </tr>
 </table>
@@ -1231,7 +1224,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="crafting-custom-policies"><a class="anchor" href="#crafting-custom-policies"></a>Adding custom content</h2>
+<h2 id="crafting-custom-policies"><a class="anchor" href="#crafting-custom-policies"></a>Adding custom content (source-crs)</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you require cluster configuration changes outside of the base GitOps Zero Touch Provisioning (ZTP) pipeline configuration, you can add content to the GitOps ZTP library. The base source custom resources (CRs) that are included in the ztp-generate container that you deploy with the GitOps ZTP pipeline can be augmented with custom content as required.</p>
@@ -1258,7 +1251,7 @@ podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:844
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that we can add content not included in the ZTP container image by creating the required source CR in the <code>source-crs/custom-crs</code> folder. Once pushed to our Git repo, we can reference it in any of the common, group or site policies we have already created. More information on Deploying additional changes to cluster can be found in the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/policygentemplate_for_ztp/ztp-advanced-policy-config.html#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config">docs</a></p>
+<p>Notice that we can add content not included in the ZTP container image by creating the required source CR in the <code>source-crs/custom-crs</code> folder. Once pushed to our Git repo, we can reference it in any of the common, group or site <code>PolicyGenTemplates</code> we have already created. More information on Deploying additional changes to cluster can be found in the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/policygentemplate_for_ztp/ztp-advanced-policy-config.html#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config">docs</a></p>
 </div>
 </div>
 </div>
@@ -1571,7 +1564,7 @@ EOF</code></pre>
 </div>
 </li>
 <li>
-<p>At this point, we can push the changes to the repo and continue to the next section.</p>
+<p>At this point, we can push this changes to <code>sno2</code> to the repo.</p>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository
@@ -1586,9 +1579,52 @@ cd ~</code></pre>
 </div>
 </div>
 </div>
+<div class="sect1">
+<h2 id="deploying-policies-using-gitops-pipeline"><a class="anchor" href="#deploying-policies-using-gitops-pipeline"></a>Deploying the Telco 5G RAN RDS using the ZTP GitOps Pipeline</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Once the changes are commited to the Git repository, ArgoCD will synchronize the new resources and apply them to the hub cluster automatically. You can see how the <strong>policies</strong> ZTP GitOps pipeline created all the configuration objects. If we check the <code>policies</code> app this is what we will see:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argocd-policies-app.png" alt="ArgoCD Policies App">
+</div>
+</div>
+<div class="paragraph">
+<p>The resulting policies can be seen from the <a href="https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome">RHACM WebUI</a>:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Access the <a href="https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome">RHACM WebUI</a> and login with the OpenShift credentials.</p>
+</li>
+<li>
+<p>Once you&#8217;re in, click on <code>Governance</code> &#8594; <code>Policies</code>. You will see the following screen where we can see several policies registered.</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The Telco 5G RAN RDS policies are ready but they are not being applied or compared to any cluster yet. That&#8217;s because we did not provision any SNO cluster. Let&#8217;s fix that by moving to the next section and deploy the our first one.
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/crafting-rds-acm.png" alt="ArgoCD Policies App">
+</div>
+</div>
+</div>
+</div>
 <nav class="pagination">
-  <span class="prev"><a href="crafting-deployments-iac.html">Crafting Deployment&#8217;s IaC</a></span>
-  <span class="next"><a href="running-the-deployment.html">Running the Deployment</a></span>
+  <span class="prev"><a href="crafting-deployments-iac.html">Preparing the ZTP GitOps Pipeline</a></span>
+  <span class="next"><a href="installing-agentbasedinstall-cluster.html">Deploying an Agent Based Install Cluster</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

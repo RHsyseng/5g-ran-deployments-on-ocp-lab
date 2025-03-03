@@ -6,7 +6,7 @@
     <title>Deploying an Image Based Install Cluster :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://labs.sysdeseng.com/4.18/installing-imagebaseinstall-cluster.html">
     <link rel="prev" href="creating-seed-image.html">
-    <link rel="next" href="crafting-deployments-iac.html">
+    <link rel="next" href="check-deployment-is-finished.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
   </head>
@@ -384,9 +384,6 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="policygen-deepdive.html#siteconfig-templating">SiteConfig Templating</a>
-  </li>
-  <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="policygen-deepdive.html#policies-templating">Policies Templating</a>
 <ul class="nav-list">
@@ -463,76 +460,22 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="creating-seed-image.html#introduction-to-seed-image">Introduction to the Seed Image Generation</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="creating-seed-image.html#running-the-seed-generation">Running the Seed Image Generation</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item is-current-page" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html">Deploying an Image Based Install Cluster</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#introduction">Introduction</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#creating-the-installation-iso">Creating the Installation ISO</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#preinstallation-process">PreInstalling the Host</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#creating-the-configuration-iso">Creating the Configuration ISO</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#completing-install">Completing the Installation</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-deployments-iac.html">Crafting Deployment&#8217;s IaC</a>
+    <a class="nav-link" href="crafting-deployments-iac.html">Preparing the ZTP GitOps Pipeline</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="crafting-deployments-iac.html#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-deployments-iac.html#crafting-our-own-clusterinstance">Crafting our own ClusterInstance</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="crafting-deployments-iac.html#git-repository">Git Repository</a>
   </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#baremetal-node-details">Bare Metal Node Details</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#pre-reqs">Deployment Prerequesites</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#clusterinstance">ClusterInstance</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#reference-manifest-siteconfig">Reference Manifest Configuration</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#preparing-installation">Preparing for the Installation</a>
-  </li>
-</ul>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-deployments-iac.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting the Telco RAN Reference Design Specification</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
@@ -552,17 +495,50 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#deploying-policies-using-gitops-pipeline">Deploying the Telco 5G RAN RDS using the ZTP GitOps Pipeline</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="running-the-deployment.html">Running the Deployment</a>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html">Deploying an Agent Based Install Cluster</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="running-the-deployment.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#introduction">Introduction</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="running-the-deployment.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#baremetal-node-details">Bare Metal Node Details</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#pre-reqs">Deployment Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#clusterinstance">ClusterInstance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#reference-manifest-siteconfig">Reference Manifest Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#preparing-installation">Get Ready for the Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment">Monitoring the Deployment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment-webui">Monitoring the Deployment via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment-cli">Monitoring the Deployment via the CLI</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -572,20 +548,43 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="monitoring-the-deployment.html">Monitoring the Deployment</a>
+    <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="monitoring-the-deployment.html#monitoring-deployment-webui">Monitoring the Deployment via the WebUI</a>
+    <a class="nav-link" href="creating-seed-image.html#introduction-to-seed-image">Introduction to the Seed Image Generation</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="monitoring-the-deployment.html#monitoring-deployment-cli">Monitoring the Deployment via the CLI</a>
+    <a class="nav-link" href="creating-seed-image.html#running-the-seed-generation">Running the Seed Image Generation</a>
   </li>
 </ul>
   </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html">Deploying an Image Based Install Cluster</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#baremetal-node-details">Bare Metal Node Details</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#creating-the-installation-iso">Creating the Installation ISO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#preinstallation-process">PreInstalling the Host</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#creating-the-configuration-iso">Creating the Configuration ISO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#completing-install">Completing the Installation</a>
+  </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="check-deployment-is-finished.html">Check SNO Deployment is finished</a>
@@ -600,25 +599,19 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="using-talm-to-update-clusters.html">Using TALM to update clusters</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html">Image-based upgrade for single-node OpenShift clusters</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifying the TALM state</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifying hub software requirements</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the upgrade PGT</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Verifying managed clusters requirements</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-cgu-creation">Applying the upgrade</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#talm-backup-precache">Backup and pre-cache</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html#install-lca">Preparing managed clusters for upgrade</a>
   </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#talm-upgrade">Triggering the upgrade</a>
-  </li>
-</ul>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the Image Base Group Upgrade</a>
   </li>
 </ul>
   </li>
@@ -822,7 +815,34 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="creating-the-configurinstallationation-iso"><a class="anchor" href="#creating-the-configurinstallationation-iso"></a>Creating the Installation ISO</h2>
+<h2 id="baremetal-node-details"><a class="anchor" href="#baremetal-node-details"></a>Bare Metal Node Details</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The details for our baremetal node that we want to provision as SNO3 are the ones below:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>RedFish Endpoint: <code>redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno3</code></p>
+</li>
+<li>
+<p>MAC Address: <code>aa:aa:aa:aa:04:01</code></p>
+</li>
+<li>
+<p>Primary disk: <code>/dev/vda</code></p>
+</li>
+<li>
+<p>BMC User: <code>admin</code></p>
+</li>
+<li>
+<p>BMC Password: <code>admin</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="creating-the-installation-iso"><a class="anchor" href="#creating-the-installation-iso"></a>Creating the Installation ISO</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In order to create the installation ISO we are going to create a working directory in the infrastructure node.</p>
@@ -1028,7 +1048,7 @@ Feb 04 10:37:52 ocp-sno3 systemd[1]: Starting SNO Image-based Installation...
 Feb 04 10:37:52 ocp-sno3 systemd[1]: iscsi.service: Unit cannot be reloaded because it is inactive.
 Feb 04 10:37:53 ocp-sno3 systemd[1]: var-lib-containers-storage-overlay-opaque\x2dbug\x2dcheck2861559422-merged.mount: Deactivated successfully.
 Feb 04 10:37:53 ocp-sno3 podman[1625]: 2025-02-04 10:37:53.120804852 +0000 UTC m=+0.201463935 system refresh
-Feb 04 10:37:53 ocp-sno3 install-rhcos-and-restore-seed.sh[1625]: Trying to pull infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.6...
+Feb 04 10:37:53 ocp-sno3 install-rhcos-and-restore-seed.sh[1625]: Trying to pull infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.7...
 Feb 04 10:37:53 ocp-sno3 install-rhcos-and-restore-seed.sh[1625]: Getting image source signatures
 Feb 04 10:37:53 ocp-sno3 install-rhcos-and-restore-seed.sh[1625]: Copying blob sha256:93570925bc4c04f7a453bd0eb530ddad84ea634c54defef1ec2a6410ad1eb683
 ...
@@ -1093,14 +1113,12 @@ image-based-install-operator-7f7659f86c-cd46k   2/2     Running   0          5h<
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/imagebaseinstall/01_ibi_ns.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno3/ns.yaml
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: "sno3"
-  labels:
-    name: "sno3"
+  name: sno3
 EOF</code></pre>
 </div>
 </div>
@@ -1109,16 +1127,16 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/imagebaseinstall/02_ibi_secret_registry.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno3/pull-secret.yaml
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: ibi-image-pull-secret
+  name: disconnected-registry-pull-secret
   namespace: sno3
 stringData:
   .dockerconfigjson: '{"auths":{"infra.5g-deployment.lab:8443":{"auth":"YWRtaW46cjNkaDR0MSE="}}}'
-type: kubernetes.io/dockerconfigjson
+  type: kubernetes.io/dockerconfigjson
 EOF</code></pre>
 </div>
 </div>
@@ -1127,50 +1145,17 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/imagebaseinstall/03_ibi_bmh.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno3/bmc-credentials.yaml
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: sno3-bmh-secret
+  name: sno3-bmc-credentials
   namespace: sno3
 data:
   username: "YWRtaW4="
   password: "YWRtaW4="
 type: Opaque
----
-apiVersion: metal3.io/v1alpha1
-kind: BareMetalHost
-metadata:
-  name: "ocp-sno3"
-  namespace: sno3
-spec:
-  bootMode: UEFI
-  bmc:
-    address: "redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno3"
-    disableCertificateVerification: true
-    credentialsName: "sno3-bmh-secret"
-  bootMACAddress: "aa:aa:aa:aa:04:01"
-  automatedCleaningMode: "disabled"
-  online: true
-  externallyProvisioned: true
-EOF</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Then, specify the version of the OpenShift release we want to install into the target cluster. This version actually matches with the OCP version found in the seed container image.</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/imagebaseinstall/04_ibi_cluster_image_set.yaml
----
-apiVersion: hive.openshift.io/v1
-kind: ClusterImageSet
-metadata:
-  annotations:
-  name: openshift-v4.18.0-rc.7-disconnected
-spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift-release-dev/ocp-release:4.18.0-rc.7-x86_64
 EOF</code></pre>
 </div>
 </div>
@@ -1184,6 +1169,9 @@ EOF</code></pre>
 </li>
 <li>
 <p>The LVMCluster configuration for the LVM Operator. Note that the LVM Operator was included in the seed image.</p>
+</li>
+<li>
+<p>The ImageDigestMirrorSet required in our disconnected environment.</p>
 </li>
 </ul>
 </div>
@@ -1201,7 +1189,8 @@ Remember that during the seed image generation, the catalogsources are removed f
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/imagebaseinstall/05_ibi_extra_manifests.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno3/ibi_extra_manifests.yaml
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -1244,209 +1233,245 @@ data:
             name: thin-pool-1
             overprovisionRatio: 10
             sizePercent: 90
-
+  ImageDigestSources.yaml: |
+    apiVersion: config.openshift.io/v1
+    kind: ImageDigestMirrorSet
+    metadata:
+      name: image-digest-mirror
+    spec:
+      imageDigestMirrors:
+      - mirrors:
+        - infra.5g-deployment.lab:8443/prega/test/openshift4
+        source: registry.redhat.io/openshift4
+      - mirrors:
+        - infra.5g-deployment.lab:8443/prega/test/rhacm2
+        source: registry.redhat.io/rhacm2
+      - mirrors:
+        - infra.5g-deployment.lab:8443/prega/test/rhceph
+        source: registry.redhat.io/rhceph
+      - mirrors:
+        - infra.5g-deployment.lab:8443/prega/test/rhel8
+        source: registry.redhat.io/rhel8
+      - mirrors:
+        - infra.5g-deployment.lab:8443/prega/test/rh-sso-7
+        source: registry.redhat.io/rh-sso-7
+      - mirrors:
+        - infra.5g-deployment.lab:8443/prega/test/odf4
+        source: registry.redhat.io/odf4
+      - mirrors:
+        - infra.5g-deployment.lab:8443/prega/test/multicluster-engine
+        source: registry.redhat.io/multicluster-engine
+      - mirrors:
+        - infra.5g-deployment.lab:8443/prega/test/openshift-gitops-1
+        source: registry.redhat.io/openshift-gitops-1
+      - mirrors:
+        - infra.5g-deployment.lab:8443/prega/test/lvms4
+        source: registry.redhat.io/lvms4
+      - mirrors:
+        - infra.5g-deployment.lab:8443/prega/test/rh-osbs
+        source: quay.io/prega/test/rh-osbs
+      - mirrors:
+        - infra.5g-deployment.lab:8443/prega/test/oadp
+        source: registry.redhat.io/oadp
+      - mirrors:
+        - infra.5g-deployment.lab:8443/openshift-release-dev/ocp-v4.0-art-dev
+        source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+      - mirrors:
+        - infra.5g-deployment.lab:8443/openshift-release-dev/ocp-release
+        source: quay.io/openshift-release-dev/ocp-release
+    status: {}
 EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Now, create the specific <code>ImageClusterInstall</code> CR for the image-based installation process. It includes the previously created image object and the additional manifests configMap.</p>
+<p>Finally, add the Kustomization files so the previous manifests can be applied using a ZTP GitOps worflow.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/imagebaseinstall/06_ibi_image_cluster_install.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno3/kustomization.yaml
 ---
-apiVersion: extensions.hive.openshift.io/v1alpha1
-kind: ImageClusterInstall
-metadata:
-  name: "sno3"
-  namespace: "sno3"
-spec:
-  extraManifestsRefs:
-    - name: disconnected-ran-config
-  clusterDeploymentRef:
-    name: "sno3"
-  imageSetRef:
-    name: "openshift-v4.18.0-rc.7-disconnected"
-  hostname: "ocp-sno3.sno3.5g-deployment.lab"
-  networkConfigRef:
-    name: "ocp-sno3"
-  bareMetalHostRef:
-    name: "ocp-sno3"
-    namespace: "sno3"
-  machineNetwork: 192.168.125.0/24
-  imageDigestSources:
-  - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/multicluster-engine
-    source: registry.redhat.io/multicluster-engine
-  - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/openshift-gitops-1
-    source: registry.redhat.io/openshift-gitops-1
-  - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/rh-sso-7
-    source: registry.redhat.io/rh-sso-7
-  - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/lvms4
-    source: registry.redhat.io/lvms4
-  - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/openshift4
-    source: registry.redhat.io/openshift4
-  - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/rhacm2
-    source: registry.redhat.io/rhacm2
-  - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/rhel8
-    source: registry.redhat.io/rhel8
-  - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/rh-osbs
-    source: quay.io/prega/test/rh-osbs
-  - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/oadp
-    source: registry.redhat.io/oadp
-  - mirrors:
-    - infra.5g-deployment.lab:8443/openshift-release-dev/ocp-v4.0-art-dev
-    - infra.5g-deployment.lab:8443/openshift/release
-    source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
-  - mirrors:
-    - infra.5g-deployment.lab:8443/openshift-release-dev
-    source: quay.io/openshift-release-dev
-  - mirrors:
-    - infra.5g-deployment.lab:8443/openshift/release-images
-    source: quay.io/openshift-release-dev/ocp-release
-  sshKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5pFKFLOuxrd9Q/TRu9sRtwGg2PV+kl2MHzBIGUhCcR0LuBJk62XG9tQWPQYTQ3ZUBKb6pRTqPXg+cDu5FmcpTwAKzqgUb6ArnjECxLJzJvWieBJ7k45QzhlZPeiN2Omik5bo7uM/P1YIo5pTUdVk5wJjaMOb7Xkcmbjc7r22xY54cce2Wb7B1QDtLWJkq++eJHSX2GlEjfxSlEvQzTN7m2N5pmoZtaXpLKcbOqtuSQSVKC4XPgb57hgEs/ZZy/LbGGHZyLAW5Tqfk1JCTFGm6Q+oOd3wAOF1SdUxM7frdrN3UOB12u/E6YuAx3fDvoNZvcrCYEpjkfrsjU91oz78aETZV43hOK9NWCOhdX5djA7G35/EMn1ifanVoHG34GwNuzMdkb7KdYQUztvsXIC792E2XzWfginFZha6kORngokZ2DwrzFj3wgvmVyNXyEOqhwi6LmlsYdKxEvUtiYhdISvh2Y9GPrFcJ5DanXe7NVAKXe5CyERjBnxWktqAPBzXJa36FKIlkeVF5G+NWgufC6ZWkDCD98VZDiPP9sSgqZF8bSR4l4/vxxAW4knKIZv11VX77Sa1qZOR9Ml12t5pNGT7wDlSOiDqr5EWsEexga/2s/t9itvfzhcWKt+k66jd8tdws2dw6+8JYJeiBbU63HBjxCX+vCVZASrNBjiXhFw=="
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - bmc-credentials.yaml
+  - pull-secret.yaml
+  - ns.yaml
+  - ibi_extra_manifests.yaml
 EOF</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>Then, create the <code>ClusterDeployment</code> object:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/imagebaseinstall/07_ibi_cluster_deployment.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/kustomization.yaml
 ---
-apiVersion: hive.openshift.io/v1
-kind: ClusterDeployment
-metadata:
-  name: "sno3"
-  namespace: "sno3"
-spec:
-  baseDomain: "5g-deployment.lab"
-  clusterInstallRef:
-    group: extensions.hive.openshift.io
-    kind: ImageClusterInstall
-    name: "sno3"
-    version: v1alpha1
-  clusterName: "sno3"
-  platform:
-    none: {}
-  pullSecretRef:
-    name: "ibi-image-pull-secret"
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - sno3/
 EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Add the <code>ManagedCluster</code> object, so the target cluster is automatically attached to the hub cluster after the installation is completed:</p>
+<p>Eventually, let&#8217;s create the ClusterInstance CR, which is an abstraction layer on top of the different components managed by the SiteConfig Operator used to deploy an OpenShift cluster. Notice that in this installation we are using the Image Based Installation flow. We can see that by checking the templateRefs specifications: <code>ibi-node-templates-v1</code> and <code>ibi-cluster-templates-v1</code> which are the default ones for IBI.</p>
 </div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/imagebaseinstall/08_ibi_managedcluster.yaml
----
-apiVersion: cluster.open-cluster-management.io/v1
-kind: ManagedCluster
-metadata:
-  name: sno3
-  labels:
-    common: "ocp418"
-    logicalGroup: "active"
-    group-du-sno: ""
-    hardware-type: "hw-type-platform-1"
-spec:
-  hubAcceptsClient: true
-EOF</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The <code>KlusterletAddonConfig</code> CR must be included too, so the proper ACM addons are installed too.</p>
-</div>
-<div class="admonitionblock warning">
+<div class="admonitionblock important">
 <table>
 <tr>
 <td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
+<i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-The <strong>policyController</strong> addon is required so that the hub can manage the target cluster using policies. In the following sections of the lab an image-based upgrade process will be executed. It will require to modify the cluster using RHACM policies.
+The SiteConfig Operator transforms the ClusterInstance CR into multiple Installation Manifests as detailed in <a href="ztp-workflow.html#ibi-deployment">Image Based Installation</a> section. With some of those manifests that define site-specific resources, the IBI operator creates a configuration ISO to start the reconfiguration process.
 </td>
 </tr>
 </table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/imagebaseinstall/09_ibi_klusterletaddonconfig.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; 'EOF' &gt; ~/5g-deployment-lab/ztp-repository/site-configs/hub-1/ocp-sno3.yaml
 ---
-apiVersion: agent.open-cluster-management.io/v1
-kind: KlusterletAddonConfig
+apiVersion: siteconfig.open-cluster-management.io/v1alpha1
+kind: ClusterInstance
 metadata:
-  name: sno3
-  namespace: sno3
+  name: "ocp-sno3"
+  namespace: "sno3"
 spec:
-  applicationManager:
-    enabled: false
-  certPolicyController:
-    enabled: false
-  clusterName: sno3
-  clusterNamespace: sno3
-  iamPolicyController:
-    enabled: false
-  policyController:
-    enabled: true
-  searchCollector:
-    enabled: false
+  additionalNTPSources:
+    - "clock.corp.redhat.com"
+  baseDomain: "5g-deployment.lab"
+  clusterImageSetNameRef: "active-ocp-version"
+  clusterName: "sno3"
+  clusterNetwork:
+    - cidr: "10.128.0.0/14"
+      hostPrefix: 23
+  cpuPartitioningMode: AllNodes
+  extraLabels:
+    ManagedCluster:
+      common: "ocp418"
+      logicalGroup: "active"
+      group-du-sno: ""
+      du-site: "sno3"
+      hardware-type: "hw-type-platform-1"
+  holdInstallation: false
+  extraManifestsRefs:
+    - name: disconnected-ran-config
+  machineNetwork:
+    - cidr: "192.168.125.0/24"
+  networkType: "OVNKubernetes"
+  pullSecretRef:
+    name: "disconnected-registry-pull-secret"
+  serviceNetwork:
+    - cidr: "172.30.0.0/16"
+  sshPublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5pFKFLOuxrd9Q/TRu9sRtwGg2PV+kl2MHzBIGUhCcR0LuBJk62XG9tQWPQYTQ3ZUBKb6pRTqPXg+cDu5FmcpTwAKzqgUb6ArnjECxLJzJvWieBJ7k45QzhlZPeiN2Omik5bo7uM/P1YIo5pTUdVk5wJjaMOb7Xkcmbjc7r22xY54cce2Wb7B1QDtLWJkq++eJHSX2GlEjfxSlEvQzTN7m2N5pmoZtaXpLKcbOqtuSQSVKC4XPgb57hgEs/ZZy/LbGGHZyLAW5Tqfk1JCTFGm6Q+oOd3wAOF1SdUxM7frdrN3UOB12u/E6YuAx3fDvoNZvcrCYEpjkfrsjU91oz78aETZV43hOK9NWCOhdX5djA7G35/EMn1ifanVoHG34GwNuzMdkb7KdYQUztvsXIC792E2XzWfginFZha6kORngokZ2DwrzFj3wgvmVyNXyEOqhwi6LmlsYdKxEvUtiYhdISvh2Y9GPrFcJ5DanXe7NVAKXe5CyERjBnxWktqAPBzXJa36FKIlkeVF5G+NWgufC6ZWkDCD98VZDiPP9sSgqZF8bSR4l4/vxxAW4knKIZv11VX77Sa1qZOR9Ml12t5pNGT7wDlSOiDqr5EWsEexga/2s/t9itvfzhcWKt+k66jd8tdws2dw6+8JYJeiBbU63HBjxCX+vCVZASrNBjiXhFw=="
+  templateRefs:
+    - name: ibi-cluster-templates-v1
+      namespace: open-cluster-management
+  nodes:
+    - automatedCleaningMode: "disabled"
+      bmcAddress: "redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno3"
+      bmcCredentialsName:
+        name: "sno3-bmc-credentials"
+      bootMACAddress: "AA:AA:AA:AA:04:01"
+      bootMode: "UEFI"
+      hostName: "ocp-sno3.sno3.5g-deployment.lab"
+      nodeNetwork:
+        interfaces:
+          - name: "enp3s0"
+            macAddress: "AA:AA:AA:AA:04:01"
+        config:
+          interfaces:
+            - name: enp3s0
+              type: ethernet
+              state: up
+              ipv4:
+                enabled: true
+                dhcp: true
+              ipv6:
+                enabled: false
+      role: "master"
+      rootDeviceHints:
+        deviceName: "/dev/vda"
+      templateRefs:
+        - name: ibi-node-templates-v1
+          namespace: open-cluster-management
 EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Create the kustomization object that includes all the previous manifests:</p>
+<p>Add the Kustomization file to pull the ClusterInstance recently created:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/imagebaseinstall/kustomization.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; 'EOF' &gt; ~/5g-deployment-lab/ztp-repository/site-configs/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - 01_ibi_ns.yaml
-  - 02_ibi_secret_registry.yaml
-  - 03_ibi_bmh.yaml
-  - 04_ibi_cluster_image_set.yaml
-  - 05_ibi_extra_manifests.yaml
-  - 06_ibi_image_cluster_install.yaml
-  - 07_ibi_cluster_deployment.yaml
-  - 08_ibi_managedcluster.yaml
-  - 09_ibi_klusterletaddonconfig.yaml
+  - pre-reqs/
+  - resources/
+  - hub-1/ocp-sno3.yaml
 EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Apply the kustomization in the hub cluster:</p>
+<p>Lastly, commit all these changes to our <a href="lab-environment-introduction.html#git-server">Git Server</a> repository.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig apply -k ~/imagebaseinstall/.</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository/site-configs/
+git add --all
+git commit -m 'Added SNO3 cluster using image-based install flow'
+git push origin main
+cd ~</code></pre>
 </div>
 </div>
-<div class="listingblock console">
+</div>
+</div>
+<div class="sect1">
+<h2 id="deploying-sno-using-gitops-pipeline"><a class="anchor" href="#deploying-sno-using-gitops-pipeline"></a>Deploying the SNO Cluster using the ZTP GitOps Pipeline</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When we applied the ZTP GitOps Pipeline configuration in the last section, that created two ArgoCD apps. One of the apps (clusters) take care of deploying the clusters defined in the <code>ClusterInstance</code> while the other (policies) take care of deploying the policies defined in the different <code>PolicyGenTemplates</code>.</p>
+</div>
+<div class="paragraph">
+<p>Since the apps have been created, ArgoCD started doing its magic which means that the cluster deployment should already be running, let&#8217;s see what happened in Argo CD.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Login into <a href="https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab/">Argo CD</a>.</p>
+</li>
+<li>
+<p>When accessing choose <code>Logging with OpenShift</code>, on the next screen use the OpenShift Console Admin credentials.</p>
+</li>
+<li>
+<p>You will see the follow applications:</p>
+<div class="imageblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">namespace/sno3 created
-configmap/disconnected-ran-config created
-secret/ibi-image-pull-secret created
-secret/sno3-bmh-secret created
-klusterletaddonconfig.agent.open-cluster-management.io/sno3 created
-managedcluster.cluster.open-cluster-management.io/sno3 created
-imageclusterinstall.extensions.hive.openshift.io/sno3 created
-clusterdeployment.hive.openshift.io/sno3 created
-clusterimageset.hive.openshift.io/openshift-v4.18.0-rc.7-disconnected configured
-baremetalhost.metal3.io/ocp-sno3 created</code></pre>
+<img src="_images/argocd-apps.png" alt="ArgoCD Apps">
 </div>
+</div>
+</li>
+<li>
+<p>From all these apps, the ones related to the ZTP GitOps Pipeline are <code>clusters</code> and <code>policies</code>. If we click on <code>clusters</code> we will see the following screen:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argocd-clusters-app.png" alt="ArgoCD Clusters App">
+</div>
+</div>
+</li>
+<li>
+<p>You can see how the pipeline created all the required objects to get our site deployed.</p>
+</li>
+<li>
+<p>If we check the <code>policies</code> app this is what we will see:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argocd-policies-app.png" alt="ArgoCD Policies App">
+</div>
+</div>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -1454,7 +1479,7 @@ baremetalhost.metal3.io/ocp-sno3 created</code></pre>
 <h2 id="completing-install"><a class="anchor" href="#completing-install"></a>Completing the Installation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Once the kustomization was applied, we can monitor the status of the reconfiguration process. We can use the following command to see the progress from the hub cluster. Notice that a <code>dataimage</code> object has been created. This object contains information about the configuration ISO created in the previous section <a href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">Creating the Configuration ISO</a>.</p>
+<p>Once the changes were commited and pushed to the Git repository, the <a href="ocp-gitops.html">OpenShift GitOps</a> operator is responsible for reconciling them. Next, we can monitor the status of the reconfiguration process. We can use the following command to see the progress from the hub cluster. Notice that a <code>dataimage</code> object has been created. This object contains information about the configuration ISO created in the previous section <a href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">Creating the Configuration ISO</a>.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1465,6 +1490,9 @@ baremetalhost.metal3.io/ocp-sno3 created</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE   NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
 sno3        baremetalhost.metal3.io/ocp-sno3   externally provisioned              true             35s
+
+NAME                                                             PAUSED   PROVISIONSTATUS   PROVISIONDETAILS         AGE
+clusterinstance.siteconfig.open-cluster-management.io/ocp-sno3            Completed         Provisioning completed   9h
 
 NAMESPACE   NAME                                       INFRAID                                PLATFORM          REGION   VERSION       CLUSTERTYPE   PROVISIONSTATUS   POWERSTATE   AGE
 sno3        clusterdeployment.hive.openshift.io/sno3   sno3-zrts7                             none-platform                                          Provisioning                   35s
@@ -1547,7 +1575,7 @@ clusteroperator.config.openshift.io/service-ca                                 4
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Confirm that the <code>imageclusterinstall</code> status is ClusterInstallationSucceeded and the <code>clusterdeployment</code> is Provisioned.
+Confirm that the <code>clusterInstance</code> is shown as "Provisioning completed", the <code>imageclusterinstall</code> status is ClusterInstallationSucceeded and the <code>clusterdeployment</code> is Provisioned.
 </td>
 </tr>
 </table>
@@ -1561,6 +1589,9 @@ Confirm that the <code>imageclusterinstall</code> status is ClusterInstallationS
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
 baremetalhost.metal3.io/ocp-sno3   externally provisioned              true             32m
+
+NAME                                                             PAUSED   PROVISIONSTATUS   PROVISIONDETAILS         AGE
+clusterinstance.siteconfig.open-cluster-management.io/ocp-sno3            Completed         Provisioning completed   32m
 
 NAME                                       INFRAID	PLATFORM        REGION   VERSION       CLUSTERTYPE   PROVISIONSTATUS   POWERSTATE   AGE
 clusterdeployment.hive.openshift.io/sno3   sno3-vcd52   none-platform            4.18.0-rc.7                 Provisioned       Running      32m
@@ -1583,9 +1614,9 @@ dataimage.metal3.io/ocp-sno3   32m</code></pre>
 <div class="paragraph">
 <p>The Add-ons applied via KlusterletAddonConfig CR are also installed and available:</p>
 </div>
-<div class="imageblock unresolved">
+<div class="imageblock">
 <div class="content">
-<img src="ibi-acm-reconfig03.png" alt="IBI Add-ons installed">
+<img src="_images/ibi-acm-reconfig03.png" alt="IBI Add-ons installed">
 </div>
 </div>
 </div>
@@ -1699,7 +1730,7 @@ openshift-node-performance-profile   6h24m</code></pre>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="creating-seed-image.html">Creating the Seed Image</a></span>
-  <span class="next"><a href="crafting-deployments-iac.html">Crafting Deployment&#8217;s IaC</a></span>
+  <span class="next"><a href="check-deployment-is-finished.html">Check SNO Deployment is finished</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

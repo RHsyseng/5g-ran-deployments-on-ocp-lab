@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Crafting the Deployment Infrastructure as Code :: LAB - 5G RAN Deployments on OpenShift</title>
+    <title>Preparing the ZTP GitOps Pipeline :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://labs.sysdeseng.com/4.18/crafting-deployments-iac.html">
-    <link rel="prev" href="installing-imagebaseinstall-cluster.html">
+    <link rel="prev" href="lab-environment-introduction.html">
     <link rel="next" href="crafting-cluster-telco-related-infra-operators-configs.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
@@ -384,9 +384,6 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="policygen-deepdive.html#siteconfig-templating">SiteConfig Templating</a>
-  </li>
-  <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="policygen-deepdive.html#policies-templating">Policies Templating</a>
 <ul class="nav-list">
@@ -461,6 +458,94 @@
   </li>
 </ul>
   </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="crafting-deployments-iac.html">Preparing the ZTP GitOps Pipeline</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#git-repository">Git Repository</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting the Telco RAN Reference Design Specification</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-custom-policies">Adding custom content</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-testing-policies">Crafting testing Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#deploying-policies-using-gitops-pipeline">Deploying the Telco 5G RAN RDS using the ZTP GitOps Pipeline</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html">Deploying an Agent Based Install Cluster</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#baremetal-node-details">Bare Metal Node Details</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#pre-reqs">Deployment Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#clusterinstance">ClusterInstance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#reference-manifest-siteconfig">Reference Manifest Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#preparing-installation">Get Ready for the Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment">Monitoring the Deployment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment-webui">Monitoring the Deployment via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment-cli">Monitoring the Deployment via the CLI</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
@@ -481,6 +566,9 @@
     <a class="nav-link" href="installing-imagebaseinstall-cluster.html#introduction">Introduction</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#baremetal-node-details">Bare Metal Node Details</a>
+  </li>
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-installation-iso">Creating the Installation ISO</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -490,102 +578,13 @@
     <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">Creating the Configuration ISO</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+  </li>
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="installing-imagebaseinstall-cluster.html#completing-install">Completing the Installation</a>
   </li>
 </ul>
   </li>
-  <li class="nav-item is-current-page" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-deployments-iac.html">Crafting Deployment&#8217;s IaC</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#crafting-our-own-clusterinstance">Crafting our own ClusterInstance</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#git-repository">Git Repository</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#baremetal-node-details">Bare Metal Node Details</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#pre-reqs">Deployment Prerequesites</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#clusterinstance">ClusterInstance</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#reference-manifest-siteconfig">Reference Manifest Configuration</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#preparing-installation">Preparing for the Installation</a>
-  </li>
-</ul>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-custom-policies">Adding custom content</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-testing-policies">Crafting testing Policies</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="running-the-deployment.html">Running the Deployment</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="running-the-deployment.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="running-the-deployment.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
-  </li>
-</ul>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="monitoring-the-deployment.html">Monitoring the Deployment</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="monitoring-the-deployment.html#monitoring-deployment-webui">Monitoring the Deployment via the WebUI</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="monitoring-the-deployment.html#monitoring-deployment-cli">Monitoring the Deployment via the CLI</a>
-  </li>
-</ul>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="check-deployment-is-finished.html">Check SNO Deployment is finished</a>
@@ -600,25 +599,19 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="using-talm-to-update-clusters.html">Using TALM to update clusters</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html">Image-based upgrade for single-node OpenShift clusters</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifying the TALM state</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifying hub software requirements</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the upgrade PGT</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Verifying managed clusters requirements</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-cgu-creation">Applying the upgrade</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#talm-backup-precache">Backup and pre-cache</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html#install-lca">Preparing managed clusters for upgrade</a>
   </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="using-talm-to-update-clusters.html#talm-upgrade">Triggering the upgrade</a>
-  </li>
-</ul>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the Image Base Group Upgrade</a>
   </li>
 </ul>
   </li>
@@ -765,14 +758,14 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="crafting-deployments-iac.html">Crafting Deployment&#8217;s IaC</a></li>
+    <li><a href="crafting-deployments-iac.html">Preparing the ZTP GitOps Pipeline</a></li>
   </ul>
 </nav>
   <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/lab-4.18/documentation/modules/ROOT/pages/crafting-deployments-iac.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Crafting the Deployment Infrastructure as Code</h1>
+<h1 class="page">Preparing the ZTP GitOps Pipeline</h1>
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
@@ -787,19 +780,14 @@
 <h2 id="introduction-to-clusterinstance"><a class="anchor" href="#introduction-to-clusterinstance"></a>Introduction to the ClusterInstance</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <code>ClusterInstance</code> is an abstraction layer on top of the different components managed by the <a href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a> used to deploy an OpenShift cluster using either the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> or <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html">Image Based Installation</a> flow. For the ones familiar with the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Instalation</a> and particularly with the <code>Assisted Service</code>, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like: <code>ClusterDeployment</code>, <code>InfraEnv</code>, <code>AgentClusterInstall</code>, etc.</p>
+<p>The <code>ClusterInstance</code> is an abstraction layer on top of the different components managed by the <a href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a>, responsible for deploying OpenShift clusters using either the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> or <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html">Image Based Installation</a> flow. For the ones familiar with the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> and particularly with the <code>Assisted Service</code>, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like: <code>ClusterDeployment</code>, <code>InfraEnv</code>, <code>AgentClusterInstall</code>, etc.</p>
 </div>
 <div class="paragraph">
 <p>The ClusterInstance simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place. In this <a href="https://github.com/stolostron/siteconfig/blob/main/config/samples/siteconfig_v1alpha1_clusterinstance.yaml">link</a> you can find an example of a ClusterInstance for a SNO deployment.</p>
 </div>
 <div class="paragraph">
-<p>In the next section, we will create our own ClusterInstance using the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> flow in order to deploy a SNO in our lab environment.</p>
+<p>In the comming sections, we will create our own ClusterInstances using the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html">Image Based Installation</a> and <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> flows to deploy a couple of SNO clusters in our lab environment.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="crafting-our-own-clusterinstance"><a class="anchor" href="#crafting-our-own-clusterinstance"></a>Crafting our own ClusterInstance (agent-based install)</h2>
-<div class="sectionbody">
 <div class="admonitionblock warning">
 <table>
 <tr>
@@ -824,10 +812,13 @@ The steps below rely on the lab environment being up and running.
 </tr>
 </table>
 </div>
-<div class="sect2">
-<h3 id="git-repository"><a class="anchor" href="#git-repository"></a>Git Repository</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="git-repository"><a class="anchor" href="#git-repository"></a>Git Repository</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>We need a Git repository where we will store our clusters configurations, we will create a new Git repository in the Git server running on the infrastructure node.</p>
+<p>We need a Git repository where we will store our clusters configurations, we will create a new Git repository in the <a href="lab-environment-introduction.html#git-server">Git server</a> running on the infrastructure node.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
@@ -854,7 +845,7 @@ The steps below rely on the lab environment being up and running.
 </ol>
 </div>
 <div class="paragraph">
-<p>Now that we have a repository ready to be used we will clone it to our workstation.</p>
+<p>Now that we have a repository ready to be used we will clone it to the infrastructure host.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -878,7 +869,7 @@ git clone <a href="http://student:student@infra.5g-deployment.lab:3000/student/z
 <p>We&#8217;re ready to start working in the Git repository folder structure.</p>
 </div>
 <div class="paragraph">
-<p>As we saw in a previous section, the Git repository we will be using will have the following structure:</p>
+<p>As we saw in <a href="deployment-considerations.html#git-repo-structure">Git Repository Structure</a> section, the Git repository we will be using will have the following structure:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -889,6 +880,7 @@ git clone <a href="http://student:student@infra.5g-deployment.lab:3000/student/z
 |   |   |   └── 4.18
 │   ├── pre-reqs
 │   │   └── sno2
+|   |   └── sno3
 │   └── resources
 └── site-policies
     ├── fleet
@@ -923,7 +915,7 @@ If it is the first time that you are using <code>git</code> in your machine, a m
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-The cluster name for the SNO that we will be deploying in the lab will be <strong>sno2</strong>, that&#8217;s why that folder exists in the repository structure that we are creating.
+The cluster name for the SNO that we will be deploying using the agent-based install will be <strong>sno2</strong>. On the other hand, <strong>sno3</strong> is the name of the cluster that we will deploy using the image-based install flow. That&#8217;s why those folder exists in the repository structure that we are creating.
 </td>
 </tr>
 </table>
@@ -931,9 +923,9 @@ The cluster name for the SNO that we will be deploying in the lab will be <stron
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository/
-mkdir -p site-configs/{hub-1,resources,pre-reqs/sno2,hub-1/extra-manifest,reference-manifest/4.18}
+mkdir -p site-configs/{hub-1,resources,pre-reqs/sno2,pre-reqs/sno3,hub-1/extra-manifest,reference-manifest/4.18}
 mkdir -p site-policies/{fleet/active/source-crs/reference-crs,fleet/active/source-crs/custom-crs,fleet/testing,sites/hub-1}
-touch site-configs/{hub-1,resources,pre-reqs/sno2,hub-1/extra-manifest,reference-manifest/4.18}/.gitkeep
+touch site-configs/{hub-1,resources,pre-reqs/sno2,pre-reqs/sno3,hub-1/extra-manifest,reference-manifest/4.18}/.gitkeep
 touch site-policies/{fleet/active/source-crs/reference-crs,fleet/active/source-crs/custom-crs,fleet/testing,sites/hub-1}/.gitkeep
 git add --all
 git commit -m 'Initialized repo structure'
@@ -941,267 +933,15 @@ git push origin main</code></pre>
 </div>
 </div>
 </div>
-<div class="sect2">
-<h3 id="baremetal-node-details"><a class="anchor" href="#baremetal-node-details"></a>Bare Metal Node Details</h3>
+</div>
+<div class="sect1">
+<h2 id="deploying-ztp-gitops-pipeline"><a class="anchor" href="#deploying-ztp-gitops-pipeline"></a>Deploying the ZTP GitOps Pipeline</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>The details for our baremetal node that we want to provision as SNO2 are the ones below:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>RedFish Endpoint: <code>redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno2</code></p>
-</li>
-<li>
-<p>MAC Address: <code>aa:aa:aa:aa:03:01</code></p>
-</li>
-<li>
-<p>Primary disk: <code>/dev/vda</code></p>
-</li>
-<li>
-<p>BMC User: <code>admin</code></p>
-</li>
-<li>
-<p>BMC Password: <code>admin</code>
-link:ztp-at-scale.html#siteconfig</p>
-<div id="pre-reqs" class="paragraph">
-<p>=== Deployment Prerequisites</p>
-</div>
-</li>
-</ul>
+<p>As we saw in previous sections, clusters are deployed using the ZTP GitOps Pipeline, but before starting we need to load it into our hub cluster.</p>
 </div>
 <div class="paragraph">
-<p>Before we start working on the ClusterInstance, let&#8217;s add some information required for the deployment into the Git repository.</p>
-</div>
-<div class="admonitionblock caution">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-caution" title="Caution"></i>
-</td>
-<td class="content">
-In a production environment you don&#8217;t want to add sensitive information in plain text in your Git repository, for the sake of simplicity for this lab we are adding this information in plain text to the Git repo, so you don&#8217;t have to care about it. This applies to things like pull secrets or BMC credentials.
-</td>
-</tr>
-</table>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>BMC credentials file.</p>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno2/bmc-credentials.yaml
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: sno2-bmc-credentials
-  namespace: sno2
-data:
-  username: "YWRtaW4="
-  password: "YWRtaW4="
-type: Opaque
-EOF</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Pull secret for accessing the disconnected registry.</p>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno2/pull-secret.yaml
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: disconnected-registry-pull-secret
-  namespace: sno2
-stringData:
-  .dockerconfigjson: '{"auths":{"infra.5g-deployment.lab:8443":{"auth":"YWRtaW46cjNkaDR0MSE="}}}'
-  type: kubernetes.io/dockerconfigjson
-EOF</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Namespace for the SNO2 cluster.</p>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno2/ns.yaml
----
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: sno2
-EOF</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Kustomization file for the SNO2 pre-reqs.</p>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno2/kustomization.yaml
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - bmc-credentials.yaml
-  - pull-secret.yaml
-  - ns.yaml
-EOF</code></pre>
-</div>
-</div>
-</li>
-<li>
-<p>Kustomization file for the clusters pre-reqs.</p>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/kustomization.yaml
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - sno2/
-EOF</code></pre>
-</div>
-</div>
-</li>
-</ol>
-</div>
-</div>
-<div class="sect2">
-<h3 id="clusterinstance"><a class="anchor" href="#clusterinstance"></a>ClusterInstance</h3>
-<div class="paragraph">
-<p>Now that we have the pre-reqs, let&#8217;s jump into the ClusterInstance.</p>
-</div>
-<div class="paragraph">
-<p>Copy the command below and refer to the comments in the code for explanations.</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; 'EOF' &gt; ~/5g-deployment-lab/ztp-repository/site-configs/hub-1/ocp-sno2.yaml
----
-apiVersion: siteconfig.open-cluster-management.io/v1alpha1
-kind: ClusterInstance
-metadata:
-  name: "ocp-sno2"
-  namespace: "sno2"
-spec:
-  additionalNTPSources:
-    - "clock.corp.redhat.com"
-  baseDomain: "5g-deployment.lab"
-  clusterImageSetNameRef: "active-ocp-version"
-  clusterName: "sno2"
-  clusterNetwork:
-    - cidr: "10.128.0.0/14"
-      hostPrefix: 23
-  cpuPartitioningMode: AllNodes
-  extraLabels:
-    ManagedCluster:
-      common: "ocp418"
-      logicalGroup: "active"
-      group-du-sno: ""
-      du-site: "sno2"
-      du-zone: "europe"
-      hardware-type: "hw-type-platform-1"
-  holdInstallation: false
-  extraManifestsRefs:
-    - name: ran-rds-418-manifests
-  installConfigOverrides: |
-    {
-      "capabilities": {
-        "baselineCapabilitySet": "None",
-        "additionalEnabledCapabilities": [
-          "NodeTuning",
-          "OperatorLifecycleManager",
-          "Ingress"
-        ]
-      }
-    }
-  machineNetwork:
-    - cidr: "192.168.125.0/24"
-  networkType: "OVNKubernetes"
-  pullSecretRef:
-    name: "disconnected-registry-pull-secret"
-  serviceNetwork:
-    - cidr: "172.30.0.0/16"
-  sshPublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5pFKFLOuxrd9Q/TRu9sRtwGg2PV+kl2MHzBIGUhCcR0LuBJk62XG9tQWPQYTQ3ZUBKb6pRTqPXg+cDu5FmcpTwAKzqgUb6ArnjECxLJzJvWieBJ7k45QzhlZPeiN2Omik5bo7uM/P1YIo5pTUdVk5wJjaMOb7Xkcmbjc7r22xY54cce2Wb7B1QDtLWJkq++eJHSX2GlEjfxSlEvQzTN7m2N5pmoZtaXpLKcbOqtuSQSVKC4XPgb57hgEs/ZZy/LbGGHZyLAW5Tqfk1JCTFGm6Q+oOd3wAOF1SdUxM7frdrN3UOB12u/E6YuAx3fDvoNZvcrCYEpjkfrsjU91oz78aETZV43hOK9NWCOhdX5djA7G35/EMn1ifanVoHG34GwNuzMdkb7KdYQUztvsXIC792E2XzWfginFZha6kORngokZ2DwrzFj3wgvmVyNXyEOqhwi6LmlsYdKxEvUtiYhdISvh2Y9GPrFcJ5DanXe7NVAKXe5CyERjBnxWktqAPBzXJa36FKIlkeVF5G+NWgufC6ZWkDCD98VZDiPP9sSgqZF8bSR4l4/vxxAW4knKIZv11VX77Sa1qZOR9Ml12t5pNGT7wDlSOiDqr5EWsEexga/2s/t9itvfzhcWKt+k66jd8tdws2dw6+8JYJeiBbU63HBjxCX+vCVZASrNBjiXhFw=="
-  templateRefs:
-    - name: ai-cluster-templates-v1
-      namespace: open-cluster-management
-  nodes:
-    - automatedCleaningMode: "disabled"
-      bmcAddress: "redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno2"
-      bmcCredentialsName:
-        name: "sno2-bmc-credentials"
-      bootMACAddress: "AA:AA:AA:AA:03:01"
-      bootMode: "UEFI"
-      hostName: "ocp-sno2.sno2.5g-deployment.lab"
-      ignitionConfigOverride: |
-        {
-          "ignition": {
-            "version": "3.2.0"
-          },
-          "storage": {
-            "disks": [
-              {
-                "device": "/dev/vda",
-                "partitions": [
-                  {
-                    "label": "var-lib-containers",
-                    "sizeMiB": 0,
-                    "startMiB": 60000
-                  }
-                ],
-                "wipeTable": false
-              }
-            ],
-            "filesystems": [
-              {
-                "device": "/dev/disk/by-partlabel/var-lib-containers",
-                "format": "xfs",
-                "mountOptions": [
-                  "defaults",
-                  "prjquota"
-                ],
-                "path": "/var/lib/containers",
-                "wipeFilesystem": true
-              }
-            ]
-          },
-          "systemd": {
-            "units": [
-              {
-                "contents": "# Generated by Butane\n[Unit]\nRequires=systemd-fsck@dev-disk-by\\x2dpartlabel-var\\x2dlib\\x2dcontainers.service\nAfter=systemd-fsck@dev-disk-by\\x2dpartlabel-var\\x2dlib\\x2dcontainers.service\n\n[Mount]\nWhere=/var/lib/containers\nWhat=/dev/disk/by-partlabel/var-lib-containers\nType=xfs\nOptions=defaults,prjquota\n\n[Install]\nRequiredBy=local-fs.target",
-                "enabled": true,
-                "name": "var-lib-containers.mount"
-              }
-            ]
-          }
-        }
-      nodeNetwork:
-        interfaces:
-          - name: "enp3s0"
-            macAddress: "AA:AA:AA:AA:03:01"
-        config:
-          interfaces:
-            - name: enp3s0
-              type: ethernet
-              state: up
-              ipv4:
-                enabled: true
-                dhcp: true
-              ipv6:
-                enabled: false
-      role: "master"
-      rootDeviceHints:
-        deviceName: "/dev/vda"
-      templateRefs:
-        - name: ai-node-templates-v1
-          namespace: open-cluster-management
-EOF</code></pre>
-</div>
+<p>We already have created the Git repository that will be used for storing our Infrastructure as Code (IaC) and Configuration as Code (CaC). Next step is deploying the ZTP GitOps Pipeline, let&#8217;s do it.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -1210,44 +950,26 @@ EOF</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Check that the above ClusterInstance CR is using the ai-node-templates-v1 (Agent Based Install) templates to deploy the sno2 OpenShift cluster. Also, we added an ignitionConfigOverride that creates a separate partition for the <code>/var/lib/containers</code> which is a pre-requisite for upgrading clusters using the image-based Upgrade method. We will deal with image-based upgrades later on in this lab, however, detailed information about the requirements needed can be found <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-shared-container-partition.html#cnf-image-based-upgrade-shared-container-partition_shared-container-partition">here</a>
+Below commands must be executed from the infrastucture host if not specified otherwise.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>In our site, we defined <code>clusterImageSetNameRef: "active-ocp-version"</code> as for the release to use to deploy our site. This reference will point to the <code>active</code> release we are deploying our sites with. Let&#8217;s create the <code>ClusterImageSet</code> in the repo:</p>
+<p>Before continuing, make sure you have the following tooling installed in your workstation:</p>
 </div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/resources/active-ocp-version.yaml
----
-apiVersion: hive.openshift.io/v1
-kind: ClusterImageSet
-metadata:
-  name: active-ocp-version
-spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift-release-dev/ocp-release:4.18.0-rc.7-x86_64
-EOF</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="reference-manifest-siteconfig"><a class="anchor" href="#reference-manifest-siteconfig"></a>Reference Manifest Configuration</h3>
-<div class="paragraph">
-<p>Let&#8217;s add the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_reference_design_specs/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">reference RAN DU configuration</a> for the version of OCP we are about to deploy. In the workstation, run the following command to extract the reference ZTP 4.18 RAN configuration. Those manifests are extracted from the <code>/extra-manifest</code> folder of the ztp-site-generate container.</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
-podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.17.0-25 extract /home/ztp/extra-manifest --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-configs/reference-manifest/4.18/</code></pre>
-</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.openshift.com/container-platform/4.17/cli_reference/openshift_cli/getting-started-cli.html">oc client</a>.</p>
+</li>
+<li>
+<p><a href="https://podman.io/getting-started/installation">podman</a>.</p>
+</li>
+</ul>
 </div>
 <div class="paragraph">
-<p>Notice that <code>reference-manifest/4.18/</code> refers to the Git subdirectory that stores the contents of the RAN configuration for a specific version, in this case 4.18. Different versions of the RAN DU configuration can coexist by extracting them from the appropriate ztp-site-generate container version to a different extra-manifest folder. Then, the user just needs to include the right reference-manifest version folder to the cluster version is installing.</p>
-</div>
-<div class="paragraph">
-<p>This configuration is applied during installation time.</p>
+<p>In the infrastructure server, run the following command to extract the pipeline installation files:</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1261,47 +983,126 @@ If you get <code>ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 
 </tr>
 </table>
 </div>
-<div class="paragraph">
-<p>Our recommendation is to always create a reference and keep the reference and user defined manifests (see next section) separately. This makes later updates to the reference based on z-stream releases significantly easier (simply replace the contents of reference-manifests with updated content)</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/5g-deployment-lab/ztp-pipeline/argocd
+podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
+podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.17.0-25 extract /home/ztp/argocd --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/argocd/</code></pre>
 </div>
 </div>
-<div class="sect2">
-<h3 id="extra-manifest-siteconfig"><a class="anchor" href="#extra-manifest-siteconfig"></a>Extra Manifest Configuration</h3>
 <div class="paragraph">
-<p>Now, let&#8217;s add the <strong>extra</strong> or <strong>custom</strong> RAN configuration to the cluster. It is strongly recommended to include crun manifests as part of the additional install-time manifests for 4.13+. So let&#8217;s create proper machine configuration in the extra manifest folder:</p>
+<p>Now that we extracted the pipeline content we need to get it applied to our hub cluster:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Login into the hub cluster.</p>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+The command below must be changed to use the OpenShift admin password provided in the e-mail you received when the lab was ready.
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/hub-1/extra-manifest/enable-crun-master.yaml
----
-apiVersion: machineconfiguration.openshift.io/v1
-kind: ContainerRuntimeConfig
-metadata:
- name: enable-crun-master
-spec:
- machineConfigPoolSelector:
-   matchLabels:
-     pools.operator.machineconfiguration.openshift.io/master: ""
- containerRuntimeConfig:
-   defaultRuntime: crun
-EOF</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig login -u admin -p &lt;admin_password&gt; <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a> --insecure-skip-tls-verify=true</code></pre>
 </div>
+</div>
+</li>
+<li>
+<p>Modify the ZTP GitOps Pipeline configuration to match our environment configuration.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Change the repository url for the two ArgoApps:</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>sed -i</code> commands, make sure you are using <code>gsed</code>. If you do not have it available, please install it: <code>brew install gnu-sed</code>.
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/hub-1/extra-manifest/enable-crun-worker.yaml
----
-apiVersion: machineconfiguration.openshift.io/v1
-kind: ContainerRuntimeConfig
-metadata:
- name: enable-crun-worker
-spec:
- machineConfigPoolSelector:
-   matchLabels:
-     pools.operator.machineconfiguration.openshift.io/worker: ""
- containerRuntimeConfig:
-   defaultRuntime: crun
-EOF</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|repoURL: .*|repoURL: <a href="http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"" class="bare">http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"</a> ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i "s|repoURL: .*|repoURL: <a href="http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"" class="bare">http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"</a> ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Change the repository path for the two ArgoApps:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|path: .*|path: site-configs|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i "s|path: .*|path: site-policies|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Change the repository branch for the two ArgoApps:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Allow <code>ClusterImageSet</code> resource to the list of allowed resources:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "/clusterResourceWhitelist:/a \ \ - group: \'hive.openshift.io\'\n \ \ \ kind: ClusterImageSet" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/app-project.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Include <code>openshift-adp</code> namespace in the list of namespaces managed by the GitOps operator.</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "/destinations:/a \ \ - namespace: \'openshift-adp\'\n \ \ \ server: '\*\'" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app-project.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Apply the ZTP GitOps Pipeline configuration:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>At this stage, we have our ZTP GitOps pipeline running and waiting for commiting declarative Infrastructure and Configuration as Code to the <code>ztp-repository</code> Git repository. In the next image, a couple of new ArgoCD apps running:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>clusters</strong>. It is responsible for managing the deployment of Single Node OpenShift clusters from the Git repository.</p>
+</li>
+<li>
+<p><strong>policies</strong>. It is responsible for managing the configuration via RHACM policies that will be applied to Single Node OpenShift clusters. Basically, it configures the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_reference_design_specs/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a>.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ztp-pipeline-01.png" alt="ZTP pipeline">
 </div>
 </div>
 <div class="admonitionblock important">
@@ -1311,89 +1112,26 @@ EOF</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-As of version 4.16 the default cgroups configuration is <strong>cgroupsv2</strong>. If there is a need to run cgroupsv1 instead, please add the <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.15/ztp/source-crs/extra-manifest/enable-cgroups-v1.yaml">enable-cgroups-v1.yaml</a> extra-manifest to the same <code>extra-manifest</code> folder where crun is configured.
+Notice that there is nothing to deploy in any of the previous ArgoCD applications. This is because we did not yet commit any configuration to the ztp-repository Git repo. This is going to change in the next section.
 </td>
 </tr>
 </table>
 </div>
-</div>
-<div class="sect2">
-<h3 id="preparing-installation"><a class="anchor" href="#preparing-installation"></a>Preparing for the Installation</h3>
-<div class="paragraph">
-<p>Finally, we will add the kustomizations for the ClusterInstance. Note that the <a href="crafting-deployments-iac.html#reference-manifest-siteconfig">Refence RAN DU</a> and the <a href="crafting-deployments-iac.html#extra-manifest-siteconfig">extra-manifests</a> configuration are included as a <code>configmap</code> custom resource named <strong>ran-rds-418-manifests</strong>.</p>
-</div>
-<div class="listingblock console-input">
+<div class="imageblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/hub-1/kustomization.yaml
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-generators:
-  - ocp-sno2.yaml
-EOF
-cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/resources/kustomization.yaml
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - active-ocp-version.yaml
-EOF
-cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/kustomization.yaml
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - pre-reqs/
-  - resources/
-  - hub-1/ocp-sno2.yaml
-
-configMapGenerator:
-  - files:
-    - reference-manifest/4.18/01-container-mount-ns-and-kubelet-conf-master.yaml
-    - reference-manifest/4.18/01-container-mount-ns-and-kubelet-conf-worker.yaml
-    - reference-manifest/4.18/01-disk-encryption-pcr-rebind-master.yaml
-    - reference-manifest/4.18/01-disk-encryption-pcr-rebind-worker.yaml
-    - reference-manifest/4.18/03-sctp-machine-config-master.yaml
-    - reference-manifest/4.18/03-sctp-machine-config-worker.yaml
-    - reference-manifest/4.18/06-kdump-master.yaml
-    - reference-manifest/4.18/06-kdump-worker.yaml
-    - reference-manifest/4.18/07-sriov-related-kernel-args-master.yaml
-    - reference-manifest/4.18/07-sriov-related-kernel-args-worker.yaml
-    - reference-manifest/4.18/08-set-rcu-normal-master.yaml
-    - reference-manifest/4.18/08-set-rcu-normal-worker.yaml
-    - reference-manifest/4.18/09-openshift-marketplace-ns.yaml
-    - reference-manifest/4.18/99-crio-disable-wipe-worker.yaml
-    - reference-manifest/4.18/99-sync-time-once-master.yaml
-    - reference-manifest/4.18/99-crio-disable-wipe-master.yaml
-    - reference-manifest/4.18/99-sync-time-once-worker.yaml
-    - hub-1/extra-manifest/enable-crun-master.yaml
-    - hub-1/extra-manifest/enable-crun-worker.yaml
-    name: ran-rds-418-manifests
-    namespace: sno2
-
-generatorOptions:
-  disableNameSuffixHash: true
-EOF</code></pre>
+<img src="_images/ztp-pipeline-clusters.png" alt="ZTP clusters app">
 </div>
 </div>
-<div class="paragraph">
-<p>At this point we can push the changes to the repo and continue to the next section.</p>
-</div>
-<div class="listingblock console-input">
+<div class="imageblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository
-git add --all
-git commit -m 'Added SNO2 cluster using agent-based install flow'
-git push origin main
-cd ~</code></pre>
-</div>
+<img src="_images/ztp-pipeline-policies.png" alt="ZTP policies app">
 </div>
 </div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="installing-imagebaseinstall-cluster.html">Deploying an Image Based Install Cluster</a></span>
-  <span class="next"><a href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a></span>
+  <span class="prev"><a href="lab-environment-introduction.html">Introduction to the Lab Environment</a></span>
+  <span class="next"><a href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting the Telco RAN Reference Design Specification</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

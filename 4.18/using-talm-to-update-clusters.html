@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Using TALM to Update Clusters :: LAB - 5G RAN Deployments on OpenShift</title>
+    <title>Using image-based upgrade for single-node OpenShift clusters :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://labs.sysdeseng.com/4.18/using-talm-to-update-clusters.html">
     <link rel="prev" href="check-deployment-is-finished.html">
     <link rel="next" href="troubleshooting-tips.html">
@@ -384,9 +384,6 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="policygen-deepdive.html#siteconfig-templating">SiteConfig Templating</a>
-  </li>
-  <li class="nav-item" data-depth="2">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="policygen-deepdive.html#policies-templating">Policies Templating</a>
 <ul class="nav-list">
@@ -463,76 +460,22 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="creating-seed-image.html#introduction-to-seed-image">Introduction to the Seed Image Generation</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="creating-seed-image.html#running-the-seed-generation">Running the Seed Image Generation</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html">Deploying an Image Based Install Cluster</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#introduction">Introduction</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-installation-iso">Creating the Installation ISO</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#preinstallation-process">PreInstalling the Host</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">Creating the Configuration ISO</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#completing-install">Completing the Installation</a>
-  </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="1">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-deployments-iac.html">Crafting Deployment&#8217;s IaC</a>
+    <a class="nav-link" href="crafting-deployments-iac.html">Preparing the ZTP GitOps Pipeline</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="crafting-deployments-iac.html#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-deployments-iac.html#crafting-our-own-clusterinstance">Crafting our own ClusterInstance</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="crafting-deployments-iac.html#git-repository">Git Repository</a>
   </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#baremetal-node-details">Bare Metal Node Details</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#pre-reqs">Deployment Prerequesites</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#clusterinstance">ClusterInstance</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#reference-manifest-siteconfig">Reference Manifest Configuration</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="crafting-deployments-iac.html#preparing-installation">Preparing for the Installation</a>
-  </li>
-</ul>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-deployments-iac.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
   </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting Cluster and Telco Related Infrastructure Operators Configs</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting the Telco RAN Reference Design Specification</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
@@ -552,17 +495,50 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#deploying-policies-using-gitops-pipeline">Deploying the Telco 5G RAN RDS using the ZTP GitOps Pipeline</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="running-the-deployment.html">Running the Deployment</a>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html">Deploying an Agent Based Install Cluster</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="running-the-deployment.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#introduction">Introduction</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="running-the-deployment.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#baremetal-node-details">Bare Metal Node Details</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#pre-reqs">Deployment Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#clusterinstance">ClusterInstance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#reference-manifest-siteconfig">Reference Manifest Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#preparing-installation">Get Ready for the Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment">Monitoring the Deployment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment-webui">Monitoring the Deployment via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment-cli">Monitoring the Deployment via the CLI</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -572,20 +548,43 @@
 <ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="monitoring-the-deployment.html">Monitoring the Deployment</a>
+    <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="monitoring-the-deployment.html#monitoring-deployment-webui">Monitoring the Deployment via the WebUI</a>
+    <a class="nav-link" href="creating-seed-image.html#introduction-to-seed-image">Introduction to the Seed Image Generation</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="monitoring-the-deployment.html#monitoring-deployment-cli">Monitoring the Deployment via the CLI</a>
+    <a class="nav-link" href="creating-seed-image.html#running-the-seed-generation">Running the Seed Image Generation</a>
   </li>
 </ul>
   </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html">Deploying an Image Based Install Cluster</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#baremetal-node-details">Bare Metal Node Details</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-installation-iso">Creating the Installation ISO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#preinstallation-process">PreInstalling the Host</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">Creating the Configuration ISO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#completing-install">Completing the Installation</a>
+  </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="check-deployment-is-finished.html">Check SNO Deployment is finished</a>
@@ -600,25 +599,19 @@
   </li>
   <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="using-talm-to-update-clusters.html">Using TALM to update clusters</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html">Image-based upgrade for single-node OpenShift clusters</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#verify-talm">Verifying the TALM state</a>
+    <a class="nav-link" href="#verify-talm">Verifying hub software requirements</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#upgrade-policy-creation">Creating the upgrade PGT</a>
+    <a class="nav-link" href="#upgrade-policy-creation">Verifying managed clusters requirements</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="#upgrade-cgu-creation">Applying the upgrade</a>
-<ul class="nav-list">
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#talm-backup-precache">Backup and pre-cache</a>
+    <a class="nav-link" href="#install-lca">Preparing managed clusters for upgrade</a>
   </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#talm-upgrade">Triggering the upgrade</a>
-  </li>
-</ul>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#upgrade-policy-creation">Creating the Image Base Group Upgrade</a>
   </li>
 </ul>
   </li>
@@ -765,21 +758,21 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="using-talm-to-update-clusters.html">Using TALM to update clusters</a></li>
+    <li><a href="using-talm-to-update-clusters.html">Image-based upgrade for single-node OpenShift clusters</a></li>
   </ul>
 </nav>
   <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/lab-4.18/documentation/modules/ROOT/pages/using-talm-to-update-clusters.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Using TALM to Update Clusters</h1>
+<h1 class="page">Using image-based upgrade for single-node OpenShift clusters</h1>
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this section, we will perform a platform upgrade to both managed clusters using the pre-cache and backup feature implemented in the Topology Aware Lifecycle Manager (TALM) operator. The pre-cache feature prepares the maintenance operation in the managed clusters by pulling the required artifacts prior to the upgrade. The reasoning behind this feature is that SNO spoke clusters may have limited bandwidth to the container registry, which will make it difficult for the upgrade to complete within the required time. In order to ensure the upgrade can fit within the maintenance window, the required artifacts need to be present on the spoke cluster prior to the upgrade. The idea is pre-caching all the images needed for the platform and operator upgrade on the node, so they are not pulled at upgrade time. Do it in a maintenance window(s) before the upgrade maintenance window.</p>
+<p>In this section, we will perform an image-based upgrade to both managed clusters (<code>sno2</code> and <code>sno3</code>) leveraging the <a href="missing">Lifecycle Agent</a> (LCA) and the <a href="talm.html">Topology Aware Lifecycle Manager</a> (TALM) operators. The LCA provides you with an alternative way to upgrade the platform version of a single-node OpenShift cluster while TALM is responsible for managing the rollout of configuration throughout the lifecycle of the fleet of clusters.</p>
 </div>
 <div class="paragraph">
-<p>The backup feature, on the other hand, implements a procedure for rapid recovery of a SNO in the event of a failed upgrade that is unrecoverable. The SNO needs to be restored to a working state with the previous version of OCP without requiring a re-provision of the application(s).</p>
+<p>The image-based upgrade is faster than the standard upgrade method and allows you to directly upgrade from OpenShift Container Platform &lt;4.y&gt; to &lt;4.y+2&gt;, and &lt;4.y.z&gt; to &lt;4.y.z+n&gt;. Image-based upgrades utilizes a generated OCI image from a dedicated seed cluster. In this case, we already provided this seed image with version 4.18.0-rc.8. The process to generate that seed image is identically as the process we executed in <a href="creating-seed-image.html">Creating the Seed Image</a> for version 4.18.0-rc.7 to install <code>sno3</code>.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -788,76 +781,168 @@
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-The backup feature only allows SNOs to be restored, this is not applicable to any other kind of OpenShift clusters.
+The image-based upgrade uses custom images that are specific to the hardware platform that the clusters are running on. Each different hardware platform requires a separate seed image. More information <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">here</a>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s upgrade our both clusters. First of all, let&#8217;s verify the TALM operator is running in our <strong>hub cluster</strong>:</p>
+<p>Detailed below are the steps we are going to follow to upgrade both managed clusters and their configuration from 4.18.0-rc.7 to 4.18.0-rc.8:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create a seed image by using the Lifecycle Agent. As mentioned, the following seed image <code>infra.5g-deployment.lab:8443/ibi/lab5gran:4.18.0-rc.8</code> is already available in the <a href="lab-environment-introduction.html#container-registry">container registry</a>.</p>
+</li>
+<li>
+<p>Verify that all software components meet the required versions. <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#ztp-image-based-upgrade-prereqs_ibi-understanding-image-based-install">Here</a> you can find the minimum software requirements.</p>
+</li>
+<li>
+<p>Install the Lifecycle Agent operator and the <a href="https://docs.openshift.com/container-platform/4.18/backup_and_restore/application_backup_and_restore/oadp-intro.html">OpenShift API for Data Protection</a> (OADP) in the managed clusters.</p>
+</li>
+<li>
+<p>Configure OADP to backup and restore the configuration of the managed clusters that is not included into the seed image.</p>
+</li>
+<li>
+<p>Perform the upgrade using the <code>ImageBasedGroupUpgrade</code> CR that combines the ImageBasedUpgrade (LCA) and ClusterGroupUpgrade APIs (TALM).</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Notice that both clusters were installed using a different methodologies. While <code>sno2</code> was provisioned using the <a href="ztp-workflow.html#abi-deployment">agent-based install</a> workflow, <code>sno3</code> was deployed using the <a href="ztp-workflow.html#ibi-deployment">image-based install</a>. However, as long as they both meet the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">Seed cluster guidelines</a>, has the same combination of hardware, Day 2 Operators, and cluster configuration as the seed cluster they are good to go.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>First of all, let&#8217;s verify the software requirements in our <strong>hub cluster</strong>:</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="verify-talm"><a class="anchor" href="#verify-talm"></a>Verifying the TALM state</h2>
+<h2 id="verify-talm"><a class="anchor" href="#verify-talm"></a>Verifying hub software requirements</h2>
 <div class="sectionbody">
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Below commands must be executed from the workstation host if not specified otherwise.
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>Let&#8217;s connect to the hub cluster and get all the operators installed:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get operators</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get operators</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                                   AGE
-advanced-cluster-management.open-cluster-management    103m
-ansible-automation-platform-operator.aap               103m
-lvms-operator.openshift-storage                        105m
-multicluster-engine.multicluster-engine                103m
-openshift-gitops-operator.openshift-operators          105m
-topology-aware-lifecycle-manager.openshift-operators   103m</code></pre>
+advanced-cluster-management.open-cluster-management    28h
+lvms-operator.openshift-storage                        28h
+multicluster-engine.multicluster-engine                28h
+openshift-gitops-operator.openshift-operators          28h
+topology-aware-lifecycle-manager.openshift-operators   28h</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Next, double check there is no problem with the Pod. Notice that the name of the Pod is cluster-group-upgrade-controller-manager, based on the name of the upstream project <a href="https://github.com/openshift-kni/cluster-group-upgrades-operator">Cluster Group Upgrade Operator</a>.</p>
+<p>Verify that the Image-Based Install (IBI) operator is installed</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get pods,sa,deployments -n openshift-operators</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n multicluster-engine -lapp=image-based-install-operator</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                            READY   STATUS    RESTARTS   AGE
+image-based-install-operator-7f7659f86c-cd46k   2/2     Running   0          46h</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, double check that the TALM operator is running. Notice that the name of the Pod is cluster-group-upgrade-controller-manager, based on the name of the upstream project <a href="https://github.com/openshift-kni/cluster-group-upgrades-operator">Cluster Group Upgrade Operator</a>.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get pods -n openshift-operators</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                                                READY   STATUS    RESTARTS   AGE
 pod/cluster-group-upgrades-controller-manager-v2-789fd8fbcd-nn4k5   2/2     Running   0          103m
-pod/openshift-gitops-operator-controller-manager-6794f4f9cc-vpm2b   2/2     Running   0          106m
-
-NAME                                                                SECRETS   AGE
-serviceaccount/builder                                              1         127m
-serviceaccount/cluster-group-upgrades-controller-manager            1         103m
-serviceaccount/cluster-group-upgrades-operator-controller-manager   1         103m
-serviceaccount/default                                              1         132m
-serviceaccount/deployer                                             1         127m
-serviceaccount/openshift-gitops-operator-controller-manager         1         106m
-
-NAME                                                           READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/cluster-group-upgrades-controller-manager-v2   1/1     1            1           103m
-deployment.apps/openshift-gitops-operator-controller-manager   1/1     1            1           106m</code></pre>
+pod/openshift-gitops-operator-controller-manager-6794f4f9cc-vpm2b   2/2     Running   0          106m</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="getting-snos-kubeconfigs"><a class="anchor" href="#getting-snos-kubeconfigs"></a>Verifying managed clusters requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the previous sections we have deployed the <code>sno2</code> cluster using an <a href="crafting-deployments-iac.html#crafting-our-own-clusterinstance">agent-based installation</a> and the <code>sno3</code> cluster following an <a href="installing-imagebaseinstall-cluster.html">image-based methodology</a>. Before we start the upgrade we need to check if the Lifecycle Agent and OpenShift API for Data Protection operators are installed in the target clusters.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+We know that both SNO clusters meet the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">Seed cluster guidelines</a>, has the same combination of hardware, Day 2 Operators, and cluster configuration as the target seed cluster from where the seed image version v4.18.0-rc.8 was obtained.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s obtain the kubeconfigs for both clusters since we will need them for the next sections.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno2 extract secret/sno2-admin-kubeconfig --to=- &gt; ~/sno2-kubeconfig
+oc --kubeconfig ~/hub-kubeconfig -n sno3 extract secret/sno3-admin-kubeconfig --to=- &gt; ~/sno3-kubeconfig</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Finally, let&#8217;s take a look at the cluster group upgrade (CGU) CRD managed by TALM. If we pay a closer look we will notice that an already completed CGU was applied to SNO2. As we mentioned in <a href="talm.html#inform-policies">inform policies</a> section, all policies are not enforced, the user has to create the proper CGU resource to enforce them. However, when using ZTP, we want our cluster provisioned and configured automatically. This is where TALM will step through the set of created policies (inform) and will enforce them once the cluster was successfully provisioned. Therefore, the configuration stage starts without any intervention ending up with our OpenShift cluster ready to process workloads.</p>
+<p>If we check the operators installed in the <code>sno2</code> we will notice that neither LCA nor OADP are installed. This is expected because if we remember the <a href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a> section, only SR-IOV and LVM operators were installed as Day 2 Operators.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno2-kubeconfig get csv -A</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE                              NAME                                          DISPLAY                   VERSION               REPLACES   PHASE
+openshift-operator-lifecycle-manager   packageserver                                 Package Server            0.0.1-snapshot                   Succeeded
+openshift-sriov-network-operator       sriov-network-operator.v4.18.0-202502121533   SR-IOV Network Operator   4.18.0-202502121533              Succeeded
+openshift-storage                      lvms-operator.v4.18.0                         LVM Storage               4.18.0                           Succeeded</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>On the other hand, the <code>sno3</code> is running all required operators: Day 2 Operators plus LCA and OADP, which are required to run the image-based upgrade process. That&#8217;s because they were already included in the seed image version v4.18.0-rc.7. See in <a href="creating-seed-image.html#_running_the_seed_image_generation">Running the Seed Image Generation</a> to obtain the list of operators installed in the seed cluster. They are exactly the same versions because <code>sno3</code> was provisioned with that seed image (image-based installation).</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig  ~/sno3-kubeconfig get csv -A</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE                              NAME                                          DISPLAY                   VERSION               REPLACES   PHASE
+openshift-adp                          oadp-operator.v1.4.2                          OADP Operator             1.4.2                            Succeeded
+openshift-lifecycle-agent              lifecycle-agent.v4.18.0                       Lifecycle Agent           4.18.0                           Succeeded
+openshift-operator-lifecycle-manager   packageserver                                 Package Server            0.0.1-snapshot                   Succeeded
+openshift-sriov-network-operator       sriov-network-operator.v4.18.0-202502121533   SR-IOV Network Operator   4.18.0-202502121533              Succeeded
+openshift-storage                      lvms-operator.v4.18.0                         LVM Storage               4.18.0                           Succeeded</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Ok then, let&#8217;s install the missing LCA and OADP operators in <code>sno2</code> and configure them appropiately in both managed clusters. To achieve that, a PolicyGenTemplate and a cluster group upgrade (CGU) CR will be created in the hub cluster so TALM manages the installation and configuration process.</p>
+</div>
+<div class="paragraph">
+<p>Notice that an already completed CGU was applied to <code>sno2</code>. As we mentioned in <a href="talm.html#inform-policies">inform policies</a> section, all policies are not enforced, the user has to create the proper CGU resource to enforce them. However, when using ZTP, we want our cluster provisioned and configured automatically. This is where TALM will step through the set of created policies (inform) and will enforce them once the cluster was successfully provisioned. Therefore, the configuration stage starts without any intervention ending up with our OpenShift cluster ready to process workloads.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -873,7 +958,7 @@ It&#8217;s possible that you get <code>UpgradeNotCompleted</code>, if that&#8217
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu sno2 -n ztp-install</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get cgu sno2 -n ztp-install</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -885,22 +970,42 @@ sno2   7m26s   Completed   All clusters are compliant with all the managed polic
 </div>
 </div>
 <div class="sect1">
-<h2 id="getting-snos-kubeconfigs"><a class="anchor" href="#getting-snos-kubeconfigs"></a>Getting the SNO clusters kubeconfigs</h2>
+<h2 id="install-lca"><a class="anchor" href="#install-lca"></a>Preparing managed clusters for upgrade</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the previous sections we have deployed the <code>sno2</code> cluster and attached the <code>sno1</code> cluster. Before we continue with TALM, let&#8217;s grab the kubeconfigs for both cluster since we will need them for the next sections.</p>
+<p>At this stage, we are going to fulfill the image-based upgrade prerequisites but following a GitOps approach, which will allow to easily scale from our two SNOs to a fleet of thousands of SNO clusters if needed. This will be achieved by:</p>
 </div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 extract secret/sno2-admin-kubeconfig --to=- &gt; ~/5g-deployment-lab/sno2-kubeconfig
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno3 extract secret/sno3-admin-kubeconfig --to=- &gt; ~/5g-deployment-lab/sno3-kubeconfig</code></pre>
+<div class="ulist">
+<ul>
+<li>
+<p>Creating a PolicyGenTemplate to install LCA and OADP. It also configures OADP to back up and restore the ACM and LVM setup.</p>
+</li>
+<li>
+<p>Creating a CGU to enforce the above policies in the target clusters.</p>
+</li>
+<li>
+<p>Creating an extra configuration to the managed clusters applied during the upgrading process. This is configuration that it was not or cannot be included in the seed image.</p>
+</li>
+<li>
+<p>Running the IBGU process.</p>
+</li>
+</ul>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+An S3-compatible storage server to backup and restore is ready. See <a href="s3-storage">S3 Storage Server</a> section.
+</td>
+</tr>
+</table>
 </div>
+<div class="paragraph">
+<p>Let&#8217;s create a PGT called <code>requirements-upgrade</code> in the hub cluster. It help us to create multiple RHACM polices as explained in the <a href="policygen-deepdive.html">PolicyGen DeepDive</a> section.</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="install-lca"><a class="anchor" href="#install-lca"></a>Install the LifeCycle Agent Operator</h2>
-<div class="sectionbody">
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/requirements-upgrade.yaml
@@ -941,7 +1046,6 @@ spec:
       policyName: subscriptions-policy
     - fileName: OadpSubscriptionNS.yaml
       policyName: subscriptions-policy
-
     - fileName: OadpSecret.yaml
       data:
         cloud: W2RlZmF1bHRdCmF3c19hY2Nlc3Nfa2V5X2lkPWFkbWluCmF3c19zZWNyZXRfYWNjZXNzX2tleT1hZG1pbjEyMzQK
@@ -961,7 +1065,7 @@ spec:
               name: cloud-credentials
             default: true
             objectStorage:
-              bucket: klusterlet-backup
+              bucket: '{{hub .ManagedClusterName hub}}'
               prefix: velero
             provider: aws
       policyName: config-policy
@@ -969,82 +1073,61 @@ spec:
       policyName: config-policy
     - fileName: ConfigMapGeneric.yaml
       complianceType: mustonlyhave
-      policyName: "oadp-cm-policy"
+      policyName: "extra-manifests"
       metadata:
-        name: oadp-lvms
-        namespace: openshift-adp
-      data:
-        PlatformBackupRestoreLvms.yaml: |
-          ---
-          apiVersion: velero.io/v1
-          kind: Backup
-          metadata:
-            name: lvmcluster
-            namespace: openshift-adp
-            labels:
-              velero.io/storage-location: default
-          spec:
-            includedNamespaces:
-            - openshift-storage
-            includedNamespaceScopedResources:
-            - lvmclusters
-            - lvmvolumegroups
-            - lvmvolumegroupnodestatuses
-          ---
-          apiVersion: velero.io/v1
-          kind: Restore
-          metadata:
-            name: lvmcluster
-            namespace: openshift-adp
-            labels:
-              velero.io/storage-location: default
-            annotations:
-              lca.openshift.io/apply-wave: "2"
-          spec:
-            backupName:
-              lvmcluster
-    - fileName: ConfigMapGeneric.yaml
-      complianceType: mustonlyhave
-      policyName: "oadp-cm-policy"
-      metadata:
-        name: oadp-lvms
-        namespace: openshift-adp
-      data:
-        PlatformBackupRestoreWithIBGU.yaml: |
-
-
-#    - fileName: PlatformBackupRestoreWithIBGU.yaml
-#      metadata:
-#        annotations:
-#          ran.openshift.io/ztp-deploy-wave: "100"
-#      policyName: config-policy
-#    - fileName: PlatformBackupRestoreLvms.yaml
-#      metadata:
-#        annotations:
-#          ran.openshift.io/ztp-deploy-wave: "100"
-#      policyName: config-policy
+        name: disconnected-ran-config
+        namespace: openshift-lifecycle-agent
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Create the openshift-adp namespace in the hub cluster. It is required so, the backup and restore configurations will automatically propagate to the target clusters.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/ns-oadp.yaml
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: openshift-adp
+spec: {}
+status: {}
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/extra-manifests.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: disconnected-ran-config
+  namespace: ztp-policies
+data:
+  redhat-operator-index.yaml: |
+    apiVersion: operators.coreos.com/v1alpha1
+    kind: CatalogSource
+    metadata:
+      annotations:
+        target.workload.openshift.io/management: '{"effect": "PreferredDuringScheduling"}'
+      name: redhat-operator-index
+      namespace: openshift-marketplace
+    spec:
+      displayName: default-cat-source
+      image: infra.5g-deployment.lab:8443/prega/prega-operator-index:v4.18
+      publisher: Red Hat
+      sourceType: grpc
+      updateStrategy:
+        registryPoll:
+          interval: 1h
 EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>Modify the kustomization.yaml inside the site-policies folder, so it includes this new PGT and eventually will be applied by ArgoCD.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>sed -i</code> commands, make sure you are using <code>gsed</code>. If you do not have it available, please install it: <code>brew install gnu-sed</code>.
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "/- group-du-sno.yaml/a \ \ - requirements-upgrade.yaml" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml</code></pre>
-</div>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1063,12 +1146,25 @@ configMapGenerator:
   - source-crs/reference-crs/ibu/PlatformBackupRestoreWithIBGU.yaml
   - source-crs/reference-crs/ibu/PlatformBackupRestoreLvms.yaml
   name: oadp-cm
-  namespace: ztp-policies
+  namespace: openshift-adp
 generatorOptions:
   disableNameSuffixHash: true
 
 resources:
   - group-hardware-types-configmap.yaml
+  - ns-oadp.yaml
+  - extra-manifests.yaml
+
+patches:
+- target:
+    group: policy.open-cluster-management.io
+    version: v1
+    kind: Policy
+    name: requirements-upgrade-extra-manifests
+  patch: |-
+    - op: replace
+      path: /spec/policy-templates/0/objectDefinition/spec/object-templates/0/objectDefinition/data
+      value: '{{hub copyConfigMapData "ztp-policies" "disconnected-ran-config" hub}}'
 EOF</code></pre>
 </div>
 </div>
@@ -1077,15 +1173,25 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository/
-git add site-policies/fleet/active/requirements-upgrade.yaml site-policies/fleet/active/kustomization.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository/site-policies
+git add *
 git commit -m "adds upgrade policy"
 git push origin main</code></pre>
 </div>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ibu01.png" alt="IBU policies">
+</div>
+</div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig label managedcluster sno3 du-zone=europe logicalGroup=active</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig label managedcluster sno3 du-zone=europe logicalGroup=active</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ibu02.png" alt="IBU policies">
 </div>
 </div>
 <div class="paragraph">
@@ -1093,7 +1199,7 @@ git push origin main</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/hub-kubeconfig apply -f -
 ---
 apiVersion: ran.openshift.io/v1alpha1
 kind: ClusterGroupUpgrade
@@ -1107,6 +1213,7 @@ spec:
   managedPolicies:
   - requirements-upgrade-subscriptions-policy
   - requirements-upgrade-config-policy
+  - requirements-upgrade-extra-manifests
   remediationStrategy:
     maxConcurrency: 2
     timeout: 240
@@ -1129,6 +1236,11 @@ ztp-policies   requirements-upgrade   35s   InProgress   Remediating non-complia
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -n ztp-policies
 NAME                   AGE   STATE       DETAILS
 requirements-upgrade   19m   Completed   All clusters are compliant with all the managed policies</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ibu02.png" alt="IBU policies">
 </div>
 </div>
 </div>
@@ -1164,9 +1276,12 @@ data:
 EOF</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>The ImageBasedGroupUpgrade CR combines the ImageBasedUpgrade and ClusterGroupUpgrade APIs. For example, you can define the cluster selection and rollout strategy with the ImageBasedGroupUpgrade API in the same way as the ClusterGroupUpgrade API.</p>
+</div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/hub-kubeconfig apply -f -
 apiVersion: lcm.openshift.io/v1alpha1
 kind: ImageBasedGroupUpgrade
 metadata:
@@ -1184,14 +1299,12 @@ spec:
     seedImageRef:
       image: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.8
       version: 4.18.0-rc.8
- #   extraManifests:
- #     - name: catalog-source-disconnected
- #       namespace: openshift-lifecycle-agent
-  oadpContent:
-    - name: oadp-cm-example
-      namespace: openshift-adp
-
-
+    extraManifests:
+      - name: disconnected-ran-config
+        namespace: openshift-lifecycle-agent
+    oadpContent:
+      - name: oadp-cm
+        namespace: openshift-adp
   plan:
     - actions: ["Prep", "Upgrade", "FinalizeUpgrade"]
       rolloutStrategy:
