@@ -3,10 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Managing at Scale :: LAB - 5G RAN Deployments on OpenShift</title>
-    <link rel="canonical" href="https://labs.sysdeseng.com/4.18/managing-at-scale.html">
-    <link rel="prev" href="rhacm-policies.html">
-    <link rel="next" href="lca.html">
+    <title>Preparing the ZTP GitOps Pipeline :: LAB - 5G RAN Deployments on OpenShift</title>
+    <link rel="canonical" href="https://labs.sysdeseng.com/4.18/preparing-ztp-pipeline.html">
+    <link rel="prev" href="lab-environment-introduction.html">
+    <link rel="next" href="crafting-cluster-telco-related-infra-operators-configs.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../_/css/site.css">
   </head>
@@ -289,18 +289,18 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item is-current-page" data-depth="1">
+  <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="managing-at-scale.html">Managing at Scale</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#inform-policies">Inform Policies</a>
+    <a class="nav-link" href="managing-at-scale.html#inform-policies">Inform Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#olm-subscriptions">OLM Subscriptions</a>
+    <a class="nav-link" href="managing-at-scale.html#olm-subscriptions">OLM Subscriptions</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#cluster-policies">Cluster Policies</a>
+    <a class="nav-link" href="managing-at-scale.html#cluster-policies">Cluster Policies</a>
   </li>
 </ul>
   </li>
@@ -491,18 +491,18 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="preparing-ztp-pipeline.html">Preparing the ZTP GitOps Pipeline</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="preparing-ztp-pipeline.html#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
+    <a class="nav-link" href="#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="preparing-ztp-pipeline.html#git-repository">Git Repository</a>
+    <a class="nav-link" href="#git-repository">Git Repository</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="preparing-ztp-pipeline.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
+    <a class="nav-link" href="#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
   </li>
 </ul>
   </li>
@@ -791,76 +791,380 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="managing-at-scale.html">Managing at Scale</a></li>
+    <li><a href="preparing-ztp-pipeline.html">Preparing the ZTP GitOps Pipeline</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/lab-4.18/documentation/modules/ROOT/pages/managing-at-scale.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/lab-4.18/documentation/modules/ROOT/pages/preparing-ztp-pipeline.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Managing at Scale</h1>
+<h1 class="page">Preparing the ZTP GitOps Pipeline</h1>
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the previous section we described RHACM policies, in this section we are going to explain a bit more how we leverage some of their capabilities, plus other APIs to manage cluster configurations at scale.</p>
+<p>In RAN environments we will be managing thousands of Single Node OpenShift (SNO) instances, and as such, a scalable and manageable way of defining our infrastructure is required.</p>
+</div>
+<div class="paragraph">
+<p>By describing our infrastructure as code (IaC) the Git repository holds declarative state of the fleet.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="inform-policies"><a class="anchor" href="#inform-policies"></a>Inform Policies</h2>
+<h2 id="introduction-to-clusterinstance"><a class="anchor" href="#introduction-to-clusterinstance"></a>Introduction to the ClusterInstance</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In RHACM as we saw in the previous section we can configure our policies in two modes, <em>inform</em> and <em>enforce</em>.</p>
+<p>The <code>ClusterInstance</code> is an abstraction layer on top of the different components managed by the <a href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a>, responsible for deploying OpenShift clusters using either the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> or <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html">Image Based Installation</a> flow. For the ones familiar with the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> and particularly with the <code>Assisted Service</code>, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like: <code>ClusterDeployment</code>, <code>InfraEnv</code>, <code>AgentClusterInstall</code>, etc.</p>
 </div>
 <div class="paragraph">
-<p>When using <em>inform</em> mode no changes will be done in the clusters targeted by the policy, whereas <em>enforce</em> mode will make the required changes to clusters targeted by the policy have the required configuration described in the policy.</p>
+<p>The ClusterInstance simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place. In this <a href="https://github.com/stolostron/siteconfig/blob/main/config/samples/siteconfig_v1alpha1_clusterinstance.yaml">link</a> you can find an example of a ClusterInstance for a SNO deployment.</p>
 </div>
 <div class="paragraph">
-<p>In Edge deployments where potentially disruptive events must be carefully managed with respect to timing and rollout, we must have control over when changes to our clusters happen. With all Policies in <em>inform</em> mode we have visibility into the compliance of all clusters but the enforcement (changes to clusters) will occur only when the Policies are switched to enforce mode. On top of these policies, we have another component named Topology Aware Lifecycle Manager (TALM) which controls when a policy gets enforced based on a configuration created by the cluster admins. TALM will be introduced in a <a href="talm.html">future section</a>.</p>
+<p>In the comming sections, we will create our own ClusterInstances using the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html">Image Based Installation</a> and <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> flows to deploy a couple of SNO clusters in our lab environment.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+In the e-mail you received with the credentials to access the lab, do not forget to add the line included to your workstation’s /etc/hosts for accessing the lab environment.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The steps below rely on the lab environment being up and running.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="olm-subscriptions"><a class="anchor" href="#olm-subscriptions"></a>OLM Subscriptions</h2>
+<h2 id="git-repository"><a class="anchor" href="#git-repository"></a>Git Repository</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Additional functionality for OpenShift clusters can be provided through use of optional (day-two) operators installed on the cluster. These operators are installed and managed through use of an OLM Subscription CR. Operators are stored in a registry which is periodically updated with new versions of the operator. The Subscription CR may be set to automatically install new versions as they become available, or to a <em>manual</em> mode which requires approval before new versions are installed.</p>
+<p>We need a Git repository where we will store our clusters configurations, we will create a new Git repository in the <a href="lab-environment-introduction.html#git-server">Git server</a> running on the infrastructure node.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Login into the <a href="http://infra.5g-deployment.lab:3000/">Git server</a> (user: student, password: student).</p>
+</li>
+<li>
+<p>You will see that two Git repositories already exist, you <strong>must not</strong> change these repositories, instead you will create a new one.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/gitea-repository.png" alt="Gitea Repository">
+</div>
+</div>
+</li>
+<li>
+<p>Click on the "+" next to <code>Repositories</code>.</p>
+</li>
+<li>
+<p>Use <code>ztp-repository</code> as <code>Repository Name</code> and click on <code>Create Repository</code>.</p>
+</li>
+<li>
+<p>You will get redirected to the new repository page.</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
-<p>For the same reasons described earlier, the reference configurations for RAN 5G deployments sets Subscription CRs to <em>manual</em> mode to ensure that operator updates occur only when cluster administrators explicitly allow them. Similar to the way in which Policies can be scheduled for enforcement, TALM gives cluster administrators the tools to automatically approve operator updates on selected clusters at specified times.</p>
+<p>Now that we have a repository ready to be used we will clone it to the infrastructure host.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Below commands must be executed from the workstation host if not specified otherwise.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/5g-deployment-lab/
+git clone <a href="http://student:student@infra.5g-deployment.lab:3000/student/ztp-repository.git" class="bare">http://student:student@infra.5g-deployment.lab:3000/student/ztp-repository.git</a> ~/5g-deployment-lab/ztp-repository/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We&#8217;re ready to start working in the Git repository folder structure.</p>
+</div>
+<div class="paragraph">
+<p>As we saw in <a href="deployment-considerations.html#git-repo-structure">Git Repository Structure</a> section, the Git repository we will be using will have the following structure:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">├── site-configs
+│   ├── hub-1
+|   |   └── extra-manifest
+|   |   └── reference-manifest
+|   |   |   └── 4.18
+│   ├── pre-reqs
+│   │   └── sno2
+|   |   └── sno3
+│   └── resources
+└── site-policies
+    ├── fleet
+    │   ├── active
+    |   │   └── source-crs
+    |   |   |   └── reference-crs
+    |   |   |   └── custom-crs
+    │   └── testing
+    └── sites
+        └── hub-1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s replicate it:</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+If it is the first time that you are using <code>git</code> in your machine, a message requiring you to setup a Git Username and Email may be shown.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The cluster name for the SNO that we will be deploying using the agent-based install will be <strong>sno2</strong>. On the other hand, <strong>sno3</strong> is the name of the cluster that we will deploy using the image-based install flow. That&#8217;s why those folder exists in the repository structure that we are creating.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository/
+mkdir -p site-configs/{hub-1,resources,pre-reqs/sno2,pre-reqs/sno3,hub-1/extra-manifest,reference-manifest/4.18}
+mkdir -p site-policies/{fleet/active/source-crs/reference-crs,fleet/active/source-crs/custom-crs,fleet/testing,sites/hub-1}
+touch site-configs/{hub-1,resources,pre-reqs/sno2,pre-reqs/sno3,hub-1/extra-manifest,reference-manifest/4.18}/.gitkeep
+touch site-policies/{fleet/active/source-crs/reference-crs,fleet/active/source-crs/custom-crs,fleet/testing,sites/hub-1}/.gitkeep
+git add --all
+git commit -m 'Initialized repo structure'
+git push origin main</code></pre>
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="cluster-policies"><a class="anchor" href="#cluster-policies"></a>Cluster Policies</h2>
+<h2 id="deploying-ztp-gitops-pipeline"><a class="anchor" href="#deploying-ztp-gitops-pipeline"></a>Deploying the ZTP GitOps Pipeline</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>RHACM Policies and bindings provide the tools to simplify management of a large fleet of clusters by allowing one Policy to define configuration across multiple target (spoke) clusters. In the GitOps ZTP flow, these policies are maintained in Git and synchronized to the hub cluster where RHACM makes use of them.</p>
+<p>As we saw in previous sections, clusters are deployed using the ZTP GitOps Pipeline, but before starting we need to load it into our hub cluster.</p>
 </div>
 <div class="paragraph">
-<p>In most Edge deployments there is a large amount of configuration that is common to all clusters. The set of installed day-2 operators is one such example. These "common" configurations can be captured into a single policy that is then bound to all clusters in the fleet. This ensures that the clusters are consistently configured, simplifies management of the configuration, and improves the overall scalability of the solution.</p>
+<p>We already have created the Git repository that will be used for storing our Infrastructure as Code (IaC) and Configuration as Code (CaC). Next step is deploying the ZTP GitOps Pipeline, let&#8217;s do it.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Below commands must be executed from the infrastucture host if not specified otherwise.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>In some cases, subsets of clusters may have significant commonality based on things like regionality, hardware type, etc. There may be a relatively small number of these "groups" of clusters within the fleet. By defining one policy per group, users can realize the same benefits of consistency, ease of management, etc. Some examples of policies that can fit this group will be: SRI-OV deployment on clusters with SRI-OV cards, accelerator operator deployment on clusters with accelerator cards.</p>
-</div>
-<div class="paragraph">
-<p>Where clusters have configuration which is truly cluster specific (different on every cluster in the fleet) the user must provide unique content on a per-cluster basis. In a RAN deployment some examples of site specific configuration may include specific VLAN settings for SR-IOV virtual functions. There are multiple options for handling site specific configuration using Policy:</p>
+<p>Before continuing, make sure you have the following tooling installed in your workstation:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Site Specific Policies</strong>. Each site may have a Policy defined which maintains the unique CRs for that site.</p>
+<p><a href="https://docs.openshift.com/container-platform/4.17/cli_reference/openshift_cli/getting-started-cli.html">oc client</a>.</p>
 </li>
 <li>
-<p><strong>Hub side templating</strong>. RHACM supports hub-side templating in which one Policy may be defined with one or more templates included. The site-specific values for these templates are pulled from a ConfigMap on the hub cluster prior to the Policy being evaluated for compliance and/or remediated.</p>
+<p><a href="https://podman.io/getting-started/installation">podman</a>.</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>In the infrastructure server, run the following command to extract the pipeline installation files:</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+If you get <code>ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 65536</code>: newuidmap: write to uid_map failed: Operation not permitted` when running podman commands, run them with sudo.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/5g-deployment-lab/ztp-pipeline/argocd
+podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
+podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.17.0-25 extract /home/ztp/argocd --tar | tar x -C ~/5g-deployment-lab/ztp-pipeline/argocd/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now that we extracted the pipeline content we need to get it applied to our hub cluster:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Login into the hub cluster.</p>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+The command below must be changed to use the OpenShift admin password provided in the e-mail you received when the lab was ready.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig login -u admin -p &lt;admin_password&gt; <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a> --insecure-skip-tls-verify=true</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Modify the ZTP GitOps Pipeline configuration to match our environment configuration.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Change the repository url for the two ArgoApps:</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>sed -i</code> commands, make sure you are using <code>gsed</code>. If you do not have it available, please install it: <code>brew install gnu-sed</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|repoURL: .*|repoURL: <a href="http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"" class="bare">http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"</a> ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i "s|repoURL: .*|repoURL: <a href="http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"" class="bare">http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"</a> ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Change the repository path for the two ArgoApps:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|path: .*|path: site-configs|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i "s|path: .*|path: site-policies|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Change the repository branch for the two ArgoApps:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml
+sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>Allow <code>ClusterImageSet</code> resource to the list of allowed resources:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "/clusterResourceWhitelist:/a \ \ - group: \'hive.openshift.io\'\n \ \ \ kind: ClusterImageSet" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/app-project.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Include <code>openshift-adp</code> namespace in the list of namespaces managed by the GitOps operator.</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "/destinations:/a \ \ - namespace: \'openshift-adp\'\n \ \ \ server: '\*\'" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app-project.yaml</code></pre>
+</div>
+</div>
+</li>
+<li>
+<p>Apply the ZTP GitOps Pipeline configuration:</p>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/</code></pre>
+</div>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>At this stage, we have our ZTP GitOps pipeline running and waiting for commiting declarative Infrastructure and Configuration as Code to the <code>ztp-repository</code> Git repository. In the next image, a couple of new ArgoCD apps running:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>clusters</strong>. It is responsible for managing the deployment of Single Node OpenShift clusters from the Git repository.</p>
+</li>
+<li>
+<p><strong>policies</strong>. It is responsible for managing the configuration via RHACM policies that will be applied to Single Node OpenShift clusters. Basically, it configures the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_reference_design_specs/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a>.</p>
+</li>
+</ul>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ztp-pipeline-01.png" alt="ZTP pipeline">
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Notice that there is nothing to deploy in any of the previous ArgoCD applications. This is because we did not yet commit any configuration to the ztp-repository Git repo. This is going to change in the next section.
+</td>
+</tr>
+</table>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ztp-pipeline-clusters.png" alt="ZTP clusters app">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ztp-pipeline-policies.png" alt="ZTP policies app">
+</div>
 </div>
 </div>
 </div>
 <nav class="pagination">
-  <span class="prev"><a href="rhacm-policies.html">RHACM Governance Policy Framework</a></span>
-  <span class="next"><a href="lca.html">Lifecycle Agent Operator (LCA)</a></span>
+  <span class="prev"><a href="lab-environment-introduction.html">Introduction to the Lab Environment</a></span>
+  <span class="next"><a href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting the Telco RAN Reference Design Specification</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

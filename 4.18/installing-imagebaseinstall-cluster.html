@@ -99,9 +99,6 @@
     <a class="nav-link" href="5g-ran-context.html#dpdk">DPDK</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="5g-ran-context.html#oot-drivers">OoT Drivers</a>
-  </li>
-  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="5g-ran-context.html#cpu-reduction-tuning">Tuning for CPU Reduction</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -161,7 +158,13 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="ztp-intro.html">Introduction to Zero Touch Provisioning (ZTP)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ztp-intro.html#what-is-ztp">What is ZTP?</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
@@ -244,7 +247,13 @@
     <a class="nav-link" href="ztp-workflow.html#abi-deployment">Agent Based Installation</a>
   </li>
   <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="ztp-workflow.html#ibi-deployment">Image Based Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="ztp-workflow.html#ibi-deploy-components">Image Based Installation and Deployment Components</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -258,7 +267,7 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="rhacm-policies.html">RHACM Policies</a>
+    <a class="nav-link" href="rhacm-policies.html">RHACM Governance Policy Framework</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="rhacm-policies.html#policy-framework">Policy Framework</a>
@@ -275,6 +284,9 @@
   </li>
 </ul>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rhacm-policies.html#rhacm-policies-takeaways">Takeaways</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -289,6 +301,24 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="managing-at-scale.html#cluster-policies">Cluster Policies</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lca.html">Lifecycle Agent Operator (LCA)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#seed-image-generation">Seed Image Generation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-installation">Image Based Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-upgrades">Image Based Upgrades</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-upgrades-at-scale">Image Based Upgrades at Scale</a>
   </li>
 </ul>
   </li>
@@ -313,6 +343,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="talm.html#waves">Policy Waves</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#sno-upgrades-at-scale">SNO Upgrades at Scale</a>
   </li>
 </ul>
   </li>
@@ -460,16 +493,16 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-deployments-iac.html">Preparing the ZTP GitOps Pipeline</a>
+    <a class="nav-link" href="preparing-ztp-pipeline.html">Preparing the ZTP GitOps Pipeline</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-deployments-iac.html#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
+    <a class="nav-link" href="preparing-ztp-pipeline.html#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-deployments-iac.html#git-repository">Git Repository</a>
+    <a class="nav-link" href="preparing-ztp-pipeline.html#git-repository">Git Repository</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-deployments-iac.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
+    <a class="nav-link" href="preparing-ztp-pipeline.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
   </li>
 </ul>
   </li>
@@ -487,10 +520,10 @@
     <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-custom-policies">Adding custom content</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#adding-custom-policies">Adding Custom Content</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-testing-policies">Crafting testing Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-testing-policies">Crafting Testing Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
@@ -517,7 +550,7 @@
     <a class="nav-link" href="installing-agentbasedinstall-cluster.html#clusterinstance">ClusterInstance</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#reference-manifest-siteconfig">Reference Manifest Configuration</a>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#reference-manifest-clusterinstance">Reference Manifest Configuration</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="installing-agentbasedinstall-cluster.html#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
@@ -551,10 +584,10 @@
     <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="creating-seed-image.html#introduction-to-seed-image">Introduction to the Seed Image Generation</a>
+    <a class="nav-link" href="creating-seed-image.html#intro-to-seed-image-gen">Introduction to the Seed Image Generation</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="creating-seed-image.html#running-the-seed-generation">Running the Seed Image Generation</a>
+    <a class="nav-link" href="creating-seed-image.html#running-seed-image-genn">Running the Seed Image Generation</a>
   </li>
 </ul>
   </li>
@@ -572,7 +605,7 @@
     <a class="nav-link" href="#creating-the-installation-iso">Creating the Installation ISO</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#preinstallation-process">PreInstalling the Host</a>
+    <a class="nav-link" href="#preinstallation-process">Pre-Installing the Host</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#creating-the-configuration-iso">Creating the Configuration ISO</a>
@@ -582,6 +615,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#completing-install">Completing the Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#verifying-install">Verifying the RAN DU Configuration</a>
   </li>
 </ul>
   </li>
@@ -649,9 +685,6 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="troubleshooting-tips.html#policies-not-applied">Policies not applied</a>
   </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="troubleshooting-tips.html#olm-bug">OLM Bug</a>
-  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -708,6 +741,9 @@
     <a class="nav-link" href="lab-environment.html#disable-firewall">Disable Firewall</a>
   </li>
   <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-webcache">Configure Webcache</a>
+  </li>
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#install-ksushytools">Install Ksushy Tool</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -736,9 +772,6 @@
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-environment.html#configure-aap">Configure Ansible Automation Platform</a>
   </li>
 </ul>
   </li>
@@ -770,7 +803,7 @@
 <h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the previous section, <a href="crafting-cluster-telco-related-infra-operators-configs.html,">Creating the Seed Image</a>, we created a seed image of a Single Node OpenShift cluster version v4.18.0-rc.7. That seed image will be used to deploy a new SNO in less than 20 minutes, that&#8217;s why, specially in telco RAN environments where we are managing thousands of clusters , this deployment method is the preferred one.</p>
+<p>In the previous section, <a href="creating-seed-image.html">Creating the Seed Image</a>, we created a seed image of a Single Node OpenShift cluster version v4.18.0-rc.7. That seed image will be used to deploy a new SNO in less than 20 minutes, that&#8217;s why, specially in telco RAN environments where we are managing thousands of clusters , this deployment method is the preferred one.</p>
 </div>
 <div class="paragraph">
 <p>The following picture describe the process we are going to follow to deploy and configure the <strong>sno3</strong> OpenShift Clusters with the RAN DU profile configured:</p>
@@ -994,7 +1027,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="preinstallation-process"><a class="anchor" href="#preinstallation-process"></a>PreInstalling the Host</h2>
+<h2 id="preinstallation-process"><a class="anchor" href="#preinstallation-process"></a>Pre-Installing the Host</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Now we are ready to boot sno3 with the Installation ISO. Run the following command from the infrastructure host:</p>
@@ -1026,7 +1059,7 @@ We are using kcli tool to boot the server from the ISO by leveraging the RedFish
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-The preinstallation process is finished once the sno3 is automatically powered off.
+The pre-installation process is finished once the sno3 is automatically powered off.
 </td>
 </tr>
 </table>
@@ -1041,7 +1074,7 @@ The preinstallation process is finished once the sno3 is automatically powered o
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">journalctl -f</code></pre>
 </div>
 </div>
-<div class="listingblock console">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">...
 Feb 04 10:37:52 ocp-sno3 systemd[1]: Starting SNO Image-based Installation...
@@ -1080,9 +1113,9 @@ Feb 04 10:41:22 ocp-sno3 ostree[5337]: Completed syncfs() for system root in 1 m
 Feb 04 10:41:22 ocp-sno3 ostree[5337]: Starting freeze/thaw cycle for system root
 Feb 04 10:41:22 ocp-sno3 ostree[5337]: Completed freeze/thaw cycle for system root in 31 ms
 Feb 04 10:41:22 ocp-sno3 ostree[5337]: Bootloader updated; bootconfig swap: yes; bootversion: boot.1.1, deployment count change: -1
-..
+...
 Broadcast message from root@localhost (Tue 2025-02-04 10:41:25 UTC):
-..
+...
 The system will power off now!</code></pre>
 </div>
 </div>
@@ -1160,7 +1193,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Next, we have to create a <code>configMap</code> resource to define additional manifests in our image-based deployment. Based on our seed image we have to define:</p>
+<p>Next, we have to create a <code>ConfigMap</code> resource to define additional manifests in our image-based deployment. Based on our seed image we have to define:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1486,7 +1519,7 @@ cd ~</code></pre>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno3 get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage</code></pre>
 </div>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE   NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
 sno3        baremetalhost.metal3.io/ocp-sno3   externally provisioned              true             35s
@@ -1585,7 +1618,7 @@ Confirm that the <code>clusterInstance</code> is shown as "Provisioning complete
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno3 get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage</code></pre>
 </div>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
 baremetalhost.metal3.io/ocp-sno3   externally provisioned              true             32m

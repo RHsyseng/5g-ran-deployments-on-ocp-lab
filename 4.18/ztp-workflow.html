@@ -99,9 +99,6 @@
     <a class="nav-link" href="5g-ran-context.html#dpdk">DPDK</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="5g-ran-context.html#oot-drivers">OoT Drivers</a>
-  </li>
-  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="5g-ran-context.html#cpu-reduction-tuning">Tuning for CPU Reduction</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -161,7 +158,13 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="ztp-intro.html">Introduction to Zero Touch Provisioning (ZTP)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ztp-intro.html#what-is-ztp">What is ZTP?</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
@@ -244,7 +247,13 @@
     <a class="nav-link" href="#abi-deployment">Agent Based Installation</a>
   </li>
   <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="#ibi-deployment">Image Based Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="#ibi-deploy-components">Image Based Installation and Deployment Components</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -258,7 +267,7 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="rhacm-policies.html">RHACM Policies</a>
+    <a class="nav-link" href="rhacm-policies.html">RHACM Governance Policy Framework</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="rhacm-policies.html#policy-framework">Policy Framework</a>
@@ -275,6 +284,9 @@
   </li>
 </ul>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rhacm-policies.html#rhacm-policies-takeaways">Takeaways</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -289,6 +301,24 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="managing-at-scale.html#cluster-policies">Cluster Policies</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lca.html">Lifecycle Agent Operator (LCA)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#seed-image-generation">Seed Image Generation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-installation">Image Based Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-upgrades">Image Based Upgrades</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-upgrades-at-scale">Image Based Upgrades at Scale</a>
   </li>
 </ul>
   </li>
@@ -313,6 +343,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="talm.html#waves">Policy Waves</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#sno-upgrades-at-scale">SNO Upgrades at Scale</a>
   </li>
 </ul>
   </li>
@@ -460,16 +493,16 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-deployments-iac.html">Preparing the ZTP GitOps Pipeline</a>
+    <a class="nav-link" href="preparing-ztp-pipeline.html">Preparing the ZTP GitOps Pipeline</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-deployments-iac.html#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
+    <a class="nav-link" href="preparing-ztp-pipeline.html#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-deployments-iac.html#git-repository">Git Repository</a>
+    <a class="nav-link" href="preparing-ztp-pipeline.html#git-repository">Git Repository</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-deployments-iac.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
+    <a class="nav-link" href="preparing-ztp-pipeline.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
   </li>
 </ul>
   </li>
@@ -487,10 +520,10 @@
     <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-custom-policies">Adding custom content</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#adding-custom-policies">Adding Custom Content</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-testing-policies">Crafting testing Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-testing-policies">Crafting Testing Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
@@ -517,7 +550,7 @@
     <a class="nav-link" href="installing-agentbasedinstall-cluster.html#clusterinstance">ClusterInstance</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#reference-manifest-siteconfig">Reference Manifest Configuration</a>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#reference-manifest-clusterinstance">Reference Manifest Configuration</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="installing-agentbasedinstall-cluster.html#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
@@ -551,10 +584,10 @@
     <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="creating-seed-image.html#introduction-to-seed-image">Introduction to the Seed Image Generation</a>
+    <a class="nav-link" href="creating-seed-image.html#intro-to-seed-image-gen">Introduction to the Seed Image Generation</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="creating-seed-image.html#running-the-seed-generation">Running the Seed Image Generation</a>
+    <a class="nav-link" href="creating-seed-image.html#running-seed-image-genn">Running the Seed Image Generation</a>
   </li>
 </ul>
   </li>
@@ -572,7 +605,7 @@
     <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-installation-iso">Creating the Installation ISO</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#preinstallation-process">PreInstalling the Host</a>
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#preinstallation-process">Pre-Installing the Host</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">Creating the Configuration ISO</a>
@@ -582,6 +615,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="installing-imagebaseinstall-cluster.html#completing-install">Completing the Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#verifying-install">Verifying the RAN DU Configuration</a>
   </li>
 </ul>
   </li>
@@ -649,9 +685,6 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="troubleshooting-tips.html#policies-not-applied">Policies not applied</a>
   </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="troubleshooting-tips.html#olm-bug">OLM Bug</a>
-  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -708,6 +741,9 @@
     <a class="nav-link" href="lab-environment.html#disable-firewall">Disable Firewall</a>
   </li>
   <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-webcache">Configure Webcache</a>
+  </li>
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#install-ksushytools">Install Ksushy Tool</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -736,9 +772,6 @@
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-environment.html#configure-aap">Configure Ansible Automation Platform</a>
   </li>
 </ul>
   </li>
@@ -920,9 +953,8 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 <div class="paragraph">
 <p>In this lab, we are going to provision a cluster with the Image Based Installation deployment method using a GitOps approach with the SiteConfig Operator.</p>
 </div>
-<div class="paragraph">
-<p><strong>Image-based installation and deployment components</strong></p>
-</div>
+<div class="sect3">
+<h4 id="ibi-deploy-components"><a class="anchor" href="#ibi-deploy-components"></a>Image Based Installation and Deployment Components</h4>
 <div class="paragraph">
 <p>First, let&#8217;s describe the components in an image-based installation and deployment.</p>
 </div>
@@ -1021,6 +1053,7 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 </div>
 </div>
 </div>
+</div>
 <div class="sect1">
 <h2 id="ztp-policies"><a class="anchor" href="#ztp-policies"></a>Deployment Configuration</h2>
 <div class="sectionbody">
@@ -1072,7 +1105,7 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 </div>
 <nav class="pagination">
   <span class="prev"><a href="ztp-at-scale.html">Hub Management Components</a></span>
-  <span class="next"><a href="rhacm-policies.html">RHACM Policies</a></span>
+  <span class="next"><a href="rhacm-policies.html">RHACM Governance Policy Framework</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">

@@ -99,9 +99,6 @@
     <a class="nav-link" href="5g-ran-context.html#dpdk">DPDK</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="5g-ran-context.html#oot-drivers">OoT Drivers</a>
-  </li>
-  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="5g-ran-context.html#cpu-reduction-tuning">Tuning for CPU Reduction</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -161,7 +158,13 @@
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="ztp-intro.html">Introduction to Zero Touch Provisioning (ZTP)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ztp-intro.html#what-is-ztp">What is ZTP?</a>
+  </li>
+</ul>
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
@@ -244,7 +247,13 @@
     <a class="nav-link" href="ztp-workflow.html#abi-deployment">Agent Based Installation</a>
   </li>
   <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
     <a class="nav-link" href="ztp-workflow.html#ibi-deployment">Image Based Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="ztp-workflow.html#ibi-deploy-components">Image Based Installation and Deployment Components</a>
+  </li>
+</ul>
   </li>
 </ul>
   </li>
@@ -258,7 +267,7 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="rhacm-policies.html">RHACM Policies</a>
+    <a class="nav-link" href="rhacm-policies.html">RHACM Governance Policy Framework</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="rhacm-policies.html#policy-framework">Policy Framework</a>
@@ -275,6 +284,9 @@
   </li>
 </ul>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rhacm-policies.html#rhacm-policies-takeaways">Takeaways</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -289,6 +301,24 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="managing-at-scale.html#cluster-policies">Cluster Policies</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lca.html">Lifecycle Agent Operator (LCA)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#seed-image-generation">Seed Image Generation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-installation">Image Based Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-upgrades">Image Based Upgrades</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-upgrades-at-scale">Image Based Upgrades at Scale</a>
   </li>
 </ul>
   </li>
@@ -313,6 +343,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="talm.html#waves">Policy Waves</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#sno-upgrades-at-scale">SNO Upgrades at Scale</a>
   </li>
 </ul>
   </li>
@@ -460,16 +493,16 @@
   </li>
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="crafting-deployments-iac.html">Preparing the ZTP GitOps Pipeline</a>
+    <a class="nav-link" href="preparing-ztp-pipeline.html">Preparing the ZTP GitOps Pipeline</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-deployments-iac.html#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
+    <a class="nav-link" href="preparing-ztp-pipeline.html#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-deployments-iac.html#git-repository">Git Repository</a>
+    <a class="nav-link" href="preparing-ztp-pipeline.html#git-repository">Git Repository</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-deployments-iac.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
+    <a class="nav-link" href="preparing-ztp-pipeline.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
   </li>
 </ul>
   </li>
@@ -487,10 +520,10 @@
     <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-custom-policies">Adding custom content</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#adding-custom-policies">Adding Custom Content</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-testing-policies">Crafting testing Policies</a>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-testing-policies">Crafting Testing Policies</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
@@ -517,7 +550,7 @@
     <a class="nav-link" href="installing-agentbasedinstall-cluster.html#clusterinstance">ClusterInstance</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#reference-manifest-siteconfig">Reference Manifest Configuration</a>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#reference-manifest-clusterinstance">Reference Manifest Configuration</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="installing-agentbasedinstall-cluster.html#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
@@ -551,10 +584,10 @@
     <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="creating-seed-image.html#introduction-to-seed-image">Introduction to the Seed Image Generation</a>
+    <a class="nav-link" href="creating-seed-image.html#intro-to-seed-image-gen">Introduction to the Seed Image Generation</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="creating-seed-image.html#running-the-seed-generation">Running the Seed Image Generation</a>
+    <a class="nav-link" href="creating-seed-image.html#running-seed-image-genn">Running the Seed Image Generation</a>
   </li>
 </ul>
   </li>
@@ -572,7 +605,7 @@
     <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-installation-iso">Creating the Installation ISO</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#preinstallation-process">PreInstalling the Host</a>
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#preinstallation-process">Pre-Installing the Host</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">Creating the Configuration ISO</a>
@@ -582,6 +615,9 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="installing-imagebaseinstall-cluster.html#completing-install">Completing the Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#verifying-install">Verifying the RAN DU Configuration</a>
   </li>
 </ul>
   </li>
@@ -649,9 +685,6 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#policies-not-applied">Policies not applied</a>
   </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#olm-bug">OLM Bug</a>
-  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -708,6 +741,9 @@
     <a class="nav-link" href="lab-environment.html#disable-firewall">Disable Firewall</a>
   </li>
   <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-webcache">Configure Webcache</a>
+  </li>
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#install-ksushytools">Install Ksushy Tool</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -736,9 +772,6 @@
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
-  </li>
-  <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-environment.html#configure-aap">Configure Ansible Automation Platform</a>
   </li>
 </ul>
   </li>
@@ -1285,100 +1318,6 @@ Each enforce policy is being applied one by one. There can be cases where the Cl
 </td>
 </tr>
 </table>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="olm-bug"><a class="anchor" href="#olm-bug"></a>OLM Bug</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>If the SNO cluster policies are not moving to <code>Compliant</code> after a while, you may be hitting <a href="https://issues.redhat.com/browse/OCPBUGS-13286">this bug</a>.</p>
-</div>
-<div class="paragraph">
-<p>You need to check the subscriptions status on the SNO clusters, in order to do that you need to get the kubeconfigs:</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno1 extract secret/sno1-admin-kubeconfig --to=- &gt; ~/5g-deployment-lab/sno1-kubeconfig
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 extract secret/sno2-admin-kubeconfig --to=- &gt; ~/5g-deployment-lab/sno2-kubeconfig</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Probably your subscriptions are stuck and are showing a message like the one below:</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Command below checks sno1, you may want to check both SNOs.
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig -n openshift-storage get subscriptions.operators.coreos.com odf-lvm-operator -o yaml</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">apiVersion: operators.coreos.com/v1alpha1
-kind: Subscription
-metadata:
-  creationTimestamp: "2024-11-11T14:35:17Z"
-  generation: 1
-  labels:
-    operators.coreos.com/lvms-operator.openshift-storage: ""
-    test: test
-  name: odf-lvm-operator
-  namespace: openshift-storage
-  resourceVersion: "70835"
-  uid: f30a26a2-fdaf-4469-8271-d5d5ac0cb64c
-spec:
-  channel: stable-4.18
-  installPlanApproval: Manual
-  name: lvms-operator
-  source: redhat-operator-index
-  sourceNamespace: openshift-marketplace
-status:
-  catalogHealth:
-  - catalogSourceRef:
-      apiVersion: operators.coreos.com/v1alpha1
-      kind: CatalogSource
-      name: redhat-operator-index
-      namespace: openshift-marketplace
-      resourceVersion: "70778"
-      uid: e9ebbd29-f28d-4619-ab71-66bed8e52de2
-    healthy: true
-    lastUpdated: "2024-11-11T15:34:53Z"
-  conditions:
-  - lastTransitionTime: "2024-11-11T15:34:53Z"
-    message: all available catalogsources are healthy
-    reason: AllCatalogSourcesHealthy
-    status: "False"
-    type: CatalogSourcesUnhealthy
-  - message: 'failed to populate resolver cache from source community-operators/openshift-marketplace:
-      failed to list bundles: rpc error: code = Unavailable desc = connection error:
-      desc = "transport: Error while dialing dial tcp: lookup community-operators.openshift-marketplace.svc
-      on 172.30.0.10:53: no such host"'
-    reason: ErrorPreventedResolution
-    status: "True"
-    type: ResolutionFailed</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>If that&#8217;s the case you should restart OLM pods to get this fixed:</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig -n openshift-operator-lifecycle-manager delete pods --all</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Once OLM is restarted the subscriptions will move to the desired stated.</p>
 </div>
 </div>
 </div>
