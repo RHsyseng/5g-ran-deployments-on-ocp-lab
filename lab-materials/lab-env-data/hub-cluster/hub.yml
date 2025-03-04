@@ -44,7 +44,7 @@ disconnected_operators:
 disconnected_extra_images:
 - registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.17.0-25
 - quay.io/rhsysdeseng/5granlab-ee:lab
-disconnected_extra_release: 4.18.0-rc.6
+disconnected_extra_release: 4.18.0-rc.8
 disk_size: 120
 #extra_disks: [200]
 extra_disks: [120]

@@ -458,6 +458,7 @@ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/kustomizati
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - sno2/
   - sno3/
 EOF
 -----
@@ -550,7 +551,35 @@ kind: Kustomization
 resources:
   - pre-reqs/
   - resources/
+  - hub-1/ocp-sno2.yaml
   - hub-1/ocp-sno3.yaml
+
+configMapGenerator:
+  - files:
+    - reference-manifest/4.18/01-container-mount-ns-and-kubelet-conf-master.yaml
+    - reference-manifest/4.18/01-container-mount-ns-and-kubelet-conf-worker.yaml
+    - reference-manifest/4.18/01-disk-encryption-pcr-rebind-master.yaml
+    - reference-manifest/4.18/01-disk-encryption-pcr-rebind-worker.yaml
+    - reference-manifest/4.18/03-sctp-machine-config-master.yaml
+    - reference-manifest/4.18/03-sctp-machine-config-worker.yaml
+    - reference-manifest/4.18/06-kdump-master.yaml
+    - reference-manifest/4.18/06-kdump-worker.yaml
+    - reference-manifest/4.18/07-sriov-related-kernel-args-master.yaml
+    - reference-manifest/4.18/07-sriov-related-kernel-args-worker.yaml
+    - reference-manifest/4.18/08-set-rcu-normal-master.yaml
+    - reference-manifest/4.18/08-set-rcu-normal-worker.yaml
+    - reference-manifest/4.18/09-openshift-marketplace-ns.yaml
+    - reference-manifest/4.18/99-crio-disable-wipe-worker.yaml
+    - reference-manifest/4.18/99-sync-time-once-master.yaml
+    - reference-manifest/4.18/99-crio-disable-wipe-master.yaml
+    - reference-manifest/4.18/99-sync-time-once-worker.yaml
+    - hub-1/extra-manifest/enable-crun-master.yaml
+    - hub-1/extra-manifest/enable-crun-worker.yaml
+    name: ran-rds-418-manifests
+    namespace: sno2
+
+generatorOptions:
+  disableNameSuffixHash: true
 EOF
 -----
 
@@ -569,9 +598,7 @@ cd ~
 [#deploying-sno-using-gitops-pipeline]
 == Deploying the SNO Cluster using the ZTP GitOps Pipeline
 
-When we applied the ZTP GitOps Pipeline configuration in the last section, that created two ArgoCD apps. One of the apps (clusters) take care of deploying the clusters defined in the `ClusterInstance` while the other (policies) take care of deploying the policies defined in the different `PolicyGenTemplates`.
-
-Since the apps have been created, ArgoCD started doing its magic which means that the cluster deployment should already be running, let's see what happened in Argo CD.
+When we applied the ZTP GitOps Pipeline configuration in the last section, that made the `clusters` ArgoCD application to automatically synchronize the commited changes. Basically, this means, ArgoCD starting doing its magic so the cluster deployment should already be running, let's see what happened in Argo CD.
 
 1. Login into https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab/[Argo CD].
 2. When accessing choose `Logging with OpenShift`, on the next screen use the OpenShift Console Admin credentials.
@@ -581,12 +608,9 @@ image::argocd-apps.png[ArgoCD Apps]
 +
 4. From all these apps, the ones related to the ZTP GitOps Pipeline are `clusters` and `policies`. If we click on `clusters` we will see the following screen:
 +
-image::argocd-clusters-app.png[ArgoCD Clusters App]
+image::ibi-cluster-app-sno3.png[ArgoCD Clusters App]
 +
-5. You can see how the pipeline created all the required objects to get our site deployed.
-6. If we check the `policies` app this is what we will see:
-+
-image::argocd-policies-app.png[ArgoCD Policies App]
+5. You can see how the pipeline created all the required objects to get `sno3` deployed. Notice as well that the `sno2` objects are there from link:installing-agentbasedinstall-cluster.html#deploying-sno-using-gitops-pipeline[previous configuration].
 
 
 [#completing-install]
@@ -777,7 +801,7 @@ WARNING: The SR-IOV configuration was included in the seed cluster because the h
 oc --kubeconfig ~/sno3-kubeconfig describe node | grep Allocatable: -A10
 -----
 [.console]
-[source,bash,subs="attributes+,+macros"]
+[source,bash,subs="attributes+"]
 -----
 Allocatable:
   cpu:                                     8
@@ -786,8 +810,8 @@ Allocatable:
   hugepages-2Mi:                           0
   management.workload.openshift.io/cores:  12k
   memory:                                  13530204Ki
-  openshift.io/virt-enp4s0:                2
-  openshift.io/virt-enp5s0:                2
+  openshift.io/virt-enp4s0:                2 // 2x sr-iov vf
+  openshift.io/virt-enp5s0:                2 // 2x sr-iov vf
   pods:                                    250
 -----
 
