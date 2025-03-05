@@ -179,7 +179,7 @@ sed -i "/destinations:/a \ \ - namespace: \'openshift-adp\'\n \ \ \ server: '\*\
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/
+oc --kubeconfig ~/hub-kubeconfig apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/
 -----
 
 At this stage, we have our ZTP GitOps pipeline running and waiting for commiting declarative Infrastructure and Configuration as Code to the `ztp-repository` Git repository. In the next image, a couple of new ArgoCD apps running:

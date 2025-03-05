@@ -31,9 +31,10 @@
 ** xref:telco-related-infra-operators-intro.adoc#sriov-operator[SR-IOV Operator]
 ** xref:telco-related-infra-operators-intro.adoc#ptp-operator[PTP Operator]
 ** xref:telco-related-infra-operators-intro.adoc#accelerators-operators[Accelerators Operators]
-** xref:telco-related-infra-operators-intro.adoc#logging-operator[Logging Operator]
+** xref:telco-related-infra-operators-intro.adoc#logging-operator[Cluster Logging Operator]
 ** xref:telco-related-infra-operators-intro.adoc#lifecycle-operator[Lifecycle Agent Operator]
-** xref:telco-related-infra-operators-intro.adoc#lvm-operator[LVM Storage Operator]
+** xref:telco-related-infra-operators-intro.adoc#lvm-operator[Storage Operators]
+** xref:telco-related-infra-operators-intro.adoc#oadp-operator[OpenShift API for Data Protection Operator]
 
 * xref:ztp-intro.adoc[Introduction to Zero Touch Provisioning (ZTP)]
 ** xref:ztp-intro.adoc#what-is-ztp[What is ZTP?]
@@ -209,6 +210,7 @@
 ** xref:using-talm-to-update-clusters.adoc#upgrade-policy-creation[Verifying managed clusters requirements]
 ** xref:using-talm-to-update-clusters.adoc#install-lca[Preparing managed clusters for upgrade]
 ** xref:using-talm-to-update-clusters.adoc#upgrade-policy-creation[Creating the Image Base Group Upgrade]
+** xref:using-talm-to-update-clusters.adoc#monitoring-ibu[Monitoring the Image Based Group Upgrade ]
 
 * xref:troubleshooting-tips.adoc[Troubleshooting Tips]
 ** xref:troubleshooting-tips.adoc#verification-lab[Verification of the lab status]
