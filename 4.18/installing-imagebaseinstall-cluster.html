@@ -812,7 +812,7 @@
 <p>In the previous section, <a href="creating-seed-image.html">Creating the Seed Image</a>, we created a seed image of a Single Node OpenShift cluster version v4.18.0-rc.7. That seed image will be used to deploy a new SNO in less than 20 minutes, that&#8217;s why, specially in telco RAN environments where we are managing thousands of clusters , this deployment method is the preferred one.</p>
 </div>
 <div class="paragraph">
-<p>The following picture describe the process we are going to follow to deploy and configure the <strong>sno3</strong> OpenShift Clusters with the RAN DU profile configured:</p>
+<p>The following picture describe the process we are going to follow to deploy and configure the <strong>sno-ibi</strong> OpenShift Clusters with the RAN DU profile configured:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -831,12 +831,12 @@
 <p>The ImageBasedInstallationConfig CR is provided and will be used by the <code>openshift-install</code> binary to create the installation ISO.</p>
 </li>
 <li>
-<p>The installation ISO is mounted remotely to the sno3 and the preinstallation process starts.</p>
+<p>The installation ISO is mounted remotely to the sno-ibi and the preinstallation process starts.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Once the preinstallation is finished, the sno3 will be shutdown. At this point, in a telco RAN scenario, the thousands of SNO clusters that were preinstalled in the customer premises will be transported to the remote locations.  In this lab, once the sno3 arrives to the remote location, the SNO is ready to be reconfigured and complete the installation.</p>
+<p>Once the preinstallation is finished, the sno-ibi will be shutdown. At this point, in a telco RAN scenario, the thousands of SNO clusters that were preinstalled in the customer premises will be transported to the remote locations. In this lab, once the sno-ibi arrives to the remote location, the SNO is ready to be reconfigured and complete the installation.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -844,10 +844,10 @@
 <p>The Image Based Install (IBI) Operator running in the hub cluster takes the site-specific configuration resources (<code>ImageClusterInstall</code>, <code>ClusterDeployment</code>, <code>BaremetalHost</code>, etc) and creates the Configuration ISO.</p>
 </li>
 <li>
-<p>The configuration ISO is mounted in the sno3 and the host is booted.</p>
+<p>The configuration ISO is mounted in the sno-ibi and the host is booted.</p>
 </li>
 <li>
-<p>The Lifecycle-Agent Operator that was included in the seed image and so it is available in the sno3, detects the configuration ISO and starts the reconfiguration process until the OpenShift Cluster is completely deployed.</p>
+<p>The Lifecycle-Agent Operator that was included in the seed image and so it is available in the sno-ibi, detects the configuration ISO and starts the reconfiguration process until the OpenShift Cluster is completely deployed.</p>
 </li>
 </ul>
 </div>
@@ -857,12 +857,12 @@
 <h2 id="baremetal-node-details"><a class="anchor" href="#baremetal-node-details"></a>Bare Metal Node Details</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The details for our baremetal node that we want to provision as SNO3 are the ones below:</p>
+<p>The details for our baremetal node that we want to provision as sno-ibi are the ones below:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>RedFish Endpoint: <code>redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno3</code></p>
+<p>RedFish Endpoint: <code>redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno-ibi</code></p>
 </li>
 <li>
 <p>MAC Address: <code>aa:aa:aa:aa:04:01</code></p>
@@ -1023,7 +1023,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>At this stage we are ready to manually boot the sno3 with the Installation ISO we created. But, first we have to move the ISO to a place where the host about to install can grab it. Let&#8217;s copy it to the <a href="lab-environment-introduction.html#webserver">HTTP server</a> we have available in our infrastructure:</p>
+<p>At this stage we are ready to manually boot the sno-ibi with the Installation ISO we created. But, first we have to move the ISO to a place where the host about to install can grab it. Let&#8217;s copy it to the <a href="lab-environment-introduction.html#webserver">HTTP server</a> we have available in our infrastructure:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1036,7 +1036,7 @@ EOF</code></pre>
 <h2 id="preinstallation-process"><a class="anchor" href="#preinstallation-process"></a>Pre-Installing the Host</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Now we are ready to boot sno3 with the Installation ISO. Run the following command from the infrastructure host:</p>
+<p>Now we are ready to boot sno-ibi with the Installation ISO. Run the following command from the infrastructure host:</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -1052,11 +1052,11 @@ We are using kcli tool to boot the server from the ISO by leveraging the RedFish
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli start baremetal -u admin -p admin -P iso_url=http://192.168.125.1:8080/rhcos-ibi.iso <a href="https://192.168.125.1:9000/redfish/v1/Systems/local/sno3" class="bare">https://192.168.125.1:9000/redfish/v1/Systems/local/sno3</a></code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli start baremetal -u admin -p admin -P iso_url=http://192.168.125.1:8080/rhcos-ibi.iso <a href="https://192.168.125.1:9000/redfish/v1/Systems/local/sno-ibi" class="bare">https://192.168.125.1:9000/redfish/v1/Systems/local/sno-ibi</a></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Then, the sno3 will boot and the preinstallation process will start. We can take a look at the process by connecting to the sno3 via ssh. Something similar to the following output will be shown in the terminal.</p>
+<p>Then, the sno-ibi will boot and the preinstallation process will start. We can take a look at the process by connecting to the sno-ibi via ssh. Something similar to the following output will be shown in the terminal.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1065,7 +1065,7 @@ We are using kcli tool to boot the server from the ISO by leveraging the RedFish
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-The pre-installation process is finished once the sno3 is automatically powered off.
+The pre-installation process is finished once the sno-ibi is automatically powered off.
 </td>
 </tr>
 </table>
@@ -1083,42 +1083,42 @@ The pre-installation process is finished once the sno3 is automatically powered 
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">...
-Feb 04 10:37:52 ocp-sno3 systemd[1]: Starting SNO Image-based Installation...
-Feb 04 10:37:52 ocp-sno3 systemd[1]: iscsi.service: Unit cannot be reloaded because it is inactive.
-Feb 04 10:37:53 ocp-sno3 systemd[1]: var-lib-containers-storage-overlay-opaque\x2dbug\x2dcheck2861559422-merged.mount: Deactivated successfully.
-Feb 04 10:37:53 ocp-sno3 podman[1625]: 2025-02-04 10:37:53.120804852 +0000 UTC m=+0.201463935 system refresh
-Feb 04 10:37:53 ocp-sno3 install-rhcos-and-restore-seed.sh[1625]: Trying to pull infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.7...
-Feb 04 10:37:53 ocp-sno3 install-rhcos-and-restore-seed.sh[1625]: Getting image source signatures
-Feb 04 10:37:53 ocp-sno3 install-rhcos-and-restore-seed.sh[1625]: Copying blob sha256:93570925bc4c04f7a453bd0eb530ddad84ea634c54defef1ec2a6410ad1eb683
+Feb 04 10:37:52 ocp-sno-ibi systemd[1]: Starting SNO Image-based Installation...
+Feb 04 10:37:52 ocp-sno-ibi systemd[1]: iscsi.service: Unit cannot be reloaded because it is inactive.
+Feb 04 10:37:53 ocp-sno-ibi systemd[1]: var-lib-containers-storage-overlay-opaque\x2dbug\x2dcheck2861559422-merged.mount: Deactivated successfully.
+Feb 04 10:37:53 ocp-sno-ibi podman[1625]: 2025-02-04 10:37:53.120804852 +0000 UTC m=+0.201463935 system refresh
+Feb 04 10:37:53 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1625]: Trying to pull infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.7...
+Feb 04 10:37:53 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1625]: Getting image source signatures
+Feb 04 10:37:53 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1625]: Copying blob sha256:93570925bc4c04f7a453bd0eb530ddad84ea634c54defef1ec2a6410ad1eb683
 ...
-Feb 04 10:38:06 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="IBI preparation process has started"
-Feb 04 10:38:06 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Start preparing disk"
-Feb 04 10:38:06 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Cleaning up /dev/vda disk"
-Feb 04 10:38:06 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Start cleaning up device /dev/vda"
-Feb 04 10:38:06 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing vgs with args [--noheadings -o vg_name,pv_name]"
-Feb 04 10:38:06 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing pvs with args [--noheadings -o pv_name]"
-Feb 04 10:38:06 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing dmsetup with args [ls]"
-Feb 04 10:38:06 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing mdadm with args [-v --query --detail --scan]"
-Feb 04 10:38:06 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing wipefs with args [--all --force /dev/vda]"
-Feb 04 10:38:06 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Writing image to disk"
-Feb 04 10:38:06 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing coreos-installer with args [install /dev/vda]"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="IBI preparation process has started"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Start preparing disk"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Cleaning up /dev/vda disk"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Start cleaning up device /dev/vda"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing vgs with args [--noheadings -o vg_name,pv_name]"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing pvs with args [--noheadings -o pv_name]"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing dmsetup with args [ls]"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing mdadm with args [-v --query --detail --scan]"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing wipefs with args [--all --force /dev/vda]"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Writing image to disk"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing coreos-installer with args [install /dev/vda]"
 ...
-Feb 04 10:39:43 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:39:43" level=info msg="Precaching imaging"
-Feb 04 10:39:43 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:39:43" level=info msg="Path doesn't exist, skipping chrootpath/host"
-Feb 04 10:39:43 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:39:43Z" level=info msg="Will attempt to pull 84 images"
-Feb 04 10:39:43 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:39:43Z" level=info msg="Configured precaching job to concurrently pull 10 images."
+Feb 04 10:39:43 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:39:43" level=info msg="Precaching imaging"
+Feb 04 10:39:43 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:39:43" level=info msg="Path doesn't exist, skipping chrootpath/host"
+Feb 04 10:39:43 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:39:43Z" level=info msg="Will attempt to pull 84 images"
+Feb 04 10:39:43 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:39:43Z" level=info msg="Configured precaching job to concurrently pull 10 images."
 ...
-Feb 04 10:41:22 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:41:22Z" level=info msg="Completed executing pre-caching"
-Feb 04 10:41:22 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:41:22Z" level=info msg="Failed to pre-cache the following images:"
-Feb 04 10:41:22 ocp-sno3 systemd[1]: var-lib-containers-storage-overlay.mount: Deactivated successfully.
-Feb 04 10:41:22 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:41:22Z" level=info msg="quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:bcb68cf733405788242e599946ae51e3369edd3ceb6dd57a2a07531d75267f23, but found locally after downloading other images"
-Feb 04 10:41:22 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:41:22Z" level=info msg="Pre-cached images successfully."
-Feb 04 10:41:22 ocp-sno3 install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:41:22" level=info msg="Executing ostree with args [admin undeploy --sysroot /mnt 1]"
-Feb 04 10:41:22 ocp-sno3 ostree[5337]: Starting syncfs() for system root
-Feb 04 10:41:22 ocp-sno3 ostree[5337]: Completed syncfs() for system root in 1 ms
-Feb 04 10:41:22 ocp-sno3 ostree[5337]: Starting freeze/thaw cycle for system root
-Feb 04 10:41:22 ocp-sno3 ostree[5337]: Completed freeze/thaw cycle for system root in 31 ms
-Feb 04 10:41:22 ocp-sno3 ostree[5337]: Bootloader updated; bootconfig swap: yes; bootversion: boot.1.1, deployment count change: -1
+Feb 04 10:41:22 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:41:22Z" level=info msg="Completed executing pre-caching"
+Feb 04 10:41:22 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:41:22Z" level=info msg="Failed to pre-cache the following images:"
+Feb 04 10:41:22 ocp-sno-ibi systemd[1]: var-lib-containers-storage-overlay.mount: Deactivated successfully.
+Feb 04 10:41:22 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:41:22Z" level=info msg="quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:bcb68cf733405788242e599946ae51e3369edd3ceb6dd57a2a07531d75267f23, but found locally after downloading other images"
+Feb 04 10:41:22 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:41:22Z" level=info msg="Pre-cached images successfully."
+Feb 04 10:41:22 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:41:22" level=info msg="Executing ostree with args [admin undeploy --sysroot /mnt 1]"
+Feb 04 10:41:22 ocp-sno-ibi ostree[5337]: Starting syncfs() for system root
+Feb 04 10:41:22 ocp-sno-ibi ostree[5337]: Completed syncfs() for system root in 1 ms
+Feb 04 10:41:22 ocp-sno-ibi ostree[5337]: Starting freeze/thaw cycle for system root
+Feb 04 10:41:22 ocp-sno-ibi ostree[5337]: Completed freeze/thaw cycle for system root in 31 ms
+Feb 04 10:41:22 ocp-sno-ibi ostree[5337]: Bootloader updated; bootconfig swap: yes; bootversion: boot.1.1, deployment count change: -1
 ...
 Broadcast message from root@localhost (Tue 2025-02-04 10:41:25 UTC):
 ...
@@ -1164,12 +1164,12 @@ image-based-install-operator-7f7659f86c-cd46k   2/2     Running   0          5h<
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno3/ns.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno-ibi/ns.yaml
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: sno3
+  name: sno-ibi
 EOF</code></pre>
 </div>
 </div>
@@ -1178,13 +1178,13 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno3/pull-secret.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno-ibi/pull-secret.yaml
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: disconnected-registry-pull-secret
-  namespace: sno3
+  namespace: sno-ibi
 stringData:
   .dockerconfigjson: '{"auths":{"infra.5g-deployment.lab:8443":{"auth":"YWRtaW46cjNkaDR0MSE="}}}'
   type: kubernetes.io/dockerconfigjson
@@ -1196,13 +1196,13 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno3/bmc-credentials.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno-ibi/bmc-credentials.yaml
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: sno3-bmc-credentials
-  namespace: sno3
+  name: sno-ibi-bmc-credentials
+  namespace: sno-ibi
 data:
   username: "YWRtaW4="
   password: "YWRtaW4="
@@ -1240,13 +1240,13 @@ Remember that during the seed image generation, the catalogsources are removed f
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno3/ibi_extra_manifests.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno-ibi/ibi_extra_manifests.yaml
 ---
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: disconnected-ran-config
-  namespace: sno3
+  namespace: sno-ibi
 data:
   redhat-operator-index.yaml: |
     apiVersion: operators.coreos.com/v1alpha1
@@ -1339,7 +1339,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno3/kustomization.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno-ibi/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -1358,8 +1358,8 @@ EOF</code></pre>
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - sno2/
-  - sno3/
+  - sno-abi/
+  - sno-ibi/
 EOF</code></pre>
 </div>
 </div>
@@ -1380,19 +1380,19 @@ The SiteConfig Operator transforms the ClusterInstance CR into multiple Installa
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; 'EOF' &gt; ~/5g-deployment-lab/ztp-repository/site-configs/hub-1/ocp-sno3.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; 'EOF' &gt; ~/5g-deployment-lab/ztp-repository/site-configs/hub-1/ocp-sno-ibi.yaml
 ---
 apiVersion: siteconfig.open-cluster-management.io/v1alpha1
 kind: ClusterInstance
 metadata:
-  name: "ocp-sno3"
-  namespace: "sno3"
+  name: "ocp-sno-ibi"
+  namespace: "sno-ibi"
 spec:
   additionalNTPSources:
     - "clock.corp.redhat.com"
   baseDomain: "5g-deployment.lab"
   clusterImageSetNameRef: "active-ocp-version"
-  clusterName: "sno3"
+  clusterName: "sno-ibi"
   clusterNetwork:
     - cidr: "10.128.0.0/14"
       hostPrefix: 23
@@ -1402,7 +1402,7 @@ spec:
       common: "ocp418"
       logicalGroup: "active"
       group-du-sno: ""
-      du-site: "sno3"
+      du-site: "sno-ibi"
       hardware-type: "hw-type-platform-1"
   holdInstallation: false
   extraManifestsRefs:
@@ -1420,12 +1420,12 @@ spec:
       namespace: open-cluster-management
   nodes:
     - automatedCleaningMode: "disabled"
-      bmcAddress: "redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno3"
+      bmcAddress: "redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno-ibi"
       bmcCredentialsName:
-        name: "sno3-bmc-credentials"
+        name: "sno-ibi-bmc-credentials"
       bootMACAddress: "AA:AA:AA:AA:04:01"
       bootMode: "UEFI"
-      hostName: "ocp-sno3.sno3.5g-deployment.lab"
+      hostName: "ocp-sno-ibi.sno-ibi.5g-deployment.lab"
       nodeNetwork:
         interfaces:
           - name: "enp3s0"
@@ -1461,8 +1461,8 @@ kind: Kustomization
 resources:
   - pre-reqs/
   - resources/
-  - hub-1/ocp-sno2.yaml
-  - hub-1/ocp-sno3.yaml
+  - hub-1/ocp-sno-abi.yaml
+  - hub-1/ocp-sno-ibi.yaml
 
 configMapGenerator:
   - files:
@@ -1486,7 +1486,7 @@ configMapGenerator:
     - hub-1/extra-manifest/enable-crun-master.yaml
     - hub-1/extra-manifest/enable-crun-worker.yaml
     name: ran-rds-418-manifests
-    namespace: sno2
+    namespace: sno-abi
 
 generatorOptions:
   disableNameSuffixHash: true
@@ -1500,7 +1500,7 @@ EOF</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository/site-configs/
 git add --all
-git commit -m 'Added SNO3 cluster using image-based install flow'
+git commit -m 'Added SNO IBI cluster using image-based install flow'
 git push origin main
 cd ~</code></pre>
 </div>
@@ -1533,12 +1533,12 @@ cd ~</code></pre>
 <p>From all these apps, the ones related to the ZTP GitOps Pipeline are <code>clusters</code> and <code>policies</code>. If we click on <code>clusters</code> we will see the following screen:</p>
 <div class="imageblock">
 <div class="content">
-<img src="_images/ibi-cluster-app-sno3.png" alt="ArgoCD Clusters App">
+<img src="_images/ibi-cluster-app-sno-ibi.png" alt="ArgoCD Clusters App">
 </div>
 </div>
 </li>
 <li>
-<p>You can see how the pipeline created all the required objects to get <code>sno3</code> deployed. Notice as well that the <code>sno2</code> objects are there from <a href="installing-agentbasedinstall-cluster.html#deploying-sno-using-gitops-pipeline">previous configuration</a>.</p>
+<p>You can see how the pipeline created all the required objects to get <code>sno-ibi</code> deployed. Notice as well that the <code>sno-abi</code> objects are there from <a href="installing-agentbasedinstall-cluster.html#deploying-sno-using-gitops-pipeline">previous configuration</a>.</p>
 </li>
 </ol>
 </div>
@@ -1552,25 +1552,25 @@ cd ~</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno3 get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno-ibi get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE   NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
-sno3        baremetalhost.metal3.io/ocp-sno3   externally provisioned              true             35s
+sno-ibi        baremetalhost.metal3.io/ocp-sno-ibi   externally provisioned              true             35s
 
 NAME                                                             PAUSED   PROVISIONSTATUS   PROVISIONDETAILS         AGE
-clusterinstance.siteconfig.open-cluster-management.io/ocp-sno3            Completed         Provisioning completed   9h
+clusterinstance.siteconfig.open-cluster-management.io/ocp-sno-ibi            Completed         Provisioning completed   9h
 
 NAMESPACE   NAME                                       INFRAID                                PLATFORM          REGION   VERSION       CLUSTERTYPE   PROVISIONSTATUS   POWERSTATE   AGE
-sno3        clusterdeployment.hive.openshift.io/sno3   sno3-zrts7                             none-platform                                          Provisioning                   35s
+sno-ibi        clusterdeployment.hive.openshift.io/sno-ibi   sno-ibi-zrts7                             none-platform                                          Provisioning                   35s
 
 NAMESPACE   NAME                                                    REQUIREMENTSMET           COMPLETED                       BAREMETALHOSTREF
-sno3        imageclusterinstall.extensions.hive.openshift.io/sno3   HostValidationSucceeded   ClusterInstallationInProgress   ocp-sno3
+sno-ibi        imageclusterinstall.extensions.hive.openshift.io/sno-ibi   HostValidationSucceeded   ClusterInstallationInProgress   ocp-sno-ibi
 
 NAMESPACE   NAME                           AGE
-sno3        dataimage.metal3.io/ocp-sno3   34s</code></pre>
+sno-ibi        dataimage.metal3.io/ocp-sno-ibi   34s</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1582,19 +1582,19 @@ sno3        dataimage.metal3.io/ocp-sno3   34s</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s see how the OpenShift installation is progressing in the target cluster. First, we need the sno3 credentials. From the hub cluster we can obtain them using this command:</p>
+<p>Let&#8217;s see how the OpenShift installation is progressing in the target cluster. First, we need the sno-ibi credentials. From the hub cluster we can obtain them using this command:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno3 extract secret/sno3-admin-kubeconfig --to=- &gt; ~/sno3-kubeconfig</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno-ibi extract secret/sno-ibi-admin-kubeconfig --to=- &gt; ~/ibi-cluster-kubeconfig</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Now, that we have the sno3 admin credentials, let&#8217;s see the current status of the cluster and how the different cluster operators are moving forward:</p>
+<p>Now, that we have the sno-ibi admin credentials, let&#8217;s see the current status of the cluster and how the different cluster operators are moving forward:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch oc --kubeconfig ~/sno3-kubeconfig get clusterversion,nodes,mcp,co</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch oc --kubeconfig ~/ibi-cluster-kubeconfig get clusterversion,nodes,mcp,co</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -1603,15 +1603,14 @@ sno3        dataimage.metal3.io/ocp-sno3   34s</code></pre>
 clusterversion.config.openshift.io/version   4.18.0-rc.7   False       False         4h54m   Error while reconciling 4.18.0-rc.7: an unknown error has occurred: MultipleErrors
 
 NAME                                   STATUS   ROLES                         AGE     VERSION
-node/ocp-sno3.sno3.5g-deployment.lab   Ready    control-plane,master,worker   6m40s   v1.31.4
+node/ocp-sno-ibi.sno-ibi.5g-deployment.lab   Ready    control-plane,master,worker   6m40s   v1.31.4
 
 NAME                                                         CONFIG                                             UPDATED   UPDATING   DEGRADED   MACHINECOUNT   READYMACHINECOUNT   UPDATEDMACHINECOUNT   DEGRADEDMACHINECOUNT   AGE
 machineconfigpool.machineconfiguration.openshift.io/master   rendered-master-484df4de53ef04b47b119185a6025d18   True	  False      False	1              1                   1                     0                      5h14m
 machineconfigpool.machineconfiguration.openshift.io/worker   rendered-worker-ca41ad0a46d9e710d6540dafbcbbb473   True	  False      False	0              0                   0                     0                      5h14m
 
 NAME                                                                           VERSION       AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
-clusteroperator.config.openshift.io/authentication                             4.18.0-rc.7   False	 False         True	  5m39s   OAuthServerRouteEndpointAccessibleControllerAvailable: Get "https://oauth-openshift.apps.sno3.5g-dep
-loyment.lab/healthz": EOF
+clusteroperator.config.openshift.io/authentication                             4.18.0-rc.7   False	 False         True	  5m39s   OAuthServerRouteEndpointAccessibleControllerAvailable: Get "https://oauth-openshift.apps.sno-ibi.5g-deployment.lab/healthz": EOF
 clusteroperator.config.openshift.io/config-operator                            4.18.0-rc.7   True        False         False	  5h14m
 clusteroperator.config.openshift.io/dns                                        4.18.0-rc.7   True        False         False	  5m25s
 clusteroperator.config.openshift.io/etcd                                       4.18.0-rc.7   True        False         False	  5h5m
@@ -1651,29 +1650,29 @@ Confirm that the <code>clusterInstance</code> is shown as "Provisioning complete
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno3 get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno-ibi get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
-baremetalhost.metal3.io/ocp-sno3   externally provisioned              true             32m
+baremetalhost.metal3.io/ocp-sno-ibi   externally provisioned              true             32m
 
 NAME                                                             PAUSED   PROVISIONSTATUS   PROVISIONDETAILS         AGE
-clusterinstance.siteconfig.open-cluster-management.io/ocp-sno3            Completed         Provisioning completed   32m
+clusterinstance.siteconfig.open-cluster-management.io/ocp-sno-ibi            Completed         Provisioning completed   32m
 
 NAME                                       INFRAID	PLATFORM        REGION   VERSION       CLUSTERTYPE   PROVISIONSTATUS   POWERSTATE   AGE
-clusterdeployment.hive.openshift.io/sno3   sno3-vcd52   none-platform            4.18.0-rc.7                 Provisioned       Running      32m
+clusterdeployment.hive.openshift.io/sno-ibi   sno-ibi-vcd52   none-platform            4.18.0-rc.7                 Provisioned       Running      32m
 
 NAME                                                    REQUIREMENTSMET           COMPLETED                      BAREMETALHOSTREF
-imageclusterinstall.extensions.hive.openshift.io/sno3   HostValidationSucceeded   ClusterInstallationSucceeded   ocp-sno3
+imageclusterinstall.extensions.hive.openshift.io/sno-ibi   HostValidationSucceeded   ClusterInstallationSucceeded   ocp-sno-ibi
 
 NAME                           AGE
-dataimage.metal3.io/ocp-sno3   32m</code></pre>
+dataimage.metal3.io/ocp-sno-ibi   32m</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that the Red Hat ACM console will show the sno3 OpenShift cluster as Ready:</p>
+<p>Notice that the Red Hat ACM console will show the sno-ibi OpenShift cluster as Ready:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1701,7 +1700,7 @@ dataimage.metal3.io/ocp-sno3   32m</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno3-kubeconfig get clusterversion,nodes</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/ibi-cluster-kubeconfig get clusterversion,nodes</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -1710,7 +1709,7 @@ dataimage.metal3.io/ocp-sno3   32m</code></pre>
 clusterversion.config.openshift.io/version   4.18.0-rc.7   True        False         6h4m    Cluster version is 4.18.0-rc.7
 
 NAME                                   STATUS   ROLES                         AGE   VERSION
-node/ocp-sno3.sno3.5g-deployment.lab   Ready    control-plane,master,worker   32m   v1.31.4</code></pre>
+node/ocp-sno-ibi.sno-ibi.5g-deployment.lab   Ready    control-plane,master,worker   32m   v1.31.4</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1718,7 +1717,7 @@ node/ocp-sno3.sno3.5g-deployment.lab   Ready    control-plane,master,worker   32
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno3-kubeconfig get operators</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/ibi-cluster-kubeconfig get operators</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -1735,7 +1734,7 @@ sriov-network-operator.openshift-sriov-network-operator   6h5m</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno3-kubeconfig get sc,lvmcluster -A</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/ibi-cluster-kubeconfig get sc,lvmcluster -A</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -1764,7 +1763,7 @@ The SR-IOV configuration was included in the seed cluster because the hardware o
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno3-kubeconfig describe node | grep Allocatable: -A10</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/ibi-cluster-kubeconfig describe node | grep Allocatable: -A10</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -1783,7 +1782,7 @@ The SR-IOV configuration was included in the seed cluster because the hardware o
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno3-kubeconfig get performanceprofile</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/ibi-cluster-kubeconfig get performanceprofile</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -1793,7 +1792,7 @@ openshift-node-performance-profile   6h24m</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>At this stage the sno3 is deployed and configured with the RAN DU profile, ready to run telco CNF applications.</p>
+<p>At this stage the sno-ibi is deployed and configured with the RAN DU profile, ready to run telco CNF applications.</p>
 </div>
 </div>
 </div>

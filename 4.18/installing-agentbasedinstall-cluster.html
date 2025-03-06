@@ -833,12 +833,12 @@
 <h2 id="baremetal-node-details"><a class="anchor" href="#baremetal-node-details"></a>Bare Metal Node Details</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The details for our baremetal node that we want to provision as SNO2 are the ones below:</p>
+<p>The details for our baremetal node that we want to provision as SNO ABI are the ones below:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>RedFish Endpoint: <code>redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno2</code></p>
+<p>RedFish Endpoint: <code>redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno-abi</code></p>
 </li>
 <li>
 <p>MAC Address: <code>aa:aa:aa:aa:03:01</code></p>
@@ -880,13 +880,13 @@ In a production environment you don&#8217;t want to add sensitive information in
 <p>BMC credentials file.</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno2/bmc-credentials.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno-abi/bmc-credentials.yaml
 ---
 apiVersion: v1
 kind: Secret
 metadata:
-  name: sno2-bmc-credentials
-  namespace: sno2
+  name: sno-abi-bmc-credentials
+  namespace: sno-abi
 data:
   username: "YWRtaW4="
   password: "YWRtaW4="
@@ -899,13 +899,13 @@ EOF</code></pre>
 <p>Pull secret for accessing the disconnected registry.</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno2/pull-secret.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno-abi/pull-secret.yaml
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: disconnected-registry-pull-secret
-  namespace: sno2
+  namespace: sno-abi
 stringData:
   .dockerconfigjson: '{"auths":{"infra.5g-deployment.lab:8443":{"auth":"YWRtaW46cjNkaDR0MSE="}}}'
   type: kubernetes.io/dockerconfigjson
@@ -914,24 +914,24 @@ EOF</code></pre>
 </div>
 </li>
 <li>
-<p>Namespace for the SNO2 cluster.</p>
+<p>Namespace for the SNO ABI cluster.</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno2/ns.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno-abi/ns.yaml
 ---
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: sno2
+  name: sno-abi
 EOF</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>Kustomization file for the SNO2 pre-reqs.</p>
+<p>Kustomization file for the SNO ABI pre-reqs.</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno2/kustomization.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno-abi/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -952,7 +952,7 @@ EOF</code></pre>
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - sno2/
+  - sno-abi/
 EOF</code></pre>
 </div>
 </div>
@@ -972,19 +972,19 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; 'EOF' &gt; ~/5g-deployment-lab/ztp-repository/site-configs/hub-1/ocp-sno2.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; 'EOF' &gt; ~/5g-deployment-lab/ztp-repository/site-configs/hub-1/ocp-sno-abi.yaml
 ---
 apiVersion: siteconfig.open-cluster-management.io/v1alpha1
 kind: ClusterInstance
 metadata:
-  name: "ocp-sno2"
-  namespace: "sno2"
+  name: "ocp-sno-abi"
+  namespace: "sno-abi"
 spec:
   additionalNTPSources:
     - "clock.corp.redhat.com"
   baseDomain: "5g-deployment.lab"
   clusterImageSetNameRef: "active-ocp-version"
-  clusterName: "sno2"
+  clusterName: "sno-abi"
   clusterNetwork:
     - cidr: "10.128.0.0/14"
       hostPrefix: 23
@@ -994,7 +994,7 @@ spec:
       common: "ocp418"
       logicalGroup: "active"
       group-du-sno: ""
-      du-site: "sno2"
+      du-site: "sno-abi"
       du-zone: "europe"
       hardware-type: "hw-type-platform-1"
   holdInstallation: false
@@ -1024,12 +1024,12 @@ spec:
       namespace: open-cluster-management
   nodes:
     - automatedCleaningMode: "disabled"
-      bmcAddress: "redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno2"
+      bmcAddress: "redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno-abi"
       bmcCredentialsName:
-        name: "sno2-bmc-credentials"
+        name: "sno-abi-bmc-credentials"
       bootMACAddress: "AA:AA:AA:AA:03:01"
       bootMode: "UEFI"
-      hostName: "ocp-sno2.sno2.5g-deployment.lab"
+      hostName: "ocp-sno-abi.sno-abi.5g-deployment.lab"
       ignitionConfigOverride: |
         {
           "ignition": {
@@ -1102,7 +1102,7 @@ EOF</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Check that the above ClusterInstance CR is using the ai-node-templates-v1 (Agent Based Install) templates to deploy the sno2 OpenShift cluster. Also, we added an ignitionConfigOverride that creates a separate partition for the <code>/var/lib/containers</code> which is a pre-requisite for upgrading clusters using the image-based Upgrade method. We will deal with image-based upgrades later on in this lab, however, detailed information about the requirements needed can be found <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-shared-container-partition.html#cnf-image-based-upgrade-shared-container-partition_shared-container-partition">here</a>
+Check that the above ClusterInstance CR is using the ai-node-templates-v1 (Agent Based Install) templates to deploy the sno-abi OpenShift cluster. Also, we added an ignitionConfigOverride that creates a separate partition for the <code>/var/lib/containers</code> which is a pre-requisite for upgrading clusters using the image-based Upgrade method. We will deal with image-based upgrades later on in this lab, however, detailed information about the requirements needed can be found <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-shared-container-partition.html#cnf-image-based-upgrade-shared-container-partition_shared-container-partition">here</a>
 </td>
 </tr>
 </table>
@@ -1227,7 +1227,7 @@ As of version 4.16 the default cgroups configuration is <strong>cgroupsv2</stron
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 generators:
-  - ocp-sno2.yaml
+  - ocp-sno-abi.yaml
 EOF
 cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/resources/kustomization.yaml
 ---
@@ -1243,7 +1243,7 @@ kind: Kustomization
 resources:
   - pre-reqs/
   - resources/
-  - hub-1/ocp-sno2.yaml
+  - hub-1/ocp-sno-abi.yaml
 
 configMapGenerator:
   - files:
@@ -1267,7 +1267,7 @@ configMapGenerator:
     - hub-1/extra-manifest/enable-crun-master.yaml
     - hub-1/extra-manifest/enable-crun-worker.yaml
     name: ran-rds-418-manifests
-    namespace: sno2
+    namespace: sno-abi
 
 generatorOptions:
   disableNameSuffixHash: true
@@ -1281,7 +1281,7 @@ EOF</code></pre>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository
 git add --all
-git commit -m 'Added SNO2 cluster using agent-based install flow'
+git commit -m 'Added SNO ABI cluster using agent-based install flow'
 git push origin main
 cd ~</code></pre>
 </div>
@@ -1292,7 +1292,7 @@ cd ~</code></pre>
 <h2 id="deploying-sno-using-gitops-pipeline"><a class="anchor" href="#deploying-sno-using-gitops-pipeline"></a>Deploying the SNO Cluster using the ZTP GitOps Pipeline</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>When we applied the ZTP GitOps Pipeline configuration in the last section, the ArgoCD app called clusters takes care of deploying the <code>sno2</code> SNO cluster defined in the <code>ClusterInstance</code>.</p>
+<p>When we applied the ZTP GitOps Pipeline configuration in the last section, the ArgoCD app called clusters takes care of deploying the <code>sno-abi</code> SNO cluster defined in the <code>ClusterInstance</code>.</p>
 </div>
 <div class="paragraph">
 <p>At this point ArgoCD started doing its magic which means that the cluster deployment should already be running, let&#8217;s see what happened in Argo CD.</p>
@@ -1321,7 +1321,7 @@ It may take up to 5 minutes for Argo CD to start syncing changes.
 <p>From all these apps, click on <code>clusters</code> we will see something similar to the following screen:</p>
 <div class="imageblock">
 <div class="content">
-<img src="_images/argocd-clusters-app-sno2.png" alt="ArgoCD Clusters App">
+<img src="_images/argocd-clusters-app-sno-abi.png" alt="ArgoCD Clusters App">
 </div>
 </div>
 </li>
@@ -1347,7 +1347,7 @@ It may take up to 5 minutes for Argo CD to start syncing changes.
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-It may take a while for the installation to start, wait at least 10 minutes if you see <code>The cluster is not ready for installation</code> message or the <code>SNO2</code> cluster shows up as <code>draft</code>.
+It may take a while for the installation to start, wait at least 10 minutes if you see <code>The cluster is not ready for installation</code> message or the <code>SNO ABI</code> cluster shows up as <code>draft</code>.
 </td>
 </tr>
 </table>
@@ -1369,7 +1369,7 @@ It may take a while for the installation to start, wait at least 10 minutes if y
 </div>
 </li>
 <li>
-<p>Eventually, the <code>SNO2</code> cluster will start its deployment:</p>
+<p>Eventually, the <code>SNO ABI</code> cluster will start its deployment:</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/acm-clusterview.png" alt="RHACM Cluster View">
@@ -1377,10 +1377,10 @@ It may take a while for the installation to start, wait at least 10 minutes if y
 </div>
 </li>
 <li>
-<p>In order to check the deployment status of the <code>sno2</code> cluster, click on <code>sno2</code> and you will get presented this screen:</p>
+<p>In order to check the deployment status of the <code>sno-abi</code> cluster, click on <code>sno-abi</code> and you will get presented this screen:</p>
 <div class="imageblock">
 <div class="content">
-<img src="_images/acm-sno2-view.png" alt="RHACM sno2 Cluster View">
+<img src="_images/acm-sno-abi-view.png" alt="RHACM sno-abi Cluster View">
 </div>
 </div>
 </li>
@@ -1388,7 +1388,7 @@ It may take a while for the installation to start, wait at least 10 minutes if y
 <p>You can follow the progress here, if you want to get extra details you can click on <code>View Cluster Events</code> and you should see more information:</p>
 <div class="imageblock">
 <div class="content">
-<img src="_images/acm-sno2-clusterevents.png" alt="RHACM sno2 Cluster Events">
+<img src="_images/acm-sno-abi-clusterevents.png" alt="RHACM sno-abi Cluster Events">
 </div>
 </div>
 </li>
@@ -1401,14 +1401,14 @@ It may take a while for the installation to start, wait at least 10 minutes if y
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-<code>SNO2</code> cluster installation takes around 50 minutes to complete.
+<code>SNO ABI</code> cluster installation takes around 50 minutes to complete.
 </td>
 </tr>
 </table>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="_images/acm-sno2-install-completed.png" alt="RHACM sno2 Cluster Deployment Finished">
+<img src="_images/acm-sno-abi-install-completed.png" alt="RHACM sno-abi Cluster Deployment Finished">
 </div>
 </div>
 </li>
@@ -1434,16 +1434,16 @@ Below commands must be executed from the workstation host if not specified other
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Check the <code>AgentClusterInstall</code> for SNO2 cluster:</p>
+<p>Check the <code>AgentClusterInstall</code> for SNO ABI cluster:</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno2 get agentclusterinstall sno2</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno-abi get agentclusterinstall sno-abi</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME   CLUSTER   STATE
-sno2   sno2      finalizing</code></pre>
+sno-abi   sno-abi      finalizing</code></pre>
 </div>
 </div>
 </li>
@@ -1451,7 +1451,7 @@ sno2   sno2      finalizing</code></pre>
 <p>In case you want expanded information like we saw in the WebUI you can check the conditions of the <code>AgentClusterInstall</code> object. For example, while installing:</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno2 get agentclusterinstall sno2 -o yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno-abi get agentclusterinstall sno-abi -o yaml</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -1489,13 +1489,13 @@ sno2   sno2      finalizing</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-<code>SNO2</code> cluster installation takes around 50 minutes to complete.
+<code>SNO ABI</code> cluster installation takes around 50 minutes to complete.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>While the <code>SNO2</code> cluster installs, let&#8217;s move to the next section where we will learn how to deploy a SNO OpenShift cluster using an <a href="ztp-workflow.html#ibi-deployment">image-based install flow</a>. However, first things first, we have to create a seed image from an already deployed <a href="lab-environment-introduction.html#openshift-seed-sno">Single Node OpenShift seed cluster</a>.</p>
+<p>While the <code>SNO ABI</code> cluster installs, let&#8217;s move to the next section where we will learn how to deploy a SNO OpenShift cluster using an <a href="ztp-workflow.html#ibi-deployment">image-based install flow</a>. However, first things first, we have to create a seed image from an already deployed <a href="lab-environment-introduction.html#openshift-seed-sno">Single Node OpenShift seed cluster</a>.</p>
 </div>
 </div>
 </div>

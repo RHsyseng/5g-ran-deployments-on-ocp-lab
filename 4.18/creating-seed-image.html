@@ -869,14 +869,14 @@ During the deployment of this lab we already ensured that the seed SNO cluster i
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-If below command throws an error saying: <code>The connection to the server api.sno1.5g-deployment.lab:6443 was refused - did you specify the right host or port?</code>. Wait up to 10 minutes, the cluster may be restarting its API.
+If below command throws an error saying: <code>The connection to the server api.sno-seed.5g-deployment.lab:6443 was refused - did you specify the right host or port?</code>. Wait up to 10 minutes, the cluster may be restarting its API.
 </td>
 </tr>
 </table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get csv -A</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-cluster-kubeconfig get csv -A</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -894,7 +894,7 @@ openshift-storage                      lvms-operator.v4.18.0                    
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get clusterversion</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-cluster-kubeconfig get clusterversion</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -908,7 +908,7 @@ version   v4.18.0-rc.7  True        False         13m     Cluster version is v4.
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/sno1kubeconfig apply -f -
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/seed-cluster-kubeconfig apply -f -
 ---
 apiVersion: v1
 kind: Secret
@@ -938,7 +938,7 @@ A good practice is to tag the seed container image with the OpenShift version of
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/sno1kubeconfig apply -f -
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/seed-cluster-kubeconfig apply -f -
 ---
 apiVersion: lca.openshift.io/v1
 kind: SeedGenerator
@@ -954,7 +954,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get seedgen -A</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-cluster-kubeconfig get seedgen -A</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -965,7 +965,7 @@ seedimage   47s   SeedGenInProgress   Cleaning cluster resources</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig -n openshift-lifecycle-agent logs -f deployment/lifecycle-agent-controller-manager -c manager</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-cluster-kubeconfig -n openshift-lifecycle-agent logs -f deployment/lifecycle-agent-controller-manager -c manager</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -1001,12 +1001,12 @@ The cluster reboots and loses API capabilities while the Lifecycle Agent generat
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get seedgen -A</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-cluster-kubeconfig get seedgen -A</code></pre>
 </div>
 </div>
 <div class="listingblock console">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Get "https://api.sno1.5g-deployment.lab:6443/apis/lca.openshift.io/v1/seedgenerators?limit=500": dial tcp 192.168.125.30:6443: connect: connection refused - error from a previous attempt: unexpected EOF</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Get "https://api.sno-seed.5g-deployment.lab:6443/apis/lca.openshift.io/v1/seedgenerators?limit=500": dial tcp 192.168.125.30:6443: connect: connection refused - error from a previous attempt: unexpected EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1014,7 +1014,7 @@ The cluster reboots and loses API capabilities while the Lifecycle Agent generat
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get seedgenerator seedimage -o json | jq '.status'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-cluster-kubeconfig get seedgenerator seedimage -o json | jq '.status'</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -1044,7 +1044,7 @@ The cluster reboots and loses API capabilities while the Lifecycle Agent generat
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get seedgenerator</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-cluster-kubeconfig get seedgenerator</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -1058,7 +1058,7 @@ seedimage   12s   SeedGenCompleted   Seed Generation completed</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno1kubeconfig get clusterversion,nodes</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-cluster-kubeconfig get clusterversion,nodes</code></pre>
 </div>
 </div>
 <div class="listingblock console">

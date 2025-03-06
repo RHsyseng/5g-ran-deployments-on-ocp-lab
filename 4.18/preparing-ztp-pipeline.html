@@ -918,8 +918,8 @@ git clone <a href="http://student:student@infra.5g-deployment.lab:3000/student/z
 |   |   └── reference-manifest
 |   |   |   └── 4.18
 │   ├── pre-reqs
-│   │   └── sno2
-|   |   └── sno3
+│   │   └── sno-abi
+|   |   └── sno-ibi
 │   └── resources
 └── site-policies
     ├── fleet
@@ -954,7 +954,7 @@ If it is the first time that you are using <code>git</code> in your machine, a m
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-The cluster name for the SNO that we will be deploying using the agent-based install will be <strong>sno2</strong>. On the other hand, <strong>sno3</strong> is the name of the cluster that we will deploy using the image-based install flow. That&#8217;s why those folder exists in the repository structure that we are creating.
+The cluster name for the SNO that we will be deploying using the agent-based install will be <strong>sno-abi</strong>. On the other hand, <strong>sno-ibi</strong> is the name of the cluster that we will deploy using the image-based install flow. That&#8217;s why those folder exists in the repository structure that we are creating.
 </td>
 </tr>
 </table>
@@ -962,9 +962,9 @@ The cluster name for the SNO that we will be deploying using the agent-based ins
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository/
-mkdir -p site-configs/{hub-1,resources,pre-reqs/sno2,pre-reqs/sno3,hub-1/extra-manifest,reference-manifest/4.18}
+mkdir -p site-configs/{hub-1,resources,pre-reqs/sno-abi,pre-reqs/sno-ibi,hub-1/extra-manifest,reference-manifest/4.18}
 mkdir -p site-policies/{fleet/active/source-crs/reference-crs,fleet/active/source-crs/custom-crs,fleet/testing,sites/hub-1}
-touch site-configs/{hub-1,resources,pre-reqs/sno2,pre-reqs/sno3,hub-1/extra-manifest,reference-manifest/4.18}/.gitkeep
+touch site-configs/{hub-1,resources,pre-reqs/sno-abi,pre-reqs/sno-ibi,hub-1/extra-manifest,reference-manifest/4.18}/.gitkeep
 touch site-policies/{fleet/active/source-crs/reference-crs,fleet/active/source-crs/custom-crs,fleet/testing,sites/hub-1}/.gitkeep
 git add --all
 git commit -m 'Initialized repo structure'

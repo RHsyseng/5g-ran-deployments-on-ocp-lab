@@ -848,7 +848,7 @@ e7cf765660a3  quay.io/mavazque/registry:2.7.1  /etc/docker/regis...  24 hours ag
 <div class="sect2">
 <h3 id="sno2"><a class="anchor" href="#sno2"></a>SNO2 virtual machine</h3>
 <div class="paragraph">
-<p>In the lab we are going to provision and configure a SNO cluster named SNO2. Let&#8217;s double check that the virtual machine exists and it is stopped.</p>
+<p>In the lab we are going to provision and configure two SNO clusters named sno-abi and sno-ibi. Let&#8217;s double check that the virtual machines exist and are stopped.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -864,8 +864,9 @@ e7cf765660a3  quay.io/mavazque/registry:2.7.1  /etc/docker/regis...  24 hours ag
 |  hub-master0  |   up   | 192.168.125.20 |                                                      |     hub     |  kvirt  |
 |  hub-master1  |   up   | 192.168.125.21 |                                                      |     hub     |  kvirt  |
 |  hub-master2  |   up   | 192.168.125.22 |                                                      |     hub     |  kvirt  |
-|      sno1     |   up   | 192.168.125.30 |                                                      |     hub     |  kvirt  |
-|      sno2     |  down  |                |                                                      |     hub     |  kvirt  |
+|   sno-seed    |   up   | 192.168.125.30 |                                                      |     hub     |  kvirt  |
+|    sno-abi    |  down  |                |                                                      |     hub     |  kvirt  |
+|    sno-ibi    |  down  |                |                                                      |     hub     |  kvirt  |
 +---------------+--------+----------------+------------------------------------------------------+-------------+---------+</code></pre>
 </div>
 </div>
@@ -998,7 +999,7 @@ openshift-gitops   clusters                   OutOfSync     Healthy
 openshift-gitops   hub-operators-config       Synced        Healthy
 openshift-gitops   hub-operators-deployment   Synced        Healthy
 openshift-gitops   policies                   Synced        Healthy
-openshift-gitops   sno1-deployment            Synced        Healthy</code></pre>
+openshift-gitops   sno-seed-deployment        Synced        Healthy</code></pre>
 </div>
 </div>
 <div class="paragraph">
