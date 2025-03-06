@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-In the previous section, the link:preparing-ztp-pipeline.html[ZTP GitOps pipeline] was put in place to deploy our Infrastructure as Code (IaC) and Configuration as Code (CaC). In this one, we are going to focus on creating the Configuration as Code (CaC) for the OpenShift that will be installed in the following sections. The configuration of the Telco RAN Reference Design Specification is applied using multiple `PolicyGenTemplate` objects.
+In the previous section, the link:preparing-ztp-pipeline.html[ZTP GitOps pipeline] was put in place to deploy our Infrastructure as Code (IaC) and Configuration as Code (CaC). Here, we are going to focus on creating the Configuration as Code (CaC) for the OpenShift clusters that will be installed in the following sections. The configuration of the Telco RAN Reference Design Specification is applied using multiple `PolicyGenTemplate` objects.
 
 We described how `PolicyGenTemplate` works in detail xref:policygen-deepdive.adoc#policies-templating[here], so let's jump directly to the creation of the different templates.
 
@@ -188,7 +188,7 @@ EOF
 +
 IMPORTANT: By leveraging hub site templating we are reducing the number of policies on our hub cluster. This makes the clusters's deployment and maintenance process simpler. Notice that with large fleets of clusters, it can quickly become hard to maintain per-site configurations.
 +
-2. We're using policy templating, so we need to create a `ConfigMap` with the templating values to be used. Notice that the following resource contains values for multiple hardware specifications that we may have in our infrastructure. In the policy we have just applied we are obtaining the value for tuning our SNO by obtaining the value of the label `hardware-type` that each cluster was assigned to. This label is set in the `ClusterInstance` definition. This means that the `SNO2` will be configured accordingly to `hw-type-platform-1` group of servers. More information about Template processing can be found in {rhacm-template-processing}[Red Hat Advanced Cluster Management documentation].
+2. We're using policy templating, so we need to create a `ConfigMap` with the templating values to be used. Notice that the following resource contains values for multiple hardware specifications that we may have in our infrastructure. In the policy we just applied, the values are obtained depending on the label `hardware-type` that each cluster is assigned to. This label is set in the `ClusterInstance` definition. More information about Template processing can be found in {rhacm-template-processing}[Red Hat Advanced Cluster Management documentation].
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -221,7 +221,7 @@ data:
 EOF
 -----
 +
-3. Since we are deploying DUs, we need to run the validator policies crafted by the CNF team as well:
+3. Next, let's include the DU validator policy crafted by the CNF team. It will let us know if the specific telco RAN RDS group policies are eventually applied.
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -252,9 +252,9 @@ EOF
 
 Site policies apply to a specific cluster or clusters in our site. They usually configure stuff that is very specific to a single cluster or to a small subset of clusters. For example, we could configure the SR-IOV network devices for a group of clusters if those share the same number of network interfaces, NIC model, etc. otherwise we will need to have different bindings for different clusters.
 
-We are going to create the SR-IOV network device configurations for our `SNO2` cluster whose hardware type belongs to `hw-type-platform-1`. That sort of servers are built with 2 virtual Intel IGB capable SR-IOV network devices. Notice that this policy leverages hub side templating. Therefore, it is targeting all clusters with this specific hardware configuration, not only the `SNO2` cluster.
+We are going to create the SR-IOV network device configurations for the OpenShift cluster whose hardware type belongs to `hw-type-platform-1` (see the `bindingRule`). That sort of servers are built with 2 virtual Intel IGB capable SR-IOV network devices. Notice that this policy leverages hub side templating. Therefore, it is targeting all clusters with this specific hardware configuration, not only one cluster.
 
-1. Create the `du-sno-sites` PolicyGenTemplate for the clusters that contain `hw-type-platform-1` hardware type in our `5glab` site. In our case the `SNO2` cluster:
+1. Create the `du-sno-sites` PolicyGenTemplate for the clusters that contain `hw-type-platform-1` hardware type in our `5glab` site.
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -334,7 +334,7 @@ EOF
 -----
 IMPORTANT: By leveraging hub site templating we are reducing the number of policies on our hub cluster. This makes the clusters's deployment and maintenance process a lot less cumbersome. Notice that with large fleets of clusters, it can quickly become hard to maintain per-site configurations.
 
-2. We're using policy templating, so we have to create a `ConfigMap` with the templating values to be used. Observe that the following manifest contains SR-IOV information for each cluster deployed by our Hub-1. This network information is required to configure the SR-IOV network devices and provide SR-IOV capabilities to the Pods deployed in our SNO clusters. In the previous policy, it is captured the name of the SR-IOV interfaces (PFs) recognized on the host node to present additional virtual functions (VFs) on your OpenShift cluster. Those values are retrieved by obtaining the name of the cluster managed by the hub. The information is not obtained from a label set in the `SiteConfig` definition, it is the `ManagedClusterName`, e.g., the name of the cluster used instead. 
+2. We're using policy templating, so we have to create a `ConfigMap` with the templating values to be used. Observe that the following manifest contains SR-IOV information for each cluster deployed by our Hub-1. This network information is required to configure the SR-IOV network devices and provide SR-IOV capabilities to the Pods deployed in our SNO clusters. In the previous policy, it is captured the name of the SR-IOV interfaces (PFs) recognized on the host node to present additional virtual functions (VFs) on your OpenShift cluster. Those values are retrieved by obtaining the name of the cluster managed by the hub. The information is not obtained from a label set in the `ClusterInstance` definition, it is the `ManagedClusterName`, e.g., the name of the cluster used instead. 
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -383,7 +383,7 @@ podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=fals
 podman run --log-driver=none --rm --tls-verify=false {ztp-sitegenerate-disconnected-image} extract /home/ztp/source-crs --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/source-crs/reference-crs/
 -----
 
-Notice that we can add content not included in the ZTP container image by creating the required source CR in the `source-crs/custom-crs` folder. Once pushed to our Git repo, we can reference it in any of the common, group or site `PolicyGenTemplates` we have already created. More information on Deploying additional changes to cluster can be found in the {advanced-ztp-policy-config}[docs]
+Notice that we can add content not included in the ZTP container image by creating the required source CR in the `source-crs/custom-crs` folder. Once pushed to our Git repo, we can reference it in any of the common, group or site `PolicyGenTemplates`. More information on deploying additional changes to cluster can be found in the {advanced-ztp-policy-config}[docs].
 
 [#crafting-testing-policies]
 == Crafting Testing Policies
@@ -673,7 +673,7 @@ resources:
 EOF
 -----
 +
-3. At this point, we can push this changes to `sno2` to the repo.
+3. At this point, we can push the changes to the repo.
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -688,7 +688,7 @@ cd ~
 [#deploying-policies-using-gitops-pipeline]
 == Deploying the Telco 5G RAN RDS using the ZTP GitOps Pipeline
 
-Once the changes are commited to the Git repository, ArgoCD will synchronize the new resources and apply them to the hub cluster automatically. You can see how the **policies** ZTP GitOps pipeline created all the configuration objects. If we check the `policies` app this is what we will see:
+Once the changes are commited to the Git repository, ArgoCD will synchronize the new resources and apply them to the hub cluster automatically. You can see how the **policies** ZTP GitOps pipeline created all the configuration objects. If we check the `policies` app this is what we see:
 
 image::argocd-policies-app.png[ArgoCD Policies App]
 

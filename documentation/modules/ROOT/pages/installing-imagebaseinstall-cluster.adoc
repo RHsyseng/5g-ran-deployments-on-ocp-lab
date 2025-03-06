@@ -161,7 +161,7 @@ Create the Installation ISO by running the following command:
 ~/openshift-install image-based create image --dir ibi-iso-workdir
 -----
 
-Verify that the rhcos-ibi.iso image is created in our working directory:
+Verify that the *rhcos-ibi.iso* image is created in our working directory:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -169,7 +169,7 @@ Verify that the rhcos-ibi.iso image is created in our working directory:
  ls -l ~/imagebaseinstall/ibi-iso-workdir
 -----
 [.console]
-[source,bash,subs="attributes+,+macros"]
+[source,bash]
 -----
 total 1250304
 -rw-r--r--. 1 root root 1280311296 Feb 25 12:05 rhcos-ibi.iso

@@ -67,8 +67,19 @@ From OpenShift Container Platform 4.14.13, the Lifecycle Agent provides you with
 You can read more about the image-based upgrade technology {ibu-docs}[here].
 
 [#lvm-operator]
-== LVM Storage Operator
+== Storage Operators
+
+LVM Storage can be used as the local storage implementation for the RAN DU use case. When LVM Storage is used as the storage solution, it replaces the Local Storage Operator, and the CPU required is assigned to the management partition as platform overhead. 
 
 LVM Storage provides dynamic provisioning of block and file storage. LVM Storage creates logical volumes from local devices that can be used as PVC resources by applications. Volume expansion and snapshots are also possible.
 
-LVM Storage can be used as the local storage implementation for the RAN DU use case. When LVM Storage is used as the storage solution, it replaces the Local Storage Operator, and the CPU required is assigned to the management partition as platform overhead. 
+[#oadp-operator]
+== OpenShift API for Data Protection Operator
+
+The OpenShift API for Data Protection (OADP) product safeguards customer applications on OpenShift Container Platform. It offers disaster recovery protection, covering OpenShift Container Platform applications, application-related cluster resources, persistent volumes, and internal images. 
+
+IMPORTANT: OADP does not serve as a disaster recovery solution for etcd or OpenShift Operators.
+
+OADP support is provided to customer workload namespaces, and cluster scope resources. It is specially essential during image-based upgrades, when we need to backup customer and cluster resources prior to the upgrade process and then restore that information once the upgrade is completed.
+
+You can read more about the OADP operator {ibu-oadp}[here].
