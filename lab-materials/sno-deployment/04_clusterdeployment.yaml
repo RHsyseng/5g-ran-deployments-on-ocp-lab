@@ -4,23 +4,23 @@ kind: ClusterDeployment
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "4"
-  name: sno1
-  namespace: sno1
+  name: sno-seed
+  namespace: sno-seed
 spec:
   baseDomain: 5g-deployment.lab
-  clusterName: sno1
+  clusterName: sno-seed
   controlPlaneConfig:
     servingCertificates: {}
 #  installed: false
   clusterInstallRef:
     group: extensions.hive.openshift.io
     kind: AgentClusterInstall
-    name: sno1
+    name: sno-seed
     version: v1beta1
   platform:
     agentBareMetal: 
       agentSelector:
         matchLabels:
-          cluster-name: "sno1"
+          cluster-name: "sno-seed"
   pullSecretRef:
     name: pullsecret

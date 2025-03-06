@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: sno1-deployment
+  name: sno-seed-deployment
   namespace: openshift-gitops
 spec:
   destination:
