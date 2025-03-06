@@ -57,8 +57,8 @@ As we saw in link:deployment-considerations.html#git-repo-structure[Git Reposito
 |   |   └── reference-manifest
 |   |   |   └── {lab-major-version}
 │   ├── pre-reqs
-│   │   └── sno2
-|   |   └── sno3
+│   │   └── sno-abi
+|   |   └── sno-ibi
 │   └── resources
 └── site-policies
     ├── fleet
@@ -75,15 +75,15 @@ Let's replicate it:
 
 WARNING: If it is the first time that you are using `git` in your machine, a message requiring you to setup a Git Username and Email may be shown.
 
-IMPORTANT: The cluster name for the SNO that we will be deploying using the agent-based install will be **sno2**. On the other hand, **sno3** is the name of the cluster that we will deploy using the image-based install flow. That's why those folder exists in the repository structure that we are creating.
+IMPORTANT: The cluster name for the SNO that we will be deploying using the agent-based install will be **sno-abi**. On the other hand, **sno-ibi** is the name of the cluster that we will deploy using the image-based install flow. That's why those folder exists in the repository structure that we are creating.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 cd ~/5g-deployment-lab/ztp-repository/
-mkdir -p site-configs/{hub-1,resources,pre-reqs/sno2,pre-reqs/sno3,hub-1/extra-manifest,reference-manifest/{lab-major-version}}
+mkdir -p site-configs/{hub-1,resources,pre-reqs/sno-abi,pre-reqs/sno-ibi,hub-1/extra-manifest,reference-manifest/{lab-major-version}}
 mkdir -p site-policies/{fleet/active/source-crs/reference-crs,fleet/active/source-crs/custom-crs,fleet/testing,sites/hub-1}
-touch site-configs/{hub-1,resources,pre-reqs/sno2,pre-reqs/sno3,hub-1/extra-manifest,reference-manifest/{lab-major-version}}/.gitkeep
+touch site-configs/{hub-1,resources,pre-reqs/sno-abi,pre-reqs/sno-ibi,hub-1/extra-manifest,reference-manifest/{lab-major-version}}/.gitkeep
 touch site-policies/{fleet/active/source-crs/reference-crs,fleet/active/source-crs/custom-crs,fleet/testing,sites/hub-1}/.gitkeep
 git add --all
 git commit -m 'Initialized repo structure'
