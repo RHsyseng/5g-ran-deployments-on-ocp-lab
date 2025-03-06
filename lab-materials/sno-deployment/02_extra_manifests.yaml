@@ -4,7 +4,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
   name: extra-manifests
-  namespace: sno1
+  namespace: sno-seed
 data:
   98-var-lib-containers-partitioned.yaml: |
     apiVersion: machineconfiguration.openshift.io/v1

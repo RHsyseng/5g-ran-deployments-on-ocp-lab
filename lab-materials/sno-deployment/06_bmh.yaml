@@ -4,8 +4,8 @@ kind: Secret
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "5"
-  name: sno1
-  namespace: sno1
+  name: sno-seed
+  namespace: sno-seed
 data:
   username: "QWRtaW5pc3RyYXRvcg=="
   password: "cGFzc3dvcmQ="
@@ -19,10 +19,10 @@ metadata:
     inspect.metal3.io: disabled
     bmac.agent-install.openshift.io/hostname: "openshift-master-0"
     bmac.agent-install.openshift.io/role: "master"
-  name: sno1
-  namespace: sno1
+  name: sno-seed
+  namespace: sno-seed
   labels:
-    infraenvs.agent-install.openshift.io: "sno1"
+    infraenvs.agent-install.openshift.io: "sno-seed"
 spec:
   online: true
   bootMACAddress: aa:aa:aa:aa:02:01
@@ -30,6 +30,6 @@ spec:
   rootDeviceHints:
     deviceName: /dev/vda
   bmc:
-    address: redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno1
-    credentialsName: sno1
+    address: redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno-seed
+    credentialsName: sno-seed
     disableCertificateVerification: true
