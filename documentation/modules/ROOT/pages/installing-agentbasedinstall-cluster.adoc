@@ -5,7 +5,12 @@ include::_attributes.adoc[]
 [#introduction]
 == Introduction
 
-TOBEFILLED
+As was detailed in the link:ztp-workflow.html#abi-deployment[Agent Based Installation] section, this installation method combines the ease of use of the Assisted Installation service with the ability to run offline and also optionally generate or accept link:ztp-intro.html[Zero Touch Provisioning] (ZTP) custom resources. In this part of the lab we are going to:
+
+* Create the prerequisites for the SNO cluster installation.
+* Create the definition of the SNO cluster as a `ClusterInstance` CR.
+* Include any extra configuration required for our telco 5G RAN specific use case.
+* Commit all those manifests into the `ztp-repository` Git repo where the link:ztp-intro.html[OpenShift GitOps] operator will automatically apply those changes.
 
 [#baremetal-node-details]
 == Bare Metal Node Details
@@ -321,7 +326,7 @@ IMPORTANT: As of version 4.16 the default cgroups configuration is **cgroupsv2**
 [#preparing-installation]
 == Get Ready for the Installation
 
-Finally, we will add the kustomizations for the ClusterInstance. Note that the Refence RAN DU and the extra-manifests configuration are included as a `ConfigMap` custom resource named *{ran-rds-version-manifests}*.
+Finally, we will add the kustomizations for the ClusterInstance. Note that the Reference RAN DU and the extra-manifests configuration are included as a `ConfigMap` custom resource named *{ran-rds-version-manifests}*.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -378,7 +383,7 @@ generatorOptions:
 EOF
 -----
 
-At this point we can commit the changes to the repo. We will push the changes together with cluster and telco related infrastucture operator configurations in the next section.
+At this point we can commit the changes to the repo. We will push the changes together with cluster and telco related infrastructure operator configurations in the next section.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
