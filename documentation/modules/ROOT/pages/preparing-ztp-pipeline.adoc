@@ -158,15 +158,7 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
 -----
 +
-3. Allow `ClusterImageSet` resource to the list of allowed resources:
-+
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-sed -i "/clusterResourceWhitelist:/a \ \ - group: \'hive.openshift.io\'\n \ \ \ kind: ClusterImageSet" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/app-project.yaml
------
-+
-4. Include `openshift-adp` namespace in the list of namespaces managed by the GitOps operator.
+3. Include `openshift-adp` namespace in the list of namespaces managed by the GitOps operator.
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -174,7 +166,7 @@ sed -i "/clusterResourceWhitelist:/a \ \ - group: \'hive.openshift.io\'\n \ \ \ 
 sed -i "/destinations:/a \ \ - namespace: \'openshift-adp\'\n \ \ \ server: '\*\'" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app-project.yaml
 -----
 +
-5. Apply the ZTP GitOps Pipeline configuration:
+4. Apply the ZTP GitOps Pipeline configuration:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -182,15 +174,19 @@ sed -i "/destinations:/a \ \ - namespace: \'openshift-adp\'\n \ \ \ server: '\*\
 oc --kubeconfig ~/hub-kubeconfig apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/
 -----
 
-At this stage, we have our ZTP GitOps pipeline running and waiting for commiting declarative Infrastructure and Configuration as Code to the `ztp-repository` Git repository. In the next image, a couple of new ArgoCD apps running:
+Above command creates the required Argo CD Applications in the Hub cluster that handles the ZTP Pipeline.
 
+At this stage, we have our ZTP GitOps pipeline running and waiting for committing declarative Infrastructure and Configuration as Code to the `ztp-repository` Git repository. 
 * **clusters**. It is responsible for managing the deployment of Single Node OpenShift clusters from the Git repository.
 * **policies**. It is responsible for managing the configuration via RHACM policies that will be applied to Single Node OpenShift clusters. Basically, it configures the {rds-config}[Telco RAN DU reference configuration]. 
 
+You can access the Argo CD instance on the lab by clicking {argocd-hub-link}[here] and login in with the OpenShift admin credentials.
+
+You can see what the ArgoCD Apps are running in the following images:
 
 image::ztp-pipeline-01.png[ZTP pipeline]
 
-IMPORTANT: Notice that there is nothing to deploy in any of the previous ArgoCD applications. This is because we did not yet commit any configuration to the ztp-repository Git repo. This is going to change in the next section.
+IMPORTANT: Notice that the `clusters` and `policies` Argo CD applications are empty. This is because we did not yet commit any configuration to the ztp-repository Git repo. This is going to change in the next section.
 
 image::ztp-pipeline-clusters.png[ZTP clusters app]
 

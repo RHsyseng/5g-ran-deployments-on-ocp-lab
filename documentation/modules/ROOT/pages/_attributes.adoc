@@ -18,7 +18,7 @@ code:experimental:
 // :catalogsource-index-image-tag: v4.17-1731286606
 :catalogsource-index-image-tag: v4.18
 :ztp-sitegenerate-disconnected-image: infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.17.0-25
-:example-sno-clusterinstance-link: https://github.com/stolostron/siteconfig/blob/main/config/samples/siteconfig_v1alpha1_clusterinstance.yaml
+:example-sno-clusterinstance-link: https://github.com/stolostron/siteconfig/blob/release-2.13/config/samples/siteconfig_v1alpha1_clusterinstance.yaml
 :example-groupdu-policygen-link: https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.17/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml
 :reference-documentation: https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-vdu-validating-cluster-tuning.html#ztp-du-firmware-config-reference_vdu-config-ref
 :hub-cluster-ocp-version: v4.18.0-rc.6
@@ -42,6 +42,7 @@ code:experimental:
 :rhacm-template-processing: https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/governance/governance#template-processing
 :mce-version: v2.8
 :policygentool-version: v4.17
+:argocd-hub-link: https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab
 :kcli-tools-tag: 4.18
 :kcli-rpm: https://github.com/{repo_user}/5g-ran-deployments-on-ocp-lab/releases/download/{lab-major-version}/kcli-99.0.0.git.202411061013.2f63d4b-0.el9.x86_64.rpm
 :rhcos-rootfs-url: https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.17/4.17.0/rhcos-4.17.0-x86_64-live-rootfs.x86_64.img
