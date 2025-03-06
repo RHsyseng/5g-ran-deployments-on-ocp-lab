@@ -243,6 +243,7 @@ spec:
           namespace: open-cluster-management
 EOF
 -----
+
 IMPORTANT: Check that the above ClusterInstance CR is using the ai-node-templates-v1 (Agent Based Install) templates to deploy the sno2 OpenShift cluster. Also, we added an ignitionConfigOverride that creates a separate partition for the `/var/lib/containers` which is a pre-requisite for upgrading clusters using the image-based Upgrade method. We will deal with image-based upgrades later on in this lab, however, detailed information about the requirements needed can be found {ibu-var-lib-containers}[here]
 
 In our site, we defined `clusterImageSetNameRef: "active-ocp-version"` as for the release to use to deploy our site. This reference will point to the `active` release we are deploying our sites with. Let's create the `ClusterImageSet` in the repo:
@@ -402,6 +403,8 @@ When we applied the ZTP GitOps Pipeline configuration in the last section, the A
 
 At this point ArgoCD started doing its magic which means that the cluster deployment should already be running, let's see what happened in Argo CD.
 
+WARNING: It may take up to 5 minutes for Argo CD to start syncing changes.
+
 1. Login into https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab/[Argo CD].
 2. When accessing choose `Logging with OpenShift`, on the next screen use the OpenShift Console Admin credentials.
 3. From all these apps, click on `clusters` we will see something similar to the following screen:
@@ -452,7 +455,7 @@ IMPORTANT: Below commands must be executed from the workstation host if not spec
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get agentclusterinstall sno2
+oc --kubeconfig ~/hub-kubeconfig -n sno2 get agentclusterinstall sno2
 -----
 +
 [console-input]
@@ -467,7 +470,7 @@ sno2   sno2      finalizing
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get agentclusterinstall sno2 -o yaml
+oc --kubeconfig ~/hub-kubeconfig -n sno2 get agentclusterinstall sno2 -o yaml
 -----
 +
 [console-input]
@@ -498,4 +501,4 @@ oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get agentclusterinsta
 
 IMPORTANT: `SNO2` cluster installation takes around 50 minutes to complete.
 
-While the `SNO2` cluster installs, let's move to the next section where we will learn how to deploy a SNO OpenShift cluster using an link:ztp-workflow.html#ibi-deployment[image-based install flow]. However, first things first, we have to create a seed image from an already deployed link:lab-environment-introduction.html#openshift-seed-sno[OpenShift seed SNO cluster].
+While the `SNO2` cluster installs, let's move to the next section where we will learn how to deploy a SNO OpenShift cluster using an link:ztp-workflow.html#ibi-deployment[image-based install flow]. However, first things first, we have to create a seed image from an already deployed link:lab-environment-introduction.html#openshift-seed-sno[Single Node OpenShift seed cluster].
