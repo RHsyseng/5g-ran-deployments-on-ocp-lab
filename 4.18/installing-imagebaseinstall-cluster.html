@@ -147,13 +147,13 @@
     <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#logging-operator">Cluster Logging Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#cluster-logging-operator">Cluster Logging Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="telco-related-infra-operators-intro.html#lifecycle-operator">Lifecycle Agent Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#lvm-operator">Storage Operators</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#storage-operator">Storage Operators</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="telco-related-infra-operators-intro.html#oadp-operator">OpenShift API for Data Protection Operator</a>
@@ -888,8 +888,8 @@
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/imagebaseinstall/ibi-iso-workdir
-cd ~/imagebaseinstall/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir
+cd ~/5g-deployment-lab/imagebaseinstall/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -897,7 +897,7 @@ cd ~/imagebaseinstall/</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/imagebaseinstall/ibi-iso-workdir/image-based-installation-config.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir/image-based-installation-config.yaml
 ---
 apiVersion: v1beta1
 kind: ImageBasedInstallationConfig
@@ -1013,7 +1013,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"> ls -l ~/imagebaseinstall/ibi-iso-workdir</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"> ls -l ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -1027,7 +1027,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cp ~/imagebaseinstall/ibi-iso-workdir/rhcos-ibi.iso /opt/webcache/data/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cp ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir/rhcos-ibi.iso /opt/webcache/data/</code></pre>
 </div>
 </div>
 </div>
@@ -1130,6 +1130,18 @@ The system will power off now!</code></pre>
 <div class="sect1">
 <h2 id="creating-the-configuration-iso"><a class="anchor" href="#creating-the-configuration-iso"></a>Creating the Configuration ISO</h2>
 <div class="sectionbody">
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<strong>DO NOT</strong> continue with this section until the host has been powered off.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
 <p>Now that the host is powered off, it is time to complete the installation by reconfiguring the cluster. The Image Based Install (IBI) Operator running in the hub cluster is responsible for creating the configuration ISO and boot the host with it attached.</p>
 </div>

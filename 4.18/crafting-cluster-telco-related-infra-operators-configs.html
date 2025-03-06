@@ -147,13 +147,13 @@
     <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#logging-operator">Cluster Logging Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#cluster-logging-operator">Cluster Logging Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="telco-related-infra-operators-intro.html#lifecycle-operator">Lifecycle Agent Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#lvm-operator">Storage Operators</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#storage-operator">Storage Operators</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="telco-related-infra-operators-intro.html#oadp-operator">OpenShift API for Data Protection Operator</a>
@@ -1632,6 +1632,18 @@ cd ~</code></pre>
 <div class="paragraph">
 <p>The resulting policies can be seen from the <a href="https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome">RHACM WebUI</a>:</p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+It may take up to 5 minutes for the policies to show up, this is due to Argo CD syncing period.
+</td>
+</tr>
+</table>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1649,7 +1661,7 @@ cd ~</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-The Telco 5G RAN RDS policies are ready but they are not being applied or compared to any cluster yet. That&#8217;s because we did not provision any SNO cluster. Let&#8217;s fix that by moving to the next section and deploy the our first one.
+The Telco 5G RAN RDS policies are ready but they are not being applied or compared to any cluster yet. That&#8217;s because we did not provision any SNO cluster. Let&#8217;s fix that by moving to the next section and deploying the first one.
 </td>
 </tr>
 </table>
