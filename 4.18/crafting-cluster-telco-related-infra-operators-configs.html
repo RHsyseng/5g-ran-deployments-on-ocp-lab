@@ -147,13 +147,16 @@
     <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#logging-operator">Logging Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#logging-operator">Cluster Logging Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="telco-related-infra-operators-intro.html#lifecycle-operator">Lifecycle Agent Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#lvm-operator">LVM Storage Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#lvm-operator">Storage Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#oadp-operator">OpenShift API for Data Protection Operator</a>
   </li>
 </ul>
   </li>
@@ -649,6 +652,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the Image Base Group Upgrade</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#monitoring-ibu">Monitoring the Image Based Group Upgrade </a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -802,7 +808,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the previous section, the <a href="preparing-ztp-pipeline.html">ZTP GitOps pipeline</a> was put in place to deploy our Infrastructure as Code (IaC) and Configuration as Code (CaC). In this one, we are going to focus on creating the Configuration as Code (CaC) for the OpenShift that will be installed in the following sections. The configuration of the Telco RAN Reference Design Specification is applied using multiple <code>PolicyGenTemplate</code> objects.</p>
+<p>In the previous section, the <a href="preparing-ztp-pipeline.html">ZTP GitOps pipeline</a> was put in place to deploy our Infrastructure as Code (IaC) and Configuration as Code (CaC). Here, we are going to focus on creating the Configuration as Code (CaC) for the OpenShift clusters that will be installed in the following sections. The configuration of the Telco RAN Reference Design Specification is applied using multiple <code>PolicyGenTemplate</code> objects.</p>
 </div>
 <div class="paragraph">
 <p>We described how <code>PolicyGenTemplate</code> works in detail <a href="policygen-deepdive.html#policies-templating" class="xref page">here</a>, so let&#8217;s jump directly to the creation of the different templates.</p>
@@ -814,7 +820,7 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in <a href="telco-related-infra-operators-intro.html" class="xref page">Introduction to Telco Related Infrastructure Operators</a>. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_reference_design_specs/telco-ran-du-rds.html">v4.18 Telco RAN Reference Design Specification</a> in the official documentation.
+The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in <a href="telco-related-infra-operators-intro.html" class="xref page">Introduction to Telco Related Infrastructure Operators</a>. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ref-design-overview_telco-ran-du">v4.18 Telco RAN Reference Design Specification</a> in the official documentation.
 </td>
 </tr>
 </table>
@@ -1054,7 +1060,7 @@ By leveraging hub site templating we are reducing the number of policies on our 
 </div>
 </li>
 <li>
-<p>We&#8217;re using policy templating, so we need to create a <code>ConfigMap</code> with the templating values to be used. Notice that the following resource contains values for multiple hardware specifications that we may have in our infrastructure. In the policy we have just applied we are obtaining the value for tuning our SNO by obtaining the value of the label <code>hardware-type</code> that each cluster was assigned to. This label is set in the <code>ClusterInstance</code> definition. This means that the <code>SNO2</code> will be configured accordingly to <code>hw-type-platform-1</code> group of servers. More information about Template processing can be found in <a href="https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/governance/governance#template-processing">Red Hat Advanced Cluster Management documentation</a>.</p>
+<p>We&#8217;re using policy templating, so we need to create a <code>ConfigMap</code> with the templating values to be used. Notice that the following resource contains values for multiple hardware specifications that we may have in our infrastructure. In the policy we just applied, the values are obtained depending on the label <code>hardware-type</code> that each cluster is assigned to. This label is set in the <code>ClusterInstance</code> definition. More information about Template processing can be found in <a href="https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/governance/governance#template-processing">Red Hat Advanced Cluster Management documentation</a>.</p>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/group-hardware-types-configmap.yaml
@@ -1087,7 +1093,7 @@ EOF</code></pre>
 </div>
 </li>
 <li>
-<p>Since we are deploying DUs, we need to run the validator policies crafted by the CNF team as well:</p>
+<p>Next, let&#8217;s include the DU validator policy crafted by the CNF team. It will let us know if the specific telco RAN RDS group policies are eventually applied.</p>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/group-du-sno-validator.yaml
@@ -1123,12 +1129,12 @@ EOF</code></pre>
 <p>Site policies apply to a specific cluster or clusters in our site. They usually configure stuff that is very specific to a single cluster or to a small subset of clusters. For example, we could configure the SR-IOV network devices for a group of clusters if those share the same number of network interfaces, NIC model, etc. otherwise we will need to have different bindings for different clusters.</p>
 </div>
 <div class="paragraph">
-<p>We are going to create the SR-IOV network device configurations for our <code>SNO2</code> cluster whose hardware type belongs to <code>hw-type-platform-1</code>. That sort of servers are built with 2 virtual Intel IGB capable SR-IOV network devices. Notice that this policy leverages hub side templating. Therefore, it is targeting all clusters with this specific hardware configuration, not only the <code>SNO2</code> cluster.</p>
+<p>We are going to create the SR-IOV network device configurations for the OpenShift cluster whose hardware type belongs to <code>hw-type-platform-1</code> (see the <code>bindingRule</code>). That sort of servers are built with 2 virtual Intel IGB capable SR-IOV network devices. Notice that this policy leverages hub side templating. Therefore, it is targeting all clusters with this specific hardware configuration, not only one cluster.</p>
 </div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Create the <code>du-sno-sites</code> PolicyGenTemplate for the clusters that contain <code>hw-type-platform-1</code> hardware type in our <code>5glab</code> site. In our case the <code>SNO2</code> cluster:</p>
+<p>Create the <code>du-sno-sites</code> PolicyGenTemplate for the clusters that contain <code>hw-type-platform-1</code> hardware type in our <code>5glab</code> site.</p>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/sites/hub-1/sites-specific.yaml
@@ -1219,7 +1225,7 @@ By leveraging hub site templating we are reducing the number of policies on our 
 </div>
 </li>
 <li>
-<p>We&#8217;re using policy templating, so we have to create a <code>ConfigMap</code> with the templating values to be used. Observe that the following manifest contains SR-IOV information for each cluster deployed by our Hub-1. This network information is required to configure the SR-IOV network devices and provide SR-IOV capabilities to the Pods deployed in our SNO clusters. In the previous policy, it is captured the name of the SR-IOV interfaces (PFs) recognized on the host node to present additional virtual functions (VFs) on your OpenShift cluster. Those values are retrieved by obtaining the name of the cluster managed by the hub. The information is not obtained from a label set in the <code>SiteConfig</code> definition, it is the <code>ManagedClusterName</code>, e.g., the name of the cluster used instead.</p>
+<p>We&#8217;re using policy templating, so we have to create a <code>ConfigMap</code> with the templating values to be used. Observe that the following manifest contains SR-IOV information for each cluster deployed by our Hub-1. This network information is required to configure the SR-IOV network devices and provide SR-IOV capabilities to the Pods deployed in our SNO clusters. In the previous policy, it is captured the name of the SR-IOV interfaces (PFs) recognized on the host node to present additional virtual functions (VFs) on your OpenShift cluster. Those values are retrieved by obtaining the name of the cluster managed by the hub. The information is not obtained from a label set in the <code>ClusterInstance</code> definition, it is the <code>ManagedClusterName</code>, e.g., the name of the cluster used instead.</p>
 </li>
 </ol>
 </div>
@@ -1284,7 +1290,7 @@ podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:844
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that we can add content not included in the ZTP container image by creating the required source CR in the <code>source-crs/custom-crs</code> folder. Once pushed to our Git repo, we can reference it in any of the common, group or site <code>PolicyGenTemplates</code> we have already created. More information on Deploying additional changes to cluster can be found in the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/policygentemplate_for_ztp/ztp-advanced-policy-config.html#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config">docs</a></p>
+<p>Notice that we can add content not included in the ZTP container image by creating the required source CR in the <code>source-crs/custom-crs</code> folder. Once pushed to our Git repo, we can reference it in any of the common, group or site <code>PolicyGenTemplates</code>. More information on deploying additional changes to cluster can be found in the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/policygentemplate_for_ztp/ztp-advanced-policy-config.html#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config">docs</a>.</p>
 </div>
 </div>
 </div>
@@ -1597,7 +1603,7 @@ EOF</code></pre>
 </div>
 </li>
 <li>
-<p>At this point, we can push this changes to <code>sno2</code> to the repo.</p>
+<p>At this point, we can push the changes to the repo.</p>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository
@@ -1616,7 +1622,7 @@ cd ~</code></pre>
 <h2 id="deploying-policies-using-gitops-pipeline"><a class="anchor" href="#deploying-policies-using-gitops-pipeline"></a>Deploying the Telco 5G RAN RDS using the ZTP GitOps Pipeline</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Once the changes are commited to the Git repository, ArgoCD will synchronize the new resources and apply them to the hub cluster automatically. You can see how the <strong>policies</strong> ZTP GitOps pipeline created all the configuration objects. If we check the <code>policies</code> app this is what we will see:</p>
+<p>Once the changes are commited to the Git repository, ArgoCD will synchronize the new resources and apply them to the hub cluster automatically. You can see how the <strong>policies</strong> ZTP GitOps pipeline created all the configuration objects. If we check the <code>policies</code> app this is what we see:</p>
 </div>
 <div class="imageblock">
 <div class="content">

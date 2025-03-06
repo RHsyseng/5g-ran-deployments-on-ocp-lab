@@ -147,13 +147,16 @@
     <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#logging-operator">Logging Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#logging-operator">Cluster Logging Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="telco-related-infra-operators-intro.html#lifecycle-operator">Lifecycle Agent Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#lvm-operator">LVM Storage Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#lvm-operator">Storage Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#oadp-operator">OpenShift API for Data Protection Operator</a>
   </li>
 </ul>
   </li>
@@ -649,6 +652,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the Image Base Group Upgrade</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#monitoring-ibu">Monitoring the Image Based Group Upgrade </a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -1107,7 +1113,7 @@ EOF</code></pre>
 <h2 id="reference-manifest-clusterinstance"><a class="anchor" href="#reference-manifest-clusterinstance"></a>Reference Manifest Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s add the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_reference_design_specs/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">reference RAN DU configuration</a> for the version of OCP we are about to deploy. In the workstation, run the following command to extract the reference ZTP 4.18 RAN configuration. Those manifests are extracted from the <code>/extra-manifest</code> folder of the ztp-site-generate container.</p>
+<p>Let&#8217;s add the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">reference RAN DU configuration</a> for the version of OCP we are about to deploy. In the workstation, run the following command to extract the reference ZTP 4.18 RAN configuration. Those manifests are extracted from the <code>/extra-manifest</code> folder of the ztp-site-generate container.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">

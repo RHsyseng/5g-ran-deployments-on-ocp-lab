@@ -147,13 +147,16 @@
     <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#logging-operator">Logging Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#logging-operator">Cluster Logging Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="telco-related-infra-operators-intro.html#lifecycle-operator">Lifecycle Agent Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#lvm-operator">LVM Storage Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#lvm-operator">Storage Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#oadp-operator">OpenShift API for Data Protection Operator</a>
   </li>
 </ul>
   </li>
@@ -649,6 +652,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the Image Base Group Upgrade</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#monitoring-ibu">Monitoring the Image Based Group Upgrade </a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -802,7 +808,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>As mentioned, Zero Touch Provisioning (ZTP) leverages multiple products or <a href="ztp-at-scale.html">components</a> to deploy OpenShift Container Platform clusters using a GitOps approach. While the workflow starts when the site is connected to the network and ends with the CNF workload deployed and running on the site nodes, it can be logically divided into two different stages: provisioning of the SNO and applying the desired configuration, which in our case is applying the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_reference_design_specs/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a>.</p>
+<p>As mentioned, Zero Touch Provisioning (ZTP) leverages multiple products or <a href="ztp-at-scale.html">components</a> to deploy OpenShift Container Platform clusters using a GitOps approach. While the workflow starts when the site is connected to the network and ends with the CNF workload deployed and running on the site nodes, it can be logically divided into two different stages: provisioning of the SNO and applying the desired configuration, which in our case is applying the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a>.</p>
 </div>
 <div class="admonitionblock important">
 <table>

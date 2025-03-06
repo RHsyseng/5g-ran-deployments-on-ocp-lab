@@ -147,13 +147,16 @@
     <a class="nav-link" href="#accelerators-operators">Accelerators Operators</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#logging-operator">Logging Operator</a>
+    <a class="nav-link" href="#logging-operator">Cluster Logging Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#lifecycle-operator">Lifecycle Agent Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#lvm-operator">LVM Storage Operator</a>
+    <a class="nav-link" href="#lvm-operator">Storage Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#oadp-operator">OpenShift API for Data Protection Operator</a>
   </li>
 </ul>
   </li>
@@ -649,6 +652,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the Image Base Group Upgrade</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#monitoring-ibu">Monitoring the Image Based Group Upgrade </a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -919,13 +925,39 @@
 </div>
 </div>
 <div class="sect1">
-<h2 id="lvm-operator"><a class="anchor" href="#lvm-operator"></a>LVM Storage Operator</h2>
+<h2 id="lvm-operator"><a class="anchor" href="#lvm-operator"></a>Storage Operators</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>LVM Storage can be used as the local storage implementation for the RAN DU use case. When LVM Storage is used as the storage solution, it replaces the Local Storage Operator, and the CPU required is assigned to the management partition as platform overhead.</p>
+</div>
 <div class="paragraph">
 <p>LVM Storage provides dynamic provisioning of block and file storage. LVM Storage creates logical volumes from local devices that can be used as PVC resources by applications. Volume expansion and snapshots are also possible.</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="oadp-operator"><a class="anchor" href="#oadp-operator"></a>OpenShift API for Data Protection Operator</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p>LVM Storage can be used as the local storage implementation for the RAN DU use case. When LVM Storage is used as the storage solution, it replaces the Local Storage Operator, and the CPU required is assigned to the management partition as platform overhead.</p>
+<p>The OpenShift API for Data Protection (OADP) product safeguards customer applications on OpenShift Container Platform. It offers disaster recovery protection, covering OpenShift Container Platform applications, application-related cluster resources, persistent volumes, and internal images.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+OADP does not serve as a disaster recovery solution for etcd or OpenShift Operators.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>OADP support is provided to customer workload namespaces, and cluster scope resources. It is specially essential during image-based upgrades, when we need to backup customer and cluster resources prior to the upgrade process and then restore that information once the upgrade is completed.</p>
+</div>
+<div class="paragraph">
+<p>You can read more about the OADP operator <a href="https://docs.openshift.com/container-platform/4.18/backup_and_restore/application_backup_and_restore/oadp-intro.html">here</a>.</p>
 </div>
 </div>
 </div>

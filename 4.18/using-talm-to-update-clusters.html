@@ -147,13 +147,16 @@
     <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#logging-operator">Logging Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#logging-operator">Cluster Logging Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="telco-related-infra-operators-intro.html#lifecycle-operator">Lifecycle Agent Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#lvm-operator">LVM Storage Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#lvm-operator">Storage Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#oadp-operator">OpenShift API for Data Protection Operator</a>
   </li>
 </ul>
   </li>
@@ -649,6 +652,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#upgrade-policy-creation">Creating the Image Base Group Upgrade</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#monitoring-ibu">Monitoring the Image Based Group Upgrade </a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -848,7 +854,7 @@ The image-based upgrade uses custom images that are specific to the hardware pla
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Notice that both clusters were installed using a different methodologies. While <code>sno2</code> was provisioned using the <a href="ztp-workflow.html#abi-deployment">agent-based install</a> workflow, <code>sno3</code> was deployed using the <a href="ztp-workflow.html#ibi-deployment">image-based install</a>. However, as long as they both meet the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">Seed cluster guidelines</a>, has the same combination of hardware, Day 2 Operators, and cluster configuration as the seed cluster they are good to go.
+Notice that both clusters were installed using a different methodologies. While <code>sno2</code> was provisioned using the <a href="ztp-workflow.html#abi-deployment">agent-based install</a> workflow, <code>sno3</code> was deployed using the <a href="ztp-workflow.html#ibi-deployment">image-based install</a>. However, as long as they both meet the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">Seed cluster guidelines</a>, have the same combination of hardware, Day 2 Operators, and cluster configuration as the 4.18.0-rc.8 seed cluster we are good to go.
 </td>
 </tr>
 </table>
@@ -914,7 +920,7 @@ pod/openshift-gitops-operator-controller-manager-6794f4f9cc-vpm2b   2/2     Runn
 <h2 id="getting-snos-kubeconfigs"><a class="anchor" href="#getting-snos-kubeconfigs"></a>Verifying managed clusters requirements</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the previous sections we have deployed the <code>sno2</code> cluster using the agent-based installation and the <code>sno3</code> cluster using the image-based installation. Before we start the upgrade we need to check if the Lifecycle Agent and OpenShift API for Data Protection operators are installed in the target clusters.</p>
+<p>In the previous sections we have deployed the <code>sno2</code> cluster using the agent-based installation and the <code>sno3</code> cluster using the image-based installation. Before starting the upgrade we need to check if the Lifecycle Agent and OpenShift API for Data Protection operators are installed in the target clusters.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -923,7 +929,7 @@ pod/openshift-gitops-operator-controller-manager-6794f4f9cc-vpm2b   2/2     Runn
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-We know that both SNO clusters meet the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">Seed cluster guidelines</a>, has the same combination of hardware, Day 2 Operators, and cluster configuration as the target seed cluster from where the seed image version v4.18.0-rc.8 was obtained.
+We know that both SNO clusters meet the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">seed cluster guidelines</a>, has the same combination of hardware, Day 2 Operators, and cluster configuration as the target seed cluster from where the seed image version v4.18.0-rc.8 was obtained.
 </td>
 </tr>
 </table>
@@ -938,7 +944,7 @@ oc --kubeconfig ~/hub-kubeconfig -n sno3 extract secret/sno3-admin-kubeconfig --
 </div>
 </div>
 <div class="paragraph">
-<p>If we check the operators installed in the <code>sno2</code> we will notice that neither LCA nor OADP are installed. This is expected because if we remember the <a href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a> section, only SR-IOV and LVM operators were installed as Day 2 Operators.</p>
+<p>If we check the operators installed in the <code>sno2</code> we will notice that neither LCA nor OADP are installed. This is expected because if we remember from the <a href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a> section, only SR-IOV and LVM operators were installed as Day 2 Operators.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1017,7 +1023,7 @@ sno2   7m26s   Completed   All clusters are compliant with all the managed polic
 <p>Creating a CGU to enforce the above policies in the target clusters.</p>
 </li>
 <li>
-<p>Creating an extra configuration to the managed clusters applied during the upgrading process. This is configuration that it was not or cannot be included in the seed image.</p>
+<p>Creating an extra configuration to the managed clusters applied during the upgrading process. These are configurations that were not or cannot be included in the seed image.</p>
 </li>
 <li>
 <p>Running the IBGU process.</p>
@@ -1130,6 +1136,9 @@ status: {}
 EOF</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Include the configuration of a disconnected catalog source as an extra manifest. Remember that catalogsources are not included during the seed image creation.</p>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/extra-manifests.yaml
@@ -1212,14 +1221,23 @@ git commit -m "adds upgrade policy"
 git push origin main</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>ArgoCD automatically synchronizes the new policies and show as non compliant in the RHACM WebUI:</p>
+</div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/ibu01.png" alt="IBU policies">
 </div>
 </div>
+<div class="paragraph">
+<p>However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting <code>sno2</code> cluster. That’s because the <code>sno3</code> cluster does not have the labels zone-europe that the PGT is targeting in its binding rule.</p>
+</div>
+<div class="paragraph">
+<p>Let’s add the proper labels to the <code>sno3</code> SNO cluster:</p>
+</div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig label managedcluster sno3 du-zone=europe logicalGroup=active</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig label managedcluster sno3 du-zone=europe</code></pre>
 </div>
 </div>
 <div class="imageblock">
@@ -1228,7 +1246,7 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Enforce the policies</p>
+<p>At this point, we need to create a Cluster Group Upgrade (CGU) resource that will start the preparation for the upgrade process.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1253,68 +1271,69 @@ spec:
 EOF</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>As explained, the CGU enforces the recently created policies.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ibu04.png" alt="IBU policies">
+</div>
+</div>
+<div class="paragraph">
+<p>We can monitor the remediation process using the command line as well:</p>
+</div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ watch oc get cgu -A
-                                                                                                                                                            localhost.localdomain:
-NAMESPACE      NAME                   AGE   STATE        DETAILS
-ztp-install    local-cluster          19h   Completed    All clusters already compliant with the specified managed policies
-ztp-install    sno2                   13m   Completed    All clusters are compliant with all the managed policies
-ztp-install    sno3                   11h   Completed    All clusters already compliant with the specified managed policies
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get cgu -n ztp-policies</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE      NAME                   AGE   STATE        DETAILS
 ztp-policies   requirements-upgrade   35s   InProgress   Remediating non-compliant policies</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>In a few minutes we will see a similar output as the one described below:</p>
+</div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -n ztp-policies
-NAME                   AGE   STATE       DETAILS
-requirements-upgrade   19m   Completed   All clusters are compliant with all the managed policies</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE      NAME                   AGE     STATE       DETAILS
+ztp-policies   requirements-upgrade   2m52s   Completed   All clusters are compliant with all the managed policies</code></pre>
 </div>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="_images/ibu02.png" alt="IBU policies">
+<img src="_images/ibu03.png" alt="IBU policies">
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="upgrade-policy-creation"><a class="anchor" href="#upgrade-policy-creation"></a>Creating the Image Base Group Upgrade</h2>
+<h2 id="upgrade-policy-creation"><a class="anchor" href="#upgrade-policy-creation"></a>Creating the Image Based Group Upgrade</h2>
 <div class="sectionbody">
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: catalog-source-disconnected
-  namespace: openshift-lifecycle-agent
-data:
-  redhat-operator-index.yaml: |
-    apiVersion: operators.coreos.com/v1alpha1
-    kind: CatalogSource
-    metadata:
-      annotations:
-        target.workload.openshift.io/management: '{"effect": "PreferredDuringScheduling"}'
-      name: redhat-operator-index
-      namespace: openshift-marketplace
-    spec:
-      displayName: default-cat-source
-      image: infra.5g-deployment.lab:8443/prega/prega-operator-index:v4.18
-      publisher: Red Hat
-      sourceType: grpc
-      updateStrategy:
-        registryPoll:
-          interval: 1h
-EOF</code></pre>
-</div>
+<div class="paragraph">
+<p>The <code>ImageBasedGroupUpgrade</code> CR combines the <code>ImageBasedUpgrade</code> and <code>ClusterGroupUpgrade</code> APIs. It simplifies the upgrade process by using a single resource on the hub cluster, the ImageBasedGroupUpgrade custom resource (CR), to manage an imaged-based upgrade on a selected group of managed clusters through all stages. A detailed view of the different upgrade stages driven by the LCA operator was explained in <a href="lca.html#image-based-upgrades">Image Based Upgrades</a> section.</p>
 </div>
 <div class="paragraph">
-<p>The ImageBasedGroupUpgrade CR combines the ImageBasedUpgrade and ClusterGroupUpgrade APIs. For example, you can define the cluster selection and rollout strategy with the ImageBasedGroupUpgrade API in the same way as the ClusterGroupUpgrade API.</p>
+<p>Let&#8217;s apply the IBGU and start the image-based upgrade process in both clusters simultaneously:</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+See below how we can include extra install configuration (extraManifests) and backup and restore steps (oadpContent) in the same custom resource:
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF | oc --kubeconfig ~/hub-kubeconfig apply -f -
+---
 apiVersion: lcm.openshift.io/v1alpha1
 kind: ImageBasedGroupUpgrade
 metadata:
@@ -1346,25 +1365,47 @@ spec:
 EOF</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Check that an IBGU object has been created in the hub cluster along with an associated CGU:</p>
+</div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Every 2.0s: oc get ibgu,cgu -A                                                                                                                                                                             katatonic: Thu Feb 13 10:23:40 2025
-
-NAMESPACE   NAME                                                  AGE
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"> oc --kubeconfig ~/hub-kubeconfig get ibgu,cgu -n default</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE   NAME                                                  AGE
 default     imagebasedgroupupgrade.lcm.openshift.io/telco5g-lab   102s
 
 NAMESPACE      NAME                                                                              AGE    STATE        DETAILS
-default        clustergroupupgrade.ran.openshift.io/telco5g-lab-prep-upgrade-finalizeupgrade-0   102s   InProgress   Rolling out manifestworks
-ztp-install    clustergroupupgrade.ran.openshift.io/local-cluster                                20h    Completed    All clusters already compliant with the specified managed policies
-ztp-install    clustergroupupgrade.ran.openshift.io/sno2                                         47m    Completed    All clusters are compliant with all the managed policies
-ztp-install    clustergroupupgrade.ran.openshift.io/sno3                                         12h    Completed    All clusters already compliant with the specified managed policies
-ztp-policies   clustergroupupgrade.ran.openshift.io/requirements-upgrade                         34m    Completed    All clusters are compliant with all the managed policies</code></pre>
+default        clustergroupupgrade.ran.openshift.io/telco5g-lab-prep-upgrade-finalizeupgrade-0   102s   InProgress   Rolling out manifestworks</code></pre>
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="monitoring-ibu"><a class="anchor" href="#monitoring-ibu"></a>Monitoring the Image Based Group Upgrade</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As explained in the <a href="lca.html">Lifecycle Agent Operator (LCA)</a> section, these are the different stages that are the SNO cluster will go through:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ibu-stages.png" alt="IBU policies">
+</div>
+</div>
+<div class="paragraph">
+<p>The progress of the upgrade can be tracked by checking the status field of the IBGU object:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get ibgu -n default telco5g-lab -ojson | jq .status
-{
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .status</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
   "clusters": [
     {
       "currentAction": {
@@ -1374,95 +1415,64 @@ ztp-policies   clustergroupupgrade.ran.openshift.io/requirements-upgrade        
     },
     {
       "currentAction": {
-        "action": "Prep"
+        "action": "Prepr"
       },
       "name": "sno3"
     }
   ],
   "conditions": [
     {
-      "lastTransitionTime": "2025-02-13T09:22:00Z",
+      "lastTransitionTime": "2025-02-13T09:27:47Z",
       "message": "Waiting for plan step 0 to be completed",
       "reason": "InProgress",
       "status": "True",
       "type": "Progressing"
     }
   ],
-  "observedGeneration": 1</code></pre>
+  "observedGeneration": 1
+}</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>In the output we can see that the upgrade just started because both <code>sno2</code> and <code>sno3</code> are in the <code>Prep</code> stage.</p>
+</div>
+<div class="paragraph">
+<p>We can also see the progress by connecting directly to the managed clusters and obtain the status of the IBU resource copied from the hub:</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+See Prep as the current stage by checking the Desired Stage. Also it shows extra info in the Details field, in this case it is being prepared to copy the stateroot seed image.
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig  get ibu -A
-NAME      AGE   DESIRED STAGE   STATE        DETAILS
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/sno2-kubeconfig  get ibu</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME      AGE   DESIRED STAGE   STATE        DETAILS
 upgrade   36s   Prep            InProgress   Stateroot setup job in progress. job-name: lca-prep-stateroot-setup, job-namespace: openshift-lifecycle-agent</code></pre>
 </div>
 </div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig  get ibu -A
-NAME      AGE    DESIRED STAGE   STATE        DETAILS
-upgrade   118s   Prep            InProgress   Precache job in progress. job-name: lca-prep-precache, job-namespace: openshift-lifecycle-agent. total: 83 (pulled: 23, failed: 1)</code></pre>
-</div>
+<div class="paragraph">
+<p>Once the <code>Prep</code> stage is done, the IBGU object will automatically move to the <code>Upgrade</code> stage. See below, that both SNO clusters show the <code>Prep</code> as completedActions and they currentAction is <code>Upgrade</code>.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get ibgu -n default telco5g-lab -ojson | jq .status
-{
-  "clusters": [
-    {
-      "completedActions": [
-        {
-          "action": "Prep"
-        }
-      ],
-      "currentAction": {
-        "action": "Upgrade"
-      },
-      "name": "sno2"
-    },
-    {
-      "currentAction": {
-        "action": "Prep"
-      },
-      "name": "sno3"
-    }
-  ],
-  "conditions": [
-    {
-      "lastTransitionTime": "2025-02-13T09:27:47Z",
-      "message": "Waiting for plan step 0 to be completed",
-      "reason": "InProgress",
-      "status": "True",
-      "type": "Progressing"
-    }
-  ],
-  "observedGeneration": 1
-}                                                                                                                                                                                                                   -----
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .status</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>[root@localhost active]# oc get jobs,pods -n openshift-lifecycle-agent
-NAME                                 STATUS    COMPLETIONS   DURATION   AGE
-job.batch/lca-prep-stateroot-setup   Running   0/1           29s        29s</p>
-</div>
-<div class="paragraph">
-<p>NAME                                                      READY   STATUS    RESTARTS   AGE
-pod/lca-prep-stateroot-setup-qkxf7                        1/1     Running   0          29s
-pod/lifecycle-agent-controller-manager-7c7f8b9c89-6vv7q   2/2     Running   0          12h</p>
-</div>
-<div class="listingblock">
+<div class="listingblock console">
 <div class="content">
-<pre>[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc get ibgu -n default telco5g-lab -ojson | jq .status
-{
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
   "clusters": [
     {
       "completedActions": [
@@ -1489,7 +1499,7 @@ pod/lifecycle-agent-controller-manager-7c7f8b9c89-6vv7q   2/2     Running   0   
   ],
   "conditions": [
     {
-      "lastTransitionTime": "2025-02-13T09:27:47Z",
+      "lastTransitionTime": "2025-03-05T11:50:26Z",
       "message": "Waiting for plan step 0 to be completed",
       "reason": "InProgress",
       "status": "True",
@@ -1497,32 +1507,33 @@ pod/lifecycle-agent-controller-manager-7c7f8b9c89-6vv7q   2/2     Running   0   
     }
   ],
   "observedGeneration": 1
-}</p>
+}</code></pre>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
 </div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+At some point during the Upgrade stage, the SNO clusters will restart and boot from the new stateroot. Depending on the host, the process until the Kubernetes API is available again can take several minutes.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>oc get ibgu -n default telco5g-lab -ojson | jq .status
-{
+<p>After some time, the SNO clusters will move to the <code>FinalizeUpgrade</code> stage. See below, that in this case <code>sno3</code> moved to <code>FinalizeUpgrade</code> stage while <code>sno2</code> is still on the previous stage.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .status</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
   "clusters": [
-    {
-      "completedActions": [
-        {
-          "action": "Prep"
-        },
-	{
-          "action": "Upgrade"
-        },
-	{
-          "action": "FinalizeUpgrade"
-        }
-      ],
-      "name": "sno2"
-    },
     {
       "completedActions": [
         {
@@ -1532,45 +1543,6 @@ pod/lifecycle-agent-controller-manager-7c7f8b9c89-6vv7q   2/2     Running   0   
       "currentAction": {
         "action": "Upgrade"
       },
-      "name": "sno3"
-    }
-  ],
-  "conditions": [
-    {
-      "lastTransitionTime": "2025-02-13T09:27:47Z",
-      "message": "Waiting for plan step 0 to be completed",
-      "reason": "InProgress",
-      "status": "True",
-      "type": "Progressing"
-    }
-  ],
-  "observedGeneration": 1
-}</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc get ibgu -n default telco5g-lab -ojson | jq .status</p>
-</div>
-<div class="paragraph">
-<p>{
-  "clusters": [
-    {
-      "completedActions": [
-        {
-          "action": "Prep"
-        },
-	{
-          "action": "Upgrade"
-        },
-	{
-          "action": "FinalizeUpgrade"
-        }
-      ],
       "name": "sno2"
     },
     {
@@ -1587,16 +1559,40 @@ pod/lifecycle-agent-controller-manager-7c7f8b9c89-6vv7q   2/2     Running   0   
       },
       "name": "sno3"
     }
-  ],</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
+  ],
+  "conditions": [
+    {
+      "lastTransitionTime": "2025-03-05T11:50:26Z",
+      "message": "Waiting for plan step 0 to be completed",
+      "reason": "InProgress",
+      "status": "True",
+      "type": "Progressing"
+    }
+  ],
+  "observedGeneration": 1
+}</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>oc get ibgu -n default telco5g-lab -ojson | jq .status
+<p>During the <code>FinalizeUpgrade</code> stage, the SNO clusters are restoring the data that was backed up. That data was included in the <code>disconnected-ran-config</code> configMap described in the <a href="using-talm-to-update-clusters.html#install-lca">Preparing managed clusters for upgrade</a>. If we connect to the <code>sno3</code> in this case, we can see the restore process running.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig /root/sno3-kubeconfig get ibu</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME      AGE     DESIRED STAGE   STATE        DETAILS
+upgrade   8m46s   Upgrade         InProgress   Restore of Application Data is in progress</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, both SNO clusters moved to the <code>FinalizeUpgrade</code> stage.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .status
 {
   "clusters": [
     {
@@ -1638,554 +1634,58 @@ pod/lifecycle-agent-controller-manager-7c7f8b9c89-6vv7q   2/2     Running   0   
     }
   ],
   "observedGeneration": 1
-}</p>
+}</code></pre>
 </div>
-<div class="listingblock">
+</div>
+<div class="paragraph">
+<p>We can also check that the CGU associated with the IBGU shows as Completed.</p>
+</div>
+<div class="listingblock console-input">
 <div class="content">
-<pre>[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get ibgu,cgu -n default</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>Every 2.0s: oc get ibgu,cgu -A                                                                                                                                                                             katatonic: Thu Feb 13 10:50:08 2025</p>
-</div>
-<div class="paragraph">
-<p>NAMESPACE   NAME                                                  AGE
-default     imagebasedgroupupgrade.lcm.openshift.io/telco5g-lab   22m</p>
-</div>
-<div class="paragraph">
-<p>NAMESPACE      NAME                                                                              AGE     STATE       DETAILS
-default        clustergroupupgrade.ran.openshift.io/telco5g-lab-prep-upgrade-finalizeupgrade-0   22m     Completed   All manifestworks rolled out successfully on all clusters
-ztp-install    clustergroupupgrade.ran.openshift.io/local-cluster                                20h     Completed   All clusters already compliant with the specified managed policies
-ztp-install    clustergroupupgrade.ran.openshift.io/sno2                                         6m49s   Completed   All clusters already compliant with the specified managed policies
-ztp-install    clustergroupupgrade.ran.openshift.io/sno3                                         3m59s   Completed   All clusters already compliant with the specified managed policies
-ztp-policies   clustergroupupgrade.ran.openshift.io/requirements-upgrade                         60m     Completed   All clusters are compliant with all the managed policies</p>
-</div>
-<div class="listingblock">
+<div class="listingblock console">
 <div class="content">
-<pre>Then enforce the policies again
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE   NAME                                                  AGE
+default     imagebasedgroupupgrade.lcm.openshift.io/telco5g-lab   22m
 
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
+NAMESPACE      NAME                                                                              AGE     STATE       DETAILS
+default        clustergroupupgrade.ran.openshift.io/telco5g-lab-prep-upgrade-finalizeupgrade-0   22m     Completed   All manifestworks rolled out successfully on all clusters</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>cat &lt;&lt;EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
----
-apiVersion: ran.openshift.io/v1alpha1
-kind: ClusterGroupUpgrade
-metadata:
-  name: postupgrade-config
-  namespace: ztp-policies
-spec:
-  clusters:
-  - sno2
-  - sno3
-  managedPolicies:
-  - common-config-policy
-  - common-subscriptions-policy
-  - du-sno-group-policy
-  - du-sno-sites-sites-policy
-  remediationStrategy:
-    maxConcurrency: 2
-    timeout: 240
-EOF</p>
+<p>Notice that once the upgrade is finished the IBU CR from both clusters moved back to the initial state: <code>Idle</code>.</p>
 </div>
-<div class="listingblock">
+<div class="listingblock console-input">
 <div class="content">
-<pre>****************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************
-
-[#upgrade-policy-creation]
-== Creating the upgrade PGT
-
-Create an upgrade PGT in inform mode, as usual, that will apply and upgrade the SNOs located in Europe (binding rule: `du-zone: "europe"`), SNO2 and SNO3 clusters. This file needs to be created in the ztp-repository Git repo that we have created.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig /root/sno3-kubeconfig get ibu</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/zone-europe-upgrade-418-1.yaml
----
-apiVersion: ran.openshift.io/v1
-kind: PolicyGenTemplate
-metadata:
-  name: "europe-upgrade-idle"
-  namespace: "ztp-policies"
-spec:
-  bindingRules:
-    du-zone: "europe"
-    logicalGroup: "active"
-  mcp: master
-  evaluationInterval:
-    compliant: 10s
-    noncompliant: 10s
-  sourceFiles:
-    - fileName: reference-crs/ibu/ImageBasedUpgrade.yaml
-      policyName: "version-418-1"
-      complianceType: mustonlyhave
-      spec:
-        stage: Idle
-        seedImageRef:
-          version: "4.18.0-rc.6"
-          image: "infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.6"
-EOF</p>
-</div>
-<div class="listingblock">
+<div class="listingblock console">
 <div class="content">
-<pre>Modify the kustomization.yaml inside the site-policies folder, so it includes this new PGT and eventually will be applied by ArgoCD.
-
-NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gsed`. If you do not have it available, please install it: `brew install gnu-sed`.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME      AGE     DESIRED STAGE   STATE   DETAILS
+upgrade   9m37s   Idle            Idle    Idle</code></pre>
 </div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Notice the time it took to update the SNO clusters. As shown above, the <code>sno3</code> took less than 10 minutes to run an z-stream update. If we compare this with the regular update time, which is around 40 minutes, the upgrade time reduction is huge.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
-<p>sed -i "/- group-du-sno.yaml/a \ \ - requirements-upgrade.yaml \n \ \- zone-europe-upgrade-418-1.yaml" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml</p>
+<p>As a final verification, check that both clusters once upgraded are compliant with the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a> configuration:</p>
 </div>
-<div class="listingblock">
+<div class="imageblock">
 <div class="content">
-<pre>Then commit all the changes:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>cd ~/5g-deployment-lab/ztp-repository/
-git add site-policies/fleet/active/zone-europe-upgrade-418-1.yaml site-policies/fleet/active/requirements-upgrade.yaml site-policies/fleet/active/kustomization.yaml
-git commit -m "adds upgrade policy"
-git push origin main</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named `europe-snos-upgrade-{talm-update-policy-name}` has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule.
-
-WARNING: Notice in the following picture that there are policies not applying to any cluster. Those are policies targeting the test environment. This is expected since we do not have any clusters in the test environment, e.g, no clusters are labeled with the proper label for testing: logicalGroup=test.
-
-image::talm_upgrade_policy_01.png[TALM upgrade policy 1]
-
-Let's add the proper labels to the production cluster SNO1:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig label managedcluster sno3 du-zone=europe logicalGroup=active</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[console-input]
-[source,console]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>managedcluster.cluster.open-cluster-management.io/sno3 labeled</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[#upgrade-cgu-creation]
-== Applying the upgrade
-
-At this point, we need to create a Cluster Group Upgrade (CGU) resource that will start the upgrade process. In our case, the process will be divided into two stages:
-
-1. Run a pre-cache of the new OCP release prior to start the upgrade process.
-2. Before running the upgrade, a backup will be done.
-
-[#talm-backup-precache]
-=== Backup and pre-cache
-
-Let's create the CGU. In this case, we will apply the managed policy (europe-snos-upgrade-{talm-update-policy-name}) to both clusters at the same time (maxConcurrency is 2). Notice that the CGU is disabled, this is suggested if we are going to run the precaching feature. This means, that once the precaching process is done we are ready to start the upgrade process by enabling the CGU. This idea is related to the compliance of a maintenance window in an enterprise.
-
-Remember that several gigabytes of artifacts needs to be downloaded to the spoke for a full upgrade. SNO spoke clusters may have limited bandwidth to the hub cluster hosting the registry, which will make it difficult for the upgrade to complete within the required time. In order to ensure the upgrade can fit within the maintenance window, the required artifacts need to be present on the spoke cluster prior to the upgrade. Therefore, the process is split up into two stages as mentioned.
-
-image::timing.png[TALM maintenance window concept]
-
-In OCP 4.14+, there is a new CRD called `PreCachingConfig` that will allow us to be more precise on the container images that we need for our cluster to upgrade. We must apply the {talm-precachingconfig-doc}[PreCachingConfig CR] before or concurrently with the CGU to our hub cluster:
-
-NOTE: You can obtain a more detailed list for `excludePrecachePattern` for each upgrade by following https://access.redhat.com/articles/7046378[this KCS].
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>cat &lt;&lt;EOF | oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -f -
----
-apiVersion: ran.openshift.io/v1alpha1
-kind: PreCachingConfig
-metadata:
-  name: update-europe-snos
-  namespace: ztp-policies
-spec:
-  overrides: {}
-  excludePrecachePatterns:
-    - agent-installer-
-    - alibaba-
-    - aws-
-    - azure-
-    - cloud-
-    - gcp-
-    - ibmcloud
-    - ibm-
-    - nutanix-
-    - openstack-
-    - ovirt-
-    - powervs-
-    - sdn
-    - vsphere-
-    - kuryr-
-    - csi-
-    - hypershift
-  additionalImages: []
-  spaceRequired: 30 GiB
----
-apiVersion: ran.openshift.io/v1alpha1
-kind: ClusterGroupUpgrade
-metadata:
-  name: update-ibu-idle
-  namespace: ztp-policies
-spec:
-  preCaching: true
-  preCachingConfigRef:
-    name: update-europe-snos
-    namespace: ztp-policies
-  backup: true
-  clusters:
-  - sno2
-  - sno3
-  enable: false
-  managedPolicies:
-  - lca-install-lca-subscription
-  - europe-upgrade-idle-version-418-1
-  remediationStrategy:
-    maxConcurrency: 2
-    timeout: 240
-EOF</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Once applied, we can see that the status moved to `InProgress` with a message detailing that the precaching process is in progress for both SNOs. This means that the first step in our process is executing the pre-cache.
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[console-input]
-[source,console]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>NAMESPACE      NAME                 AGE    STATE        DETAILS
-ztp-install    local-cluster        105m   Completed    All clusters already compliant with the specified managed policies
-ztp-install    sno1                 23m    Completed    All clusters already compliant with the specified managed policies
-ztp-install    sno2                 10m    Completed    All clusters are compliant with all the managed policies
-ztp-policies   update-europe-snos   4s     InProgress   Precaching in progress for 2 clusters</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Connecting to any of our spoke clusters we can see a new job being created called pre-cache.
-
-WARNING: Pre-cache job can take up to 5m to be created.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig -n openshift-talo-pre-cache get job pre-cache</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[console-input]
-[source,console]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>NAME        COMPLETIONS   DURATION   AGE
-pre-cache   0/1           64s        64s</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>This job creates a Pod that will run the precache process. As we can see below, 183 images need to be downloaded from our local registry to mark the task as successful.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/pre-cache -n openshift-talo-pre-cache -f</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[console-input]
-[source,console,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>highThresholdPercent: 85 diskSize:209124332 used:17648032
-upgrades.pre-cache 2024-11-11T10:55:10+00:00 DEBUG Release index image processing done
-7df5fe3b5fb7352b870735c7d7bd898d0959a9a49558d2ffb42dcd269e01752f
-upgrades.pre-cache 2024-11-11T08:13:59+00:00 [DEBUG]: Operators index is not specified. Operators won&#8217;t be pre-cached
-upgrades.pre-cache 2024-11-11T08:13:59+00:00 [INFO]: Image pre-caching starting for platform-images
-.
-.
-.
-upgrades.pre-cache 2024-11-11T08:20:36+00:00 [INFO]: Image pre-caching complete for platform-images</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Once the precache is done, the CGU state moves to `NotEnabled` and the Pod running the pre-cache task in both SNO clusters is deleted. At this moment, TALM is waiting for acknowledging the start of the upgrade.
-
-WARNING: It can take up to 5 minutes for the CGU to report the new state. After that time, the precache objects and the openshift-talo-pre-cache namespace created in the managed clusters are automatically deleted.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -n ztp-policies update-europe-snos</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[console-input]
-[source,console]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>NAMESPACE      NAME                 AGE     STATE        DETAILS
-ztp-policies   update-europe-snos   29m     NotEnabled   Not enabled</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[#talm-upgrade]
-=== Triggering the upgrade
-
-Now that the pre-cache is done, we can trigger the update. As we said earlier, before the update is actually executed a backup will be done so we can rollback. In order to trigger the update we need to enable the CGU:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig patch cgu update-europe-snos -n ztp-policies --type merge --patch '{"spec":{"enable":true}}'</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Notice the CGU state moved to `InProgress`, which means, the upgrade process has started. In the details you can see that the backup is in progress.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -n ztp-policies update-europe-snos</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[console-input]
-[source,console]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>NAMESPACE      NAME                 AGE     STATE        DETAILS
-ztp-policies   update-europe-snos   30m     InProgress   Backup in progress for 2 clusters</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Connecting to any of our spoke clusters we can see a new job being created called backup-agent.
-
-WARNING: Backup job can take up to 5m to be created.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig get jobs -A</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[console-input]
-[source,console]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>NAMESPACE                              NAME                            COMPLETIONS   DURATION   AGE
-assisted-installer                     assisted-installer-controller   1/1           26m        21h
-openshift-image-registry               image-pruner-28140480           1/1           5s         11h
-openshift-operator-lifecycle-manager   collect-profiles-28141110       1/1           5s         34m
-openshift-operator-lifecycle-manager   collect-profiles-28141125       1/1           4s         19m
-openshift-operator-lifecycle-manager   collect-profiles-28141140       1/1           4s         4m50s
-openshift-talo-backup                  backup-agent                    0/1           7s         7s</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>This job basically runs a Pod that will execute a recovery procedure and will store all required data into the /var/recovery folder of each spoke.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig logs job/backup-agent -n openshift-talo-backup -f</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[console-input]
-[source,console,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>INFO[0000] ------------------------------------------------------------
-INFO[0000] Cleaning up old content&#8230;&#8203;
-INFO[0000] ------------------------------------------------------------
-.
-.
-.
-INFO[0003] ------------------------------------------------------------
-INFO[0003] backup has successfully finished &#8230;&#8203;</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Once backups are finished for all clusters, the CGU state will move to `BackupCompleted` and then quickly move to `InProgress`:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[console-input]
-[source,console]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>NAMESPACE      NAME                 AGE    STATE             DETAILS
-ztp-install    local-cluster        124m   Completed         All clusters already compliant with the specified managed policies
-ztp-install    sno1                 42m    Completed         All clusters already compliant with the specified managed policies
-ztp-install    sno2                 28m    Completed         All clusters are compliant with all the managed policies
-ztp-policies   update-europe-snos   28m    BackupCompleted   Backup is completed for all clusters</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>At this point, if we connect to any of our spoke clusters we can see that the upgrade process is actually taking place.
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig get clusterversion,nodes</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[console-input]
-[source,console,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.18.0-rc.7    True        True          30s     Working towards 4.18.0-rc.8: 101 of 842 done (11% complete), waiting on kube-apiserver</p>
-</div>
-<div class="paragraph">
-<p>NAME                          STATUS   ROLES                         AGE    VERSION
-node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   156m   v1.30.5</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Meanwhile, the clusters are upgrading we can take a look at the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/governance/policies[multicloud console] and see that there is a new policy in enforce mode:
-
-image::talm_upgrade_policy_03.png[TALM upgrade policy 3]
-
-Moving to the Infrastructure -&gt; Cluster section of the multicloud console we can also graphically see both clusters being upgraded:
-
-image::talm_upgrade_policy_04.png[TALM upgrade policy 3]
-
-Finally, our clusters are upgraded:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc --kubeconfig ~/5g-deployment-lab/sno2-kubeconfig get clusterversion,nodes</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[console-input]
-[source,console,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.18.0-rc.8    True        False         6m8s    Cluster version is 4.18.0-rc.8</p>
-</div>
-<div class="paragraph">
-<p>NAME                          STATUS   ROLES                         AGE     VERSION
-node/sno2.5g-deployment.lab   Ready    control-plane,master,worker   3h26m   v1.30.5</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc --kubeconfig ~/5g-deployment-lab/sno1-kubeconfig get clusterversion,nodes</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[console-input]
-[source,console,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.18.0-rc.8    True        False         9m12s   Cluster version is 4.18.0-rc.8</p>
-</div>
-<div class="paragraph">
-<p>NAME                      STATUS   ROLES                         AGE   VERSION
-node/openshift-master-0   Ready    control-plane,master,worker   22h   v1.30.5</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>Notice that now the upgrade policy `europe-snos-upgrade-{talm-update-policy-name}` is now compliant on both clusters. See that, in order to save resources, the enforce policy is removed once the CGU is successfully applied.
-
-And finally, the CGU will be `Completed`:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig get cgu -A</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>[console-input]
-[source,console]</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>NAMESPACE      NAME                 AGE    STATE       DETAILS
-ztp-install    local-cluster        23h    Completed   All clusters already compliant with the specified managed policies
-ztp-install    sno1                 67m    Completed   All clusters already compliant with the specified managed policies
-ztp-install    sno2                 3h5m   Completed   All clusters are compliant with all the managed policies
-ztp-policies   update-europe-snos   63m    Completed   All clusters are compliant with all the managed policies</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>image::talm_upgrade_policy_05.png[TALM upgrade policy 5]</pre>
+<img src="_images/ibu07.png" alt="IBU policies">
 </div>
 </div>
 </div>

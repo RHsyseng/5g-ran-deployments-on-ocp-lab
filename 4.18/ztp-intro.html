@@ -147,13 +147,16 @@
     <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#logging-operator">Logging Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#logging-operator">Cluster Logging Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="telco-related-infra-operators-intro.html#lifecycle-operator">Lifecycle Agent Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#lvm-operator">LVM Storage Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#lvm-operator">Storage Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#oadp-operator">OpenShift API for Data Protection Operator</a>
   </li>
 </ul>
   </li>
@@ -649,6 +652,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the Image Base Group Upgrade</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#monitoring-ibu">Monitoring the Image Based Group Upgrade </a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -816,7 +822,7 @@
 <p>ZTP is a project to deploy and deliver OpenShift 4 in a hub-and-spoke architecture (in a relation of 1-N), where a single hub cluster manages many spoke clusters. The hub and the spokes will be based on OpenShift 4 but with the difference that the hub cluster will manage, deploy and control the lifecycle of the spokes using Red Hat Advanced Cluster Management (RHACM).</p>
 </div>
 <div class="paragraph">
-<p>Then, hub clusters running RHACM apply radio access network (RAN) policies from predefined custom resources (CRs) and provision and deploy the spoke clusters using multiple products. Those components are part of what is called Telco <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_reference_design_specs/telco-ran-du-rds.html">RAN DU Reference Design Specification</a>. The RAN DU RDS captures the recommended, tested, and supported configurations to get reliable and repeatable performance for a cluster running the telco RAN DU profile.</p>
+<p>Then, hub clusters running RHACM apply radio access network (RAN) policies from predefined custom resources (CRs) and provision and deploy the spoke clusters using multiple products. Those components are part of what is called Telco <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ref-design-overview_telco-ran-du">RAN DU Reference Design Specification</a>. The RAN DU RDS captures the recommended, tested, and supported configurations to get reliable and repeatable performance for a cluster running the telco RAN DU profile.</p>
 </div>
 <div class="paragraph">
 <p>We will take a closer look at these components in the <a href="ztp-at-scale.html">Hub Management Components</a> section.</p>

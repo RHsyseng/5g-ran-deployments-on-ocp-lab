@@ -147,13 +147,16 @@
     <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#logging-operator">Logging Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#logging-operator">Cluster Logging Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="telco-related-infra-operators-intro.html#lifecycle-operator">Lifecycle Agent Operator</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="telco-related-infra-operators-intro.html#lvm-operator">LVM Storage Operator</a>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#lvm-operator">Storage Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#oadp-operator">OpenShift API for Data Protection Operator</a>
   </li>
 </ul>
   </li>
@@ -649,6 +652,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the Image Base Group Upgrade</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#monitoring-ibu">Monitoring the Image Based Group Upgrade </a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -1114,7 +1120,7 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 <p>Apply the ZTP GitOps Pipeline configuration:</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/</code></pre>
 </div>
 </div>
 </li>
@@ -1129,7 +1135,7 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 <p><strong>clusters</strong>. It is responsible for managing the deployment of Single Node OpenShift clusters from the Git repository.</p>
 </li>
 <li>
-<p><strong>policies</strong>. It is responsible for managing the configuration via RHACM policies that will be applied to Single Node OpenShift clusters. Basically, it configures the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_reference_design_specs/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a>.</p>
+<p><strong>policies</strong>. It is responsible for managing the configuration via RHACM policies that will be applied to Single Node OpenShift clusters. Basically, it configures the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a>.</p>
 </li>
 </ul>
 </div>
