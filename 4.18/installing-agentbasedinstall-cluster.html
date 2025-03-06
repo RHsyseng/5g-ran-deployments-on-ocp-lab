@@ -1297,6 +1297,18 @@ cd ~</code></pre>
 <div class="paragraph">
 <p>At this point ArgoCD started doing its magic which means that the cluster deployment should already be running, let&#8217;s see what happened in Argo CD.</p>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+It may take up to 5 minutes for Argo CD to start syncing changes.
+</td>
+</tr>
+</table>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1425,7 +1437,7 @@ Below commands must be executed from the workstation host if not specified other
 <p>Check the <code>AgentClusterInstall</code> for SNO2 cluster:</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get agentclusterinstall sno2</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno2 get agentclusterinstall sno2</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -1439,7 +1451,7 @@ sno2   sno2      finalizing</code></pre>
 <p>In case you want expanded information like we saw in the WebUI you can check the conditions of the <code>AgentClusterInstall</code> object. For example, while installing:</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/5g-deployment-lab/hub-kubeconfig -n sno2 get agentclusterinstall sno2 -o yaml</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno2 get agentclusterinstall sno2 -o yaml</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -1483,7 +1495,7 @@ sno2   sno2      finalizing</code></pre>
 </table>
 </div>
 <div class="paragraph">
-<p>While the <code>SNO2</code> cluster installs, let&#8217;s move to the next section where we will learn how to deploy a SNO OpenShift cluster using an <a href="ztp-workflow.html#ibi-deployment">image-based install flow</a>. However, first things first, we have to create a seed image from an already deployed <a href="lab-environment-introduction.html#openshift-seed-sno">OpenShift seed SNO cluster</a>.</p>
+<p>While the <code>SNO2</code> cluster installs, let&#8217;s move to the next section where we will learn how to deploy a SNO OpenShift cluster using an <a href="ztp-workflow.html#ibi-deployment">image-based install flow</a>. However, first things first, we have to create a seed image from an already deployed <a href="lab-environment-introduction.html#openshift-seed-sno">Single Node OpenShift seed cluster</a>.</p>
 </div>
 </div>
 </div>
