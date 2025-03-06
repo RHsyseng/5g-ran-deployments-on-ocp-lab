@@ -350,18 +350,18 @@ metadata:
     argocd.argoproj.io/sync-options: Replace=true
 data:
   # StorageLVMCluster.yaml
-  sno1-resourcename1: "igb-enp4s0"
-  sno1-resourcename2: "igb-enp5s0"
-  sno1-sriovnic1: "enp4s0"
-  sno1-sriovnic2: "enp5s0"
-  sno2-resourcename1: "virt-enp4s0"
-  sno2-resourcename2: "virt-enp5s0"
-  sno2-sriovnic1: "enp4s0"
-  sno2-sriovnic2: "enp5s0"
-  sno3-resourcename1: "virt-enp4s0"
-  sno3-resourcename2: "virt-enp5s0"
-  sno3-sriovnic1: "enp4s0"
-  sno3-sriovnic2: "enp5s0"
+  sno-seed-resourcename1: "igb-enp4s0"
+  sno-seed-resourcename2: "igb-enp5s0"
+  sno-seed-sriovnic1: "enp4s0"
+  sno-seed-sriovnic2: "enp5s0"
+  sno-abi-resourcename1: "virt-enp4s0"
+  sno-abi-resourcename2: "virt-enp5s0"
+  sno-abi-sriovnic1: "enp4s0"
+  sno-abi-sriovnic2: "enp5s0"
+  sno-ibi-resourcename1: "virt-enp4s0"
+  sno-ibi-resourcename2: "virt-enp5s0"
+  sno-ibi-sriovnic1: "enp4s0"
+  sno-ibi-sriovnic2: "enp5s0"
 EOF
 -----
 

@@ -31,7 +31,7 @@ e7cf765660a3  quay.io/mavazque/registry:2.7.1  /etc/docker/regis...  24 hours ag
 [#sno2]
 === SNO2 virtual machine
 
-In the lab we are going to provision and configure a SNO cluster named SNO2. Let's double check that the virtual machine exists and it is stopped.
+In the lab we are going to provision and configure two SNO clusters named sno-abi and sno-ibi. Let's double check that the virtual machines exist and are stopped.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -49,8 +49,9 @@ kcli list vm
 |  hub-master0  |   up   | 192.168.125.20 |                                                      |     hub     |  kvirt  |
 |  hub-master1  |   up   | 192.168.125.21 |                                                      |     hub     |  kvirt  |
 |  hub-master2  |   up   | 192.168.125.22 |                                                      |     hub     |  kvirt  |
-|      sno1     |   up   | 192.168.125.30 |                                                      |     hub     |  kvirt  |
-|      sno2     |  down  |                |                                                      |     hub     |  kvirt  |
+|   sno-seed    |   up   | 192.168.125.30 |                                                      |     hub     |  kvirt  |
+|    sno-abi    |  down  |                |                                                      |     hub     |  kvirt  |
+|    sno-ibi    |  down  |                |                                                      |     hub     |  kvirt  |
 +---------------+--------+----------------+------------------------------------------------------+-------------+---------+
 -----
 
@@ -180,7 +181,7 @@ openshift-gitops   clusters                   OutOfSync     Healthy
 openshift-gitops   hub-operators-config       Synced        Healthy
 openshift-gitops   hub-operators-deployment   Synced        Healthy
 openshift-gitops   policies                   Synced        Healthy
-openshift-gitops   sno1-deployment            Synced        Healthy
+openshift-gitops   sno-seed-deployment        Synced        Healthy
 -----
 
 

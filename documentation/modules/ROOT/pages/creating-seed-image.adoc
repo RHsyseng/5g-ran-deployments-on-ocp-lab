@@ -25,12 +25,12 @@ IMPORTANT: During the deployment of this lab we already ensured that the seed SN
 
 Connect to the seed SNO cluster and check that OpenShift ADP and Lifecycle-Agent (LCA) operators are installed as required operators to create a seed image. Notice that the SR-IOV and LVM operators are installed too. In this case we want them as part of the seed image because the SNO clusters that are going to use this seed image will require these operators to run their workloads.
 
-IMPORTANT: If below command throws an error saying: `The connection to the server api.sno1.5g-deployment.lab:6443 was refused - did you specify the right host or port?`. Wait up to 10 minutes, the cluster may be restarting its API.
+IMPORTANT: If below command throws an error saying: `The connection to the server api.sno-seed.5g-deployment.lab:6443 was refused - did you specify the right host or port?`. Wait up to 10 minutes, the cluster may be restarting its API.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno1kubeconfig get csv -A
+oc --kubeconfig {seed-cluster-kubeconfig} get csv -A
 -----
 
 [.console]
@@ -49,7 +49,7 @@ Check that the OpenShift Container Platform version of the seed SNO cluster is {
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno1kubeconfig get clusterversion
+oc --kubeconfig {seed-cluster-kubeconfig} get clusterversion
 -----
 
 [console-input]
@@ -64,7 +64,7 @@ Create the Secret object that contains the container registry credentials where 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF | oc --kubeconfig ~/sno1kubeconfig apply -f -
+cat <<EOF | oc --kubeconfig {seed-cluster-kubeconfig} apply -f -
 ---
 apiVersion: v1
 kind: Secret
@@ -84,7 +84,7 @@ IMPORTANT: A good practice is to tag the seed container image with the OpenShift
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF | oc --kubeconfig ~/sno1kubeconfig apply -f -
+cat <<EOF | oc --kubeconfig {seed-cluster-kubeconfig} apply -f -
 ---
 apiVersion: lca.openshift.io/v1
 kind: SeedGenerator
@@ -100,7 +100,7 @@ You can follow the progress by checking the logs of the lifecycle-agent-controll
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno1kubeconfig get seedgen -A
+oc --kubeconfig {seed-cluster-kubeconfig} get seedgen -A
 -----
 [.console]
 [source,bash,subs="attributes+,+macros"]
@@ -112,7 +112,7 @@ seedimage   47s   SeedGenInProgress   Cleaning cluster resources
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno1kubeconfig -n openshift-lifecycle-agent logs -f deployment/lifecycle-agent-controller-manager -c manager
+oc --kubeconfig {seed-cluster-kubeconfig} -n openshift-lifecycle-agent logs -f deployment/lifecycle-agent-controller-manager -c manager
 -----
 
 [.console]
@@ -140,12 +140,12 @@ IMPORTANT: The cluster reboots and loses API capabilities while the Lifecycle Ag
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno1kubeconfig get seedgen -A
+oc --kubeconfig {seed-cluster-kubeconfig} get seedgen -A
 -----
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----
-Get "https://api.sno1.5g-deployment.lab:6443/apis/lca.openshift.io/v1/seedgenerators?limit=500": dial tcp 192.168.125.30:6443: connect: connection refused - error from a previous attempt: unexpected EOF
+Get "https://api.sno-seed.5g-deployment.lab:6443/apis/lca.openshift.io/v1/seedgenerators?limit=500": dial tcp 192.168.125.30:6443: connect: connection refused - error from a previous attempt: unexpected EOF
 -----
 
 After the cluster recovers and is available, you can continue checking the status of the SeedGenerator CR by running the following command:
@@ -153,7 +153,7 @@ After the cluster recovers and is available, you can continue checking the statu
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno1kubeconfig get seedgenerator seedimage -o json | jq '.status'
+oc --kubeconfig {seed-cluster-kubeconfig} get seedgenerator seedimage -o json | jq '.status'
 -----
 [.console]
 [source,bash,subs="attributes+,+macros"]
@@ -184,7 +184,7 @@ oc --kubeconfig ~/sno1kubeconfig get seedgenerator seedimage -o json | jq '.stat
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno1kubeconfig get seedgenerator
+oc --kubeconfig {seed-cluster-kubeconfig} get seedgenerator
 -----
 [.console]
 [source,bash,subs="attributes+,+macros"]
@@ -198,7 +198,7 @@ Once the SeedGenerator CR shows the state as `SeedGenCompleted`, the image creat
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno1kubeconfig get clusterversion,nodes
+oc --kubeconfig {seed-cluster-kubeconfig} get clusterversion,nodes
 -----
 [.console]
 [source,bash,subs="attributes+,+macros"]

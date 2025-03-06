@@ -2,9 +2,9 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-In this section, we will perform an image-based upgrade to both managed clusters (`sno2` and `sno3`) leveraging the link:missing[Lifecycle Agent] (LCA) and the link:talm.html[Topology Aware Lifecycle Manager] (TALM) operators. The LCA provides you with an alternative way to upgrade the platform version of a single-node OpenShift cluster while TALM is responsible for managing the rollout of configuration throughout the lifecycle of the fleet of clusters.
+In this section, we will perform an image-based upgrade to both managed clusters (`sno-abi` and `sno-ibi`) leveraging the link:missing[Lifecycle Agent] (LCA) and the link:talm.html[Topology Aware Lifecycle Manager] (TALM) operators. The LCA provides you with an alternative way to upgrade the platform version of a single-node OpenShift cluster while TALM is responsible for managing the rollout of configuration throughout the lifecycle of the fleet of clusters.
 
-The image-based upgrade is faster than the standard upgrade method and allows you to directly upgrade from OpenShift Container Platform <4.y> to <4.y+2>, and <4.y.z> to <4.y.z+n>. Image-based upgrades utilizes a generated OCI image from a dedicated seed cluster. In this case, we already provided this seed image with version {sno-cluster-version2-cvo}. The process to generate that seed image is identically as the process we executed in link:creating-seed-image.html[Creating the Seed Image] for version {sno-cluster-version1-cvo} to install `sno3`.
+The image-based upgrade is faster than the standard upgrade method and allows you to directly upgrade from OpenShift Container Platform <4.y> to <4.y+2>, and <4.y.z> to <4.y.z+n>. Image-based upgrades utilizes a generated OCI image from a dedicated seed cluster. In this case, we already provided this seed image with version {sno-cluster-version2-cvo}. The process to generate that seed image is identically as the process we executed in link:creating-seed-image.html[Creating the Seed Image] for version {sno-cluster-version1-cvo} to install `sno-ibi`.
 
 IMPORTANT: The image-based upgrade uses custom images that are specific to the hardware platform that the clusters are running on. Each different hardware platform requires a separate seed image. More information {seed-guidelines}[here].
 
@@ -16,7 +16,7 @@ Detailed below are the steps we are going to follow to upgrade both managed clus
 * Configure OADP to backup and restore the configuration of the managed clusters that is not included into the seed image.
 * Perform the upgrade using the `ImageBasedGroupUpgrade` CR that combines the ImageBasedUpgrade (LCA) and ClusterGroupUpgrade APIs (TALM).
 
-IMPORTANT: Notice that both clusters were installed using a different methodologies. While `sno2` was provisioned using the link:ztp-workflow.html#abi-deployment[agent-based install] workflow, `sno3` was deployed using the link:ztp-workflow.html#ibi-deployment[image-based install]. However, as long as they both meet the {seed-guidelines}[Seed cluster guidelines], have the same combination of hardware, Day 2 Operators, and cluster configuration as the {sno-cluster-version2-cvo} seed cluster we are good to go.
+IMPORTANT: Notice that both clusters were installed using a different methodologies. While `sno-abi` was provisioned using the link:ztp-workflow.html#abi-deployment[agent-based install] workflow, `sno-ibi` was deployed using the link:ztp-workflow.html#ibi-deployment[image-based install]. However, as long as they both meet the {seed-guidelines}[Seed cluster guidelines], have the same combination of hardware, Day 2 Operators, and cluster configuration as the {sno-cluster-version2-cvo} seed cluster we are good to go.
 
 First of all, let's verify the software requirements in our *hub cluster*:
 
@@ -74,7 +74,7 @@ pod/openshift-gitops-operator-controller-manager-6794f4f9cc-vpm2b   2/2     Runn
 [#getting-snos-kubeconfigs]
 == Verifying managed clusters requirements
 
-In the previous sections we have deployed the `sno2` cluster using the agent-based installation and the `sno3` cluster using the image-based installation. Before starting the upgrade we need to check if the Lifecycle Agent and OpenShift API for Data Protection operators are installed in the target clusters.
+In the previous sections we have deployed the `sno-abi` cluster using the agent-based installation and the `sno-ibi` cluster using the image-based installation. Before starting the upgrade we need to check if the Lifecycle Agent and OpenShift API for Data Protection operators are installed in the target clusters.
 
 WARNING: We know that both SNO clusters meet the {seed-guidelines}[seed cluster guidelines], has the same combination of hardware, Day 2 Operators, and cluster configuration as the target seed cluster from where the seed image version {sno-cluster-version2} was obtained.
 
@@ -83,16 +83,16 @@ Let's obtain the kubeconfigs for both clusters since we will need them for the n
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/hub-kubeconfig -n sno2 extract secret/sno2-admin-kubeconfig --to=- > ~/sno2-kubeconfig
-oc --kubeconfig ~/hub-kubeconfig -n sno3 extract secret/sno3-admin-kubeconfig --to=- > ~/sno3-kubeconfig
+oc --kubeconfig ~/hub-kubeconfig -n sno-abi extract secret/sno-abi-admin-kubeconfig --to=- > {abi-cluster-kubeconfig}
+oc --kubeconfig ~/hub-kubeconfig -n sno-ibi extract secret/sno-ibi-admin-kubeconfig --to=- > {ibi-cluster-kubeconfig}
 -----
 
-If we check the operators installed in the `sno2` we will notice that neither LCA nor OADP are installed. This is expected because if we remember from the link:crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies[Crafting Common Policies] section, only SR-IOV and LVM operators were installed as Day 2 Operators.
+If we check the operators installed in the `sno-abi` we will notice that neither LCA nor OADP are installed. This is expected because if we remember from the link:crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies[Crafting Common Policies] section, only SR-IOV and LVM operators were installed as Day 2 Operators.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno2-kubeconfig get csv -A
+oc --kubeconfig {abi-cluster-kubeconfig} get csv -A
 -----
 [.console]
 [source,bash,subs="attributes+,+macros"]
@@ -103,12 +103,12 @@ openshift-sriov-network-operator       sriov-network-operator.v4.18.0-2025021215
 openshift-storage                      lvms-operator.v4.18.0                         LVM Storage               4.18.0                           Succeeded
 -----
 
-On the other hand, the `sno3` is running all required operators: Day 2 Operators plus LCA and OADP, which are required to run the image-based upgrade process. That's because they were already included in the seed image version {sno-cluster-version1}. See in link:creating-seed-image.html#_running_the_seed_image_generation[Running the Seed Image Generation] to obtain the list of operators installed in the seed cluster. They are exactly the same versions because `sno3` was provisioned with that seed image (image-based installation).
+On the other hand, the `sno-ibi` is running all required operators: Day 2 Operators plus LCA and OADP, which are required to run the image-based upgrade process. That's because they were already included in the seed image version {sno-cluster-version1}. See in link:creating-seed-image.html#_running_the_seed_image_generation[Running the Seed Image Generation] to obtain the list of operators installed in the seed cluster. They are exactly the same versions because `sno-ibi` was provisioned with that seed image (image-based installation).
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig  ~/sno3-kubeconfig get csv -A
+oc --kubeconfig  {ibi-cluster-kubeconfig} get csv -A
 -----
 [.console]
 [source,bash,subs="attributes+,+macros"]
@@ -121,23 +121,23 @@ openshift-sriov-network-operator       sriov-network-operator.v4.18.0-2025021215
 openshift-storage                      lvms-operator.v4.18.0                         LVM Storage               4.18.0                           Succeeded
 -----
 
-Ok then, let's install the missing LCA and OADP operators in `sno2` and configure them appropiately in both managed clusters. To achieve that, a PolicyGenTemplate and a cluster group upgrade (CGU) CR will be created in the hub cluster so TALM manages the installation and configuration process.
+Ok then, let's install the missing LCA and OADP operators in `sno-abi` and configure them appropiately in both managed clusters. To achieve that, a PolicyGenTemplate and a cluster group upgrade (CGU) CR will be created in the hub cluster so TALM manages the installation and configuration process.
 
-Notice that an already completed CGU was applied to `sno2`. As we mentioned in link:talm.html#inform-policies[inform policies] section, all policies are not enforced, the user has to create the proper CGU resource to enforce them. However, when using ZTP, we want our cluster provisioned and configured automatically. This is where TALM will step through the set of created policies (inform) and will enforce them once the cluster was successfully provisioned. Therefore, the configuration stage starts without any intervention ending up with our OpenShift cluster ready to process workloads.
+Notice that an already completed CGU was applied to `sno-abi`. As we mentioned in link:talm.html#inform-policies[inform policies] section, all policies are not enforced, the user has to create the proper CGU resource to enforce them. However, when using ZTP, we want our cluster provisioned and configured automatically. This is where TALM will step through the set of created policies (inform) and will enforce them once the cluster was successfully provisioned. Therefore, the configuration stage starts without any intervention ending up with our OpenShift cluster ready to process workloads.
 
 WARNING: It's possible that you get `UpgradeNotCompleted`, if that's the case you need to wait for the remaining policies to be applied. You can check policies status https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/governance/policies[here].
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/hub-kubeconfig get cgu sno2 -n ztp-install
+oc --kubeconfig ~/hub-kubeconfig get cgu sno-abi -n ztp-install
 -----
 
 [console-input]
 [source,console]
 -----
 NAME   AGE     STATE       DETAILS
-sno2   7m26s   Completed   All clusters are compliant with all the managed policies
+sno-abi   7m26s   Completed   All clusters are compliant with all the managed policies
 -----
 
 [#install-lca]
@@ -336,14 +336,14 @@ ArgoCD automatically synchronizes the new policies and show as non compliant in 
 image::ibu01.png[IBU policies]
 
 
-However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting `sno2` cluster. That’s because the `sno3` cluster does not have the labels zone-europe that the PGT is targeting in its binding rule.
+However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting `sno-abi` cluster. That's because the `sno-ibi` cluster does not have the labels zone-europe that the PGT is targeting in its binding rule.
 
-Let’s add the proper labels to the `sno3` SNO cluster:
+Let's add the proper labels to the `sno-ibi` SNO cluster:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/hub-kubeconfig label managedcluster sno3 du-zone=europe
+oc --kubeconfig ~/hub-kubeconfig label managedcluster sno-ibi du-zone=europe
 -----
 
 image::ibu02.png[IBU policies]
@@ -363,8 +363,8 @@ metadata:
   namespace: ztp-policies
 spec:
   clusters:
-  - sno2
-  - sno3
+  - sno-abi
+  - sno-ibi
   managedPolicies:
   - requirements-upgrade-subscriptions-policy
   - requirements-upgrade-config-policy
@@ -430,8 +430,8 @@ spec:
       - key: name
         operator: In
         values:
-        - sno2
-        - sno3
+        - sno-abi
+        - sno-ibi
   ibuSpec:
     seedImageRef: 
       image: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.8
@@ -491,13 +491,13 @@ oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .st
       "currentAction": {
         "action": "Prep"
       },
-      "name": "sno2"
+      "name": "sno-abi"
     },
     {
       "currentAction": {
         "action": "Prepr"
       },
-      "name": "sno3"
+      "name": "sno-ibi"
     }
   ],
   "conditions": [
@@ -513,7 +513,7 @@ oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .st
 }
 -----
 
-In the output we can see that the upgrade just started because both `sno2` and `sno3` are in the `Prep` stage.
+In the output we can see that the upgrade just started because both `sno-abi` and `sno-ibi` are in the `Prep` stage.
 
 We can also see the progress by connecting directly to the managed clusters and obtain the status of the IBU resource copied from the hub:
 
@@ -521,7 +521,7 @@ IMPORTANT: See Prep as the current stage by checking the Desired Stage. Also it 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/sno2-kubeconfig  get ibu
+oc --kubeconfig {abi-cluster-kubeconfig}  get ibu
 -----
 [.console]
 [source,bash]
@@ -551,7 +551,7 @@ oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .st
       "currentAction": {
         "action": "Upgrade"
       },
-      "name": "sno2"
+      "name": "sno-abi"
     },
     {
       "completedActions": [
@@ -562,7 +562,7 @@ oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .st
       "currentAction": {
         "action": "Upgrade"
       },
-      "name": "sno3"
+      "name": "sno-ibi"
     }
   ],
   "conditions": [
@@ -580,7 +580,7 @@ oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .st
 
 IMPORTANT: At some point during the Upgrade stage, the SNO clusters will restart and boot from the new stateroot. Depending on the host, the process until the Kubernetes API is available again can take several minutes.
 
-After some time, the SNO clusters will move to the `FinalizeUpgrade` stage. See below, that in this case `sno3` moved to `FinalizeUpgrade` stage while `sno2` is still on the previous stage.
+After some time, the SNO clusters will move to the `FinalizeUpgrade` stage. See below, that in this case `sno-ibi` moved to `FinalizeUpgrade` stage while `sno-abi` is still on the previous stage.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -601,7 +601,7 @@ oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .st
       "currentAction": {
         "action": "Upgrade"
       },
-      "name": "sno2"
+      "name": "sno-abi"
     },
     {
       "completedActions": [
@@ -615,7 +615,7 @@ oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .st
       "currentAction": {
         "action": "FinalizeUpgrade"
       },
-      "name": "sno3"
+      "name": "sno-ibi"
     }
   ],
   "conditions": [
@@ -631,12 +631,12 @@ oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .st
 }
 -----
 
-During the `FinalizeUpgrade` stage, the SNO clusters are restoring the data that was backed up. That data was included in the `disconnected-ran-config` configMap described in the link:using-talm-to-update-clusters.html#install-lca[Preparing managed clusters for upgrade]. If we connect to the `sno3` in this case, we can see the restore process running.
+During the `FinalizeUpgrade` stage, the SNO clusters are restoring the data that was backed up. That data was included in the `disconnected-ran-config` configMap described in the link:using-talm-to-update-clusters.html#install-lca[Preparing managed clusters for upgrade]. If we connect to the `sno-ibi` in this case, we can see the restore process running.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig /root/sno3-kubeconfig get ibu
+oc --kubeconfig {ibi-cluster-kubeconfig} get ibu
 -----
 [.console-input]
 [source,bash,subs="attributes+]
@@ -665,7 +665,7 @@ oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .st
           "action": "FinalizeUpgrade"
         }
       ],
-      "name": "sno2"
+      "name": "sno-abi"
     },
     {
       "completedActions": [
@@ -679,7 +679,7 @@ oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .st
           "action": "FinalizeUpgrade"
         }
       ],
-      "name": "sno3"
+      "name": "sno-ibi"
     }
   ],
   "conditions": [
@@ -717,7 +717,7 @@ Notice that once the upgrade is finished the IBU CR from both clusters moved bac
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig /root/sno3-kubeconfig get ibu
+oc --kubeconfig {ibi-cluster-kubeconfig} get ibu
 -----
 [.console]
 [source,bash]
@@ -726,7 +726,7 @@ NAME      AGE     DESIRED STAGE   STATE   DETAILS
 upgrade   9m37s   Idle            Idle    Idle
 -----
 
-IMPORTANT: Notice the time it took to update the SNO clusters. As shown above, the `sno3` took less than 10 minutes to run an z-stream update. If we compare this with the regular update time, which is around 40 minutes, the upgrade time reduction is huge.
+IMPORTANT: Notice the time it took to update the SNO clusters. As shown above, the `sno-ibi` took less than 10 minutes to run an z-stream update. If we compare this with the regular update time, which is around 40 minutes, the upgrade time reduction is huge.
 
 As a final verification, check that both clusters once upgraded are compliant with the {rds-config}[Telco RAN DU reference configuration] configuration:
 
