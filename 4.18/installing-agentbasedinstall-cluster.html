@@ -809,7 +809,23 @@
 <h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>TOBEFILLED</p>
+<p>As was detailed in the <a href="ztp-workflow.html#abi-deployment">Agent Based Installation</a> section, this installation method combines the ease of use of the Assisted Installation service with the ability to run offline and also optionally generate or accept <a href="ztp-intro.html">Zero Touch Provisioning</a> (ZTP) custom resources. In this part of the lab we are going to:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create the prerequisites for the SNO cluster installation.</p>
+</li>
+<li>
+<p>Create the definition of the SNO cluster as a <code>ClusterInstance</code> CR.</p>
+</li>
+<li>
+<p>Include any extra configuration required for our telco 5G RAN specific use case.</p>
+</li>
+<li>
+<p>Commit all those manifests into the <code>ztp-repository</code> Git repo where the <a href="ztp-intro.html">OpenShift GitOps</a> operator will automatically apply those changes.</p>
+</li>
+</ul>
 </div>
 </div>
 </div>
@@ -1202,7 +1218,7 @@ As of version 4.16 the default cgroups configuration is <strong>cgroupsv2</stron
 <h2 id="preparing-installation"><a class="anchor" href="#preparing-installation"></a>Get Ready for the Installation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Finally, we will add the kustomizations for the ClusterInstance. Note that the Refence RAN DU and the extra-manifests configuration are included as a <code>ConfigMap</code> custom resource named <strong>ran-rds-418-manifests</strong>.</p>
+<p>Finally, we will add the kustomizations for the ClusterInstance. Note that the Reference RAN DU and the extra-manifests configuration are included as a <code>ConfigMap</code> custom resource named <strong>ran-rds-418-manifests</strong>.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1259,7 +1275,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>At this point we can commit the changes to the repo. We will push the changes together with cluster and telco related infrastucture operator configurations in the next section.</p>
+<p>At this point we can commit the changes to the repo. We will push the changes together with cluster and telco related infrastructure operator configurations in the next section.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
