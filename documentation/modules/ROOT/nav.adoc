@@ -31,9 +31,9 @@
 ** xref:telco-related-infra-operators-intro.adoc#sriov-operator[SR-IOV Operator]
 ** xref:telco-related-infra-operators-intro.adoc#ptp-operator[PTP Operator]
 ** xref:telco-related-infra-operators-intro.adoc#accelerators-operators[Accelerators Operators]
-** xref:telco-related-infra-operators-intro.adoc#logging-operator[Cluster Logging Operator]
+** xref:telco-related-infra-operators-intro.adoc#cluster-logging-operator[Cluster Logging Operator]
 ** xref:telco-related-infra-operators-intro.adoc#lifecycle-operator[Lifecycle Agent Operator]
-** xref:telco-related-infra-operators-intro.adoc#lvm-operator[Storage Operators]
+** xref:telco-related-infra-operators-intro.adoc#storage-operator[Storage Operators]
 ** xref:telco-related-infra-operators-intro.adoc#oadp-operator[OpenShift API for Data Protection Operator]
 
 * xref:ztp-intro.adoc[Introduction to Zero Touch Provisioning (ZTP)]

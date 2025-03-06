@@ -694,12 +694,13 @@ image::argocd-policies-app.png[ArgoCD Policies App]
 
 The resulting policies can be seen from the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome[RHACM WebUI]:
 
+WARNING: It may take up to 5 minutes for the policies to show up, this is due to Argo CD syncing period.
 
 1. Access the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome[RHACM WebUI] and login with the OpenShift credentials.
 +
 2. Once you're in, click on `Governance` -> `Policies`. You will see the following screen where we can see several policies registered.
 
 
-IMPORTANT: The Telco 5G RAN RDS policies are ready but they are not being applied or compared to any cluster yet. That's because we did not provision any SNO cluster. Let's fix that by moving to the next section and deploy the our first one.
+IMPORTANT: The Telco 5G RAN RDS policies are ready but they are not being applied or compared to any cluster yet. That's because we did not provision any SNO cluster. Let's fix that by moving to the next section and deploying the first one.
 
 image::crafting-rds-acm.png[ArgoCD Policies App]

@@ -41,8 +41,8 @@ In order to create the installation ISO we are going to create a working directo
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-mkdir -p ~/imagebaseinstall/ibi-iso-workdir
-cd ~/imagebaseinstall/
+mkdir -p ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir
+cd ~/5g-deployment-lab/imagebaseinstall/
 -----
 
 Let's create the `ImageBasedInstallationConfig`. Notice that the `seedImage` spec is pointing at the container registry where the seed image that we created was pushed.
@@ -50,7 +50,7 @@ Let's create the `ImageBasedInstallationConfig`. Notice that the `seedImage` spe
 [.console-input]
 [source,bash,subs="attributes+"]
 -----
-cat <<EOF > ~/imagebaseinstall/ibi-iso-workdir/image-based-installation-config.yaml
+cat <<EOF > ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir/image-based-installation-config.yaml
 ---
 apiVersion: v1beta1
 kind: ImageBasedInstallationConfig
@@ -166,7 +166,7 @@ Verify that the *rhcos-ibi.iso* image is created in our working directory:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
- ls -l ~/imagebaseinstall/ibi-iso-workdir
+ ls -l ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir
 -----
 [.console]
 [source,bash]
@@ -180,7 +180,7 @@ At this stage we are ready to manually boot the sno3 with the Installation ISO w
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cp ~/imagebaseinstall/ibi-iso-workdir/rhcos-ibi.iso /opt/webcache/data/
+cp ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir/rhcos-ibi.iso /opt/webcache/data/
 -----
 
 [#preinstallation-process]
@@ -260,6 +260,8 @@ The system will power off now!
 
 [#creating-the-configuration-iso]
 == Creating the Configuration ISO
+
+IMPORTANT: **DO NOT** continue with this section until the host has been powered off.
 
 Now that the host is powered off, it is time to complete the installation by reconfiguring the cluster. The Image Based Install (IBI) Operator running in the hub cluster is responsible for creating the configuration ISO and boot the host with it attached. 
 

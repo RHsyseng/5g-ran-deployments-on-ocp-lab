@@ -50,8 +50,8 @@ Specialized hardware devices can be used to accelerate 4G/LTE and 5G virtualized
 
 In order to manage these devices, there are multiple accelerator operators that we may need to deploy in our OpenShift clusters.
 
-[#logging-operator]
-== Logging Operator
+[#cluster-logging-operator]
+== Cluster Logging Operator
 
 The Logging Operator provides a set of APIs to control collection and forwarding of logs from all pods and nodes in a cluster. This includes application logs (from regular pods), infrastructure logs (from system pods and node logs), and audit logs (special node logs with legal/security implications). In telco RAN DU configurations logging is used to collect logs from the far edge node for remote analysis.
 
@@ -66,7 +66,7 @@ From OpenShift Container Platform 4.14.13, the Lifecycle Agent provides you with
 
 You can read more about the image-based upgrade technology {ibu-docs}[here].
 
-[#lvm-operator]
+[#storage-operator]
 == Storage Operators
 
 LVM Storage can be used as the local storage implementation for the RAN DU use case. When LVM Storage is used as the storage solution, it replaces the Local Storage Operator, and the CPU required is assigned to the management partition as platform overhead. 
