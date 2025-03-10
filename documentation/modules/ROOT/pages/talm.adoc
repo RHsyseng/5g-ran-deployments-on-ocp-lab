@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-Leveraging TALM we can manage the lifecycle of thousands of clusters at scale in a constrained operational environment. This is required when working in telecom (eg RAN) or other environments where service level agreements require managed updates to a fleet of clusters.
+Leveraging TALM, we can manage the lifecycle of thousands of clusters at scale in a constrained operational environment. This capability is essential when working in telecom (e.g., RAN) or other environments where service level agreements require managed updates to a fleet of clusters.
 
 Remember that link:ztp-workflow.html[ZTP] generates installation and configuration resources from manifests (`ClusterInstances` and `PolicyGenTemplates`) stored in Git. These artifacts are applied to a centralized hub cluster where a combination of OpenShift GitOps, Red Hat Advanced Cluster Management, the Assisted Service deployed by the Infrastructure Operator, and the Topology Aware Lifecycle Manager (TALM) use them to install and configure the cluster. See link:ztp-at-scale.html[ZTP components] chapter.
 

@@ -5,27 +5,27 @@ include::_attributes.adoc[]
 [#introduction]
 == Introduction
 
-In the previous section, link:creating-seed-image.html[Creating the Seed Image], we created a seed image of a Single Node OpenShift cluster version {sno-cluster-version1}. That seed image will be used to deploy a new SNO in less than 20 minutes, that's why, specially in telco RAN environments where we are managing thousands of clusters , this deployment method is the preferred one.
+In the previous section, link:creating-seed-image.html[Creating the Seed Image], we created a seed image of a Single Node OpenShift cluster, version {sno-cluster-version1}. This seed image will be used to deploy a new SNO in under 20 minutes. This is why, especially in Telco RAN environments where we manage thousands of clusters, this deployment method is preferred.
 
-The following picture describe the process we are going to follow to deploy and configure the *sno-ibi* OpenShift Clusters with the RAN DU profile configured:
+The following diagram illustrates the process we'll follow to deploy and configure the *sno-ibi* OpenShift clusters with the RAN DU profile:
 
 image::ibi-installation.png[ZTP Workflow 2]
 
-* A seed image is already created and stored in our link:lab-environment-introduction.html#container-registry[container registry].
-* The proper RHCOS images are available in a link:lab-environment-introduction.html#webserver[HTTP server] deployed in the infrastructure server.
+* A seed image has already been created and stored in our link:lab-environment-introduction.html#container-registry[container registry].
+* The appropriate RHCOS images are available on a link:lab-environment-introduction.html#webserver[HTTP server] deployed in the infrastructure server.
 * The ImageBasedInstallationConfig CR is provided and will be used by the `openshift-install` binary to create the installation ISO.
-* The installation ISO is mounted remotely to the sno-ibi and the preinstallation process starts.
+* The installation ISO is remotely mounted to the sno-ibi, and the preinstallation process begins.
 
-Once the preinstallation is finished, the sno-ibi will be shutdown. At this point, in a telco RAN scenario, the thousands of SNO clusters that were preinstalled in the customer premises will be transported to the remote locations. In this lab, once the sno-ibi arrives to the remote location, the SNO is ready to be reconfigured and complete the installation.
+Once preinstallation is complete, the sno-ibi will shut down. At this point, in a Telco RAN scenario, the thousands of SNO clusters that were preinstalled at the customer premises would be transported to remote locations. In this lab, once the sno-ibi arrives at the remote location, the SNO is ready to be reconfigured and complete the installation.
 
-* The Image Based Install (IBI) Operator running in the hub cluster takes the site-specific configuration resources (`ImageClusterInstall`, `ClusterDeployment`, `BaremetalHost`, etc) and creates the Configuration ISO.
-* The configuration ISO is mounted in the sno-ibi and the host is booted.
-* The Lifecycle-Agent Operator that was included in the seed image and so it is available in the sno-ibi, detects the configuration ISO and starts the reconfiguration process until the OpenShift Cluster is completely deployed.
+* The Image Based Install (IBI) Operator, running in the hub cluster, takes the site-specific configuration resources (`ImageClusterInstall`, `ClusterDeployment`, `BaremetalHost`, etc.) and creates the Configuration ISO.
+* The configuration ISO is mounted in the sno-ibi, and the host is booted.
+* The Lifecycle-Agent Operator, included in the seed image and thus available in the sno-ibi, detects the configuration ISO and starts the reconfiguration process until the OpenShift cluster is fully deployed.
 
 [#baremetal-node-details]
 == Bare Metal Node Details
 
-The details for our baremetal node that we want to provision as sno-ibi are the ones below:
+The details for the bare-metal node we want to provision as sno-ibi are as follows:
 
 * RedFish Endpoint: `redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno-ibi`
 * MAC Address: `aa:aa:aa:aa:04:01`
@@ -36,7 +36,7 @@ The details for our baremetal node that we want to provision as sno-ibi are the 
 [#creating-the-installation-iso]
 == Creating the Installation ISO
 
-In order to create the installation ISO we are going to create a working directory in the infrastructure node.
+To create the installation ISO, we'll first create a working directory on the infrastructure node.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -45,7 +45,7 @@ mkdir -p ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir
 cd ~/5g-deployment-lab/imagebaseinstall/
 -----
 
-Let's create the `ImageBasedInstallationConfig`. Notice that the `seedImage` spec is pointing at the container registry where the seed image that we created was pushed.
+Next, create the `ImageBasedInstallationConfig`. Note that the `seedImage` spec points to the container registry where the seed image we created was pushed.
 
 [.console-input]
 [source,bash,subs="attributes+"]
@@ -161,13 +161,14 @@ Create the Installation ISO by running the following command:
 ~/openshift-install image-based create image --dir ibi-iso-workdir
 -----
 
-Verify that the *rhcos-ibi.iso* image is created in our working directory:
+Verify that the *rhcos-ibi.iso* image has been created in our working directory:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
  ls -l ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir
 -----
+
 [.console]
 [source,bash]
 -----
@@ -175,7 +176,7 @@ total 1250304
 -rw-r--r--. 1 root root 1280311296 Feb 25 12:05 rhcos-ibi.iso
 -----
 
-At this stage we are ready to manually boot the sno-ibi with the Installation ISO we created. But, first we have to move the ISO to a place where the host about to install can grab it. Let's copy it to the link:lab-environment-introduction.html#webserver[HTTP server] we have available in our infrastructure:
+At this stage, we're ready to manually boot the sno-ibi with the Installation ISO we created. First, move the ISO to a location accessible to the host for installation. Let's copy it to the link:lab-environment-introduction.html#webserver[HTTP server] available in our infrastructure:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -188,7 +189,7 @@ cp ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir/rhcos-ibi.iso /opt/webca
 
 Now we are ready to boot sno-ibi with the Installation ISO. Run the following command from the infrastructure host:
 
-IMPORTANT: We are using kcli tool to boot the server from the ISO by leveraging the RedFish API. You can boot the server following other methods at your disposal.
+IMPORTANT: We're using the `kcli` tool to boot the server from the ISO by leveraging the RedFish API. You can boot the server using other methods as needed.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -196,9 +197,9 @@ IMPORTANT: We are using kcli tool to boot the server from the ISO by leveraging 
 kcli start baremetal -u admin -p admin -P iso_url=http://192.168.125.1:8080/rhcos-ibi.iso https://192.168.125.1:9000/redfish/v1/Systems/local/sno-ibi
 -----
 
-Then, the sno-ibi will boot and the preinstallation process will start. We can take a look at the process by connecting to the sno-ibi via ssh. Something similar to the following output will be shown in the terminal. 
+The sno-ibi will then boot and the preinstallation process will start. You can monitor the process by connecting to the sno-ibi via SSH. The output will be similar to the following:
 
-WARNING: The pre-installation process is finished once the sno-ibi is automatically powered off.
+WARNING: The pre-installation process is complete once the sno-ibi is automatically powered off.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -212,7 +213,7 @@ ssh -i ~/.ssh/snokey core@192.168.125.50
 journalctl -f
 -----
 
-[console]
+[.console]
 [source,bash,subs="attributes+,+macros"]
 -----
 ...
@@ -263,9 +264,9 @@ The system will power off now!
 
 IMPORTANT: **DO NOT** continue with this section until the host has been powered off.
 
-Now that the host is powered off, it is time to complete the installation by reconfiguring the cluster. The Image Based Install (IBI) Operator running in the hub cluster is responsible for creating the configuration ISO and boot the host with it attached. 
+With the host now powered off, we can complete the installation by reconfiguring the cluster. The Image Based Install (IBI) Operator, running in the hub cluster, is responsible for creating the configuration ISO and booting the host with it attached.
 
-Let's verify IBIO is installed and running in the multicluster-engine namespace of the hub cluster:
+Let's verify that the IBI Operator is installed and running in the `multicluster-engine` namespace of the hub cluster:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -279,7 +280,7 @@ NAME                                            READY   STATUS    RESTARTS   AGE
 image-based-install-operator-7f7659f86c-cd46k   2/2     Running   0          5h
 -----
 
-Once we verified the operator is running in our hub cluster we can start creating the site-specific configuration resources. First, create the target cluster namespace:
+Once we've confirmed that the operator is running in our hub cluster, we can start creating the site-specific configuration resources. First, create the target cluster namespace:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -293,7 +294,7 @@ metadata:
 EOF
 -----
 
-Next, the authentication credentials will be needed to pull the seed container image from the registry:
+Next, we need the authentication credentials to pull the seed container image from the registry:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -311,7 +312,7 @@ stringData:
 EOF
 -----
 
-The credentials to access the BMC are required in order to mount the configuration ISO and also booting the node automatically:
+We also need the credentials to access the BMC in order to mount the configuration ISO and boot the node automatically:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -330,13 +331,13 @@ type: Opaque
 EOF
 -----
 
-Next, we have to create a `ConfigMap` resource to define additional manifests in our image-based deployment. Based on our seed image we have to define:
+Next, we must create a `ConfigMap` resource to define additional manifests for our image-based deployment. Based on our seed image, we have to define:
 
-* The disconnected catalog source that we will allow us to install additional operators in the target SNO cluster.
-* The LVMCluster configuration for the LVM Operator. Note that the LVM Operator was included in the seed image.
-* The ImageDigestMirrorSet required in our disconnected environment.
+*   The disconnected catalog source that will allow us to install additional operators in the target SNO cluster.
+*   The LVMCluster configuration for the LVM Operator. Note that the LVM Operator was included in the seed image.
+*   The ImageDigestMirrorSet, which is required in our disconnected environment.
 
-IMPORTANT: Remember that during the seed image generation, the catalogsources are removed from the seed image. Also, the LVMCluster CR is not allowed to exist in the seed cluster, it has to be added within the reconfiguration process. More information on the prerequisites for generating a seed image {seed-prereq-config}[here].
+IMPORTANT: Remember that, during seed image generation, the catalog sources are removed from the seed image. Also, the LVMCluster CR is not allowed to exist in the seed cluster; it has to be added during the reconfiguration process. More information on the prerequisites for generating a seed image can be found {seed-prereq-config}[here].
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -435,7 +436,7 @@ data:
 EOF
 -----
 
-Finally, add the Kustomization files so the previous manifests can be applied using a ZTP GitOps worflow.
+Finally, add the Kustomization files so that the previous manifests can be applied using a ZTP GitOps workflow.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -465,9 +466,9 @@ resources:
 EOF
 -----
 
-Eventually, let's create the ClusterInstance CR, which is an abstraction layer on top of the different components managed by the SiteConfig Operator used to deploy an OpenShift cluster. Notice that in this installation we are using the Image Based Installation flow. We can see that by checking the templateRefs specifications: `ibi-node-templates-v1` and `ibi-cluster-templates-v1` which are the default ones for IBI.
+Eventually, let's create the ClusterInstance CR, which is an abstraction layer on top of the different components managed by the SiteConfig Operator used to deploy an OpenShift cluster. Note that in this installation we are using the Image Based Installation flow. We can see that by checking the `templateRefs` specifications: `ibi-node-templates-v1` and `ibi-cluster-templates-v1`, which are the default templates for IBI.
 
-IMPORTANT: The SiteConfig Operator transforms the ClusterInstance CR into multiple Installation Manifests as detailed in link:ztp-workflow.html#ibi-deployment[Image Based Installation] section. With some of those manifests that define site-specific resources, the IBI operator creates a configuration ISO to start the reconfiguration process.
+IMPORTANT: The SiteConfig Operator transforms the ClusterInstance CR into multiple Installation Manifests, as detailed in the link:ztp-workflow.html#ibi-deployment[Image Based Installation] section. With some of those manifests that define site-specific resources, the IBI operator creates a configuration ISO to start the reconfiguration process.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -541,7 +542,7 @@ spec:
 EOF
 -----
 
-Add the Kustomization file to pull the ClusterInstance recently created:
+Add the Kustomization file to pull the `ClusterInstance` that was recently created:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -578,14 +579,14 @@ configMapGenerator:
     - hub-1/extra-manifest/enable-crun-master.yaml
     - hub-1/extra-manifest/enable-crun-worker.yaml
     name: ran-rds-418-manifests
-    namespace: sno-abi
+    namespace: sno-ibi
 
 generatorOptions:
   disableNameSuffixHash: true
 EOF
 -----
 
-Lastly, commit all these changes to our link:lab-environment-introduction.html#git-server[Git Server] repository.
+Finally, commit all these changes to our link:lab-environment-introduction.html#git-server[Git Server] repository.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -600,32 +601,36 @@ cd ~
 [#deploying-sno-using-gitops-pipeline]
 == Deploying the SNO Cluster using the ZTP GitOps Pipeline
 
-When we applied the ZTP GitOps Pipeline configuration in the last section, that made the `clusters` ArgoCD application to automatically synchronize the commited changes. Basically, this means, ArgoCD starting doing its magic so the cluster deployment should already be running, let's see what happened in Argo CD.
+When we applied the ZTP GitOps Pipeline configuration in the last section, the `clusters` ArgoCD application was configured to automatically synchronize the committed changes. This means that ArgoCD should have started deploying the cluster. Let's check Argo CD to see what has happened.
 
-1. Login into https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab/[Argo CD].
-2. When accessing choose `Logging with OpenShift`, on the next screen use the OpenShift Console Admin credentials.
-3. You will see the follow applications:
+1.  Log in to https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab/[Argo CD].
+2.  When accessing, choose `Log in with OpenShift`. On the next screen, use the OpenShift Console Admin credentials.
+3.  You should see the following applications:
+
 +
 image::argocd-apps.png[ArgoCD Apps]
 +
-4. From all these apps, the ones related to the ZTP GitOps Pipeline are `clusters` and `policies`. If we click on `clusters` we will see the following screen:
+
+4.  From all these apps, the ones related to the ZTP GitOps Pipeline are `clusters` and `policies`. If we click on `clusters`, we will see the following screen:
+
 +
 image::ibi-cluster-app-sno-ibi.png[ArgoCD Clusters App]
 +
-5. You can see how the pipeline created all the required objects to get `sno-ibi` deployed. Notice as well that the `sno-abi` objects are there from link:installing-agentbasedinstall-cluster.html#deploying-sno-using-gitops-pipeline[previous configuration].
 
+5.  You can see how the pipeline created all the required objects to get `sno-ibi` deployed. Notice also that the `sno-abi` objects are present from the link:installing-agentbasedinstall-cluster.html#deploying-sno-using-gitops-pipeline[previous configuration].
 
 [#completing-install]
 == Completing the Installation
 
-Once the changes were commited and pushed to the Git repository, the link:ocp-gitops.html[OpenShift GitOps] operator is responsible for reconciling them. Next, we can monitor the status of the reconfiguration process. We can use the following command to see the progress from the hub cluster. Notice that a `dataimage` object has been created. This object contains information about the configuration ISO created in the previous section link:installing-imagebaseinstall-cluster.html#creating-the-configuration-iso[Creating the Configuration ISO].
+With the changes committed and pushed to the Git repository, the link:ocp-gitops.html[OpenShift GitOps] operator takes over to reconcile them. Now, let's monitor the status of the reconfiguration process. Use the following command to track progress from the hub cluster. Notice the `dataimage` object, which contains information about the configuration ISO created in the previous section, link:installing-imagebaseinstall-cluster.html#creating-the-configuration-iso[Creating the Configuration ISO].
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 oc --kubeconfig ~/hub-kubeconfig -n sno-ibi get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage
 -----
-[console-input]
+
+[.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 NAMESPACE   NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
@@ -637,31 +642,33 @@ clusterinstance.siteconfig.open-cluster-management.io/ocp-sno-ibi            Com
 NAMESPACE   NAME                                       INFRAID                                PLATFORM          REGION   VERSION       CLUSTERTYPE   PROVISIONSTATUS   POWERSTATE   AGE
 sno-ibi        clusterdeployment.hive.openshift.io/sno-ibi   sno-ibi-zrts7                             none-platform                                          Provisioning                   35s
 
-NAMESPACE   NAME                                                    REQUIREMENTSMET           COMPLETED                       BAREMETALHOSTREF
+NAMESPACE   NAME                                                    REQUIREMENTSMET           COMPLETED                      BAREMETALHOSTREF
 sno-ibi        imageclusterinstall.extensions.hive.openshift.io/sno-ibi   HostValidationSucceeded   ClusterInstallationInProgress   ocp-sno-ibi
 
 NAMESPACE   NAME                           AGE
 sno-ibi        dataimage.metal3.io/ocp-sno-ibi   34s
 -----
 
-From the Red Hat ACM console in the hub cluster we can also see the progress.
+You can also observe the progress from the Red Hat ACM console in the hub cluster.
 
 image::ibi-acm-reconfig01.png[IBI Installation in ACM]
 
-Let's see how the OpenShift installation is progressing in the target cluster. First, we need the sno-ibi credentials. From the hub cluster we can obtain them using this command:
+To check the OpenShift installation progress in the target cluster, we need the `sno-ibi` credentials. Obtain them from the hub cluster using this command:
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 oc --kubeconfig ~/hub-kubeconfig -n sno-ibi extract secret/sno-ibi-admin-kubeconfig --to=- > {ibi-cluster-kubeconfig}
 -----
 
-Now, that we have the sno-ibi admin credentials, let's see the current status of the cluster and how the different cluster operators are moving forward:
+Now that we have the `sno-ibi` admin credentials, let's examine the current status of the cluster and how the various cluster operators are advancing:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 watch oc --kubeconfig {ibi-cluster-kubeconfig} get clusterversion,nodes,mcp,co
 -----
+
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -699,16 +706,17 @@ clusteroperator.config.openshift.io/operator-lifecycle-manager-packageserver   {
 clusteroperator.config.openshift.io/service-ca                                 {sno-cluster-version1-cvo}   True        False         False	  5h14m
 -----
 
-The installation process takes less than *10 minutes*. You can double check that the reconfiguration succeeded by running the following command from the hub cluster.
+The installation process typically takes less than *10 minutes*. You can confirm that the reconfiguration was successful by running the following command from the hub cluster.
 
-WARNING: Confirm that the `clusterInstance` is shown as "Provisioning completed", the `imageclusterinstall` status is ClusterInstallationSucceeded and the `clusterdeployment` is Provisioned.
+WARNING: Verify that the `clusterInstance` is shown as "Provisioning completed", the `imageclusterinstall` status is ClusterInstallationSucceeded, and the `clusterdeployment` is Provisioned.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 oc --kubeconfig ~/hub-kubeconfig -n sno-ibi get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage
 -----
-[console-input]
+
+[.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
@@ -717,7 +725,7 @@ baremetalhost.metal3.io/ocp-sno-ibi   externally provisioned              true  
 NAME                                                             PAUSED   PROVISIONSTATUS   PROVISIONDETAILS         AGE
 clusterinstance.siteconfig.open-cluster-management.io/ocp-sno-ibi            Completed         Provisioning completed   32m
 
-NAME                                       INFRAID	PLATFORM        REGION   VERSION       CLUSTERTYPE   PROVISIONSTATUS   POWERSTATE   AGE
+NAME                                       INFRAID      PLATFORM        REGION   VERSION       CLUSTERTYPE   PROVISIONSTATUS   POWERSTATE   AGE
 clusterdeployment.hive.openshift.io/sno-ibi   sno-ibi-vcd52   none-platform            {sno-cluster-version1-cvo}                 Provisioned       Running      32m
 
 NAME                                                    REQUIREMENTSMET           COMPLETED                      BAREMETALHOSTREF
@@ -727,27 +735,27 @@ NAME                           AGE
 dataimage.metal3.io/ocp-sno-ibi   32m
 -----
 
-Notice that the Red Hat ACM console will show the sno-ibi OpenShift cluster as Ready:
+The Red Hat ACM console will also reflect that the `sno-ibi` OpenShift cluster is Ready:
 
-image::ibi-acm-reconfig02.png[IBI Installation completed]
+image::ibi-acm-reconfig02.png[IBI Installation Completed]
 
+The add-ons applied via the `KlusterletAddonConfig` CR are installed and available as well:
 
-The Add-ons applied via KlusterletAddonConfig CR are also installed and available:
-
-image::ibi-acm-reconfig03.png[IBI Add-ons installed]
+image::ibi-acm-reconfig03.png[IBI Add-ons Installed]
 
 [#verifying-install]
 == Verifying the RAN DU Configuration
 
-As it was explained in link:ztp-workflow.html[ZTP Workflow] section, the workflow ends with the CNF workload deployed and running on the site nodes. In our case, the workload is not yet deployed but the ground is set for them to be executed. That means the {rds-config}[Telco RAN DU reference configuration] is applied.
+As explained in the link:ztp-workflow.html[ZTP Workflow] section, the process culminates with the CNF workload deployed and running on the site nodes. While the workload isn't yet deployed, the foundation is set with the {rds-config}[Telco RAN DU reference configuration] applied.
 
-First, confirm that OpenShift,e.g. the platform, is installed with the version {sno-cluster-version1-cvo}:
+First, confirm that OpenShift, specifically the platform, is installed with version {sno-cluster-version1-cvo}:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 oc --kubeconfig {ibi-cluster-kubeconfig} get clusterversion,nodes
 -----
+
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -758,13 +766,14 @@ NAME                                   STATUS   ROLES                         AG
 node/ocp-sno-ibi.sno-ibi.5g-deployment.lab   Ready    control-plane,master,worker   32m   v1.31.4
 -----
 
-Check the operators installed. Note that all these operators were included in the seed image:
+Check the installed operators. These operators were included in the seed image:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 oc --kubeconfig {ibi-cluster-kubeconfig} get operators
 -----
+
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -775,13 +784,14 @@ redhat-oadp-operator.openshift-adp                        6h5m
 sriov-network-operator.openshift-sriov-network-operator   6h5m
 -----
 
-Check that the LVMS Operator is ready to provide the cluster with persistent storage. Remember that we added an link:installing-imagebaseinstall-cluster.html#creating-the-configuration-iso[extra-manifest] in the form of a configMap to our image-based installation to configure it.
+Verify that the LVMS Operator is ready to provision persistent storage for the cluster. Recall that we added an link:installing-imagebaseinstall-cluster.html#creating-the-configuration-iso[extra-manifest] in the form of a `ConfigMap` to our image-based installation to configure it.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 oc --kubeconfig {ibi-cluster-kubeconfig} get sc,lvmcluster -A
 -----
+
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -792,15 +802,16 @@ NAMESPACE           NAME                                   STATUS
 openshift-storage   lvmcluster.lvm.topolvm.io/lvmcluster   Ready
 -----
 
-Check that the SR-IOV interfaces are ready to be used by our CNFs and the performance profile applied:
+Confirm that the SR-IOV interfaces are ready for use by our CNFs and that the performance profile has been applied:
 
-WARNING: The SR-IOV configuration was included in the seed cluster because the hardware of both the seed and target cluster was exactly the same. In case the SR-IOV configuration differs, it can be included as another extra-manifest the same way the LMV operator was reconfigured. More information can be found {seed-extramanifests}[here].
+WARNING: The SR-IOV configuration was included in the seed cluster because the hardware of both the seed and target clusters was identical. If the SR-IOV configuration differs, it can be included as another extra-manifest, similar to how the LVM operator was reconfigured. Further information can be found {seed-extramanifests}[here].
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 oc --kubeconfig {ibi-cluster-kubeconfig} describe node | grep Allocatable: -A10
 -----
+
 [.console]
 [source,bash,subs="attributes+"]
 -----
@@ -821,6 +832,7 @@ Allocatable:
 -----
 oc --kubeconfig {ibi-cluster-kubeconfig} get performanceprofile
 -----
+
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -828,4 +840,4 @@ NAME                                 AGE
 openshift-node-performance-profile   6h24m
 -----
 
-At this stage the sno-ibi is deployed and configured with the RAN DU profile, ready to run telco CNF applications.
+At this point, the `sno-ibi` is deployed and configured with the RAN DU profile, making it ready to run telco CNF applications.
