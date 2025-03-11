@@ -808,7 +808,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>The Lifecycle Agent Operator (LCA) provides local (on cluster) lifecycle management services for Single Node OpenShift (SNO). These management services include the following operations:</p>
+<p>The Lifecycle Agent Operator (LCA) provides local lifecycle management services for Single Node OpenShift (SNO). These management services include:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -829,7 +829,7 @@
 <h2 id="seed-image-generation"><a class="anchor" href="#seed-image-generation"></a>Seed Image Generation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The seed image generation requires of an existing SNO cluster, this cluster is called <em>seed cluster</em>. The SNO cluster needs to follow specific guidelines to be used as seed cluster, you can check the full list <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html#ibi-image-based-install-cluster-guide_ibi-understanding-image-based-install">here</a>.</p>
+<p>The seed image generation requires an existing SNO cluster, referred to as the <em>seed cluster</em>. The SNO cluster must adhere to specific guidelines to be used as a seed cluster; the complete list can be found <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html#ibi-image-based-install-cluster-guide_ibi-understanding-image-based-install">here</a>.</p>
 </div>
 <div class="paragraph">
 <p>Some of the guidelines include:</p>
@@ -837,7 +837,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Share hardware configuration as the rest of the nodes that will be installed with the generated Seed Image.</p>
+<p>Sharing hardware configuration with the other nodes that will be installed using the generated Seed Image.</p>
 </li>
 <li>
 <p>Shared <code>/var/lib/containers</code> partition.</p>
@@ -845,7 +845,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>When the LifeCycle Agent Operator runs the seed image generation, the orchestrator will run its system config validation checks to ensure the required seed SNO configuration is present. In case there is some blocking configuration, the relevant information will be stored in the <code>SeedGenerator</code> custom resource.</p>
+<p>When the LifeCycle Agent Operator runs the seed image generation, the orchestrator performs system configuration validation checks to ensure the required seed SNO configuration is present. If there is any blocking configuration, the relevant information is stored in the <code>SeedGenerator</code> custom resource.</p>
 </div>
 </div>
 </div>
@@ -853,7 +853,7 @@
 <h2 id="image-based-installation"><a class="anchor" href="#image-based-installation"></a>Image Based Installation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The role of LCA during IBI deployments is just the generation of the seed image that will be used during the final install. As we will see in future sections, IBI deployments require booting the hardware with a <em>pre-installation iso</em> that leverages the seed image.</p>
+<p>The role of LCA during IBI deployments is limited to generating the seed image used during the final installation. As discussed in future sections, IBI deployments require booting the hardware with a <em>pre-installation iso</em> that leverages the seed image.</p>
 </div>
 </div>
 </div>
@@ -861,10 +861,10 @@
 <h2 id="image-based-upgrades"><a class="anchor" href="#image-based-upgrades"></a>Image Based Upgrades</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The role of LCA during IBU operations includes the generation of the seed image that will be used during the upgraded, as well as the orchestration of the upgrade process itself, including backup and restore of cluster configurations and running workloads.</p>
+<p>The role of LCA during IBU operations includes generating the seed image used during the upgrade, as well as orchestrating the upgrade process itself. This orchestration includes backup and restore operations for cluster configurations and running workloads.</p>
 </div>
 <div class="paragraph">
-<p>During the upgrade, the LCA will orchestrate the process during the following stages:</p>
+<p>During the upgrade, the LCA orchestrates the process through the following stages:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -883,7 +883,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>Below diagram shows the different stages:</p>
+<p>The diagram below illustrates these stages:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -891,10 +891,10 @@
 </div>
 </div>
 <div class="paragraph">
-<p>For more detailed information on the stages, check the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.html#cnf-image-based-upgrade_understanding-image-based-upgrade">stages of the image-based upgrade</a> on the official docs.</p>
+<p>For more detailed information on the stages, refer to the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.html#cnf-image-based-upgrade_understanding-image-based-upgrade">stages of the image-based upgrade</a> in the official documentation.</p>
 </div>
 <div class="paragraph">
-<p>During the upgrade, LCA can also backup and restore cluster configurations and workloads. Check the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.html#ztp-image-based-upgrade-backup-guide_understanding-image-based-upgrade">backup and restore guidelines</a> on the official docs.</p>
+<p>During the upgrade, LCA can also back up and restore cluster configurations and workloads. Consult the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.html#ztp-image-based-upgrade-backup-guide_understanding-image-based-upgrade">backup and restore guidelines</a> in the official documentation.</p>
 </div>
 </div>
 </div>
@@ -902,7 +902,7 @@
 <h2 id="image-based-upgrades-at-scale"><a class="anchor" href="#image-based-upgrades-at-scale"></a>Image Based Upgrades at Scale</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>LCA operator cannot manage image-based upgrades at scale, in order to run IBU at scale, we leverage another operator, TALM. We will talk about <code>ImageBasedGroupUpgrade</code> API and how TALM orchestrates such upgrades in the <a href="using-talm-to-update-clusters.html">Image-based upgrade for single-node OpenShift clusters</a> section of the lab. In any case, the recommended upgrade method for Telco 5G RAN SNOs is image-based upgrade flow, concretely leveraging the Image Based Group Upgrade (IBGU) CR provided by TALM.</p>
+<p>The LCA operator cannot manage image-based upgrades at scale. To perform IBU at scale, we utilize another operator, TALM. We will discuss the <code>ImageBasedGroupUpgrade</code> API and how TALM orchestrates such upgrades in the <a href="using-talm-to-update-clusters.html">Image-based upgrade for single-node OpenShift clusters</a> section of the lab. The recommended upgrade method for Telco 5G RAN SNOs is the image-based upgrade flow, specifically leveraging the Image Based Group Upgrade (IBGU) CR provided by TALM.</p>
 </div>
 </div>
 </div>

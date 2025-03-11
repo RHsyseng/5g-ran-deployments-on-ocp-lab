@@ -808,7 +808,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>As mentioned, Zero Touch Provisioning (ZTP) leverages multiple products or <a href="ztp-at-scale.html">components</a> to deploy OpenShift Container Platform clusters using a GitOps approach. While the workflow starts when the site is connected to the network and ends with the CNF workload deployed and running on the site nodes, it can be logically divided into two different stages: provisioning of the SNO and applying the desired configuration, which in our case is applying the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a>.</p>
+<p>As mentioned, Zero Touch Provisioning (ZTP) leverages multiple products or <a href="ztp-at-scale.html">components</a> to deploy OpenShift Container Platform clusters using a GitOps approach. While the workflow starts when the site is connected to the network and ends with the CNF workload deployed and running on the site nodes, it can be logically divided into two stages: provisioning of the SNO and applying the desired configuration, which in our case is applying the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a>.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -817,7 +817,7 @@
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-The workflow does not need any intervention, so ZTP automatically will configure the SNO once it is provisioned.
+The workflow requires no manual intervention; ZTP automatically configures the SNO once it is provisioned.
 </td>
 </tr>
 </table>
@@ -828,15 +828,15 @@ The workflow does not need any intervention, so ZTP automatically will configure
 <h2 id="deployment-methods"><a class="anchor" href="#deployment-methods"></a>Single-Node OpenShift Deployments</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Starting on OpenShift Container Platform 4.18 there are <strong>two ZTP deployment flows</strong> to provision single-node OpenShift clusters at scale.</p>
+<p>Starting with OpenShift Container Platform 4.18, there are <strong>two ZTP deployment flows</strong> to provision single-node OpenShift clusters at scale.</p>
 </div>
 <div class="sect2">
 <h3 id="abi-deployment"><a class="anchor" href="#abi-deployment"></a>Agent Based Installation</h3>
 <div class="paragraph">
-<p>The Agent Based Installation flow has been the only one available until the 4.18 OpenShift release. The <a href="ztp-at-scale.html#ai">Assisted Service</a> is at the heart of this deployment method.</p>
+<p>The Agent Based Installation flow was the only option available until the 4.18 OpenShift release. The <a href="ztp-at-scale.html#ai">Assisted Service</a> is central to this deployment method.</p>
 </div>
 <div class="paragraph">
-<p>It is officially started by creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is described in a custom resource called <code>ClusterInstance</code>. Note that, in a disconnected environment, there is a need for a container registry to deliver the OpenShift container images required for the installation. This task can be achieved by using <a href="https://docs.openshift.com/container-platform/4.17/disconnected/mirroring/installing-mirroring-disconnected.html">oc-mirror</a>. More information about disconnected environments can be found in <a href="deployment-considerations.html#disconnected-environments">Deployment Considerations section</a>.</p>
+<p>It starts with creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is defined in a custom resource called <code>ClusterInstance</code>. In a disconnected environment, a container registry is needed to deliver the OpenShift container images required for the installation. This can be achieved using <a href="https://docs.openshift.com/container-platform/4.17/disconnected/mirroring/installing-mirroring-disconnected.html">oc-mirror</a>. More information about disconnected environments can be found in <a href="deployment-considerations.html#disconnected-environments">Deployment Considerations section</a>.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -845,13 +845,13 @@ The workflow does not need any intervention, so ZTP automatically will configure
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Depending on your specific environment, you might need a couple of extra services such as DHCP, DNS, NTP or HTTP. The latest will be needed for downloading the RHCOS live ISO and the RootFS image locally instead of the default <a href="http://mirror.openshift.com" class="bare">http://mirror.openshift.com</a> site.
+Depending on your specific environment, you might need extra services such as DHCP, DNS, NTP, or HTTP. The latter is needed for downloading the RHCOS live ISO and the RootFS image locally instead of using the default <a href="http://mirror.openshift.com" class="bare">http://mirror.openshift.com</a> site.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Once the configuration is created you can push it to the Git repo where Argo CD is continuously looking to pull the new content:</p>
+<p>Once the configuration is created, you can push it to the Git repository where Argo CD continuously monitors for new content:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -859,7 +859,7 @@ Depending on your specific environment, you might need a couple of extra service
 </div>
 </div>
 <div class="paragraph">
-<p>Argo CD pulls the ClusterInstance CR that the <a href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a> validates and transforms it into several custom resources that are understood by the <a href="ztp-at-scale.html#ai">Assisted Service</a> running on the hub cluster. A ClusterInstance contains all the necessary information to provision your node or nodes. Basically, it will create ISO images with the defined configuration that are delivered to the edge nodes to begin the installation process. The images are used to repeatedly provision large numbers of nodes efficiently and quickly, allowing you keep up with requirements from the field for far edge nodes.</p>
+<p>Argo CD pulls the ClusterInstance CR, which the <a href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a> validates and transforms into several custom resources that are understood by the <a href="ztp-at-scale.html#ai">Assisted Service</a> running on the hub cluster. A ClusterInstance contains all the necessary information to provision your node or nodes. It creates ISO images with the defined configuration that are delivered to the edge nodes to begin the installation process. These images are used to repeatedly provision large numbers of nodes efficiently and quickly, allowing you to keep up with requirements from the field for far-edge nodes.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -868,7 +868,7 @@ Depending on your specific environment, you might need a couple of extra service
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-On telco use cases, clusters are mainly running on baremetal hosts. Therefore, the produced ISO images are mounted using remote virtual media features of the baseboard management controller (BMC).
+In telco use cases, clusters primarily run on bare-metal hosts. Therefore, the produced ISO images are mounted using remote virtual media features of the baseboard management controller (BMC).
 </td>
 </tr>
 </table>
@@ -879,41 +879,41 @@ On telco use cases, clusters are mainly running on baremetal hosts. Therefore, t
 </div>
 </div>
 <div class="paragraph">
-<p>These resulting resources depicted in the previous picture are called Installation Manifests. For this workflow they are:</p>
+<p>The resulting resources depicted in the previous image are called Installation Manifests. For this workflow, they are:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>AgentClusterInstall.</p>
+<p>AgentClusterInstall</p>
 </li>
 <li>
-<p>ClusterDeployment.</p>
+<p>ClusterDeployment</p>
 </li>
 <li>
-<p>NMStateConfig.</p>
+<p>NMStateConfig</p>
 </li>
 <li>
-<p>KlusterletAddonConfig.</p>
+<p>KlusterletAddonConfig</p>
 </li>
 <li>
-<p>ManagedCluster.</p>
+<p>ManagedCluster</p>
 </li>
 <li>
-<p>InfraEnv.</p>
+<p>InfraEnv</p>
 </li>
 <li>
-<p>BareMetalHost.</p>
+<p>BareMetalHost</p>
 </li>
 <li>
-<p>HostFirmwareSettings.</p>
+<p>HostFirmwareSettings</p>
 </li>
 <li>
-<p>ConfigMap for extra-manifest configurations.</p>
+<p>ConfigMap for extra-manifest configurations</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Then, they are processed by the Assisted Service and the provisioning process starts.</p>
+<p>Then, they are processed by the Assisted Service, and the provisioning process starts.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -921,7 +921,7 @@ On telco use cases, clusters are mainly running on baremetal hosts. Therefore, t
 </div>
 </div>
 <div class="paragraph">
-<p>The provisioning process includes installing the host operating system (RHCOS) on a blank server and deploying OpenShift Container Platform. This stage is managed mainly by the Assisted Service which is part of the Infrastructure Operator. In the previous <a href="ztp-at-scale.html#ai">Infrastructure operator</a> section there is detailed information of the workflow controlled by this piece of software.</p>
+<p>The provisioning process includes installing the host operating system (RHCOS) on a blank server and deploying OpenShift Container Platform. This stage is managed mainly by the Assisted Service, which is part of the Infrastructure Operator. Detailed information about the workflow controlled by this software is available in the previous <a href="ztp-at-scale.html#ai">Infrastructure operator</a> section.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -930,7 +930,7 @@ On telco use cases, clusters are mainly running on baremetal hosts. Therefore, t
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Notice, in the picture, how ZTP allows us to provision clusters at scale. Multiple ClusterInstance CRs can be committed to Git simultaneously, or over time, to deploy multiple clusters.
+ZTP allows us to provision clusters at scale. Multiple ClusterInstance CRs can be committed to Git simultaneously or over time to deploy multiple clusters.
 </td>
 </tr>
 </table>
@@ -939,7 +939,7 @@ Notice, in the picture, how ZTP allows us to provision clusters at scale. Multip
 <div class="sect2">
 <h3 id="ibi-deployment"><a class="anchor" href="#ibi-deployment"></a>Image Based Installation</h3>
 <div class="paragraph">
-<p>This approach enables the preinstallation of configured and validated instances of single-node OpenShift on target hosts. These preinstalled hosts can be rapidly reconfigured and deployed at the far edge of the network, including in disconnected environments, with minimal intervention. Image Based Installation flow significantly reduces deployment time of single-node OpenShift clusters by streamlining the installation process.</p>
+<p>This approach enables the preinstallation of configured and validated instances of single-node OpenShift on target hosts. These preinstalled hosts can be rapidly reconfigured and deployed at the far edge of the network, including in disconnected environments, with minimal intervention. The Image Based Installation flow significantly reduces the deployment time of single-node OpenShift clusters by streamlining the installation process.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -948,16 +948,13 @@ Notice, in the picture, how ZTP allows us to provision clusters at scale. Multip
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-In telco environments, specially in RAN, the <strong>Image Based Installation</strong> deployment method is the preferred one due to the reduced installation times and the scalability requirements needed in edge deployments. Currently, only single-node OpenShift clusters can be installed using this workflow.
+In telco environments, especially in RAN, the <strong>Image Based Installation</strong> deployment method is preferred due to the reduced installation times and the scalability requirements needed in edge deployments. Currently, only single-node OpenShift clusters can be installed using this workflow.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>To deploy a managed cluster using an imaged-based approach in combination with GitOps Zero Touch Provisioning (ZTP), you can use the <a href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a>. Alternatively, you can manually deploy a preinstalled host for a cluster without using a hub cluster using the openshift-install installation program. For more information, see <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install-standalone.html">Deploying a single-node OpenShift cluster using the openshift-install program</a>.</p>
-</div>
-<div class="paragraph">
-<p>In this lab, we are going to provision a cluster with the Image Based Installation deployment method using a GitOps approach with the SiteConfig Operator.</p>
+<p>To deploy a managed cluster using an image-based approach in combination with GitOps Zero Touch Provisioning (ZTP), you can use the <a href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a>. Alternatively, you can manually deploy a preinstalled host for a cluster without using a hub cluster by using the <code>openshift-install</code> installation program. For more information, see <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install-standalone.html">Deploying a single-node OpenShift cluster using the openshift-install program</a>. In this lab, we will provision a cluster with the Image Based Installation deployment method using a GitOps approach with the SiteConfig Operator.</p>
 </div>
 <div class="sect3">
 <h4 id="ibi-deploy-components"><a class="anchor" href="#ibi-deploy-components"></a>Image Based Installation and Deployment Components</h4>
@@ -967,19 +964,19 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Seed image</strong>. OCI container image generated from a dedicated cluster with the target OpenShift Container Platform version.</p>
+<p><strong>Seed image</strong>: OCI container image generated from a dedicated cluster with the target OpenShift Container Platform version.</p>
 </li>
 <li>
-<p><strong>Seed cluster</strong>. Dedicated single-node OpenShift cluster that is used to create the seed image, and is deployed with the target OpenShift Container Platform version.</p>
+<p><strong>Seed cluster</strong>: Dedicated single-node OpenShift cluster used to create the seed image and deployed with the target OpenShift Container Platform version.</p>
 </li>
 <li>
-<p><strong>Lifecycle Agent Operator</strong>. Operator deployed on the seed cluster that generates the seed image from it.</p>
+<p><strong>Lifecycle Agent Operator</strong>: Operator deployed on the seed cluster that generates the seed image from it.</p>
 </li>
 <li>
-<p><strong>Image Based Install (IBI) Operator</strong>. When you deploy managed clusters, the IBI Operator creates a configuration ISO from the site-specific resources you define in the hub cluster, and attaches the configuration ISO to the preinstalled host by using a bare-metal provisioning service.</p>
+<p><strong>Image Based Install (IBI) Operator</strong>: When deploying managed clusters, the IBI Operator creates a configuration ISO from the site-specific resources you define in the hub cluster and attaches the configuration ISO to the preinstalled host using a bare-metal provisioning service.</p>
 </li>
 <li>
-<p><strong>openshift-install Binary</strong>. Creates the pre-installation ISO by embedding the seed image in the live installation ISO.</p>
+<p><strong><code>openshift-install</code> Binary</strong>: Creates the pre-installation ISO by embedding the seed image in the live installation ISO.</p>
 </li>
 </ul>
 </div>
@@ -989,41 +986,41 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 </div>
 </div>
 <div class="paragraph">
-<p>As show in the previous picture, the Preinstall host is deployed using the SiteConfig operator in this lab. Similar to the <a href="ztp-workflow.html#abi-deployment">Agent Based Installation</a> the SiteConfig Operator transforms the ClusterInstance CR into the following Installation Manifests:</p>
+<p>As shown in the previous image, the Preinstall host is deployed using the SiteConfig operator in this lab. Similar to the <a href="ztp-workflow.html#abi-deployment">Agent Based Installation</a>, the SiteConfig Operator transforms the ClusterInstance CR into the following Installation Manifests:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p><strong>ImageClusterInstall</strong>. This is the main difference in terms of manifests between Agent and Image Based Installations.</p>
+<p><strong>ImageClusterInstall</strong>: This is the main difference in terms of manifests between Agent Based and Image Based Installations.</p>
 </li>
 <li>
-<p>ClusterDeployment.</p>
+<p>ClusterDeployment</p>
 </li>
 <li>
-<p>NMStateConfig.</p>
+<p>NMStateConfig</p>
 </li>
 <li>
-<p>KlusterletAddonConfig.</p>
+<p>KlusterletAddonConfig</p>
 </li>
 <li>
-<p>ManagedCluster.</p>
+<p>ManagedCluster</p>
 </li>
 <li>
-<p>InfraEnv.</p>
+<p>InfraEnv</p>
 </li>
 <li>
-<p>BareMetalHost.</p>
+<p>BareMetalHost</p>
 </li>
 <li>
-<p>HostFirmwareSettings.</p>
+<p>HostFirmwareSettings</p>
 </li>
 <li>
-<p>ConfigMap for extra-manifest configurations.</p>
+<p>ConfigMap for extra-manifest configurations</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>Using the Lifecycle Agent, you can generate an OCI container image that encapsulates an instance of a previous installed single-node OpenShift cluster. This image is derived from a dedicated cluster that you can configure with the <strong>target</strong> OpenShift Container Platform version.</p>
+<p>Using the Lifecycle Agent, you can generate an OCI container image that encapsulates an instance of a previously installed single-node OpenShift cluster. This image is derived from a dedicated cluster that you can configure with the <strong>target</strong> OpenShift Container Platform version.</p>
 </div>
 <div class="paragraph">
 <p>The following is a high-level overview of the image-based installation process:</p>
@@ -1031,25 +1028,25 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 <div class="ulist">
 <ul>
 <li>
-<p>Install a single-node OpenShift cluster with the target OpenShift version you want to install in the rest of future clusters.</p>
+<p>Install a single-node OpenShift cluster with the target OpenShift version you want to install in the rest of the future clusters.</p>
 </li>
 <li>
 <p>Generate an image from that single-node OpenShift cluster.</p>
 </li>
 <li>
-<p>Use the openshift-install program to embed the seed image URL, and other installation artifacts, in a live installation ISO.</p>
+<p>Use the <code>openshift-install</code> program to embed the seed image URL and other installation artifacts in a live installation ISO.</p>
 </li>
 <li>
 <p>Start the host using the live installation ISO to preinstall the host.</p>
 </li>
 <li>
-<p>During this process, the openshift-install program installs Red Hat Enterprise Linux CoreOS (RHCOS) to the disk, pulls the image you generated, and precaches release container images to the disk.</p>
+<p>During this process, the <code>openshift-install</code> program installs Red Hat Enterprise Linux CoreOS (RHCOS) to the disk, pulls the image you generated, and precaches release container images to the disk.</p>
 </li>
 <li>
 <p>When the preinstallation completes, the host is ready for quick reconfiguration and deployment.</p>
 </li>
 <li>
-<p>Generate the Configuration ISO using the Image Based Install (IBI) Operator. This image contains specific information of the SNO cluster as opposed to the generic Installation ISO.</p>
+<p>Generate the Configuration ISO using the Image Based Install (IBI) Operator. This image contains specific information of the SNO cluster, as opposed to the generic Installation ISO.</p>
 </li>
 <li>
 <p>Attach the Configuration ISO to the host and let the reconfiguration process finish.</p>
@@ -1064,7 +1061,7 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 <h2 id="ztp-policies"><a class="anchor" href="#ztp-policies"></a>Deployment Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Once the clusters are provisioned, the day-2 configuration defined in one or multiple <code>PolicyGenTemplate</code> (PGTs) custom resources will be automatically applied. <code>PolicyGenTemplate</code> custom resource is understood by the ZTP pipeline using a specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.17/ztp/policygenerator-kustomize-plugin">policy-generator</a>. These templates generate Policy CRs on the hub cluster which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes, these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform level configurations.</p>
+<p>Once the clusters are provisioned, the day-2 configuration defined in one or multiple <code>PolicyGenTemplate</code> (PGTs) custom resources will be automatically applied. The <code>PolicyGenTemplate</code> custom resource is interpreted by the ZTP pipeline using a specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.17/ztp/policygenerator-kustomize-plugin">policy-generator</a>. These templates generate Policy CRs on the hub cluster, which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters, allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes, these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform-level configurations.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1072,7 +1069,7 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that if, later on, you want to apply a new configuration or replace an existing configuration you can update the PolicyGenTemplate in Git which will automatically propagate to the Policy CRs on the hub cluster. After that, user will decide when those updated policies are applied using TALM.</p>
+<p>If you want to apply a new configuration or replace an existing configuration later, you can update the PolicyGenTemplate in Git, which will automatically propagate to the Policy CRs on the hub cluster. After that, the user decides when those updated policies are applied using TALM.</p>
 </div>
 </div>
 </div>
@@ -1080,12 +1077,12 @@ In telco environments, specially in RAN, the <strong>Image Based Installation</s
 <h2 id="takeaways"><a class="anchor" href="#takeaways"></a>Takeaways</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Summing up, the deployment of the clusters includes:</p>
+<p>In summary, the deployment of the clusters includes:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Leveraging a GitOps methodology for a scalable, traceable and reliable deployment model.</p>
+<p>Leveraging a GitOps methodology for a scalable, traceable, and reliable deployment model.</p>
 </li>
 <li>
 <p>Installing the host operating system (RHCOS) on a blank server.</p>

@@ -809,7 +809,7 @@
 <h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As was detailed in the <a href="ztp-workflow.html#abi-deployment">Agent Based Installation</a> section, this installation method combines the ease of use of the Assisted Installation service with the ability to run offline and also optionally generate or accept <a href="ztp-intro.html">Zero Touch Provisioning</a> (ZTP) custom resources. In this part of the lab we are going to:</p>
+<p>As detailed in the <a href="ztp-workflow.html#abi-deployment">Agent Based Installation</a> section, this installation method combines the ease of use of the Assisted Installation service with the ability to run offline. It also optionally generates or accepts <a href="ztp-intro.html">Zero Touch Provisioning</a> (ZTP) custom resources. In this part of the lab, we will:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -817,13 +817,13 @@
 <p>Create the prerequisites for the SNO cluster installation.</p>
 </li>
 <li>
-<p>Create the definition of the SNO cluster as a <code>ClusterInstance</code> CR.</p>
+<p>Define the SNO cluster as a <code>ClusterInstance</code> CR.</p>
 </li>
 <li>
-<p>Include any extra configuration required for our telco 5G RAN specific use case.</p>
+<p>Include any extra configuration required for our telco 5G RAN-specific use case.</p>
 </li>
 <li>
-<p>Commit all those manifests into the <code>ztp-repository</code> Git repo where the <a href="ztp-intro.html">OpenShift GitOps</a> operator will automatically apply those changes.</p>
+<p>Commit all manifests into the <code>ztp-repository</code> Git repo, where the <a href="ztp-intro.html">OpenShift GitOps</a> operator automatically applies the changes.</p>
 </li>
 </ul>
 </div>
@@ -833,7 +833,7 @@
 <h2 id="baremetal-node-details"><a class="anchor" href="#baremetal-node-details"></a>Bare Metal Node Details</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The details for our baremetal node that we want to provision as SNO ABI are the ones below:</p>
+<p>The details for our bare-metal node, which we want to provision as SNO ABI, are as follows:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -860,7 +860,7 @@
 <h2 id="pre-reqs"><a class="anchor" href="#pre-reqs"></a>Deployment Prerequisites</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Before we start working on the ClusterInstance, let&#8217;s add some information required for the deployment into the Git repository.</p>
+<p>Before working on the ClusterInstance, let&#8217;s add some information required for the deployment into the Git repository.</p>
 </div>
 <div class="admonitionblock caution">
 <table>
@@ -869,7 +869,7 @@
 <i class="fa icon-caution" title="Caution"></i>
 </td>
 <td class="content">
-In a production environment you don&#8217;t want to add sensitive information in plain text in your Git repository, for the sake of simplicity for this lab we are adding this information in plain text to the Git repo, so you don&#8217;t have to care about it. This applies to things like pull secrets or BMC credentials.
+In a production environment, you should not add sensitive information in plain text to your Git repository. For simplicity in this lab, we are adding this information in plain text so you don&#8217;t have to manage it. This applies to items like pull secrets or BMC credentials.
 </td>
 </tr>
 </table>
@@ -1102,13 +1102,13 @@ EOF</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Check that the above ClusterInstance CR is using the ai-node-templates-v1 (Agent Based Install) templates to deploy the sno-abi OpenShift cluster. Also, we added an ignitionConfigOverride that creates a separate partition for the <code>/var/lib/containers</code> which is a pre-requisite for upgrading clusters using the image-based Upgrade method. We will deal with image-based upgrades later on in this lab, however, detailed information about the requirements needed can be found <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-shared-container-partition.html#cnf-image-based-upgrade-shared-container-partition_shared-container-partition">here</a>
+Check that the above ClusterInstance CR is using the <code>ai-node-templates-v1</code> (Agent Based Install) templates to deploy the <code>sno-abi</code> OpenShift cluster. We added an <code>ignitionConfigOverride</code> that creates a separate partition for <code>/var/lib/containers</code>, which is a pre-requisite for upgrading clusters using the image-based Upgrade method. We will address image-based upgrades later in this lab. Detailed information about the requirements can be found <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_based_upgrade/preparing_for_image_based_upgrade/cnf-image-based-upgrade-shared-container-partition.html#cnf-image-based-upgrade-shared-container-partition_shared-container-partition">here</a>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>In our site, we defined <code>clusterImageSetNameRef: "active-ocp-version"</code> as for the release to use to deploy our site. This reference will point to the <code>active</code> release we are deploying our sites with. Let&#8217;s create the <code>ClusterImageSet</code> in the repo:</p>
+<p>In our site, we defined <code>clusterImageSetNameRef: "active-ocp-version"</code> for the release to use to deploy our site. This reference points to the <code>active</code> release that we are deploying our sites with. Let&#8217;s create the <code>ClusterImageSet</code> in the repo:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1129,7 +1129,7 @@ EOF</code></pre>
 <h2 id="reference-manifest-clusterinstance"><a class="anchor" href="#reference-manifest-clusterinstance"></a>Reference Manifest Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s add the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">reference RAN DU configuration</a> for the version of OCP we are about to deploy. In the workstation, run the following command to extract the reference ZTP 4.18 RAN configuration. Those manifests are extracted from the <code>/extra-manifest</code> folder of the ztp-site-generate container.</p>
+<p>Let&#8217;s add the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">reference RAN DU configuration</a> for the version of OCP we are about to deploy. In the workstation, run the following command to extract the reference ZTP 4.18 RAN configuration. These manifests are extracted from the <code>/extra-manifest</code> folder of the <code>ztp-site-generate</code> container.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1138,7 +1138,7 @@ podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:844
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that <code>reference-manifest/4.18/</code> refers to the Git subdirectory that stores the contents of the RAN configuration for a specific version, in this case 4.18. Different versions of the RAN DU configuration can coexist by extracting them from the appropriate ztp-site-generate container version to a different extra-manifest folder. Then, the user just needs to include the right reference-manifest version folder to the cluster version is installing.</p>
+<p><code>reference-manifest/4.18/</code> refers to the Git subdirectory that stores the contents of the RAN configuration for a specific version, in this case 4.18. Different versions of the RAN DU configuration can coexist by extracting them from the appropriate <code>ztp-site-generate</code> container version to a different <code>extra-manifest</code> folder. Then, the user only needs to include the right <code>reference-manifest</code> version folder to the cluster version being installed.</p>
 </div>
 <div class="paragraph">
 <p>This configuration is applied during installation time.</p>
@@ -1164,7 +1164,7 @@ If you get <code>ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 
 <h2 id="extra-manifest-clusterinstance"><a class="anchor" href="#extra-manifest-clusterinstance"></a>Extra Manifest Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Now, let&#8217;s add the <strong>extra</strong> or <strong>custom</strong> RAN configuration to the cluster. It is strongly recommended to include crun manifests as part of the additional install-time manifests for 4.13+. So let&#8217;s create proper machine configuration in the extra manifest folder:</p>
+<p>Now, let&#8217;s add the <strong>extra</strong> or <strong>custom</strong> RAN configuration to the cluster. It is strongly recommended to include crun manifests as part of the additional install-time manifests for 4.13+. Let&#8217;s create proper machine configuration in the <code>extra manifest</code> folder:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1275,7 +1275,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>At this point we can commit the changes to the repo. We will push the changes together with cluster and telco related infrastructure operator configurations in the next section.</p>
+<p>At this point we can commit the changes to the repo. We will push the changes together with the cluster and Telco-related infrastructure operator configurations in the next section.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1295,7 +1295,7 @@ cd ~</code></pre>
 <p>When we applied the ZTP GitOps Pipeline configuration in the last section, the ArgoCD app called clusters takes care of deploying the <code>sno-abi</code> SNO cluster defined in the <code>ClusterInstance</code>.</p>
 </div>
 <div class="paragraph">
-<p>At this point ArgoCD started doing its magic which means that the cluster deployment should already be running, let&#8217;s see what happened in Argo CD.</p>
+<p>At this point, ArgoCD started doing its magic which means that the cluster deployment should already be running, let&#8217;s see what happened in Argo CD.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1315,7 +1315,7 @@ It may take up to 5 minutes for Argo CD to start syncing changes.
 <p>Login into <a href="https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab/">Argo CD</a>.</p>
 </li>
 <li>
-<p>When accessing choose <code>Logging with OpenShift</code>, on the next screen use the OpenShift Console Admin credentials.</p>
+<p>When accessing choose <code>Logging with OpenShift</code>. On the next screen use the OpenShift Console Admin credentials.</p>
 </li>
 <li>
 <p>From all these apps, click on <code>clusters</code> we will see something similar to the following screen:</p>
@@ -1347,7 +1347,7 @@ It may take up to 5 minutes for Argo CD to start syncing changes.
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-It may take a while for the installation to start, wait at least 10 minutes if you see <code>The cluster is not ready for installation</code> message or the <code>SNO ABI</code> cluster shows up as <code>draft</code>.
+It may take a while for the installation to start. Wait at least 10 minutes if you see the message <code>The cluster is not ready for installation</code> or if the <code>SNO ABI</code> cluster appears as <code>draft</code>.
 </td>
 </tr>
 </table>
@@ -1355,13 +1355,13 @@ It may take a while for the installation to start, wait at least 10 minutes if y
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Access the <a href="https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome">RHACM WebUI</a> and login with the OpenShift credentials.</p>
+<p>Access the <a href="https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome">RHACM WebUI</a> and log in using your OpenShift credentials.</p>
 </li>
 <li>
-<p>On the top left corner click on <code>local-cluster</code> and choose <code>All Clusters</code> to enter the RHACM Console.</p>
+<p>In the top-left corner, click on <code>local-cluster</code> and select <code>All Clusters</code> to enter the RHACM Console.</p>
 </li>
 <li>
-<p>Once you&#8217;re in, click on <code>Infrastructure</code> &#8594; <code>Clusters</code>. You will see a screen like the one below if the deployment has not yet started:</p>
+<p>Navigate to <code>Infrastructure</code> &#8594; <code>Clusters</code>. If the deployment has not yet started, you will see a screen similar to this:</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/acm-clusterview-draft.png" alt="RHACM Cluster View Draft">
@@ -1377,7 +1377,7 @@ It may take a while for the installation to start, wait at least 10 minutes if y
 </div>
 </li>
 <li>
-<p>In order to check the deployment status of the <code>sno-abi</code> cluster, click on <code>sno-abi</code> and you will get presented this screen:</p>
+<p>To check the deployment status of the <code>sno-abi</code> cluster, click on <code>sno-abi</code>. You will see a screen like this:</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/acm-sno-abi-view.png" alt="RHACM sno-abi Cluster View">
@@ -1385,7 +1385,7 @@ It may take a while for the installation to start, wait at least 10 minutes if y
 </div>
 </li>
 <li>
-<p>You can follow the progress here, if you want to get extra details you can click on <code>View Cluster Events</code> and you should see more information:</p>
+<p>You can track progress here. For additional details, click on <code>View Cluster Events</code>, where you will see more information:</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/acm-sno-abi-clusterevents.png" alt="RHACM sno-abi Cluster Events">
@@ -1393,7 +1393,7 @@ It may take a while for the installation to start, wait at least 10 minutes if y
 </div>
 </li>
 <li>
-<p>Deployment will eventually finish:</p>
+<p>The deployment will eventually complete:</p>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -1401,7 +1401,7 @@ It may take a while for the installation to start, wait at least 10 minutes if y
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-<code>SNO ABI</code> cluster installation takes around 50 minutes to complete.
+The installation of the <code>SNO ABI</code> cluster takes approximately 50 minutes to complete.
 </td>
 </tr>
 </table>
@@ -1426,7 +1426,7 @@ It may take a while for the installation to start, wait at least 10 minutes if y
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Below commands must be executed from the workstation host if not specified otherwise.
+The following commands must be executed from the workstation host unless specified otherwise.
 </td>
 </tr>
 </table>
@@ -1434,7 +1434,7 @@ Below commands must be executed from the workstation host if not specified other
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Check the <code>AgentClusterInstall</code> for SNO ABI cluster:</p>
+<p>Check the <code>AgentClusterInstall</code> status for the SNO ABI cluster:</p>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno-abi get agentclusterinstall sno-abi</code></pre>
@@ -1442,13 +1442,13 @@ Below commands must be executed from the workstation host if not specified other
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME   CLUSTER   STATE
-sno-abi   sno-abi      finalizing</code></pre>
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME      CLUSTER   STATE
+sno-abi   sno-abi   finalizing</code></pre>
 </div>
 </div>
 </li>
 <li>
-<p>In case you want expanded information like we saw in the WebUI you can check the conditions of the <code>AgentClusterInstall</code> object. For example, while installing:</p>
+<p>For expanded information, similar to what is available in the WebUI, check the conditions of the <code>AgentClusterInstall</code> object during installation:</p>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno-abi get agentclusterinstall sno-abi -o yaml</code></pre>
@@ -1489,13 +1489,13 @@ sno-abi   sno-abi      finalizing</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-<code>SNO ABI</code> cluster installation takes around 50 minutes to complete.
+The installation of the <code>SNO ABI</code> cluster takes approximately 50 minutes to complete.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>While the <code>SNO ABI</code> cluster installs, let&#8217;s move to the next section where we will learn how to deploy a SNO OpenShift cluster using an <a href="ztp-workflow.html#ibi-deployment">image-based install flow</a>. However, first things first, we have to create a seed image from an already deployed <a href="lab-environment-introduction.html#openshift-seed-sno">Single Node OpenShift seed cluster</a>.</p>
+<p>While waiting for the <code>SNO ABI</code> cluster installation to finish, proceed to the next section to learn how to deploy a Single Node OpenShift (SNO) cluster using an <a href="ztp-workflow.html#ibi-deployment">image-based install flow</a>. Before that, you must create a seed image from an already deployed <a href="lab-environment-introduction.html#openshift-seed-sno">Single Node OpenShift seed cluster</a>.</p>
 </div>
 </div>
 </div>

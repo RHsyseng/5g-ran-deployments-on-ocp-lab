@@ -808,10 +808,10 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this section, we will perform an image-based upgrade to both managed clusters (<code>sno-abi</code> and <code>sno-ibi</code>) leveraging the <a href="missing">Lifecycle Agent</a> (LCA) and the <a href="talm.html">Topology Aware Lifecycle Manager</a> (TALM) operators. The LCA provides you with an alternative way to upgrade the platform version of a single-node OpenShift cluster while TALM is responsible for managing the rollout of configuration throughout the lifecycle of the fleet of clusters.</p>
+<p>In this section, we will perform an image-based upgrade to both managed clusters (<code>sno-abi</code> and <code>sno-ibi</code>) by leveraging the <a href="missing">Lifecycle Agent</a> (LCA) and the <a href="talm.html">Topology Aware Lifecycle Manager</a> (TALM) operators. The LCA provides an alternative way to upgrade the platform version of a single-node OpenShift cluster, while TALM manages the rollout of configurations throughout the lifecycle of the cluster fleet.</p>
 </div>
 <div class="paragraph">
-<p>The image-based upgrade is faster than the standard upgrade method and allows you to directly upgrade from OpenShift Container Platform &lt;4.y&gt; to &lt;4.y+2&gt;, and &lt;4.y.z&gt; to &lt;4.y.z+n&gt;. Image-based upgrades utilizes a generated OCI image from a dedicated seed cluster. In this case, we already provided this seed image with version 4.18.0-rc.8. The process to generate that seed image is identically as the process we executed in <a href="creating-seed-image.html">Creating the Seed Image</a> for version 4.18.0-rc.7 to install <code>sno-ibi</code>.</p>
+<p>The image-based upgrade is faster than the standard upgrade method and allows direct upgrades from OpenShift Container Platform &lt;4.y&gt; to &lt;4.y+2&gt;, and &lt;4.y.z&gt; to &lt;4.y.z+n&gt;. These upgrades utilize a generated OCI image from a dedicated seed cluster. We have already provided a seed image with version 4.18.0-rc.8. The process to generate this seed image is the same as the one we executed in <a href="creating-seed-image.html">Creating the Seed Image</a> for version 4.18.0-rc.7 to install <code>sno-ibi</code>.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -820,30 +820,30 @@
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-The image-based upgrade uses custom images that are specific to the hardware platform that the clusters are running on. Each different hardware platform requires a separate seed image. More information <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">here</a>.
+Image-based upgrades rely on custom images specific to the hardware platform on which the clusters are running. Each distinct hardware platform requires its own seed image. You can find more information <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">here</a>.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Detailed below are the steps we are going to follow to upgrade both managed clusters and their configuration from 4.18.0-rc.7 to 4.18.0-rc.8:</p>
+<p>Below are the steps to upgrade both managed clusters and their configuration from 4.18.0-rc.7 to 4.18.0-rc.8:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Create a seed image by using the Lifecycle Agent. As mentioned, the following seed image <code>infra.5g-deployment.lab:8443/ibi/lab5gran:4.18.0-rc.8</code> is already available in the <a href="lab-environment-introduction.html#container-registry">container registry</a>.</p>
+<p>Create a seed image using the Lifecycle Agent. As mentioned, the seed image <code>infra.5g-deployment.lab:8443/ibi/lab5gran:4.18.0-rc.8</code> is already available in the <a href="lab-environment-introduction.html#container-registry">container registry</a>.</p>
 </li>
 <li>
-<p>Verify that all software components meet the required versions. <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#ztp-image-based-upgrade-prereqs_ibi-understanding-image-based-install">Here</a> you can find the minimum software requirements.</p>
+<p>Verify that all software components meet the required versions. You can find the minimum software requirements <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#ztp-image-based-upgrade-prereqs_ibi-understanding-image-based-install">here</a>.</p>
 </li>
 <li>
 <p>Install the Lifecycle Agent operator and the <a href="https://docs.openshift.com/container-platform/4.18/backup_and_restore/application_backup_and_restore/oadp-intro.html">OpenShift API for Data Protection</a> (OADP) in the managed clusters.</p>
 </li>
 <li>
-<p>Configure OADP to backup and restore the configuration of the managed clusters that is not included into the seed image.</p>
+<p>Configure OADP to back up and restore the configuration of the managed clusters that isn&#8217;t included in the seed image.</p>
 </li>
 <li>
-<p>Perform the upgrade using the <code>ImageBasedGroupUpgrade</code> CR that combines the ImageBasedUpgrade (LCA) and ClusterGroupUpgrade APIs (TALM).</p>
+<p>Perform the upgrade using the <code>ImageBasedGroupUpgrade</code> CR, which combines the ImageBasedUpgrade (LCA) and ClusterGroupUpgrade APIs (TALM).</p>
 </li>
 </ul>
 </div>
@@ -854,13 +854,13 @@ The image-based upgrade uses custom images that are specific to the hardware pla
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Notice that both clusters were installed using a different methodologies. While <code>sno-abi</code> was provisioned using the <a href="ztp-workflow.html#abi-deployment">agent-based install</a> workflow, <code>sno-ibi</code> was deployed using the <a href="ztp-workflow.html#ibi-deployment">image-based install</a>. However, as long as they both meet the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">Seed cluster guidelines</a>, have the same combination of hardware, Day 2 Operators, and cluster configuration as the 4.18.0-rc.8 seed cluster we are good to go.
+Both clusters were installed using different methodologies. While <code>sno-abi</code> was provisioned using the <a href="ztp-workflow.html#abi-deployment">agent-based install</a> workflow, <code>sno-ibi</code> was deployed using the <a href="ztp-workflow.html#ibi-deployment">image-based install</a>. However, as long as they both meet the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">Seed cluster guidelines</a> and have the same combination of hardware, Day 2 Operators, and cluster configuration as the 4.18.0-rc.8 seed cluster, we&#8217;re ready to proceed.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>First of all, let&#8217;s verify the software requirements in our <strong>hub cluster</strong>:</p>
+<p>First, let&#8217;s verify the software requirements in our <strong>hub cluster</strong>:</p>
 </div>
 </div>
 </div>
@@ -868,7 +868,7 @@ Notice that both clusters were installed using a different methodologies. While 
 <h2 id="verify-talm"><a class="anchor" href="#verify-talm"></a>Verifying hub software requirements</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s connect to the hub cluster and get all the operators installed:</p>
+<p>Let&#8217;s connect to the hub cluster and list all the installed operators:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -886,7 +886,7 @@ topology-aware-lifecycle-manager.openshift-operators   28h</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Verify that the Image-Based Install (IBI) operator is installed</p>
+<p>Verify that the Image-Based Install (IBI) operator is installed:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -900,7 +900,7 @@ image-based-install-operator-7f7659f86c-cd46k   2/2     Running   0          46h
 </div>
 </div>
 <div class="paragraph">
-<p>Next, double check that the TALM operator is running. Notice that the name of the Pod is cluster-group-upgrade-controller-manager, based on the name of the upstream project <a href="https://github.com/openshift-kni/cluster-group-upgrades-operator">Cluster Group Upgrade Operator</a>.</p>
+<p>Next, double-check that the TALM operator is running. Note that the name of the Pod is <code>cluster-group-upgrade-controller-manager</code>, which is based on the name of the upstream project <a href="https://github.com/openshift-kni/cluster-group-upgrades-operator">Cluster Group Upgrade Operator</a>.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -920,7 +920,7 @@ pod/openshift-gitops-operator-controller-manager-6794f4f9cc-vpm2b   2/2     Runn
 <h2 id="getting-snos-kubeconfigs"><a class="anchor" href="#getting-snos-kubeconfigs"></a>Verifying managed clusters requirements</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the previous sections we have deployed the <code>sno-abi</code> cluster using the agent-based installation and the <code>sno-ibi</code> cluster using the image-based installation. Before starting the upgrade we need to check if the Lifecycle Agent and OpenShift API for Data Protection operators are installed in the target clusters.</p>
+<p>In the previous sections, we deployed the <code>sno-abi</code> cluster using the agent-based installation and the <code>sno-ibi</code> cluster using the image-based installation. Before starting the upgrade, we need to check if the Lifecycle Agent and OpenShift API for Data Protection operators are installed in the target clusters.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -929,13 +929,13 @@ pod/openshift-gitops-operator-controller-manager-6794f4f9cc-vpm2b   2/2     Runn
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-We know that both SNO clusters meet the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">seed cluster guidelines</a>, has the same combination of hardware, Day 2 Operators, and cluster configuration as the target seed cluster from where the seed image version v4.18.0-rc.8 was obtained.
+We already know that both SNO clusters meet the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">seed cluster guidelines</a> and have the same combination of hardware, Day 2 Operators, and cluster configuration as the target seed cluster from which the seed image version v4.18.0-rc.8 was obtained.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s obtain the kubeconfigs for both clusters since we will need them for the next sections.</p>
+<p>Let&#8217;s obtain the kubeconfigs for both clusters, as we will need them for the next sections:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -944,7 +944,7 @@ oc --kubeconfig ~/hub-kubeconfig -n sno-ibi extract secret/sno-ibi-admin-kubecon
 </div>
 </div>
 <div class="paragraph">
-<p>If we check the operators installed in the <code>sno-abi</code> we will notice that neither LCA nor OADP are installed. This is expected because if we remember from the <a href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a> section, only SR-IOV and LVM operators were installed as Day 2 Operators.</p>
+<p>If we check the operators installed in <code>sno-abi</code>, we&#8217;ll notice that neither LCA nor OADP are installed. This is expected because, as we saw in the <a href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a> section, only SR-IOV and LVM operators were installed as Day 2 Operators.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -960,7 +960,7 @@ openshift-storage                      lvms-operator.v4.18.0                    
 </div>
 </div>
 <div class="paragraph">
-<p>On the other hand, the <code>sno-ibi</code> is running all required operators: Day 2 Operators plus LCA and OADP, which are required to run the image-based upgrade process. That&#8217;s because they were already included in the seed image version v4.18.0-rc.7. See in <a href="creating-seed-image.html#_running_the_seed_image_generation">Running the Seed Image Generation</a> to obtain the list of operators installed in the seed cluster. They are exactly the same versions because <code>sno-ibi</code> was provisioned with that seed image (image-based installation).</p>
+<p>On the other hand, <code>sno-ibi</code> is running all the required operators: Day 2 Operators plus LCA and OADP, which are necessary to run the image-based upgrade process. This is because they were already included in the seed image version v4.18.0-rc.7. See <a href="creating-seed-image.html#_running_the_seed_image_generation">Running the Seed Image Generation</a> for a list of the operators installed in the seed cluster. They are the same versions because <code>sno-ibi</code> was provisioned with that seed image (image-based installation).</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -978,10 +978,10 @@ openshift-storage                      lvms-operator.v4.18.0                    
 </div>
 </div>
 <div class="paragraph">
-<p>Ok then, let&#8217;s install the missing LCA and OADP operators in <code>sno-abi</code> and configure them appropiately in both managed clusters. To achieve that, a PolicyGenTemplate and a cluster group upgrade (CGU) CR will be created in the hub cluster so TALM manages the installation and configuration process.</p>
+<p>Okay, let&#8217;s install the missing LCA and OADP operators in <code>sno-abi</code> and configure them appropriately in both managed clusters. To achieve this, a PolicyGenTemplate and a cluster group upgrade (CGU) CR will be created in the hub cluster so that TALM manages the installation and configuration process.</p>
 </div>
 <div class="paragraph">
-<p>Notice that an already completed CGU was applied to <code>sno-abi</code>. As we mentioned in <a href="talm.html#inform-policies">inform policies</a> section, all policies are not enforced, the user has to create the proper CGU resource to enforce them. However, when using ZTP, we want our cluster provisioned and configured automatically. This is where TALM will step through the set of created policies (inform) and will enforce them once the cluster was successfully provisioned. Therefore, the configuration stage starts without any intervention ending up with our OpenShift cluster ready to process workloads.</p>
+<p>Remember that an already completed CGU was applied to <code>sno-abi</code>. As mentioned in the <a href="talm.html#inform-policies">inform policies</a> section, not all policies are enforced automatically; the user has to create the appropriate CGU resource to enforce them. However, when using ZTP, we want our cluster provisioned and configured automatically. This is where TALM steps in, processing the set of created policies (inform) and enforcing them once the cluster has been successfully provisioned. Therefore, the configuration stage starts without any intervention, resulting in our OpenShift cluster being ready to process workloads.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -990,7 +990,7 @@ openshift-storage                      lvms-operator.v4.18.0                    
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-It&#8217;s possible that you get <code>UpgradeNotCompleted</code>, if that&#8217;s the case you need to wait for the remaining policies to be applied. You can check policies status <a href="https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/governance/policies">here</a>.
+You might encounter an <code>UpgradeNotCompleted</code> error. If that&#8217;s the case, you need to wait for the remaining policies to be applied. You can check the policies' status <a href="https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/governance/policies">here</a>.
 </td>
 </tr>
 </table>
@@ -1009,21 +1009,21 @@ sno-abi   7m26s   Completed   All clusters are compliant with all the managed po
 </div>
 </div>
 <div class="sect1">
-<h2 id="install-lca"><a class="anchor" href="#install-lca"></a>Preparing managed clusters for upgrade</h2>
+<h2 id="install-lca"><a class="anchor" href="#install-lca"></a>Preparing Managed Clusters for Upgrade</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>At this stage, we are going to fulfill the image-based upgrade prerequisites but following a GitOps approach, which will allow to easily scale from our two SNOs to a fleet of thousands of SNO clusters if needed. This will be achieved by:</p>
+<p>At this stage, we are going to fulfill the image-based upgrade prerequisites using a GitOps approach. This will allow us to easily scale from our two SNOs to a fleet of thousands of SNO clusters if needed. We will achieve this by:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Creating a PolicyGenTemplate to install LCA and OADP. It also configures OADP to back up and restore the ACM and LVM setup.</p>
+<p>Creating a <code>PolicyGenTemplate</code> to install LCA and OADP. This also configures OADP to back up and restore the ACM and LVM setup.</p>
 </li>
 <li>
-<p>Creating a CGU to enforce the above policies in the target clusters.</p>
+<p>Creating a CGU to enforce the policies on the target clusters.</p>
 </li>
 <li>
-<p>Creating an extra configuration to the managed clusters applied during the upgrading process. These are configurations that were not or cannot be included in the seed image.</p>
+<p>Configuring the managed clusters with configurations that were not or could not be included in the seed image.</p>
 </li>
 <li>
 <p>Running the IBGU process.</p>
@@ -1037,13 +1037,13 @@ sno-abi   7m26s   Completed   All clusters are compliant with all the managed po
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-An S3-compatible storage server to backup and restore is ready. See <a href="s3-storage">S3 Storage Server</a> section.
+An S3-compatible storage server is required for backup and restore operations. See the <a href="s3-storage">S3 Storage Server</a> section.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s create a PGT called <code>requirements-upgrade</code> in the hub cluster. It help us to create multiple RHACM polices as explained in the <a href="policygen-deepdive.html">PolicyGen DeepDive</a> section.</p>
+<p>Let&#8217;s create a PGT called <code>requirements-upgrade</code> on the hub cluster. This will help us to create multiple RHACM policies, as explained in the <a href="policygen-deepdive.html">PolicyGen DeepDive</a> section.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1120,7 +1120,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Create the openshift-adp namespace in the hub cluster. It is required so, the backup and restore configurations will automatically propagate to the target clusters.</p>
+<p>Create the <code>openshift-adp</code> namespace on the hub cluster. This is required so that the backup and restore configurations will automatically propagate to the target clusters.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1137,7 +1137,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Include the configuration of a disconnected catalog source as an extra manifest. Remember that catalogsources are not included during the seed image creation.</p>
+<p>Include the configuration of a disconnected catalog source as an extra manifest. Remember that catalog sources are not included during the seed image creation.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1169,7 +1169,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Modify the kustomization.yaml inside the site-policies folder, so it includes this new PGT and eventually will be applied by ArgoCD.</p>
+<p>Modify the <code>kustomization.yaml</code> inside the <code>site-policies</code> folder so that it includes this new PGT and eventually will be applied by ArgoCD.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1206,8 +1206,7 @@ patches:
   patch: |-
     - op: replace
       path: /spec/policy-templates/0/objectDefinition/spec/object-templates/0/objectDefinition/data
-      value: '{{hub copyConfigMapData "ztp-policies" "disconnected-ran-config" hub}}'
-EOF</code></pre>
+      value: '{{hub copyConfigMapData "ztp-policies" "disconnected-ran-config" hub}}'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1222,7 +1221,7 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>ArgoCD automatically synchronizes the new policies and show as non compliant in the RHACM WebUI:</p>
+<p>ArgoCD will automatically synchronize the new policies and show them as non-compliant in the RHACM WebUI:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1230,7 +1229,7 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting <code>sno-abi</code> cluster. That&#8217;s because the <code>sno-ibi</code> cluster does not have the labels zone-europe that the PGT is targeting in its binding rule.</p>
+<p>However, only one cluster is not compliant. If we check the policy information, we will see that this policy is only targeting the <code>sno-abi</code> cluster. This is because the <code>sno-ibi</code> cluster does not have the labels <code>du-zone=europe</code> that the PGT is targeting in its binding rule.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s add the proper labels to the <code>sno-ibi</code> SNO cluster:</p>
@@ -1294,7 +1293,7 @@ ztp-policies   requirements-upgrade   35s   InProgress   Remediating non-complia
 </div>
 </div>
 <div class="paragraph">
-<p>In a few minutes we will see a similar output as the one described below:</p>
+<p>In a few minutes, we will see a similar output as the one described below:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1313,7 +1312,7 @@ ztp-policies   requirements-upgrade   2m52s   Completed   All clusters are compl
 <h2 id="upgrade-policy-creation"><a class="anchor" href="#upgrade-policy-creation"></a>Creating the Image Based Group Upgrade</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <code>ImageBasedGroupUpgrade</code> CR combines the <code>ImageBasedUpgrade</code> and <code>ClusterGroupUpgrade</code> APIs. It simplifies the upgrade process by using a single resource on the hub cluster, the ImageBasedGroupUpgrade custom resource (CR), to manage an imaged-based upgrade on a selected group of managed clusters through all stages. A detailed view of the different upgrade stages driven by the LCA operator was explained in <a href="lca.html#image-based-upgrades">Image Based Upgrades</a> section.</p>
+<p>The <code>ImageBasedGroupUpgrade</code> (IBGU) CR combines the <code>ImageBasedUpgrade</code> and <code>ClusterGroupUpgrade</code> APIs. It simplifies the upgrade process by using a single resource on the hub cluster—the ImageBasedGroupUpgrade custom resource (CR)—to manage an image-based upgrade on a selected group of managed clusters throughout all stages. A detailed view of the different upgrade stages driven by the LCA operator is explained in the <a href="lca.html#image-based-upgrades">Image Based Upgrades</a> section.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s apply the IBGU and start the image-based upgrade process in both clusters simultaneously:</p>
@@ -1325,7 +1324,7 @@ ztp-policies   requirements-upgrade   2m52s   Completed   All clusters are compl
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-See below how we can include extra install configuration (extraManifests) and backup and restore steps (oadpContent) in the same custom resource:
+Note how we can include extra install configurations (<code>extraManifests</code>) and backup/restore steps (<code>oadpContent</code>) within the same custom resource.
 </td>
 </tr>
 </table>
@@ -1366,11 +1365,11 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Check that an IBGU object has been created in the hub cluster along with an associated CGU:</p>
+<p>Check that an IBGU object has been created in the hub cluster, along with an associated CGU:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"> oc --kubeconfig ~/hub-kubeconfig get ibgu,cgu -n default</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get ibgu,cgu -n default</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -1388,7 +1387,7 @@ default        clustergroupupgrade.ran.openshift.io/telco5g-lab-prep-upgrade-fin
 <h2 id="monitoring-ibu"><a class="anchor" href="#monitoring-ibu"></a>Monitoring the Image Based Group Upgrade</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As explained in the <a href="lca.html">Lifecycle Agent Operator (LCA)</a> section, these are the different stages that are the SNO cluster will go through:</p>
+<p>As explained in the <a href="lca.html">Lifecycle Agent Operator (LCA)</a> section, the SNO cluster will progress through these stages:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1415,7 +1414,7 @@ default        clustergroupupgrade.ran.openshift.io/telco5g-lab-prep-upgrade-fin
     },
     {
       "currentAction": {
-        "action": "Prepr"
+        "action": "Prep"
       },
       "name": "sno-ibi"
     }
@@ -1434,10 +1433,10 @@ default        clustergroupupgrade.ran.openshift.io/telco5g-lab-prep-upgrade-fin
 </div>
 </div>
 <div class="paragraph">
-<p>In the output we can see that the upgrade just started because both <code>sno-abi</code> and <code>sno-ibi</code> are in the <code>Prep</code> stage.</p>
+<p>The output shows that the upgrade has just started because both <code>sno-abi</code> and <code>sno-ibi</code> are in the <code>Prep</code> stage.</p>
 </div>
 <div class="paragraph">
-<p>We can also see the progress by connecting directly to the managed clusters and obtain the status of the IBU resource copied from the hub:</p>
+<p>We can also monitor progress by connecting directly to the managed clusters and obtaining the status of the IBU resource:</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -1446,14 +1445,14 @@ default        clustergroupupgrade.ran.openshift.io/telco5g-lab-prep-upgrade-fin
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-See Prep as the current stage by checking the Desired Stage. Also it shows extra info in the Details field, in this case it is being prepared to copy the stateroot seed image.
+The <code>Prep</code> stage is the current stage, as indicated by the <code>Desired Stage</code> field. The <code>Details</code> field provides extra information; in this case, it indicates preparation to copy the stateroot seed image.
 </td>
 </tr>
 </table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/abi-cluster-kubeconfig  get ibu</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/abi-cluster-kubeconfig get ibu</code></pre>
 </div>
 </div>
 <div class="listingblock console">
@@ -1463,7 +1462,7 @@ upgrade   36s   Prep            InProgress   Stateroot setup job in progress. jo
 </div>
 </div>
 <div class="paragraph">
-<p>Once the <code>Prep</code> stage is done, the IBGU object will automatically move to the <code>Upgrade</code> stage. See below, that both SNO clusters show the <code>Prep</code> as completedActions and they currentAction is <code>Upgrade</code>.</p>
+<p>Once the <code>Prep</code> stage is complete, the IBGU object will automatically move to the <code>Upgrade</code> stage. The output below shows that both SNO clusters have completed the <code>Prep</code> stage (<code>completedActions</code>) and their <code>currentAction</code> is <code>Upgrade</code>.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1517,13 +1516,13 @@ upgrade   36s   Prep            InProgress   Stateroot setup job in progress. jo
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-At some point during the Upgrade stage, the SNO clusters will restart and boot from the new stateroot. Depending on the host, the process until the Kubernetes API is available again can take several minutes.
+At some point during the <code>Upgrade</code> stage, the SNO clusters will restart and boot from the new stateroot. Depending on the host, the process until the Kubernetes API is available again can take several minutes.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>After some time, the SNO clusters will move to the <code>FinalizeUpgrade</code> stage. See below, that in this case <code>sno-ibi</code> moved to <code>FinalizeUpgrade</code> stage while <code>sno-abi</code> is still on the previous stage.</p>
+<p>After some time, the SNO clusters will move to the <code>FinalizeUpgrade</code> stage. The output below shows that <code>sno-ibi</code> has moved to the <code>FinalizeUpgrade</code> stage, while <code>sno-abi</code> is still in the previous stage (<code>Upgrade</code>).</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1550,7 +1549,7 @@ At some point during the Upgrade stage, the SNO clusters will restart and boot f
         {
           "action": "Prep"
         },
-	{
+        {
           "action": "Upgrade"
         }
       ],
@@ -1574,7 +1573,7 @@ At some point during the Upgrade stage, the SNO clusters will restart and boot f
 </div>
 </div>
 <div class="paragraph">
-<p>During the <code>FinalizeUpgrade</code> stage, the SNO clusters are restoring the data that was backed up. That data was included in the <code>disconnected-ran-config</code> configMap described in the <a href="using-talm-to-update-clusters.html#install-lca">Preparing managed clusters for upgrade</a>. If we connect to the <code>sno-ibi</code> in this case, we can see the restore process running.</p>
+<p>During the <code>FinalizeUpgrade</code> stage, the SNO clusters are restoring the data that was backed up. This data was included in the <code>disconnected-ran-config</code> configMap described in the <a href="using-talm-to-update-clusters.html#install-lca">Preparing Managed Clusters for Upgrade</a> section. Connecting to <code>sno-ibi</code> during this stage will show the restore process running.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1588,22 +1587,26 @@ upgrade   8m46s   Upgrade         InProgress   Restore of Application Data is in
 </div>
 </div>
 <div class="paragraph">
-<p>Finally, both SNO clusters moved to the <code>FinalizeUpgrade</code> stage.</p>
+<p>Finally, both SNO clusters have moved to the <code>FinalizeUpgrade</code> stage:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .status
-{
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .status</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
   "clusters": [
     {
       "completedActions": [
         {
           "action": "Prep"
         },
-	      {
+        {
           "action": "Upgrade"
         },
-	      {
+        {
           "action": "FinalizeUpgrade"
         }
       ],
@@ -1614,10 +1617,10 @@ upgrade   8m46s   Upgrade         InProgress   Restore of Application Data is in
         {
           "action": "Prep"
         },
-	{
+        {
           "action": "Upgrade"
         },
-	{
+        {
           "action": "FinalizeUpgrade"
         }
       ],
@@ -1638,7 +1641,7 @@ upgrade   8m46s   Upgrade         InProgress   Restore of Application Data is in
 </div>
 </div>
 <div class="paragraph">
-<p>We can also check that the CGU associated with the IBGU shows as Completed.</p>
+<p>We can also check that the CGU associated with the IBGU shows as <code>Completed</code>:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1655,7 +1658,7 @@ default        clustergroupupgrade.ran.openshift.io/telco5g-lab-prep-upgrade-fin
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that once the upgrade is finished the IBU CR from both clusters moved back to the initial state: <code>Idle</code>.</p>
+<p>Note that once the upgrade is finished, the IBU CR from both clusters moves back to the initial state: <code>Idle</code>.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1675,13 +1678,13 @@ upgrade   9m37s   Idle            Idle    Idle</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Notice the time it took to update the SNO clusters. As shown above, the <code>sno-ibi</code> took less than 10 minutes to run an z-stream update. If we compare this with the regular update time, which is around 40 minutes, the upgrade time reduction is huge.
+Note the time it took to update the SNO clusters. As shown above, the <code>sno-ibi</code> took less than 10 minutes to run a z-stream update. Compared with the regular update time of around 40 minutes, the upgrade time reduction is significant.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>As a final verification, check that both clusters once upgraded are compliant with the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a> configuration:</p>
+<p>As a final verification, check that both upgraded clusters comply with the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a> configuration:</p>
 </div>
 <div class="imageblock">
 <div class="content">

@@ -806,39 +806,39 @@
 <article class="doc">
 <h1 class="page">Creating the Seed Image</h1>
 <div class="sect1">
-<h2 id="intro-to-seed-image-gen"><a class="anchor" href="#intro-to-seed-image-gen"></a>Introduction to the Seed Image Generation</h2>
+<h2 id="intro-to-seed-image-gen"><a class="anchor" href="#intro-to-seed-image-gen"></a>Introduction to Seed Image Generation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this section we are going to create a seed image from the <a href="lab-environment-introduction.html#openshift-seed-sno">Seed single-node OpenShift cluster</a>. This seed cluster has the same hardware and a similar cluster configuration as the OpenShift clusters we are going to create and upgrade later on in this lab. More information on the allowed configuration of the seed SNO cluster can be found <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-preparing-for-image-based-install.html#cnf-image-based-upgrade-generate-seed-image_ibi-preparing-image-based-install">here</a>.</p>
+<p>In this section, we will create a seed image from the <a href="lab-environment-introduction.html#openshift-seed-sno">Seed single-node OpenShift cluster</a>. This seed cluster has the same hardware and a similar cluster configuration to the OpenShift clusters we will create and upgrade later. More information on the allowed configuration of the seed SNO cluster can be found <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-preparing-for-image-based-install.html#cnf-image-based-upgrade-generate-seed-image_ibi-preparing-image-based-install">here</a>.</p>
 </div>
 <div class="paragraph">
-<p>We are going to use the Lifecycle Agent to generate a seed image from a managed cluster. The Operator checks for required system configurations, performs any necessary system cleanup before generating the seed image, and launches the image generation. The seed image generation includes the following tasks:</p>
+<p>We will use the Lifecycle Agent to generate a seed image from a managed cluster. The Operator checks for required system configurations, performs necessary system cleanup before generating the image, and launches the image generation process. The seed image generation includes the following tasks:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>RHACM and multicluster engine for Kubernetes Operator are <strong>not installed</strong> on the seed cluster.</p>
+<p>RHACM and Multicluster Engine for Kubernetes Operator are <strong>not installed</strong> on the seed cluster.</p>
 </li>
 <li>
-<p>You have configured a shared container directory on the seed cluster.</p>
+<p>A shared container directory is configured on the seed cluster.</p>
 </li>
 <li>
-<p>You have installed the minimum version of the OADP Operator and the Lifecycle Agent on the seed cluster.</p>
+<p>The minimum required version of the OADP Operator and the Lifecycle Agent are installed on the seed cluster.</p>
 </li>
 <li>
-<p>Ensure that persistent volumes are <strong>not configured</strong> on the seed cluster.</p>
+<p>Persistent volumes are <strong>not configured</strong> on the seed cluster.</p>
 </li>
 <li>
-<p>Ensure that the LocalVolume CR does <strong>not exist</strong> on the seed cluster if the Local Storage Operator is used.</p>
+<p>The LocalVolume CR does <strong>not exist</strong> on the seed cluster if the Local Storage Operator is used.</p>
 </li>
 <li>
-<p>Ensure that the LVMCluster CR does <strong>not exist</strong> on the seed cluster if LVM Storage is used.</p>
+<p>The LVMCluster CR does <strong>not exist</strong> on the seed cluster if LVM Storage is used.</p>
 </li>
 <li>
-<p>Ensure that the DataProtectionApplication CR does <strong>not exist</strong> on the seed cluster if OADP is used.</p>
+<p>The DataProtectionApplication CR does <strong>not exist</strong> on the seed cluster if OADP is used.</p>
 </li>
 <li>
-<p>OCI container image generated from the seed SNO cluster and uploaded to the <a href="lab-environment-introduction.html#container-registry">container registry</a>.</p>
+<p>An OCI container image is generated from the seed SNO cluster and uploaded to the <a href="lab-environment-introduction.html#container-registry">container registry</a>.</p>
 </li>
 </ul>
 </div>
@@ -849,7 +849,7 @@
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-During the deployment of this lab we already ensured that the seed SNO cluster is ready to run a seed image generation.
+During the deployment of this lab, we ensured that the seed SNO cluster is ready for seed image generation.
 </td>
 </tr>
 </table>
@@ -857,10 +857,10 @@ During the deployment of this lab we already ensured that the seed SNO cluster i
 </div>
 </div>
 <div class="sect1">
-<h2 id="running-seed-image-gen"><a class="anchor" href="#running-seed-image-gen"></a>Running the Seed Image Generation</h2>
+<h2 id="running-seed-image-gen"><a class="anchor" href="#running-seed-image-gen"></a>Running Seed Image Generation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Connect to the seed SNO cluster and check that OpenShift ADP and Lifecycle-Agent (LCA) operators are installed as required operators to create a seed image. Notice that the SR-IOV and LVM operators are installed too. In this case we want them as part of the seed image because the SNO clusters that are going to use this seed image will require these operators to run their workloads.</p>
+<p>Connect to the seed SNO cluster and verify that the OpenShift ADP and Lifecycle Agent (LCA) operators are installed as required operators to create a seed image. Notice that the SR-IOV and LVM operators are also installed. In this case, they are included as part of the seed image because the SNO clusters using this seed image will require these operators to run their workloads.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -869,7 +869,7 @@ During the deployment of this lab we already ensured that the seed SNO cluster i
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-If below command throws an error saying: <code>The connection to the server api.sno-seed.5g-deployment.lab:6443 was refused - did you specify the right host or port?</code>. Wait up to 10 minutes, the cluster may be restarting its API.
+If the following command throws an error saying: <code>The connection to the server api.sno-seed.5g-deployment.lab:6443 was refused - did you specify the right host or port?</code>, wait up to 10 minutes, as the cluster may be restarting its API.
 </td>
 </tr>
 </table>
@@ -890,14 +890,14 @@ openshift-storage                      lvms-operator.v4.18.0                    
 </div>
 </div>
 <div class="paragraph">
-<p>Check that the OpenShift Container Platform version of the seed SNO cluster is v4.18.0-rc.7</p>
+<p>Verify that the OpenShift Container Platform version of the seed SNO cluster is v4.18.0-rc.7:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-cluster-kubeconfig get clusterversion</code></pre>
 </div>
 </div>
-<div class="listingblock">
+<div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME      VERSION       AVAILABLE   PROGRESSING   SINCE   STATUS
 version   v4.18.0-rc.7  True        False         13m     Cluster version is v4.18.0-rc.7</code></pre>
@@ -1054,7 +1054,7 @@ seedimage   12s   SeedGenCompleted   Seed Generation completed</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Once the SeedGenerator CR shows the state as <code>SeedGenCompleted</code>, the image creation is completed. Verify that the cluster is available again. However, if you want to generate more seed images, you must provision a new seed cluster with the version from which you want to generate a seed image.</p>
+<p>Once the SeedGenerator CR shows the state as <code>SeedGenCompleted</code>, the image creation is complete. Verify that the cluster is available again. However, if you want to generate more seed images, you must provision a new seed cluster with the version from which you want to generate a seed image.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">

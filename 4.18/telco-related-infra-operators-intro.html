@@ -903,10 +903,10 @@
 <h2 id="cluster-logging-operator"><a class="anchor" href="#cluster-logging-operator"></a>Cluster Logging Operator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The Logging Operator provides a set of APIs to control collection and forwarding of logs from all pods and nodes in a cluster. This includes application logs (from regular pods), infrastructure logs (from system pods and node logs), and audit logs (special node logs with legal/security implications). In telco RAN DU configurations logging is used to collect logs from the far edge node for remote analysis.</p>
+<p>The Logging Operator provides APIs to control collection and forwarding of logs from all pods and nodes in a cluster. This includes application logs (from regular pods), infrastructure logs (from system pods and node logs), and audit logs (special node logs with legal/security implications). In telco RAN DU configurations, logging collects logs from far-edge nodes for remote analysis.</p>
 </div>
 <div class="paragraph">
-<p>The Logging Operator does not collect or forward logs itself: it starts, configures, monitors and manages the components that do the work. Notice that in the RAN use model the fluend log collector is deprecated in favor of Vector log collector.</p>
+<p>The Logging Operator does not collect or forward logs itself; it starts, configures, monitors, and manages components that perform these tasks. Note that in the RAN use model, the Fluentd log collector is deprecated in favor of the Vector log collector.</p>
 </div>
 </div>
 </div>
@@ -914,10 +914,10 @@
 <h2 id="lifecycle-operator"><a class="anchor" href="#lifecycle-operator"></a>Lifecycle Agent Operator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The Lifecycle Agent provides local lifecycle management services for single-node OpenShift clusters. The Lifecycle Agent is not applicable in multi-node clusters or single-node OpenShift clusters with an additional worker.</p>
+<p>The Lifecycle Agent provides local lifecycle management services for single-node OpenShift clusters. It is not applicable in multi-node clusters or single-node OpenShift clusters with an additional worker.</p>
 </div>
 <div class="paragraph">
-<p>From OpenShift Container Platform 4.14.13, the Lifecycle Agent provides you with an alternative way to upgrade the platform version of a single-node OpenShift cluster. The image-based upgrade is faster than the standard upgrade method and allows you to directly upgrade from OpenShift Container Platform &lt;4.y&gt; to &lt;4.y+2&gt;, and &lt;4.y.z&gt; to &lt;4.y.z+n&gt;.</p>
+<p>Starting with OpenShift Container Platform 4.14.13, the Lifecycle Agent offers an alternative method for upgrading platform versions in single-node OpenShift clusters. The image-based upgrade is faster than standard methods and allows direct upgrades from OpenShift Container Platform &lt;4.y&gt; to &lt;4.y+2&gt;, and &lt;4.y.z&gt; to &lt;4.y.z+n&gt;.</p>
 </div>
 <div class="paragraph">
 <p>You can read more about the image-based upgrade technology <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_based_upgrade/cnf-understanding-image-based-upgrade.html">here</a>.</p>
@@ -928,10 +928,10 @@
 <h2 id="storage-operator"><a class="anchor" href="#storage-operator"></a>Storage Operators</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>LVM Storage can be used as the local storage implementation for the RAN DU use case. When LVM Storage is used as the storage solution, it replaces the Local Storage Operator, and the CPU required is assigned to the management partition as platform overhead.</p>
+<p>LVM Storage can be used as the local storage implementation for the RAN DU use case. When LVM Storage is used as the storage solution, it replaces the Local Storage Operator, with CPU resources assigned to the management partition as platform overhead.</p>
 </div>
 <div class="paragraph">
-<p>LVM Storage provides dynamic provisioning of block and file storage. LVM Storage creates logical volumes from local devices that can be used as PVC resources by applications. Volume expansion and snapshots are also possible.</p>
+<p>LVM Storage provides dynamic provisioning of block and file storage. Logical volumes created from local devices can be used as PVC resources by applications. Volume expansion and snapshots are also supported.</p>
 </div>
 </div>
 </div>
@@ -939,7 +939,7 @@
 <h2 id="oadp-operator"><a class="anchor" href="#oadp-operator"></a>OpenShift API for Data Protection Operator</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The OpenShift API for Data Protection (OADP) product safeguards customer applications on OpenShift Container Platform. It offers disaster recovery protection, covering OpenShift Container Platform applications, application-related cluster resources, persistent volumes, and internal images.</p>
+<p>The OpenShift API for Data Protection (OADP) safeguards customer applications on OpenShift Container Platform. It offers disaster recovery protection for applications, application-related cluster resources, persistent volumes, and internal images.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -954,7 +954,7 @@ OADP does not serve as a disaster recovery solution for etcd or OpenShift Operat
 </table>
 </div>
 <div class="paragraph">
-<p>OADP support is provided to customer workload namespaces, and cluster scope resources. It is specially essential during image-based upgrades, when we need to backup customer and cluster resources prior to the upgrade process and then restore that information once the upgrade is completed.</p>
+<p>OADP support is provided for customer workload namespaces and cluster scope resources. It is especially critical during image-based upgrades when backups of customer and cluster resources are needed prior to upgrading, followed by restoration once upgrades are completed.</p>
 </div>
 <div class="paragraph">
 <p>You can read more about the OADP operator <a href="https://docs.openshift.com/container-platform/4.18/backup_and_restore/application_backup_and_restore/oadp-intro.html">here</a>.</p>
