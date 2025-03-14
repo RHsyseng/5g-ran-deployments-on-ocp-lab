@@ -7,7 +7,7 @@ Type=simple
 WorkingDirectory=/root
 TimeoutStartSec=300
 ExecStartPre=-/usr/bin/podman rm -f showroom-traefik
-ExecStart=/usr/bin/podman run --name showroom-traefik -p 8888:8888 -p 3003:3003 -p 80:80 -p 443:443 -v /root/showroom/traefik/config/traefik:/etc/traefik:z -v /root/showroom/traefik/config/letsencrypt:/letsencrypt:z quay.io/rhsysdeseng/showroom:traefik-v3.3.4 --configFile=/etc/traefik/traefik_config.yml
+ExecStart=/usr/bin/podman run --name showroom-traefik -p 8888:8888 -p 3003:3003 -p 80:80 -p 443:443 -v /opt/showroom/traefik/config/traefik:/etc/traefik:z -v /opt/showroom/traefik/config/letsencrypt:/letsencrypt:z quay.io/rhsysdeseng/showroom:traefik-v3.3.4 --configFile=/etc/traefik/traefik_config.yml
 ExecStop=-/usr/bin/podman rm -f showroom-traefik
 Restart=always
 RestartSec=30s
