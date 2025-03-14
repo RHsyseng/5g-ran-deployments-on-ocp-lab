@@ -470,3 +470,5 @@ ztp-policies   zone-europe-storage-operator                            inform   
 -----
 
 WARNING: Each enforce policy is being applied one by one. There can be cases where the Cluster violations or the Compliance status is not set for the enforced cluster. It takes time to move to the next one depending on the changes applied to the target cluster.
+
+// TODO: IBU in spokes, need to move to Idle before making changes
