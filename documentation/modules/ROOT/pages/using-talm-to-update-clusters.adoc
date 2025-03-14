@@ -414,6 +414,15 @@ IMPORTANT: Note how we can include extra install configurations (`extraManifests
 -----
 cat <<EOF | oc --kubeconfig ~/hub-kubeconfig apply -f -
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: disconnected-registry-pull-secret
+  namespace: default
+stringData:
+  .dockerconfigjson: '{"auths":{"infra.5g-deployment.lab:8443":{"auth":"YWRtaW46cjNkaDR0MSE="}}}'
+  type: kubernetes.io/dockerconfigjson
+---
 apiVersion: lcm.openshift.io/v1alpha1
 kind: ImageBasedGroupUpgrade
 metadata:
@@ -428,10 +437,12 @@ spec:
         - sno-abi
         - sno-ibi
   ibuSpec:
-    seedImageRef:
-      image: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.8
+    seedImageRef: 
+      image: infra.5g-deployment.lab:8443/rhsysdeseng/lab5gran:v4.18.0-rc.8
       version: 4.18.0-rc.8
-    extraManifests:
+      pullSecretRef:
+        name: disconnected-registry-pull-secret
+    extraManifests: 
       - name: disconnected-ran-config
         namespace: openshift-lifecycle-agent
     oadpContent:
