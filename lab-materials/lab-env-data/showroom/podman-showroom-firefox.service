@@ -1,0 +1,18 @@
+[Unit]
+Description=Podman container - Showroom Firefox
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/root
+TimeoutStartSec=300
+ExecStartPre=-/usr/bin/podman rm -f showroom-firefox
+ExecStart=/usr/bin/podman run --name showroom-firefox --network host -e CUSTOM_PORT=3002 -e CUSTOM_HTTPS_PORT=3004 -e SUBFOLDER=/firefox/ -e NO_DECOR=true -e TZ=Etc/UTC -e FIREFOX_CLI=http://infra.5g-deployment.lab:3000 -v /root/showroom/firefox-config:/config:z quay.io/rhsysdeseng/showroom:webfirefox
+ExecStop=-/usr/bin/podman rm -f showroom-firefox
+Restart=always
+RestartSec=30s
+StartLimitInterval=60s
+StartLimitBurst=99
+
+[Install]
+WantedBy=multi-user.target
