@@ -1,5 +1,0 @@
----
-controller_organizations:
-  - name: "Lab"
-    description: "Organization for the 5G RAN Lab"
-...
