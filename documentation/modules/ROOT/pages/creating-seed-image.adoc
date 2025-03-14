@@ -3,29 +3,29 @@ include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
 [#intro-to-seed-image-gen]
-== Introduction to the Seed Image Generation
+== Introduction to Seed Image Generation
 
-In this section we are going to create a seed image from the link:lab-environment-introduction.html#openshift-seed-sno[Seed single-node OpenShift cluster]. This seed cluster has the same hardware and a similar cluster configuration as the OpenShift clusters we are going to create and upgrade later on in this lab. More information on the allowed configuration of the seed SNO cluster can be found {seed-prereq-config}[here].
+In this section, we will create a seed image from the link:lab-environment-introduction.html#openshift-seed-sno[Seed single-node OpenShift cluster]. This seed cluster has the same hardware and a similar cluster configuration to the OpenShift clusters we will create and upgrade later. More information on the allowed configuration of the seed SNO cluster can be found {seed-prereq-config}[here].
 
-We are going to use the Lifecycle Agent to generate a seed image from a managed cluster. The Operator checks for required system configurations, performs any necessary system cleanup before generating the seed image, and launches the image generation. The seed image generation includes the following tasks:
+We will use the Lifecycle Agent to generate a seed image from a managed cluster. The Operator checks for required system configurations, performs necessary system cleanup before generating the image, and launches the image generation process. The seed image generation includes the following tasks:
 
-* RHACM and multicluster engine for Kubernetes Operator are *not installed* on the seed cluster.
-* You have configured a shared container directory on the seed cluster.
-* You have installed the minimum version of the OADP Operator and the Lifecycle Agent on the seed cluster.
-* Ensure that persistent volumes are *not configured* on the seed cluster.
-* Ensure that the LocalVolume CR does *not exist* on the seed cluster if the Local Storage Operator is used.
-* Ensure that the LVMCluster CR does *not exist* on the seed cluster if LVM Storage is used.
-* Ensure that the DataProtectionApplication CR does *not exist* on the seed cluster if OADP is used.
-* OCI container image generated from the seed SNO cluster and uploaded to the link:lab-environment-introduction.html#container-registry[container registry].
+*   RHACM and Multicluster Engine for Kubernetes Operator are *not installed* on the seed cluster.
+*   A shared container directory is configured on the seed cluster.
+*   The minimum required version of the OADP Operator and the Lifecycle Agent are installed on the seed cluster.
+*   Persistent volumes are *not configured* on the seed cluster.
+*   The LocalVolume CR does *not exist* on the seed cluster if the Local Storage Operator is used.
+*   The LVMCluster CR does *not exist* on the seed cluster if LVM Storage is used.
+*   The DataProtectionApplication CR does *not exist* on the seed cluster if OADP is used.
+*   An OCI container image is generated from the seed SNO cluster and uploaded to the link:lab-environment-introduction.html#container-registry[container registry].
 
-IMPORTANT: During the deployment of this lab we already ensured that the seed SNO cluster is ready to run a seed image generation.
+IMPORTANT: During the deployment of this lab, we ensured that the seed SNO cluster is ready for seed image generation.
 
 [#running-seed-image-gen]
-== Running the Seed Image Generation
+== Running Seed Image Generation
 
-Connect to the seed SNO cluster and check that OpenShift ADP and Lifecycle-Agent (LCA) operators are installed as required operators to create a seed image. Notice that the SR-IOV and LVM operators are installed too. In this case we want them as part of the seed image because the SNO clusters that are going to use this seed image will require these operators to run their workloads.
+Connect to the seed SNO cluster and verify that the OpenShift ADP and Lifecycle Agent (LCA) operators are installed as required operators to create a seed image. Notice that the SR-IOV and LVM operators are also installed. In this case, they are included as part of the seed image because the SNO clusters using this seed image will require these operators to run their workloads.
 
-IMPORTANT: If below command throws an error saying: `The connection to the server api.sno-seed.5g-deployment.lab:6443 was refused - did you specify the right host or port?`. Wait up to 10 minutes, the cluster may be restarting its API.
+IMPORTANT: If the following command throws an error saying: `The connection to the server api.sno-seed.5g-deployment.lab:6443 was refused - did you specify the right host or port?`, wait up to 10 minutes, as the cluster may be restarting its API.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -44,7 +44,7 @@ openshift-sriov-network-operator       sriov-network-operator.v4.18.0-2025021215
 openshift-storage                      lvms-operator.v4.18.0                         LVM Storage               4.18.0                           Succeeded
 -----
 
-Check that the OpenShift Container Platform version of the seed SNO cluster is {sno-cluster-version1}
+Verify that the OpenShift Container Platform version of the seed SNO cluster is {sno-cluster-version1}:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -52,7 +52,7 @@ Check that the OpenShift Container Platform version of the seed SNO cluster is {
 oc --kubeconfig {seed-cluster-kubeconfig} get clusterversion
 -----
 
-[console-input]
+[.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 NAME      VERSION       AVAILABLE   PROGRESSING   SINCE   STATUS
@@ -102,6 +102,7 @@ You can follow the progress by checking the logs of the lifecycle-agent-controll
 -----
 oc --kubeconfig {seed-cluster-kubeconfig} get seedgen -A
 -----
+
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -122,17 +123,17 @@ oc --kubeconfig {seed-cluster-kubeconfig} -n openshift-lifecycle-agent logs -f d
 2025-02-03T17:47:18Z	INFO	setup	Initial IBU created
 2025-02-03T17:47:18Z	INFO	controllers.ImageBasedUpgrade.ibu-dynamic-client	Setting up retry middleware
 2025-02-03T17:47:18Z	INFO	controllers.ImageBasedUpgrade.ibu-dynamic-client	Successfully created dynamic client
-INFO[0000] Running systemctl is-active [var-lib-containers.mount] 
-INFO[0000] Executing /usr/bin/env with args [-- systemctl is-active var-lib-containers.mount] 
-INFO[0000] Running systemctl cat [var-lib-containers.mount] 
-INFO[0000] Executing /usr/bin/env with args [-- systemctl cat var-lib-containers.mount] 
+INFO[0000] Running systemctl is-active [var-lib-containers.mount]
+INFO[0000] Executing /usr/bin/env with args [-- systemctl is-active var-lib-containers.mount]
+INFO[0000] Running systemctl cat [var-lib-containers.mount]
+INFO[0000] Executing /usr/bin/env with args [-- systemctl cat var-lib-containers.mount]
 2025-02-03T17:47:18Z	INFO	controllers.ImageBasedUpgrade.ibu-clientset	Setting up retry middleware
 2025-02-03T17:47:18Z	INFO	setup	starting manager
 2025-02-03T17:47:18Z	INFO	controller-runtime.metrics	Starting metrics server
 ... REDACTED ...
 2025-02-04T09:37:08Z	INFO	controllers.SeedGenerator	Generating seed image: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.6
 2025-02-04T09:37:08Z	INFO	controllers.SeedGenerator	Checking system health
-INFO[57054] Executing /usr/bin/env with args [-- systemd-run --collect --wait --unit lca-generate-seed-image --setenv HTTP_PROXY --setenv HTTPS_PROXY --setenv NO_PROXY podman run --privileged --pid=host --name=lca_image_builder --replace --net=host --http-proxy=true -v /etc:/etc -v /var:/var -v /var/run:/var/run -v /run/systemd/journal/socket:/run/systemd/journal/socket -v /var/lib/lca/ibu-seedgen-orch/auth.json:/var/lib/lca/ibu-seedgen-orch/auth.json --entrypoint lca-cli registry.redhat.io/openshift4/lifecycle-agent-rhel9-operator@sha256:7c5bed953d0f2a774bc099c22d3c520f98cad0605723218624cc3737be4086ac create --authfile /var/lib/lca/ibu-seedgen-orch/auth.json --image infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.6 --recert-image registry.redhat.io/openshift4/recert-rhel9@sha256:f78fd5c29b78bf429596679d8104cd629bf2dca1265638824b39ed56cb3dbb13] 
+INFO[57054] Executing /usr/bin/env with args [-- systemd-run --collect --wait --unit lca-generate-seed-image --setenv HTTP_PROXY --setenv HTTPS_PROXY --setenv NO_PROXY podman run --privileged --pid=host --name=lca_image_builder --replace --net=host --http-proxy=true -v /etc:/etc -v /var:/var -v /var/run:/var/run -v /run/systemd/journal/socket:/run/systemd/journal/socket -v /var/lib/lca/ibu-seedgen-orch/auth.json:/var/lib/lca/ibu-seedgen-orch/auth.json --entrypoint lca-cli registry.redhat.io/openshift4/lifecycle-agent-rhel9-operator@sha256:7c5bed953d0f2a774bc099c22d3c520f98cad0605723218624cc3737be4086ac create --authfile /var/lib/lca/ibu-seedgen-orch/auth.json --image infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.6 --recert-image registry.redhat.io/openshift4/recert-rhel9@sha256:f78fd5c29b78bf429596679d8104cd629bf2dca1265638824b39ed56cb3dbb13]
 -----
 
 IMPORTANT: The cluster reboots and loses API capabilities while the Lifecycle Agent generates the seed image. Applying the SeedGenerator CR stops the kubelet and the CRI-O operations, then it starts the image generation. This process may take up to 10 minutes.
@@ -142,6 +143,7 @@ IMPORTANT: The cluster reboots and loses API capabilities while the Lifecycle Ag
 -----
 oc --kubeconfig {seed-cluster-kubeconfig} get seedgen -A
 -----
+
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -155,6 +157,7 @@ After the cluster recovers and is available, you can continue checking the statu
 -----
 oc --kubeconfig {seed-cluster-kubeconfig} get seedgenerator seedimage -o json | jq '.status'
 -----
+
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -186,6 +189,7 @@ oc --kubeconfig {seed-cluster-kubeconfig} get seedgenerator seedimage -o json | 
 -----
 oc --kubeconfig {seed-cluster-kubeconfig} get seedgenerator
 -----
+
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -193,13 +197,14 @@ NAME        AGE   STATE              DETAILS
 seedimage   12s   SeedGenCompleted   Seed Generation completed
 -----
 
-Once the SeedGenerator CR shows the state as `SeedGenCompleted`, the image creation is completed. Verify that the cluster is available again. However, if you want to generate more seed images, you must provision a new seed cluster with the version from which you want to generate a seed image.
+Once the SeedGenerator CR shows the state as `SeedGenCompleted`, the image creation is complete. Verify that the cluster is available again. However, if you want to generate more seed images, you must provision a new seed cluster with the version from which you want to generate a seed image.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 oc --kubeconfig {seed-cluster-kubeconfig} get clusterversion,nodes
 -----
+
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----

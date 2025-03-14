@@ -2,18 +2,18 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-The deployment (ZTP), configuration, and lifecycle management solution is built by different independent components that work together to provide an automate workflow to provision and configure remote OpenShift clusters. In the following picture we can see the different moving pieces involved:
+The deployment (ZTP), configuration, and lifecycle management solution is built by different independent components that work together to provide an automated workflow to provision and configure remote OpenShift clusters. In the following picture, we can see the different moving pieces involved:
 
-* A *Git repository* that declares the `ClusterInstance` resource, e.g. how the cluster is provisioned, and one or multiple `PolicyGenTemplates` (PGT) resources that defines how the cluster is configured. This includes, the operators that are going to be installed, the configuration to be applied and the applications to be deployed. Notice that a Git repository is a must in any GitOps methodology.
+* A *Git repository* that declares the `ClusterInstance` resource, e.g., how the cluster is provisioned, and one or multiple `PolicyGenTemplates` (PGT) resources that define how the cluster is configured. This includes the operators that are going to be installed, the configuration to be applied, and the applications to be deployed. Note that a Git repository is a must in any GitOps methodology.
 
-IMPORTANT: In OpenShift 4.18 the `SiteConfig` resource managed by the SiteConfigGenerator kustomize plugin was replaced as recommended method by the `ClusterInstance` resource managed by the SiteConfig Operator.
+IMPORTANT: In OpenShift 4.18, the `SiteConfig` resource managed by the SiteConfigGenerator kustomize plugin was replaced as the recommended method by the `ClusterInstance` resource managed by the SiteConfig Operator.
 
 * *Red Hat Advanced Cluster Management* installed on the hub cluster, at the heart of the architecture.
-* The *Red Hat OpenShift GitOps* operator allows to build and integrate declarative Git driven workflows. It is a key component and it is extended with the `policy-generator` kustomize plugin. The `siteconfig-generator` is no longer needed as it is replaced by the SiteConfig Operator.
+* The *Red Hat OpenShift GitOps* operator allows building and integrating declarative Git-driven workflows. It is a key component and it is extended with the `policy-generator` kustomize plugin. The `siteconfig-generator` is no longer needed as it is replaced by the SiteConfig Operator.
 * The *SiteConfig Operator* enables users to deploy clusters using either the {ai-workflow}[Agent Based Installation] or {ibi-docs}[Image Based Installation] deployment flows through the ClusterInstance API. The ClusterInstance CR will be rendered by the SiteConfig Operator as installation CRs.
-* The *Assisted Service* operator, now called Infrastructure operator. It is a component of the Multicluster Engine Operator and responsible for provisioning OpenShift clusters. It is part of the {ai-workflow}[Assisted Installer deployment workflow].
-* The *Image Based Install (IBI) Operator* is reponsible to deploy managed clusters. The Image Based Install (IBI) Operator is part of the {ibi-docs}[image-based deployment workflow] for preinstalled single-node OpenShift on bare-metal hosts. It is part of the Multicluster Engine operator from version 2.7.
-* The *Topology Aware Lifecycle Manager* (TALM) responsible for managing the software lifecycle of the managed clusters.
+* The *Assisted Service* operator, now called Infrastructure operator, is a component of the Multicluster Engine Operator and is responsible for provisioning OpenShift clusters. It is part of the {ai-workflow}[Assisted Installer deployment workflow].
+* The *Image Based Install (IBI) Operator* is responsible for deploying managed clusters. The Image Based Install (IBI) Operator is part of the {ibi-docs}[image-based deployment workflow] for preinstalled single-node OpenShift on bare-metal hosts. It is part of the Multicluster Engine operator from version 2.7.
+* The *Topology Aware Lifecycle Manager* (TALM) is responsible for managing the software lifecycle of the managed clusters.
  
 image::ztp_gitops_flow.png[External Resource Reconciler]
 
@@ -24,7 +24,7 @@ IMPORTANT: The ZTP workflow starts when the site is connected to the network and
 
 Red Hat Advanced Cluster Management for Kubernetes (RHACM) provides the multicluster hub, a central management console for managing multiple Kubernetes-based clusters across data centers, public clouds, and private clouds. You can use the hub to create Red Hat OpenShift Container Platform clusters on selected providers, or import existing Kubernetes-based clusters. After the clusters are managed, you can set compliance requirements to ensure that the clusters maintain the specified security requirements. You can also deploy business applications across your clusters.
 
-From ACM 2.5 on, there has been a major re-architecture in RHACM. Part of the functionality that was included has been moved to the Multicluster Engine (MCE), which is required piece for RHACM. Actually, when installing RHACM the MCE bits are also installed automatically.
+From ACM 2.5 on, there has been a major re-architecture in RHACM. Part of the functionality that was included has been moved to the Multicluster Engine (MCE), which is a required piece for RHACM. Actually, when installing RHACM, the MCE bits are also installed automatically.
 
 image::arch_acm_mce.png[ACM architecture]
 
@@ -35,16 +35,16 @@ The Multicluster Engine for Kubernetes (MCE) operator is a software operator tha
 
 WARNING: The Multicluster Engine for Kubernetes operator is entitled with OpenShift.
 
-MCE provides most of the functionality to provision OpenShift clusters, since it includes the Assisted Installer operator, the Image Based Install Operator, SiteConfig Operator, Hive and the management of the Klusterlet agents installed on the managed clusters. 
+MCE provides most of the functionality to provision OpenShift clusters, since it includes the Assisted Installer operator, the Image Based Install Operator, SiteConfig Operator, Hive, and the management of the Klusterlet agents installed on the managed clusters. 
 
 [#siteconfig]
 === SiteConfig Operator
 
 The SiteConfig Operator introduces a unified ClusterInstance API, which is derived from the SiteConfig API from the SiteConfig Generator kustomize plugin. This API decouples parameters that define a cluster from the manner in which the cluster is deployed. This separation removed certain limitations that were presented by the SiteConfig kustomize plugin in the past.
 
-Because of this decoupling, the SiteConfig Operator allows deploying OpenShift clusters using either the {ai-workflow}[Agent Based Installation] or {ibi-docs}[Image Based Installation] flows depending on the user's needs. See as well, that the operator is the entry point for any GitOps ZTP deployment.
+Because of this decoupling, the SiteConfig Operator allows deploying OpenShift clusters using either the {ai-workflow}[Agent Based Installation] or {ibi-docs}[Image Based Installation] flows depending on the user's needs. See as well that the operator is the entry point for any GitOps ZTP deployment.
 
-IMPORTANT: In telco environments, specially in RAN, the *Image Based Installation* deployment method is the preferred one due to the reduced installation times and the scalability requirements required in edge deployments.
+IMPORTANT: In telco environments, especially in RAN, the *Image Based Installation* deployment method is the preferred one due to the reduced installation times and the scalability requirements required in edge deployments.
 
 The SiteConfig Operator dynamically generates installation manifests based on user-defined cluster templates that are instantiated from the data in the ClusterInstance CR. You can source the ClusterInstance CR from your Git repository through ArgoCD, or manually on the hub cluster. 
 
@@ -63,9 +63,9 @@ image:siteconfig-operator-flow.png[SiteConfig Operator flow]
 [#ibio]
 === Image Based Install Operator
 
-WARNING: The IBI Operator requires an Installation ISO preinstalled on the host we want to deploy before creating the configuration ISO. The installation ISO and seed image process creation is described in the link:ztp-workflow.html[ZTP worflow] section.
+WARNING: The IBI Operator requires an Installation ISO preinstalled on the host we want to deploy before creating the configuration ISO. The installation ISO and seed image process creation is described in the link:ztp-workflow.html#ibi-deployment[ZTP workflow] section.
 
-The Image Based Install (IBI) Operator creates a *configuration ISO* from the installation manifests created by the link:ztp-at-scale.html#siteconfig[SiteConfig Operator]. Then automatically boots the host with the configuration ISO attached. The host mounts the configuration ISO and runs the reconfiguration process. When the reconfiguration completes, the single-node OpenShift cluster is ready.
+The Image Based Install (IBI) Operator creates a *configuration ISO* from the installation manifests created by the link:ztp-at-scale.html#siteconfig[SiteConfig Operator]. Then, it automatically boots the host with the configuration ISO attached. The host mounts the configuration ISO and runs the reconfiguration process. When the reconfiguration completes, the single-node OpenShift cluster is ready.
 
 See the following high-level steps to deploy a preinstalled host in a cluster with a hub-and-spoke architecture:
 
@@ -75,12 +75,12 @@ See the following high-level steps to deploy a preinstalled host in a cluster wi
 * The IBI Operator creates a configuration ISO from these resources and boots the target host with the configuration ISO attached.
 * The host mounts the configuration ISO and runs the reconfiguration process. When the reconfiguration completes, the single-node OpenShift cluster is ready.
 
-IMPORTANT: Currently, The IBI Operator can only install Single-Node OpenShift (SNO) clusters.
+IMPORTANT: Currently, the IBI Operator can only install Single-Node OpenShift (SNO) clusters.
 
 [#ai]
 === Infrastructure Operator
 
-The Infrastructure operator for Red Hat OpenShift, formerly known as Assisted Service operator, is responsible for managing the deployment of the *Assisted Service*. Assisted Service is used to orchestrate baremetal OpenShift installations. Basically, it is the piece that will help us to automatically provision OpenShift clusters in a declarative manner following the {ai-workflow}[Assisted Installer] flow. It also exposes a UI and a REST API for creating new clusters.
+The Infrastructure operator for Red Hat OpenShift, formerly known as Assisted Service operator, is responsible for managing the deployment of the *Assisted Service*. Assisted Service is used to orchestrate bare metal OpenShift installations. Basically, it is the piece that will help us to automatically provision OpenShift clusters in a declarative manner following the {ai-workflow}[Assisted Installer] flow. It also exposes a UI and a REST API for creating new clusters.
 
 A high overview of the basic flow is as follows. Note that in the solution presented in this lab these steps are automated and derive from the declarative configuration in Git which provides a "zero touch" deployment of clusters.
 
@@ -96,20 +96,20 @@ The Assisted Service can currently install clusters with highly-available contro
 [#gitops-operator]
 == GitOps Operator
 
-Red Hat OpenShift uses Argo CD to maintain cluster resources. Argo CD is an open-source declarative tool for the continuous integration and continuous deployment (CI/CD) of applications. So, in a ZTP workflow, Argo CD is responsible for pulling the custom resources definitions that are stored in a Git repository and apply them to the hub cluster. In the solution presented here, **the definitions are applied into the hub cluster**, where all the components described in this section are running. It is RHACM in charge of performing the necessary actions to the managed clusters and distributing those policies accordingly.
+Red Hat OpenShift uses Argo CD to maintain cluster resources. Argo CD is an open-source declarative tool for the continuous integration and continuous deployment (CI/CD) of applications. So, in a ZTP workflow, Argo CD is responsible for pulling the custom resources definitions that are stored in a Git repository and applying them to the hub cluster. In the solution presented here, **the definitions are applied into the hub cluster**, where all the components described in this section are running. It is RHACM in charge of performing the necessary actions to the managed clusters and distributing those policies accordingly.
 
 IMPORTANT: Argo CD can pull and apply any Kubernetes custom resource, however, for ZTP we are mainly focusing on `ClusterInstance` and `PolicyGenTemplates` manifests, but Argo CD is not restricted to them.
 
-We have been talking during this lab how a ClusterInstance manifest describes the way OpenShift cluster is going to be provisioned. While one or multiples PolicyGenTemplates describes the configuration that will be applied to the provisioned cluster. 
+We have been talking during this lab about how a ClusterInstance manifest describes the way an OpenShift cluster is going to be provisioned, while one or multiple PolicyGenTemplates describe the configuration that will be applied to the provisioned cluster. 
 
-However, certainly, both are high level manifests that are not understood by the hub cluster. There is something in between that will translate those high level definitions into something that RHACM (including MCE) recognizes. We are referring to the link:ztp-at-scale.html#siteconfig[SiteConfig Operator] when deploying clusters and {cnf-features-policygen-plugin}[Policy generator kustomize plugin] when configuring it.
+However, certainly, both are high-level manifests that are not understood by the hub cluster. There is something in between that will translate those high-level definitions into something that RHACM (including MCE) recognizes. We are referring to the link:ztp-at-scale.html#siteconfig[SiteConfig Operator] when deploying clusters and {cnf-features-policygen-plugin}[Policy generator kustomize plugin] when configuring it.
 
-While the SiteConfig Operator follows an operator classical installation, the Policy generator kustomize plugin is installed into the OpenShift GitOps operator during the initial setup/configuration of the hub cluster. The procedure is {ztp-gitops-docs}[fully documented here]. Basically, it modifies the openshift-gitops-repo-server deployment to include an initContainer that will load the kustomize plugin. Then, everytime a PolicyGenTemplate is pulled from a Git repo the proper kustomize plugin will be used and transform the manifest into the proper custom resources.
+While the SiteConfig Operator follows a classical operator installation, the Policy generator kustomize plugin is installed into the OpenShift GitOps operator during the initial setup/configuration of the hub cluster. The procedure is {ztp-gitops-docs}[fully documented here]. Basically, it modifies the `openshift-gitops-repo-server` deployment to include an initContainer that will load the kustomize plugin. Then, every time a PolicyGenTemplate is pulled from a Git repo, the proper kustomize plugin will be used and transform the manifest into the proper custom resources.
 
 [#sitegen]
 === SiteGen
 
-IMPORTANT: In OpenShift 4.18 the `SiteConfig` resource managed by the SiteConfigGenerator kustomize plugin was replaced as recommended method by the `ClusterInstance` resource managed by the SiteConfig Operator.
+IMPORTANT: In OpenShift 4.18, the `SiteConfig` resource managed by the SiteConfigGenerator kustomize plugin was replaced as the recommended method by the `ClusterInstance` resource managed by the SiteConfig Operator.
 
 [#policygen]
 === PolicyGen
@@ -123,7 +123,7 @@ The policy generator kustomize plugin is used to facilitate creating RHACM polic
 [#talm]
 == TALM operator
 
-Topology Aware Lifecycle Manager operator is a Kubernetes operator that facilitates software lifecycle management of fleets of clusters. That includes platform, operator and configuration updates. It uses Red Hat Advanced Cluster Management (RHACM) for performing changes on target clusters, in particular by using RHACM policies. TALM Operator uses the following CRDs:
+Topology Aware Lifecycle Manager operator is a Kubernetes operator that facilitates software lifecycle management of fleets of clusters. That includes platform, operator, and configuration updates. It uses Red Hat Advanced Cluster Management (RHACM) for performing changes on target clusters, in particular by using RHACM policies. TALM Operator uses the following CRDs:
 
 * ClusterGroupUpgrade.
 * ImageBasedGroupUpgrade.

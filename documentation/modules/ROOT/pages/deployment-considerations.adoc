@@ -7,7 +7,7 @@ A RAN deployment requires of multiple pieces of the stack being properly configu
 [#hardware-configurations]
 == Hardware configurations
 
-RAN deployments usually run on top of baremetal servers, and as such, is of vital importance to have a proper configuration at the hardware level to meet the required expectations of the RAN workloads.
+RAN deployments usually run on top of bare metal servers, and as such, is of vital importance to have a proper configuration at the hardware level to meet the required expectations of the RAN workloads.
 
 [#bios-settings]
 === BIOS Settings

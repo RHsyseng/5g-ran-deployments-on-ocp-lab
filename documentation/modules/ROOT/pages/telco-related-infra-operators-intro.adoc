@@ -53,33 +53,33 @@ In order to manage these devices, there are multiple accelerator operators that 
 [#cluster-logging-operator]
 == Cluster Logging Operator
 
-The Logging Operator provides a set of APIs to control collection and forwarding of logs from all pods and nodes in a cluster. This includes application logs (from regular pods), infrastructure logs (from system pods and node logs), and audit logs (special node logs with legal/security implications). In telco RAN DU configurations logging is used to collect logs from the far edge node for remote analysis.
+The Logging Operator provides APIs to control collection and forwarding of logs from all pods and nodes in a cluster. This includes application logs (from regular pods), infrastructure logs (from system pods and node logs), and audit logs (special node logs with legal/security implications). In telco RAN DU configurations, logging collects logs from far-edge nodes for remote analysis.
 
-The Logging Operator does not collect or forward logs itself: it starts, configures, monitors and manages the components that do the work. Notice that in the RAN use model the fluend log collector is deprecated in favor of Vector log collector.
+The Logging Operator does not collect or forward logs itself; it starts, configures, monitors, and manages components that perform these tasks. Note that in the RAN use model, the Fluentd log collector is deprecated in favor of the Vector log collector.
 
 [#lifecycle-operator]
 == Lifecycle Agent Operator
 
-The Lifecycle Agent provides local lifecycle management services for single-node OpenShift clusters. The Lifecycle Agent is not applicable in multi-node clusters or single-node OpenShift clusters with an additional worker.
+The Lifecycle Agent provides local lifecycle management services for single-node OpenShift clusters. It is not applicable in multi-node clusters or single-node OpenShift clusters with an additional worker.
 
-From OpenShift Container Platform 4.14.13, the Lifecycle Agent provides you with an alternative way to upgrade the platform version of a single-node OpenShift cluster. The image-based upgrade is faster than the standard upgrade method and allows you to directly upgrade from OpenShift Container Platform <4.y> to <4.y+2>, and <4.y.z> to <4.y.z+n>. 
+Starting with OpenShift Container Platform 4.14.13, the Lifecycle Agent offers an alternative method for upgrading platform versions in single-node OpenShift clusters. The image-based upgrade is faster than standard methods and allows direct upgrades from OpenShift Container Platform <4.y> to <4.y+2>, and <4.y.z> to <4.y.z+n>. 
 
 You can read more about the image-based upgrade technology {ibu-docs}[here].
 
 [#storage-operator]
 == Storage Operators
 
-LVM Storage can be used as the local storage implementation for the RAN DU use case. When LVM Storage is used as the storage solution, it replaces the Local Storage Operator, and the CPU required is assigned to the management partition as platform overhead. 
+LVM Storage can be used as the local storage implementation for the RAN DU use case. When LVM Storage is used as the storage solution, it replaces the Local Storage Operator, with CPU resources assigned to the management partition as platform overhead.
 
-LVM Storage provides dynamic provisioning of block and file storage. LVM Storage creates logical volumes from local devices that can be used as PVC resources by applications. Volume expansion and snapshots are also possible.
+LVM Storage provides dynamic provisioning of block and file storage. Logical volumes created from local devices can be used as PVC resources by applications. Volume expansion and snapshots are also supported.
 
 [#oadp-operator]
 == OpenShift API for Data Protection Operator
 
-The OpenShift API for Data Protection (OADP) product safeguards customer applications on OpenShift Container Platform. It offers disaster recovery protection, covering OpenShift Container Platform applications, application-related cluster resources, persistent volumes, and internal images. 
+The OpenShift API for Data Protection (OADP) safeguards customer applications on OpenShift Container Platform. It offers disaster recovery protection for applications, application-related cluster resources, persistent volumes, and internal images.
 
 IMPORTANT: OADP does not serve as a disaster recovery solution for etcd or OpenShift Operators.
 
-OADP support is provided to customer workload namespaces, and cluster scope resources. It is specially essential during image-based upgrades, when we need to backup customer and cluster resources prior to the upgrade process and then restore that information once the upgrade is completed.
+OADP support is provided for customer workload namespaces and cluster scope resources. It is especially critical during image-based upgrades when backups of customer and cluster resources are needed prior to upgrading, followed by restoration once upgrades are completed.
 
 You can read more about the OADP operator {ibu-oadp}[here].

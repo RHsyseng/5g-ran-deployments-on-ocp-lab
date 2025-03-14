@@ -5,17 +5,17 @@ include::_attributes.adoc[]
 [#introduction]
 == Introduction
 
-As was detailed in the link:ztp-workflow.html#abi-deployment[Agent Based Installation] section, this installation method combines the ease of use of the Assisted Installation service with the ability to run offline and also optionally generate or accept link:ztp-intro.html[Zero Touch Provisioning] (ZTP) custom resources. In this part of the lab we are going to:
+As detailed in the link:ztp-workflow.html#abi-deployment[Agent Based Installation] section, this installation method combines the ease of use of the Assisted Installation service with the ability to run offline. It also optionally generates or accepts link:ztp-intro.html[Zero Touch Provisioning] (ZTP) custom resources. In this part of the lab, we will:
 
 * Create the prerequisites for the SNO cluster installation.
-* Create the definition of the SNO cluster as a `ClusterInstance` CR.
-* Include any extra configuration required for our telco 5G RAN specific use case.
-* Commit all those manifests into the `ztp-repository` Git repo where the link:ztp-intro.html[OpenShift GitOps] operator will automatically apply those changes.
+* Define the SNO cluster as a `ClusterInstance` CR.
+* Include any extra configuration required for our telco 5G RAN-specific use case.
+* Commit all manifests into the `ztp-repository` Git repo, where the link:ztp-intro.html[OpenShift GitOps] operator automatically applies the changes.
 
 [#baremetal-node-details]
 == Bare Metal Node Details
 
-The details for our baremetal node that we want to provision as SNO ABI are the ones below:
+The details for our bare-metal node, which we want to provision as SNO ABI, are as follows:
 
 * RedFish Endpoint: `redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno-abi`
 * MAC Address: `aa:aa:aa:aa:03:01`
@@ -26,9 +26,9 @@ The details for our baremetal node that we want to provision as SNO ABI are the 
 [#pre-reqs]
 == Deployment Prerequisites
 
-Before we start working on the ClusterInstance, let's add some information required for the deployment into the Git repository.
+Before working on the ClusterInstance, let's add some information required for the deployment into the Git repository.
 
-CAUTION: In a production environment you don't want to add sensitive information in plain text in your Git repository, for the sake of simplicity for this lab we are adding this information in plain text to the Git repo, so you don't have to care about it. This applies to things like pull secrets or BMC credentials.
+CAUTION: In a production environment, you should not add sensitive information in plain text to your Git repository. For simplicity in this lab, we are adding this information in plain text so you don't have to manage it. This applies to items like pull secrets or BMC credentials.
 
 1. BMC credentials file.
 +
@@ -244,9 +244,9 @@ spec:
 EOF
 -----
 
-IMPORTANT: Check that the above ClusterInstance CR is using the ai-node-templates-v1 (Agent Based Install) templates to deploy the sno-abi OpenShift cluster. Also, we added an ignitionConfigOverride that creates a separate partition for the `/var/lib/containers` which is a pre-requisite for upgrading clusters using the image-based Upgrade method. We will deal with image-based upgrades later on in this lab, however, detailed information about the requirements needed can be found {ibu-var-lib-containers}[here]
+IMPORTANT: Check that the above ClusterInstance CR is using the `ai-node-templates-v1` (Agent Based Install) templates to deploy the `sno-abi` OpenShift cluster. We added an `ignitionConfigOverride` that creates a separate partition for `/var/lib/containers`, which is a pre-requisite for upgrading clusters using the image-based Upgrade method. We will address image-based upgrades later in this lab. Detailed information about the requirements can be found {ibu-var-lib-containers}[here].
 
-In our site, we defined `clusterImageSetNameRef: "active-ocp-version"` as for the release to use to deploy our site. This reference will point to the `active` release we are deploying our sites with. Let's create the `ClusterImageSet` in the repo:
+In our site, we defined `clusterImageSetNameRef: "active-ocp-version"` for the release to use to deploy our site. This reference points to the `active` release that we are deploying our sites with. Let's create the `ClusterImageSet` in the repo:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -264,7 +264,7 @@ EOF
 [#reference-manifest-clusterinstance]
 == Reference Manifest Configuration
 
-Let's add the {rds-config}[reference RAN DU configuration] for the version of OCP we are about to deploy. In the workstation, run the following command to extract the reference ZTP {lab-major-version} RAN configuration. Those manifests are extracted from the `/extra-manifest` folder of the ztp-site-generate container.
+Let's add the {rds-config}[reference RAN DU configuration] for the version of OCP we are about to deploy. In the workstation, run the following command to extract the reference ZTP {lab-major-version} RAN configuration. These manifests are extracted from the `/extra-manifest` folder of the `ztp-site-generate` container.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -273,7 +273,7 @@ podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=fals
 podman run --log-driver=none --rm --tls-verify=false {ztp-sitegenerate-disconnected-image} extract /home/ztp/extra-manifest --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-configs/reference-manifest/{lab-major-version}/
 -----
 
-Notice that `reference-manifest/{lab-major-version}/` refers to the Git subdirectory that stores the contents of the RAN configuration for a specific version, in this case {lab-major-version}. Different versions of the RAN DU configuration can coexist by extracting them from the appropriate ztp-site-generate container version to a different extra-manifest folder. Then, the user just needs to include the right reference-manifest version folder to the cluster version is installing.
+`reference-manifest/{lab-major-version}/` refers to the Git subdirectory that stores the contents of the RAN configuration for a specific version, in this case {lab-major-version}. Different versions of the RAN DU configuration can coexist by extracting them from the appropriate `ztp-site-generate` container version to a different `extra-manifest` folder. Then, the user only needs to include the right `reference-manifest` version folder to the cluster version being installed.
 
 This configuration is applied during installation time. 
 
@@ -284,7 +284,7 @@ Our recommendation is to always create a reference and keep the reference and us
 [#extra-manifest-clusterinstance]
 == Extra Manifest Configuration
 
-Now, let's add the **extra** or **custom** RAN configuration to the cluster. It is strongly recommended to include crun manifests as part of the additional install-time manifests for 4.13+. So let's create proper machine configuration in the extra manifest folder:
+Now, let's add the **extra** or **custom** RAN configuration to the cluster. It is strongly recommended to include crun manifests as part of the additional install-time manifests for 4.13+. Let's create proper machine configuration in the `extra manifest` folder:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -384,7 +384,7 @@ generatorOptions:
 EOF
 -----
 
-At this point we can commit the changes to the repo. We will push the changes together with cluster and telco related infrastructure operator configurations in the next section.
+At this point we can commit the changes to the repo. We will push the changes together with the cluster and Telco-related infrastructure operator configurations in the next section.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -401,12 +401,12 @@ cd ~
 
 When we applied the ZTP GitOps Pipeline configuration in the last section, the ArgoCD app called clusters takes care of deploying the `sno-abi` SNO cluster defined in the `ClusterInstance`.
 
-At this point ArgoCD started doing its magic which means that the cluster deployment should already be running, let's see what happened in Argo CD.
+At this point, ArgoCD started doing its magic which means that the cluster deployment should already be running, let's see what happened in Argo CD.
 
 WARNING: It may take up to 5 minutes for Argo CD to start syncing changes.
 
 1. Login into https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab/[Argo CD].
-2. When accessing choose `Logging with OpenShift`, on the next screen use the OpenShift Console Admin credentials.
+2. When accessing choose `Logging with OpenShift`. On the next screen use the OpenShift Console Admin credentials.
 3. From all these apps, click on `clusters` we will see something similar to the following screen:
 +
 image::argocd-clusters-app-sno-abi.png[ArgoCD Clusters App]
@@ -419,11 +419,11 @@ Once the ZTP GitOps Pipeline starts deploying our clusters we can follow the ins
 [#monitoring-deployment-webui]
 == Monitoring the Deployment via the WebUI
 
-WARNING: It may take a while for the installation to start, wait at least 10 minutes if you see `The cluster is not ready for installation` message or the `SNO ABI` cluster shows up as `draft`.
+WARNING: It may take a while for the installation to start. Wait at least 10 minutes if you see the message `The cluster is not ready for installation` or if the `SNO ABI` cluster appears as `draft`.
 
-1. Access the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome[RHACM WebUI] and login with the OpenShift credentials.
-2. On the top left corner click on `local-cluster` and choose `All Clusters` to enter the RHACM Console.
-3. Once you're in, click on `Infrastructure` -> `Clusters`. You will see a screen like the one below if the deployment has not yet started:
+1. Access the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome[RHACM WebUI] and log in using your OpenShift credentials.
+2. In the top-left corner, click on `local-cluster` and select `All Clusters` to enter the RHACM Console.
+3. Navigate to `Infrastructure` -> `Clusters`. If the deployment has not yet started, you will see a screen similar to this:
 +
 image::acm-clusterview-draft.png[RHACM Cluster View Draft]
 +
@@ -431,26 +431,26 @@ image::acm-clusterview-draft.png[RHACM Cluster View Draft]
 +
 image::acm-clusterview.png[RHACM Cluster View]
 +
-5. In order to check the deployment status of the `sno-abi` cluster, click on `sno-abi` and you will get presented this screen:
+5. To check the deployment status of the `sno-abi` cluster, click on `sno-abi`. You will see a screen like this:
 +
 image::acm-sno-abi-view.png[RHACM sno-abi Cluster View]
 +
-6. You can follow the progress here, if you want to get extra details you can click on `View Cluster Events` and you should see more information:
+6. You can track progress here. For additional details, click on `View Cluster Events`, where you will see more information:
 +
 image::acm-sno-abi-clusterevents.png[RHACM sno-abi Cluster Events]
 +
-7. Deployment will eventually finish:
+7. The deployment will eventually complete:
 +
-IMPORTANT: `SNO ABI` cluster installation takes around 50 minutes to complete.
+IMPORTANT: The installation of the `SNO ABI` cluster takes approximately 50 minutes to complete.
 +
 image::acm-sno-abi-install-completed.png[RHACM sno-abi Cluster Deployment Finished]
 
 [#monitoring-deployment-cli]
 == Monitoring the Deployment via the CLI
 
-IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
+IMPORTANT: The following commands must be executed from the workstation host unless specified otherwise.
 
-1. Check the `AgentClusterInstall` for SNO ABI cluster:
+1. Check the `AgentClusterInstall` status for the SNO ABI cluster:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -461,11 +461,11 @@ oc --kubeconfig ~/hub-kubeconfig -n sno-abi get agentclusterinstall sno-abi
 [console-input]
 [source,console,subs="attributes+,+macros"]
 -----
-NAME   CLUSTER   STATE
-sno-abi   sno-abi      finalizing
+NAME      CLUSTER   STATE
+sno-abi   sno-abi   finalizing
 -----
 +
-2. In case you want expanded information like we saw in the WebUI you can check the conditions of the `AgentClusterInstall` object. For example, while installing:
+2. For expanded information, similar to what is available in the WebUI, check the conditions of the `AgentClusterInstall` object during installation:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -499,6 +499,6 @@ oc --kubeconfig ~/hub-kubeconfig -n sno-abi get agentclusterinstall sno-abi -o y
   type: Completed
 -----
 
-IMPORTANT: `SNO ABI` cluster installation takes around 50 minutes to complete.
+IMPORTANT: The installation of the `SNO ABI` cluster takes approximately 50 minutes to complete.
 
-While the `SNO ABI` cluster installs, let's move to the next section where we will learn how to deploy a SNO OpenShift cluster using an link:ztp-workflow.html#ibi-deployment[image-based install flow]. However, first things first, we have to create a seed image from an already deployed link:lab-environment-introduction.html#openshift-seed-sno[Single Node OpenShift seed cluster].
+While waiting for the `SNO ABI` cluster installation to finish, proceed to the next section to learn how to deploy a Single Node OpenShift (SNO) cluster using an link:ztp-workflow.html#ibi-deployment[image-based install flow]. Before that, you must create a seed image from an already deployed link:lab-environment-introduction.html#openshift-seed-sno[Single Node OpenShift seed cluster].
