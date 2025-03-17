@@ -7,7 +7,7 @@ Type=simple
 WorkingDirectory=/root
 TimeoutStartSec=300
 ExecStartPre=-/usr/bin/podman rm -f showroom-wetty
-ExecStart=/usr/bin/podman run --name showroom-wetty -p 3001:3000 quay.io/rhsysdeseng/showroom:wetty --ssh-user=<CHANGEME_LAB_USER> --ssh-pass=<CHANGEME_LAB_USER_PWD> --ssh-host=192.168.125.1 --ssh-port=22 --allow-iframe=true
+ExecStart=/usr/bin/podman run --name showroom-wetty -p 192.168.125.1:3001:3000 quay.io/rhsysdeseng/showroom:wetty --ssh-user=<CHANGEME_LAB_USER> --ssh-pass=<CHANGEME_LAB_USER_PWD> --ssh-host=192.168.125.1 --ssh-port=22 --allow-iframe=true
 ExecStop=-/usr/bin/podman rm -f showroom-wetty
 Restart=always
 RestartSec=30s
