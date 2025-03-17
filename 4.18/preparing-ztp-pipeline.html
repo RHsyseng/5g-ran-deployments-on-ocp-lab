@@ -750,6 +750,9 @@
     <a class="nav-link" href="lab-environment.html#configure-webcache">Configure Webcache</a>
   </li>
   <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-s3">Configure S3 Storage</a>
+  </li>
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#install-ksushytools">Install Ksushy Tool</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -762,7 +765,7 @@
     <a class="nav-link" href="lab-environment.html#configure-ntp-server">Configure NTP Server</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-environment.html#configure-access-to-cluster-apps">Configure Access to Cluster Apps</a>
+    <a class="nav-link" href="lab-environment.html#configure-showroom-app">Configure Showroom APP</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#create-openshift-nodes-vms">Create OpenShift Nodes VMs</a>
@@ -777,7 +780,10 @@
     <a class="nav-link" href="lab-environment.html#deploy-openshift-hub-cluster-operators">Deploy OpenShift HUB Cluster Operators</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
+    <a class="nav-link" href="lab-environment.html#deploy-seed-cluster-without-ztp">Deploy Seed Cluster (without ZTP)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-seed-cluster">Configure Seed Cluster</a>
   </li>
 </ul>
   </li>
@@ -827,18 +833,6 @@
 <div class="paragraph">
 <p>In the comming sections, we will create our own ClusterInstances using the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html">Image Based Installation</a> and <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> flows to deploy a couple of SNO clusters in our lab environment.</p>
 </div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-In the e-mail you received with the credentials to access the lab, do not forget to add the line included to your workstation’s /etc/hosts for accessing the lab environment.
-</td>
-</tr>
-</table>
-</div>
 <div class="admonitionblock important">
 <table>
 <tr>
@@ -885,18 +879,6 @@ The steps below rely on the lab environment being up and running.
 </div>
 <div class="paragraph">
 <p>Now that we have a repository ready to be used we will clone it to the infrastructure host.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Below commands must be executed from the workstation host if not specified otherwise.
-</td>
-</tr>
-</table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1050,7 +1032,7 @@ The command below must be changed to use the OpenShift admin password provided i
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig login -u admin -p &lt;admin_password&gt; <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a> --insecure-skip-tls-verify=true</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig login -u admin -p admin_password_here <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a> --insecure-skip-tls-verify=true</code></pre>
 </div>
 </div>
 </li>
@@ -1060,18 +1042,6 @@ The command below must be changed to use the OpenShift admin password provided i
 <ol class="loweralpha" type="a">
 <li>
 <p>Change the repository url for the two ArgoApps:</p>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If you&#8217;re using MacOS and you&#8217;re getting errors while running <code>sed -i</code> commands, make sure you are using <code>gsed</code>. If you do not have it available, please install it: <code>brew install gnu-sed</code>.
-</td>
-</tr>
-</table>
-</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|repoURL: .*|repoURL: <a href="http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"" class="bare">http://infra.5g-deployment.lab:3000/student/ztp-repository.git|"</a> ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/clusters-app.yaml

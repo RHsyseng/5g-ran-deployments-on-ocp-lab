@@ -750,6 +750,9 @@
     <a class="nav-link" href="lab-environment.html#configure-webcache">Configure Webcache</a>
   </li>
   <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-s3">Configure S3 Storage</a>
+  </li>
+  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#install-ksushytools">Install Ksushy Tool</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -762,7 +765,7 @@
     <a class="nav-link" href="lab-environment.html#configure-ntp-server">Configure NTP Server</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-environment.html#configure-access-to-cluster-apps">Configure Access to Cluster Apps</a>
+    <a class="nav-link" href="lab-environment.html#configure-showroom-app">Configure Showroom APP</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="lab-environment.html#create-openshift-nodes-vms">Create OpenShift Nodes VMs</a>
@@ -777,7 +780,10 @@
     <a class="nav-link" href="lab-environment.html#deploy-openshift-hub-cluster-operators">Deploy OpenShift HUB Cluster Operators</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="lab-environment.html#deploy-sno1-cluster-without-ztp">Deploy SNO1 Cluster (without ZTP)</a>
+    <a class="nav-link" href="lab-environment.html#deploy-seed-cluster-without-ztp">Deploy Seed Cluster (without ZTP)</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment.html#configure-seed-cluster">Configure Seed Cluster</a>
   </li>
 </ul>
   </li>
@@ -836,7 +842,7 @@ The workflow requires no manual intervention; ZTP automatically configures the S
 <p>The Agent Based Installation flow was the only option available until the 4.18 OpenShift release. The <a href="ztp-at-scale.html#ai">Assisted Service</a> is central to this deployment method.</p>
 </div>
 <div class="paragraph">
-<p>It starts with creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is defined in a custom resource called <code>ClusterInstance</code>. In a disconnected environment, a container registry is needed to deliver the OpenShift container images required for the installation. This can be achieved using <a href="https://docs.openshift.com/container-platform/4.17/disconnected/mirroring/installing-mirroring-disconnected.html">oc-mirror</a>. More information about disconnected environments can be found in <a href="deployment-considerations.html#disconnected-environments">Deployment Considerations section</a>.</p>
+<p>It starts with creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is defined in a custom resource called <code>ClusterInstance</code>. In a disconnected environment, a container registry is needed to deliver the OpenShift container images required for the installation. This can be achieved using <a href="https://docs.openshift.com/container-platform/4.18/disconnected/mirroring/installing-mirroring-disconnected.html">oc-mirror</a>. More information about disconnected environments can be found in <a href="deployment-considerations.html#disconnected-environments">Deployment Considerations section</a>.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1061,7 +1067,7 @@ In telco environments, especially in RAN, the <strong>Image Based Installation</
 <h2 id="ztp-policies"><a class="anchor" href="#ztp-policies"></a>Deployment Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Once the clusters are provisioned, the day-2 configuration defined in one or multiple <code>PolicyGenTemplate</code> (PGTs) custom resources will be automatically applied. The <code>PolicyGenTemplate</code> custom resource is interpreted by the ZTP pipeline using a specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.17/ztp/policygenerator-kustomize-plugin">policy-generator</a>. These templates generate Policy CRs on the hub cluster, which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters, allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes, these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform-level configurations.</p>
+<p>Once the clusters are provisioned, the day-2 configuration defined in one or multiple <code>PolicyGenTemplate</code> (PGTs) custom resources will be automatically applied. The <code>PolicyGenTemplate</code> custom resource is interpreted by the ZTP pipeline using a specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.18/ztp/policygenerator-kustomize-plugin">policy-generator</a>. These templates generate Policy CRs on the hub cluster, which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters, allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes, these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform-level configurations.</p>
 </div>
 <div class="imageblock">
 <div class="content">
