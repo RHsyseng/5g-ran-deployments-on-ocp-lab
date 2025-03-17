@@ -174,6 +174,34 @@ systemctl enable podman-webcache --now
 
 Verify that the webcache container has started successfully by executing `podman ps`. If it is not running, check the status of the podman-webcache systemd unit.
 
+[#configure-s3]
+=== Configure S3 Storage
+
+We need a few S3 buckets. They are required for updating SNOs using IBU.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+curl -L https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/minio/podman-minio.service -o /etc/systemd/system/podman-minio.service
+mkdir -p /opt/minio/s3-volume
+systemctl daemon-reload
+systemctl enable podman-minio --now
+-----
+
+Verify that the minio container has started successfully by executing `podman ps`. If it is not running, check the status of the podman-minio systemd unit.
+
+Now we configure the buckets:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+curl -L https://dl.min.io/client/mc/release/linux-amd64/mc -o /usr/local/bin/mc
+chmod +x /usr/local/bin/mc
+mc alias set minio http://192.168.125.1:9002 admin admin1234
+mc mb minio/sno-abi
+mc mb minio/sno-ibi
+-----
+
 [#install-ksushytool]
 === Install Ksushy Tool
 
@@ -185,9 +213,7 @@ kcli create sushy-service --ssl --port 9000
 systemctl enable ksushy --now
 -----
 
-WARNING: A message like this `The unit files have no installation config (WantedBy, RequiredBy, Also, Alias settings in the [Install] section, and DefaultInstance for template units).` can be shown in the terminal after creating or starting the service. It is just a warning, please check that the ksushy service has started successfully.
-
-Verify that the ksushy service is running. Furthermore, you can check that the port number 9000 TCP is being used by a python application (ksushy) by executing `netstat -lntp | grep 9000`.
+Verify that the ksushy service is running. Furthermore, you can check that the port number 9000 TCP is being used by a python application (ksushy) by executing `ss -tupln | grep 9000`.
 
 [#configure-disconnected-registry]
 === Configure Disconnected Registry
@@ -283,7 +309,7 @@ curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/showroom/webfiles/tabs.css -o /opt/showroom/lab-content/tabs.css
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/showroom/webfiles/tabs.js -o /opt/showroom/lab-content/tabs.js
 sed -i "s/<CHANGEME_LAB_VERSION>/{lab-major-version}/" /opt/showroom/lab-content/index.html
-sed -i "s/<CHANGEME_HYPERVISOR_PUBLIC_HOSTNAME>/${HYPERVISOR_PUBLIC_HOSTNAME}/" /opt/showroom/lab-content/index.html
+sed -i "s/<CHANGEME_HYPERVISOR_PUBLIC_HOSTNAME>/$HYPERVISOR_PUBLIC_HOSTNAME/" /opt/showroom/lab-content/index.html
 -----
 
 Run the apache that exposes lab content:
@@ -304,7 +330,7 @@ Run the web terminal:
 LAB_USER_PWD=<PUT_HERE_LAB_USER_PASSWORD>
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/showroom/podman-showroom-wetty.service -o /etc/systemd/system/podman-showroom-wetty.service
 sed -i "s/<CHANGEME_LAB_USER>/lab-user/" /etc/systemd/system/podman-showroom-wetty.service
-sed -i "s/<CHANGEME_LAB_USER_PWD>/${LAB_USER_PWD}/" /etc/systemd/system/podman-showroom-wetty.service
+sed -i "s/<CHANGEME_LAB_USER_PWD>/$LAB_USER_PWD/" /etc/systemd/system/podman-showroom-wetty.service
 systemctl daemon-reload
 systemctl enable podman-showroom-wetty --now
 -----
@@ -314,10 +340,13 @@ Run the firefox browser:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
+HTPASS_PASSWORD=<PUT_HERE_A_PASSWORD>
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/showroom/podman-showroom-firefox.service -o /etc/systemd/system/podman-showroom-firefox.service
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/showroom/firefox-config.tar.gz -o /tmp/firefox-config.tar.gz
 tar xfz /tmp/firefox-config.tar.gz -C /opt/showroom/
 rm -f /tmp/firefox-config.tar.gz
+sed -i "s/<CHANGEME_LAB_USER>/lab-user/" /etc/systemd/system/podman-showroom-firefox.service
+sed -i "s/<CHANGEME_LAB_USER_PWD>/$HTPASS_PASSWORD/" /etc/systemd/system/podman-showroom-firefox.service
 systemctl daemon-reload
 systemctl enable podman-showroom-firefox --now
 -----
@@ -327,20 +356,20 @@ Run the reverse proxy:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-HTPASS_USER=$(htpasswd -n lab-user)
+HTPASS_USER=$(echo $HTPASS_PASSWORD | htpasswd -i -n lab-user)
 HYPERVISOR_PUBLIC_HOSTNAME=<PUT_HERE_PUBLIC_HOSTNAME_OR_IP>
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/showroom/podman-showroom-traefik.service -o /etc/systemd/system/podman-showroom-traefik.service
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/showroom/traefik-config.tar.gz -o /tmp/traefik-config.tar.gz
 mkdir -p /opt/showroom/traefik
 tar xfz /tmp/traefik-config.tar.gz -C /opt/showroom/traefik/
 rm -f /tmp/traefik-config.tar.gz
-sed -i "s/<CHANGEME_HTPASS_USER>/${HTPASS_USER}/" /opt/showroom/traefik/config/traefik/dynamic_config.yml
-sed -i "s/<CHANGEME_HYPERVISOR_PUBLIC_HOSTNAME>/${HYPERVISOR_PUBLIC_HOSTNAME}/" /opt/showroom/traefik/config/traefik/dynamic_config.yml
+sed -i "s|<CHANGEME_HTPASS_USER>|$HTPASS_USER|" /opt/showroom/traefik/config/traefik/dynamic_config.yml
+sed -i "s/<CHANGEME_HYPERVISOR_PUBLIC_HOSTNAME>/$HYPERVISOR_PUBLIC_HOSTNAME/" /opt/showroom/traefik/config/traefik/dynamic_config.yml
 systemctl daemon-reload
 systemctl enable podman-showroom-traefik --now
 -----
 
-At this point if we access the hypervisor public hostname in the https port in our web browser we should get the lab instructions, a terminal and a browser on screen.
+At this point we can access our hypervisor to get the Showroom app, this URL is the one the student will use with the credentials we configured. Example url: `https://hypervisor.example.com/content/`.
 
 [#create-openshift-nodes-vms]
 === Create SNO Nodes VMs
@@ -359,8 +388,9 @@ That SSH key will allow you to connect to the VMs you are about to create:
 [source,bash,subs="attributes+,+macros"]
 -----
 kcli create pool -p /var/lib/libvirt/images default
-kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[400] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:02:01"}','{"name":"sriov-network","type":"igb","vfio":"true","noconf":"true","numa":"0"}','{"name":"sriov-network","type":"igb","vfio":"true","noconf":"true","numa":"1"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201 -P name=sno1
-kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[300,100] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:03:01"}','{"name":"sriov-network","type":"igb","vfio":"true","noconf":"true","numa":"0"}','{"name":"sriov-network","type":"igb","vfio":"true","noconf":"true","numa":"1"}'] -P uuid=aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0301 -P name=sno2
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[400] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:02:01"}','{"name":"sriov-network","type":"igb","vfio":"true","noconf":"true","numa":"0"}','{"name":"sriov-network","type":"igb","vfio":"true","noconf":"true","numa":"1"}'] -P name=sno-seed
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[400] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:03:01"}','{"name":"sriov-network","type":"igb","vfio":"true","noconf":"true","numa":"0"}','{"name":"sriov-network","type":"igb","vfio":"true","noconf":"true","numa":"1"}'] -P name=sno-abi
+kcli create vm -P start=False -P uefi_legacy=true -P plan=hub -P memory=24000 -P numcpus=12 -P disks=[300,100] -P nets=['{"name": "5gdeploymentlab", "mac": "aa:aa:aa:aa:04:01"}','{"name":"sriov-network","type":"igb","vfio":"true","noconf":"true","numa":"0"}','{"name":"sriov-network","type":"igb","vfio":"true","noconf":"true","numa":"1"}'] -P name=sno-ibi
 -----
 
 If you need or want to connect to any of the VMs, once they are started, you can do so by just executing:
@@ -375,8 +405,6 @@ kcli ssh <VM_name>
 === Deploy OpenShift Hub Cluster
 
 IMPORTANT: This step requires a valid OpenShift Pull Secret placed in /root/openshift_pull.json. Notice that you can replace the admin or developer's password shown below for any other.
-
-NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gnu-sed` by executing `brew install gnu-sed`.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -395,20 +423,18 @@ If the installation fails for whatever reason, you will need to delete all the V
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
+kcli delete plan hub -y
+-----
 
-# kcli list plan
-+------+--------------------------------------------------------+
-| Plan |                          Vms                           |
-+------+--------------------------------------------------------+
-| hub  | hub-ctlplane-0,hub-ctlplane-1,hub-ctlplane-2,sno1,sno2 |
-+------+--------------------------------------------------------+
-
-# kcli delete plan hub -y
+[console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
 hub-ctlplane-0 deleted on local!
 hub-ctlplane-1 deleted on local!
 hub-ctlplane-2 deleted on local!
-sno1 deleted on local!
-sno2 deleted on local!
+sno-abi deleted on local!
+sno-ibi deleted on local!
+sno-seed deleted on local!
 Plan hub deleted!
 -----
 
@@ -438,10 +464,10 @@ oc -n openshift-gitops adm policy add-cluster-role-to-user cluster-admin -z open
 oc apply -f https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/hub-cluster/hub-operators-argoapps.yaml
 -----
 
-[#deploy-sno1-cluster-without-ztp]
-=== Deploy SNO1 Cluster (without ZTP)
+[#deploy-seed-cluster-without-ztp]
+=== Deploy Seed Cluster (without ZTP)
 
-A SNO is deployed outside the ZTP workflow so students can import it and see how that workflow works.
+A SNO is deployed outside the ZTP workflow, this seed cluster will be used as reference to deploy Image Based SNOs.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -451,17 +477,23 @@ chmod 400 /root/.ssh/snokey
 oc apply -f https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/lab-env-data/hub-cluster/sno1-argoapp.yaml
 -----
 
-Once the cluster is deployed: 
+Once the cluster is deployed:
+
+IMPORTANT: Cluster is considered deployed once its state is `adding-hosts`.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc -n sno1 get agentclusterinstall,agent
-NAME                                                    CLUSTER   STATE
-agentclusterinstall.extensions.hive.openshift.io/sno1   sno1      adding-hosts
+oc -n sno-seed get agentclusterinstall,agent
+-----
+[console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+NAME                                                        CLUSTER    STATE
+agentclusterinstall.extensions.hive.openshift.io/sno-seed   sno-seed   adding-hosts
 
-NAME                                                                    CLUSTER   APPROVED   ROLE     STAGE
-agent.agent-install.openshift.io/aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaa0201   sno1      true       master   Done
+NAME                                                                    CLUSTER    APPROVED   ROLE     STAGE
+agent.agent-install.openshift.io/3d97ebf7-870c-438e-a253-61db15afa2ed   sno-seed   true       master   Done
 -----
 
 The kubeconfig can be gathered as follows:
@@ -469,19 +501,61 @@ The kubeconfig can be gathered as follows:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc extract secret/sno1-admin-kubeconfig --to=- -n sno1 > /root/sno1kubeconfig
+oc -n sno-seed extract secret/sno-seed-admin-kubeconfig --to=- > ~/seed-cluster-kubeconfig
 -----
 
-Now, with the proper credentials you can check the status of the SNO1 cluster:
+Now, with the proper credentials you can check the status of the SNO SEED cluster:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig /root/sno1kubeconfig get nodes,clusterversion
-
+oc --kubeconfig ~/seed-cluster-kubeconfig get nodes,clusterversion
+-----
+[console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
 NAME                      STATUS   ROLES                         AGE     VERSION
 node/openshift-master-0   Ready    control-plane,master,worker   94m     {sno-cluster-version1-kubeversion}
 
 NAME                                         VERSION   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   {sno-cluster-version1-cvo}    True        False         75m     Cluster version is {sno-cluster-version1-cvo}
 -----
+
+[#configure-seed-cluster]
+=== Configure Seed Cluster
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+export KUBECONFIG=~/seed-cluster-kubeconfig 
+curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/02_oadp_deployment.yaml -o /tmp/02_oadp_deployment.yaml
+curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/02_lca_deployment.yaml -o /tmp/02_lca_deployment.yaml
+curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/02_sriov_deployment.yaml -o /tmp/02_sriov_deployment.yaml
+curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/02_lvms_deployment.yaml -o /tmp/02_lvms_deployment.yaml
+curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/03_sriovoperatorconfig.yaml -o /tmp/03_sriovoperatorconfig.yaml
+curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/03_sriov-nw-du-netdev.yaml -o /tmp/03_sriov-nw-du-netdev.yaml
+curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/03_sriov-nw-du-vfio.yaml -o /tmp/03_sriov-nw-du-vfio.yaml
+curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/04_performance_profile.yaml -o /tmp/04_performance_profile.yaml
+curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/05_TunedPerformancePatch.yaml -o /tmp/05_TunedPerformancePatch.
+oc apply -f /tmp/02_oadp_deployment.yaml -f /tmp/02_lca_deployment.yaml -f /tmp/02_lvms_deployment.yaml -f /tmp/02_sriov_deployment.yaml
+sleep 30
+oc -n openshift-adp wait clusterserviceversion -l operators.coreos.com/redhat-oadp-operator.openshift-adp --for=jsonpath='{.status.phase}'=Succeeded --timeout=900s
+oc -n openshift-lifecycle-agent wait clusterserviceversion -l operators.coreos.com/lifecycle-agent.openshift-lifecycle-agent --for=jsonpath='{.status.phase}'=Succeeded --timeout=900s
+oc -n openshift-storage wait clusterserviceversion -l operators.coreos.com/lvms-operator.openshift-storage --for=jsonpath='{.status.phase}'=Succeeded --timeout=900s
+oc -n openshift-sriov-network-operator wait clusterserviceversion -l operators.coreos.com/sriov-network-operator.openshift-sriov-network-operator --for=jsonpath='{.status.phase}'=Succeeded --timeout=900s
+oc apply -f /tmp/03_sriovoperatorconfig.yaml -f /tmp/03_sriov-nw-du-netdev.yaml -f /tmp/03_sriov-nw-du-vfio.yaml
+sleep 30
+oc wait node openshift-master-0 --for=jsonpath='{.status.allocatable.openshift\.io/virt-enp4s0}'=2 --timeout=900s
+oc wait node openshift-master-0 --for=jsonpath='{.status.allocatable.openshift\.io/virt-enp5s0}'=2 --timeout=900s
+oc apply -f /tmp/04_performance_profile.yaml -f /tmp/05_TunedPerformancePatch.yaml
+-----
+
+When applying the PerformanceProfile the SNO Seed cluster will be rebooted. Wait until the cluster is up and wait for the PerformanceProfile to report `Available` condition:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc wait --for='jsonpath={.status.conditions[?(@.type=="Available")].status}=True' performanceprofile openshift-node-performance-profile
+-----
+
+

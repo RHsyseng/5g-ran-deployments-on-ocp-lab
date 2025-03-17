@@ -15,8 +15,6 @@ The ClusterInstance simplifies this process by providing a unified structure to 
 
 In the comming sections, we will create our own ClusterInstances using the {ibi-docs}[Image Based Installation] and {ai-workflow}[Agent Based Installation] flows to deploy a couple of SNO clusters in our lab environment.
 
-WARNING: In the e-mail you received with the credentials to access the lab, do not forget to add the line included to your workstation’s /etc/hosts for accessing the lab environment.
-
 IMPORTANT: The steps below rely on the lab environment being up and running.
 
 [#git-repository]
@@ -34,8 +32,6 @@ image::gitea-repository.png[Gitea Repository]
 5. You will get redirected to the new repository page.
 
 Now that we have a repository ready to be used we will clone it to the infrastructure host.
-
-IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -120,18 +116,18 @@ Now that we extracted the pipeline content we need to get it applied to our hub 
 
 1. Login into the hub cluster.
 +
+ifeval::["{demo_environment}" != "true"]
 CAUTION: The command below must be changed to use the OpenShift admin password provided in the e-mail you received when the lab was ready.
 +
+endif::[]
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig ~/hub-kubeconfig login -u admin -p <admin_password> https://api.hub.5g-deployment.lab:6443 --insecure-skip-tls-verify=true
+oc --kubeconfig ~/hub-kubeconfig login -u admin -p {hub_admin_password} https://api.hub.5g-deployment.lab:6443 --insecure-skip-tls-verify=true
 -----
 +
 2. Modify the ZTP GitOps Pipeline configuration to match our environment configuration.
 .. Change the repository url for the two ArgoApps:
-+
-NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gsed`. If you do not have it available, please install it: `brew install gnu-sed`.
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
