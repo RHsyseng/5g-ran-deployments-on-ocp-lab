@@ -6,6 +6,10 @@ Before jumping into the hands-on sections, let's get familiar with the lab envir
 
 CAUTION: The following lab sections rely on having a lab environment accessible in order to do the hands-on work. If you're a Red Hatter, you can order a lab environment already set up for you on the https://demo.redhat.com[Red Hat Demo Platform]. You just need to order the lab named `5G RAN Deployment on OpenShift`. Notice that it has a cost of ~ $56 to run through the lab. When the lab is launched, by default you will have 12 hours to complete it before it is destroyed. The estimated time to finish the lab might look like 12 hours total (2h provisioning time, 5h lab work, 5h margin). If you need further time, it can be manually extended up to 24h in total. If you still need to deploy a lab environment, follow the guide available xref:lab-environment.adoc[here].
 
+The following image presents a high-level overview of the lab environment:
+
+image::telco5g-lab.png[Telco 5G Lab environment]
+
 [#git-server]
 == Git Server
 
