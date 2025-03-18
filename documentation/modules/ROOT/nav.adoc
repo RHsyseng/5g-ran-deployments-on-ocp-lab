@@ -194,10 +194,11 @@
 ** xref:check-deployment-is-finished.adoc#check-sno-deployment-cli[Check SNO Deployment has Finished via the CLI]
 //** xref:check-deployment-is-finished.adoc#ensure-automation-ran-successfully[Ensure AAP Automation Ran Successfully]
 
-* xref:using-talm-to-update-clusters.adoc[Image-based upgrade for single-node OpenShift clusters]
-** xref:using-talm-to-update-clusters.adoc#verify-talm[Verifying hub software requirements]
-** xref:using-talm-to-update-clusters.adoc#upgrade-policy-creation[Verifying managed clusters requirements]
-** xref:using-talm-to-update-clusters.adoc#install-lca[Preparing managed clusters for upgrade]
+* xref:using-talm-to-update-clusters.adoc[Image-based Upgrade for SNO clusters]
+** xref:using-talm-to-update-clusters.adoc#introduction[Introduction to Image-based Upgrades]
+** xref:using-talm-to-update-clusters.adoc#verify-talm[Verifying Hub Software Requirements]
+** xref:using-talm-to-update-clusters.adoc#upgrade-policy-creation[Verifying Managed Clusters Requirements]
+** xref:using-talm-to-update-clusters.adoc#install-lca[Preparing Managed Clusters for Upgrade]
 ** xref:using-talm-to-update-clusters.adoc#upgrade-policy-creation[Creating the Image Base Group Upgrade]
 ** xref:using-talm-to-update-clusters.adoc#monitoring-ibu[Monitoring the Image Based Group Upgrade ]
 

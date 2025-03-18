@@ -1,6 +1,9 @@
-= Using image-based upgrade for single-node OpenShift clusters
+= Image-based upgrade for Single-node OpenShift Clusters
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
+
+[#introduction]
+== Introduction to Image-based Upgrades
 
 In this section, we will perform an image-based upgrade to both managed clusters (`sno-abi` and `sno-ibi`) by leveraging the link:missing[Lifecycle Agent] (LCA) and the link:talm.html[Topology Aware Lifecycle Manager] (TALM) operators. The LCA provides an alternative way to upgrade the platform version of a single-node OpenShift cluster, while TALM manages the rollout of configurations throughout the lifecycle of the cluster fleet.
 
@@ -21,7 +24,7 @@ IMPORTANT: Both clusters were installed using different methodologies. While `sn
 First, let's verify the software requirements in our *hub cluster*:
 
 [#verify-talm]
-== Verifying hub software requirements
+== Verifying Hub Software Requirements
 
 Let's connect to the hub cluster and list all the installed operators:
 
@@ -71,7 +74,7 @@ pod/openshift-gitops-operator-controller-manager-6794f4f9cc-vpm2b   2/2     Runn
 -----
 
 [#getting-snos-kubeconfigs]
-== Verifying managed clusters requirements
+== Verifying Managed Clusters Requirements
 
 In the previous sections, we deployed the `sno-abi` cluster using the agent-based installation and the `sno-ibi` cluster using the image-based installation. Before starting the upgrade, we need to check if the Lifecycle Agent and OpenShift API for Data Protection operators are installed in the target clusters.
 
