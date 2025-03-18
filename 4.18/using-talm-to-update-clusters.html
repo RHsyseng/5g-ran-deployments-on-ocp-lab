@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Using image-based upgrade for single-node OpenShift clusters :: LAB - 5G RAN Deployments on OpenShift</title>
+    <title>Image-based upgrade for Single-node OpenShift Clusters :: LAB - 5G RAN Deployments on OpenShift</title>
     <link rel="canonical" href="https://labs.sysdeseng.com/4.18/using-talm-to-update-clusters.html">
     <link rel="prev" href="check-deployment-is-finished.html">
     <link rel="next" href="troubleshooting-tips.html">
@@ -638,16 +638,19 @@
   </li>
   <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
-    <a class="nav-link" href="using-talm-to-update-clusters.html">Image-based upgrade for single-node OpenShift clusters</a>
+    <a class="nav-link" href="using-talm-to-update-clusters.html">Image-based Upgrade for SNO clusters</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#verify-talm">Verifying hub software requirements</a>
+    <a class="nav-link" href="#introduction">Introduction to Image-based Upgrades</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#upgrade-policy-creation">Verifying managed clusters requirements</a>
+    <a class="nav-link" href="#verify-talm">Verifying Hub Software Requirements</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#install-lca">Preparing managed clusters for upgrade</a>
+    <a class="nav-link" href="#upgrade-policy-creation">Verifying Managed Clusters Requirements</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#install-lca">Preparing Managed Clusters for Upgrade</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#upgrade-policy-creation">Creating the Image Base Group Upgrade</a>
@@ -803,15 +806,16 @@
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">LAB - 5G RAN Deployments on OpenShift</a></li>
-    <li><a href="using-talm-to-update-clusters.html">Image-based upgrade for single-node OpenShift clusters</a></li>
+    <li><a href="using-talm-to-update-clusters.html">Image-based Upgrade for SNO clusters</a></li>
   </ul>
 </nav>
   <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/lab-4.18/documentation/modules/ROOT/pages/using-talm-to-update-clusters.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Using image-based upgrade for single-node OpenShift clusters</h1>
-<div id="preamble">
+<h1 class="page">Image-based upgrade for Single-node OpenShift Clusters</h1>
+<div class="sect1">
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction to Image-based Upgrades</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In this section, we will perform an image-based upgrade to both managed clusters (<code>sno-abi</code> and <code>sno-ibi</code>) by leveraging the <a href="missing">Lifecycle Agent</a> (LCA) and the <a href="talm.html">Topology Aware Lifecycle Manager</a> (TALM) operators. The LCA provides an alternative way to upgrade the platform version of a single-node OpenShift cluster, while TALM manages the rollout of configurations throughout the lifecycle of the cluster fleet.</p>
@@ -871,7 +875,7 @@ Both clusters were installed using different methodologies. While <code>sno-abi<
 </div>
 </div>
 <div class="sect1">
-<h2 id="verify-talm"><a class="anchor" href="#verify-talm"></a>Verifying hub software requirements</h2>
+<h2 id="verify-talm"><a class="anchor" href="#verify-talm"></a>Verifying Hub Software Requirements</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Let&#8217;s connect to the hub cluster and list all the installed operators:</p>
@@ -923,7 +927,7 @@ pod/openshift-gitops-operator-controller-manager-6794f4f9cc-vpm2b   2/2     Runn
 </div>
 </div>
 <div class="sect1">
-<h2 id="getting-snos-kubeconfigs"><a class="anchor" href="#getting-snos-kubeconfigs"></a>Verifying managed clusters requirements</h2>
+<h2 id="getting-snos-kubeconfigs"><a class="anchor" href="#getting-snos-kubeconfigs"></a>Verifying Managed Clusters Requirements</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In the previous sections, we deployed the <code>sno-abi</code> cluster using the agent-based installation and the <code>sno-ibi</code> cluster using the image-based installation. Before starting the upgrade, we need to check if the Lifecycle Agent and OpenShift API for Data Protection operators are installed in the target clusters.</p>
