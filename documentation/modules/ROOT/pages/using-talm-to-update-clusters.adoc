@@ -271,7 +271,7 @@ data:
       namespace: openshift-marketplace
     spec:
       displayName: default-cat-source
-      image: infra.5g-deployment.lab:8443/prega/prega-operator-index:v4.18
+      image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:{catalogsource-index-image-tag}
       publisher: Red Hat
       sourceType: grpc
       updateStrategy:
@@ -441,8 +441,8 @@ spec:
         - sno-ibi
   ibuSpec:
     seedImageRef: 
-      image: infra.5g-deployment.lab:8443/rhsysdeseng/lab5gran:v4.18.0-rc.8
-      version: 4.18.0-rc.8
+      image: infra.5g-deployment.lab:8443/rhsysdeseng/lab5gran:v4.18.4
+      version: 4.18.4
       pullSecretRef:
         name: disconnected-registry-pull-secret
     extraManifests: 

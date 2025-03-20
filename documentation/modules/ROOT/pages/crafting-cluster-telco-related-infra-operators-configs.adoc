@@ -42,8 +42,7 @@ spec:
       metadata:
         name: redhat-operator-index
       spec:
-        #image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:{catalogsource-index-image-tag}
-        image: infra.5g-deployment.lab:8443/prega/prega-operator-index:{catalogsource-index-image-tag}
+        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:{catalogsource-index-image-tag}
       policyName: config-policy
     - fileName: ReduceMonitoringFootprint.yaml
       policyName: config-policy
@@ -210,6 +209,7 @@ data:
   hw-type-platform-1-hugepages-count: "4"
   hw-type-platform-1-hugepages-size: "1G"
   hw-type-platform-1-supported-sriov-nic: "false"
+  # StorageLVMCluster.yaml
   hw-type-platform-1-storage-path: "/dev/vdb"
   hw-type-platform-2-cpu-isolated: "2-39,42-79"
   hw-type-platform-2-cpu-reserved: "0-1,40-41"
@@ -349,7 +349,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
 data:
-  # StorageLVMCluster.yaml
+  # SR-IOV configuration
   sno-seed-resourcename1: "igb-enp4s0"
   sno-seed-resourcename2: "igb-enp5s0"
   sno-seed-sriovnic1: "enp4s0"

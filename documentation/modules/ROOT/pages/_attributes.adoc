@@ -17,29 +17,29 @@ code:experimental:
 :abi-cluster-kubeconfig: ~/abi-cluster-kubeconfig
 :ibi-cluster-kubeconfig: ~/ibi-cluster-kubeconfig
 // :catalogsource-index-image-tag: v4.17-1731286606
-:catalogsource-index-image-tag: v4.18
-:ztp-sitegenerate-disconnected-image: infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.17.0-25
+:catalogsource-index-image-tag: v4.18-1742450053
+:ztp-sitegenerate-disconnected-image: infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.18.0-39
 :example-sno-clusterinstance-link: https://github.com/stolostron/siteconfig/blob/release-2.13/config/samples/siteconfig_v1alpha1_clusterinstance.yaml
 :example-groupdu-policygen-link: https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.17/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml
 :reference-documentation: https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-vdu-validating-cluster-tuning.html#ztp-du-firmware-config-reference_vdu-config-ref
 // demo_environment controls some texts that are shown only when running/not running on demo.redhat.com
 //:demo_environment: demo_environment_here --> This attribute needs to be defined in site.yml for being able to use it in nav.adoc
 :hub_admin_password: admin_password_here
-:hub-cluster-ocp-version: v4.18.0-rc.6
-:hub-cluster-kubeversion: v1.31.4
-:sno-cluster-version1: v4.18.0-rc.7
-:sno-cluster-version2: v4.18.0-rc.8
-:sno-seed-version: v4.18.0-rc.7
-:sno-cluster-version1-kubeversion: v1.31.4
-:sno-cluster-version2-kubeversion: v1.30.5
-:sno-cluster-version1-cvo: 4.18.0-rc.7
-:sno-cluster-version2-cvo: 4.18.0-rc.8
+:hub-cluster-ocp-version: v4.18.4
+:hub-cluster-kubeversion: v1.31.6
+:sno-cluster-version1: v4.18.1
+:sno-cluster-version2: v4.18.4
+:sno-seed-version: v4.18.1
+:sno-cluster-version1-kubeversion: v1.31.6
+:sno-cluster-version2-kubeversion: v1.31.6
+:sno-cluster-version1-cvo: 4.18.1
+:sno-cluster-version2-cvo: 4.18.4
 :active-ocp-version-clusterimageset: infra.5g-deployment.lab:8443/openshift-release-dev/ocp-release:{sno-cluster-version1-cvo}-x86_64
 :talm-update-file: zone-europe-upgrade-418-1.yaml
 :talm-update-channel: stable-4.18
-:talm-update-version: 4.18.0-rc.6
+:talm-update-version: 4.18.1
 // oc adm release info 4.17.4 | grep "Pull From"
-:talm-update-image: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.6
+:talm-update-image: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.1
 //:talm-update-image:  infra.5g-deployment.lab:8443/openshift/release-images@sha256:bada2d7626c8652e0fb68d3237195cb37f425e960347fbdd747beb17f671cf13
 :talm-update-policy-name: version-418-1
 :rhacm-version: v2.13

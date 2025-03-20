@@ -80,7 +80,7 @@ data:
     mirror-by-digest-only = true
 
     [[registry.mirror]]
-      location = "infra.5g-deployment.lab:8443/prega/test/openshift4"
+      location = "infra.5g-deployment.lab:8443/openshift4"
 
     [[registry]]
     prefix = ""
@@ -88,7 +88,7 @@ data:
     mirror-by-digest-only = true
 
     [[registry.mirror]]
-      location = "infra.5g-deployment.lab:8443/prega/test/rhacm2"
+      location = "infra.5g-deployment.lab:8443/rhacm2"
 
     [[registry]]
     prefix = ""
@@ -96,7 +96,7 @@ data:
     mirror-by-digest-only = true
 
     [[registry.mirror]]
-      location = "infra.5g-deployment.lab:8443/prega/test/rhceph"
+      location = "infra.5g-deployment.lab:8443/rhceph"
 
     [[registry]]
     prefix = ""
@@ -104,7 +104,7 @@ data:
     mirror-by-digest-only = true
 
     [[registry.mirror]]
-      location = "infra.5g-deployment.lab:8443/prega/test/rhel8"
+      location = "infra.5g-deployment.lab:8443/rhel8"
 
     [[registry]]
     prefix = ""
@@ -112,7 +112,7 @@ data:
     mirror-by-digest-only = true
 
     [[registry.mirror]]
-      location = "infra.5g-deployment.lab:8443/prega/test/rh-sso-7"
+      location = "infra.5g-deployment.lab:8443/rh-sso-7"
 
     [[registry]]
     prefix = ""
@@ -120,7 +120,7 @@ data:
     mirror-by-digest-only = true
 
     [[registry.mirror]]
-      location = "infra.5g-deployment.lab:8443/prega/test/odf4"
+      location = "infra.5g-deployment.lab:8443/odf4"
 
     [[registry]]
     prefix = ""
@@ -128,7 +128,7 @@ data:
     mirror-by-digest-only = true
 
     [[registry.mirror]]
-      location = "infra.5g-deployment.lab:8443/prega/test/multicluster-engine"
+      location = "infra.5g-deployment.lab:8443/multicluster-engine"
 
     [[registry]]
     prefix = ""
@@ -136,7 +136,7 @@ data:
     mirror-by-digest-only = true
 
     [[registry.mirror]]
-      location = "infra.5g-deployment.lab:8443/prega/test/openshift-gitops-1"
+      location = "infra.5g-deployment.lab:8443/openshift-gitops-1"
 
     [[registry]]
     prefix = ""
@@ -144,7 +144,7 @@ data:
     mirror-by-digest-only = true
 
     [[registry.mirror]]
-      location = "infra.5g-deployment.lab:8443/prega/test/lvms4"
+      location = "infra.5g-deployment.lab:8443/lvms4"
 
     [[registry]]
     prefix = ""
@@ -152,7 +152,7 @@ data:
     mirror-by-digest-only = true
 
     [[registry.mirror]]
-      location = "infra.5g-deployment.lab:8443/prega/test/rh-osbs"
+      location = "infra.5g-deployment.lab:8443/rh-osbs"
 
     [[registry]]
     prefix = ""
@@ -160,7 +160,7 @@ data:
     mirror-by-digest-only = true
 
     [[registry.mirror]]
-      location = "infra.5g-deployment.lab:8443/prega/test/oadp"
+      location = "infra.5g-deployment.lab:8443/oadp"
 
     [[registry]]
     prefix = ""
@@ -219,24 +219,24 @@ spec:
   osImages:
   - cpuArchitecture: x86_64
     openshiftVersion: "4.18"
-    rootFSUrl: http://infra.5g-deployment.lab:8080/rhcos-4.18.0-rc.2-x86_64-live-rootfs.x86_64.img
-    url: http://infra.5g-deployment.lab:8080/rhcos-4.18.0-rc.2-x86_64-live.x86_64.iso
-    version: 418.94.202412120450-0
+    rootFSUrl: http://infra.5g-deployment.lab:8080/rhcos-4.18.1-x86_64-live-rootfs.x86_64.img
+    url: http://infra.5g-deployment.lab:8080/rhcos-4.18.1-x86_64-live.x86_64.iso
+    version: 418.94.202503061016-0
 ---
 apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
 metadata:
   annotations:
         argocd.argoproj.io/sync-wave: "4"
-  name: openshift-v4.18.0-rc.8-disconnected
+  name: openshift-v4.18.3-disconnected
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift-release-dev/ocp-release:4.18.0-rc.8-x86_64
+  releaseImage: infra.5g-deployment.lab:8443/openshift-release-dev/ocp-release:4.18.3-x86_64
 ---
 apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
 metadata:
   annotations:
         argocd.argoproj.io/sync-wave: "4"
-  name: openshift-v4.18.0-rc.7-disconnected
+  name: openshift-v4.18.4-disconnected
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift-release-dev/ocp-release:4.18.0-rc.7-x86_64
+  releaseImage: infra.5g-deployment.lab:8443/openshift-release-dev/ocp-release:4.18.4-x86_64
