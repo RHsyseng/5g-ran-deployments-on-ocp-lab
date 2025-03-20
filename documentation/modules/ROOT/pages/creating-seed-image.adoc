@@ -159,7 +159,7 @@ oc --kubeconfig {seed-cluster-kubeconfig} get seedgenerator seedimage -o json | 
 -----
 
 [.console]
-[source,bash,subs="attributes+,+macros"]
+[source,json,subs="attributes+,+macros"]
 -----
 {
   "conditions": [
