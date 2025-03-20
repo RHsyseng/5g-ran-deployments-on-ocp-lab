@@ -17,6 +17,7 @@ asciidoc:
   attributes:
     release-version: 4.18
     page-pagination: true
+    demo_environment: demo_environment_here
   extensions:
     - ./lib/tab-block.js
     - ./lib/remote-include-processor.js

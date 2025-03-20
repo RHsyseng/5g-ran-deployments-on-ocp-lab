@@ -129,6 +129,10 @@ oc --kubeconfig ~/hub-kubeconfig login -u admin -p {hub_admin_password} https://
 2. Modify the ZTP GitOps Pipeline configuration to match our environment configuration.
 .. Change the repository url for the two ArgoApps:
 +
+ifeval::["{demo_environment}" != "true"]
+NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gsed`. If you do not have it available, please install it: `brew install gnu-sed`.
++
+endif::[]
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
