@@ -81,7 +81,9 @@ kcli create network -c 192.168.100.0/24 -P dhcp=false -P dns=false --domain srio
 [#configure-local-dns-dhcp-server]
 === Configure Local DNS/DHCP Server
 
+ifeval::["{demo_environment}" != "true"]
 NOTE: If you're using MacOS and you're getting errors while running `sed -i` commands, make sure you are using `gsed`: `brew install gnu-sed`.
+endif::[]
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -253,7 +255,6 @@ systemctl enable podman-gitea --now
 sleep 20
 podman exec --user 1000 gitea /bin/sh -c 'gitea admin user create --username student --password student --email student@5g-deployment.lab --must-change-password=false --admin'
 curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/{repo_user}/5g-ran-deployments-on-ocp-lab.git","uid":1,"repo_name":"5g-ran-deployments-on-ocp-lab"}' http://infra.5g-deployment.lab:3000/api/v1/repos/migrate
-curl -u 'student:student' -H 'Content-Type: application/json' -X POST --data '{"service":"2","clone_addr":"https://github.com/{repo_user}/5g-ran-lab-aap-integration-tools.git","uid":1,"repo_name":"aap-integration-tools"}' http://infra.5g-deployment.lab:3000/api/v1/repos/migrate
 -----
 
 WARNING: It could be possible that the last few commands do not work at the first time since the registry container image is being pulled and then started. If that's the case, try them once again after a couple of seconds.

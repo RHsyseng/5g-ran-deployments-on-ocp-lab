@@ -23,7 +23,7 @@ code:experimental:
 :example-groupdu-policygen-link: https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.17/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml
 :reference-documentation: https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-vdu-validating-cluster-tuning.html#ztp-du-firmware-config-reference_vdu-config-ref
 // demo_environment controls some texts that are shown only when running/not running on demo.redhat.com
-:demo_environment: false
+//:demo_environment: demo_environment_here --> This attribute needs to be defined in site.yml for being able to use it in nav.adoc
 :hub_admin_password: admin_password_here
 :hub-cluster-ocp-version: v4.18.0-rc.6
 :hub-cluster-kubeversion: v1.31.4

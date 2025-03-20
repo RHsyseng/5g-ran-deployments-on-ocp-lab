@@ -221,6 +221,7 @@
 
 * xref:closing-thoughts.adoc[Closing Thoughts]
 
+ifeval::["{demo_environment}" != "true"]
 * xref:lab-environment.adoc[Lab Environment]
 ** xref:lab-environment.adoc#lab-requirements[Lab Requirements]
 ** xref:lab-environment.adoc#lab-deployment[Lab Deployment]
@@ -243,3 +244,4 @@
 *** xref:lab-environment.adoc#deploy-openshift-hub-cluster-operators[Deploy OpenShift HUB Cluster Operators]
 *** xref:lab-environment.adoc#deploy-seed-cluster-without-ztp[Deploy Seed Cluster (without ZTP)]
 *** xref:lab-environment.adoc#configure-seed-cluster[Configure Seed Cluster]
+endif::[]
