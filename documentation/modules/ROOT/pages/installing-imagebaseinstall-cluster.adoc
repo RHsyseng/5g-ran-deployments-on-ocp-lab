@@ -65,31 +65,31 @@ pullSecret: '{"auths": {"infra.5g-deployment.lab:8443": {"auth": "YWRtaW46cjNkaD
 shutdown: true
 imageDigestSources:
   - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/multicluster-engine
+    - infra.5g-deployment.lab:8443/multicluster-engine
     source: registry.redhat.io/multicluster-engine
   - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/openshift-gitops-1
+    - infra.5g-deployment.lab:8443/openshift-gitops-1
     source: registry.redhat.io/openshift-gitops-1
   - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/rh-sso-7
+    - infra.5g-deployment.lab:8443/rh-sso-7
     source: registry.redhat.io/rh-sso-7
   - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/lvms4
+    - infra.5g-deployment.lab:8443/lvms4
     source: registry.redhat.io/lvms4
   - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/openshift4
+    - infra.5g-deployment.lab:8443/openshift4
     source: registry.redhat.io/openshift4
   - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/rhacm2
+    - infra.5g-deployment.lab:8443/rhacm2
     source: registry.redhat.io/rhacm2
   - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/rhel8
+    - infra.5g-deployment.lab:8443/rhel8
     source: registry.redhat.io/rhel8
   - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/oadp
+    - infra.5g-deployment.lab:8443/oadp
     source: registry.redhat.io/oadp
   - mirrors:
-    - infra.5g-deployment.lab:8443/prega/test/rh-osbs
+    - infra.5g-deployment.lab:8443/rh-osbs
     source: quay.io/prega/test/rh-osbs
   - mirrors:
     - infra.5g-deployment.lab:8443/openshift-release-dev/ocp-v4.0-art-dev
@@ -360,7 +360,7 @@ data:
       namespace: openshift-marketplace
     spec:
       displayName: default-cat-source
-      image: infra.5g-deployment.lab:8443/prega/prega-operator-index:v4.18
+      image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:{catalogsource-index-image-tag}
       publisher: Red Hat
       sourceType: grpc
       updateStrategy:
@@ -394,37 +394,37 @@ data:
     spec:
       imageDigestMirrors:
       - mirrors:
-        - infra.5g-deployment.lab:8443/prega/test/openshift4
+        - infra.5g-deployment.lab:8443/openshift4
         source: registry.redhat.io/openshift4
       - mirrors:
-        - infra.5g-deployment.lab:8443/prega/test/rhacm2
+        - infra.5g-deployment.lab:8443/rhacm2
         source: registry.redhat.io/rhacm2
       - mirrors:
-        - infra.5g-deployment.lab:8443/prega/test/rhceph
+        - infra.5g-deployment.lab:8443/rhceph
         source: registry.redhat.io/rhceph
       - mirrors:
-        - infra.5g-deployment.lab:8443/prega/test/rhel8
+        - infra.5g-deployment.lab:8443/rhel8
         source: registry.redhat.io/rhel8
       - mirrors:
-        - infra.5g-deployment.lab:8443/prega/test/rh-sso-7
+        - infra.5g-deployment.lab:8443/rh-sso-7
         source: registry.redhat.io/rh-sso-7
       - mirrors:
-        - infra.5g-deployment.lab:8443/prega/test/odf4
+        - infra.5g-deployment.lab:8443/odf4
         source: registry.redhat.io/odf4
       - mirrors:
-        - infra.5g-deployment.lab:8443/prega/test/multicluster-engine
+        - infra.5g-deployment.lab:8443/multicluster-engine
         source: registry.redhat.io/multicluster-engine
       - mirrors:
-        - infra.5g-deployment.lab:8443/prega/test/openshift-gitops-1
+        - infra.5g-deployment.lab:8443/openshift-gitops-1
         source: registry.redhat.io/openshift-gitops-1
       - mirrors:
-        - infra.5g-deployment.lab:8443/prega/test/lvms4
+        - infra.5g-deployment.lab:8443/lvms4
         source: registry.redhat.io/lvms4
       - mirrors:
-        - infra.5g-deployment.lab:8443/prega/test/rh-osbs
+        - infra.5g-deployment.lab:8443/rh-osbs
         source: quay.io/prega/test/rh-osbs
       - mirrors:
-        - infra.5g-deployment.lab:8443/prega/test/oadp
+        - infra.5g-deployment.lab:8443/oadp
         source: registry.redhat.io/oadp
       - mirrors:
         - infra.5g-deployment.lab:8443/openshift-release-dev/ocp-v4.0-art-dev

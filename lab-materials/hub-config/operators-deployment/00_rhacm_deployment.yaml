@@ -30,6 +30,6 @@ metadata:
 spec:
   channel: "release-2.13"
   name: advanced-cluster-management
-#  source: cs-redhat-operator-index
-  source: cs-prega-operator-index-v4-18
+  source: cs-redhat-operator-index-v4-18-174245
+#  source: cs-prega-operator-index-v4-18
   sourceNamespace: openshift-marketplace
