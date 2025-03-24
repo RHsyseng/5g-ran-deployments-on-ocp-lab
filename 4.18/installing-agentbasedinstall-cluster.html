@@ -1120,7 +1120,7 @@ kind: ClusterImageSet
 metadata:
   name: active-ocp-version
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift-release-dev/ocp-release:4.18.0-rc.7-x86_64
+  releaseImage: infra.5g-deployment.lab:8443/openshift-release-dev/ocp-release:4.18.1-x86_64
 EOF</code></pre>
 </div>
 </div>
@@ -1135,7 +1135,7 @@ EOF</code></pre>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
-podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.17.0-25 extract /home/ztp/extra-manifest --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-configs/reference-manifest/4.18/</code></pre>
+podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.18.0-39 extract /home/ztp/extra-manifest --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-configs/reference-manifest/4.18/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1460,7 +1460,7 @@ sno-abi   sno-abi   finalizing</code></pre>
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">- lastProbeTime: "2025-03-24T16:18:20Z"
   lastTransitionTime: "2025-03-24T16:18:20Z"
   message: 'The installation is in progress: Finalizing cluster installation. Cluster
-    version status: progressing, message: Working towards 4.18.0-rc.7: 523 of 829 done
+    version status: progressing, message: Working towards 4.18.1: 523 of 829 done
     (63% complete)'
   reason: InstallationInProgress
   status: "False"

@@ -885,8 +885,7 @@ spec:
       metadata:
         name: redhat-operator-index
       spec:
-        #image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.18
-        image: infra.5g-deployment.lab:8443/prega/prega-operator-index:v4.18
+        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.18-1742450053
       policyName: config-policy
     - fileName: ReduceMonitoringFootprint.yaml
       policyName: config-policy
@@ -1081,6 +1080,7 @@ data:
   hw-type-platform-1-hugepages-count: "4"
   hw-type-platform-1-hugepages-size: "1G"
   hw-type-platform-1-supported-sriov-nic: "false"
+  # StorageLVMCluster.yaml
   hw-type-platform-1-storage-path: "/dev/vdb"
   hw-type-platform-2-cpu-isolated: "2-39,42-79"
   hw-type-platform-2-cpu-reserved: "0-1,40-41"
@@ -1242,7 +1242,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-options: Replace=true
 data:
-  # StorageLVMCluster.yaml
+  # SR-IOV configuration
   sno-seed-resourcename1: "igb-enp4s0"
   sno-seed-resourcename2: "igb-enp5s0"
   sno-seed-sriovnic1: "enp4s0"
@@ -1287,7 +1287,7 @@ We recommend a directory structure to keep reference manifests corresponding to 
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
-podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.17.0-25 extract /home/ztp/source-crs --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/source-crs/reference-crs/</code></pre>
+podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.18.0-39 extract /home/ztp/source-crs --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/source-crs/reference-crs/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1325,7 +1325,7 @@ spec:
       metadata:
         name: redhat-operator-index
       spec:
-        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.18
+        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.18-1742450053
       policyName: config-policy
     - fileName: ReduceMonitoringFootprint.yaml
       policyName: config-policy

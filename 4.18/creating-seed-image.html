@@ -891,7 +891,7 @@ openshift-storage                      lvms-operator.v4.18.0                    
 </div>
 </div>
 <div class="paragraph">
-<p>Verify that the OpenShift Container Platform version of the seed SNO cluster is v4.18.0-rc.7:</p>
+<p>Verify that the OpenShift Container Platform version of the seed SNO cluster is v4.18.1:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -901,7 +901,7 @@ openshift-storage                      lvms-operator.v4.18.0                    
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME      VERSION       AVAILABLE   PROGRESSING   SINCE   STATUS
-version   v4.18.0-rc.7  True        False         13m     Cluster version is v4.18.0-rc.7</code></pre>
+version   v4.18.1  True        False         13m     Cluster version is v4.18.1</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -946,7 +946,7 @@ kind: SeedGenerator
 metadata:
   name: seedimage
 spec:
-  seedImage: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.7
+  seedImage: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.1
 EOF</code></pre>
 </div>
 </div>
@@ -1020,7 +1020,7 @@ The cluster reboots and loses API capabilities while the Lifecycle Agent generat
 </div>
 <div class="listingblock console">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">{
+<pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
   "conditions": [
     {
       "lastTransitionTime": "2025-02-04T09:43:55Z",
@@ -1065,14 +1065,14 @@ seedimage   12s   SeedGenCompleted   Seed Generation completed</code></pre>
 <div class="listingblock console">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                                         VERSION       AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   v4.18.0-rc.7  False       False         16h     Cluster version is v4.18.0-rc.7
+clusterversion.config.openshift.io/version   v4.18.1  False       False         16h     Cluster version is v4.18.1
 
 NAME                      STATUS   ROLES                         AGE   VERSION
-node/openshift-master-0   Ready    control-plane,master,worker   16h   v1.31.4</code></pre>
+node/openshift-master-0   Ready    control-plane,master,worker   16h   v1.31.6</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>At this point, the seed image is created and pushed to our container registry under <code>infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.7</code>. The seed image is ready to be used to provision new SNO clusters using the image-based installation method.</p>
+<p>At this point, the seed image is created and pushed to our container registry under <code>infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.1</code>. The seed image is ready to be used to provision new SNO clusters using the image-based installation method.</p>
 </div>
 </div>
 </div>
