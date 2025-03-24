@@ -1,6 +1,6 @@
 plan: hub-cluster
 force: false
-#version: stable
+version: stable
 tag: "4.18.4"
 cluster: "hub"
 domain: 5g-deployment.lab
