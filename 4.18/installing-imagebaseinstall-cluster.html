@@ -810,7 +810,7 @@
 <h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the previous section, <a href="creating-seed-image.html">Creating the Seed Image</a>, we created a seed image of a Single Node OpenShift cluster, version v4.18.1. This seed image will be used to deploy a new SNO in under 20 minutes. This is why, especially in Telco RAN environments where we manage thousands of clusters, this deployment method is preferred.</p>
+<p>In the previous section, <a href="creating-seed-image.html">Creating the Seed Image</a>, we created a seed image of a Single Node OpenShift cluster, version v4.18.3. This seed image will be used to deploy a new SNO in under 20 minutes. This is why, especially in Telco RAN environments where we manage thousands of clusters, this deployment method is preferred.</p>
 </div>
 <div class="paragraph">
 <p>The following diagram illustrates the process we&#8217;ll follow to deploy and configure the <strong>sno-ibi</strong> OpenShift clusters with the RAN DU profile:</p>
@@ -904,8 +904,8 @@ apiVersion: v1beta1
 kind: ImageBasedInstallationConfig
 metadata:
   name: example-image-based-installation-config
-seedImage: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.1
-seedVersion: 4.18.1
+seedImage: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.3
+seedVersion: 4.18.3
 extraPartitionStart: "-60G"
 installationDisk: "/dev/vda"
 sshKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5pFKFLOuxrd9Q/TRu9sRtwGg2PV+kl2MHzBIGUhCcR0LuBJk62XG9tQWPQYTQ3ZUBKb6pRTqPXg+cDu5FmcpTwAKzqgUb6ArnjECxLJzJvWieBJ7k45QzhlZPeiN2Omik5bo7uM/P1YIo5pTUdVk5wJjaMOb7Xkcmbjc7r22xY54cce2Wb7B1QDtLWJkq++eJHSX2GlEjfxSlEvQzTN7m2N5pmoZtaXpLKcbOqtuSQSVKC4XPgb57hgEs/ZZy/LbGGHZyLAW5Tqfk1JCTFGm6Q+oOd3wAOF1SdUxM7frdrN3UOB12u/E6YuAx3fDvoNZvcrCYEpjkfrsjU91oz78aETZV43hOK9NWCOhdX5djA7G35/EMn1ifanVoHG34GwNuzMdkb7KdYQUztvsXIC792E2XzWfginFZha6kORngokZ2DwrzFj3wgvmVyNXyEOqhwi6LmlsYdKxEvUtiYhdISvh2Y9GPrFcJ5DanXe7NVAKXe5CyERjBnxWktqAPBzXJa36FKIlkeVF5G+NWgufC6ZWkDCD98VZDiPP9sSgqZF8bSR4l4/vxxAW4knKIZv11VX77Sa1qZOR9Ml12t5pNGT7wDlSOiDqr5EWsEexga/2s/t9itvfzhcWKt+k66jd8tdws2dw6+8JYJeiBbU63HBjxCX+vCVZASrNBjiXhFw=="
@@ -1601,7 +1601,7 @@ sno-ibi        dataimage.metal3.io/ocp-sno-ibi   34s</code></pre>
 <div class="listingblock console">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                                         VERSION	   AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.18.1   False       False         4h54m   Error while reconciling 4.18.1: an unknown error has occurred: MultipleErrors
+clusterversion.config.openshift.io/version   4.18.3   False       False         4h54m   Error while reconciling 4.18.3: an unknown error has occurred: MultipleErrors
 
 NAME                                   STATUS   ROLES                         AGE     VERSION
 node/ocp-sno-ibi.sno-ibi.5g-deployment.lab   Ready    control-plane,master,worker   6m40s   v1.31.4
@@ -1611,27 +1611,27 @@ machineconfigpool.machineconfiguration.openshift.io/master   rendered-master-484
 machineconfigpool.machineconfiguration.openshift.io/worker   rendered-worker-ca41ad0a46d9e710d6540dafbcbbb473   True	  False      False	0              0                   0                     0                      5h14m
 
 NAME                                                                           VERSION       AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
-clusteroperator.config.openshift.io/authentication                             4.18.1   False	 False         True	  5m39s   OAuthServerRouteEndpointAccessibleControllerAvailable: Get "https://oauth-openshift.apps.sno-ibi.5g-deployment.lab/healthz": EOF
-clusteroperator.config.openshift.io/config-operator                            4.18.1   True        False         False	  5h14m
-clusteroperator.config.openshift.io/dns                                        4.18.1   True        False         False	  5m25s
-clusteroperator.config.openshift.io/etcd                                       4.18.1   True        False         False	  5h5m
-clusteroperator.config.openshift.io/ingress                                    4.18.1   True        False         True	  5m38s   The "default" ingress controller reports Degraded=True: DegradedConditions: One or more other status
+clusteroperator.config.openshift.io/authentication                             4.18.3   False	 False         True	  5m39s   OAuthServerRouteEndpointAccessibleControllerAvailable: Get "https://oauth-openshift.apps.sno-ibi.5g-deployment.lab/healthz": EOF
+clusteroperator.config.openshift.io/config-operator                            4.18.3   True        False         False	  5h14m
+clusteroperator.config.openshift.io/dns                                        4.18.3   True        False         False	  5m25s
+clusteroperator.config.openshift.io/etcd                                       4.18.3   True        False         False	  5h5m
+clusteroperator.config.openshift.io/ingress                                    4.18.3   True        False         True	  5m38s   The "default" ingress controller reports Degraded=True: DegradedConditions: One or more other status
  conditions indicate a degraded state: CanaryChecksSucceeding=Unknown (CanaryRouteNotAdmitted: Canary route is not admitted by the default ingress controller)
-clusteroperator.config.openshift.io/kube-apiserver                             4.18.1   True        False         False	  4h54m
-clusteroperator.config.openshift.io/kube-controller-manager                    4.18.1   True        False         False	  4h57m
-clusteroperator.config.openshift.io/kube-scheduler                             4.18.1   True        False         False	  5h2m
-clusteroperator.config.openshift.io/kube-storage-version-migrator              4.18.1   True        False         False	  5h14m
-clusteroperator.config.openshift.io/machine-approver                           4.18.1   True        False         False	  5h14m
-clusteroperator.config.openshift.io/machine-config                             4.18.1   True        False         False	  5h14m
-clusteroperator.config.openshift.io/monitoring                                 4.18.1   True        False         False	  4h57m
-clusteroperator.config.openshift.io/network                                    4.18.1   True        False         False	  5h14m
-clusteroperator.config.openshift.io/node-tuning                                4.18.1   True        False         False	  5m38s
-clusteroperator.config.openshift.io/openshift-apiserver                        4.18.1   True        False         False	  5m32s
-clusteroperator.config.openshift.io/openshift-controller-manager               4.18.1   True        False         False	  5m22s
-clusteroperator.config.openshift.io/operator-lifecycle-manager                 4.18.1   True        False         False	  5h14m
-clusteroperator.config.openshift.io/operator-lifecycle-manager-catalog         4.18.1   True        False         False	  5h14m
-clusteroperator.config.openshift.io/operator-lifecycle-manager-packageserver   4.18.1   True        False         False	  5m31s
-clusteroperator.config.openshift.io/service-ca                                 4.18.1   True        False         False	  5h14m</code></pre>
+clusteroperator.config.openshift.io/kube-apiserver                             4.18.3   True        False         False	  4h54m
+clusteroperator.config.openshift.io/kube-controller-manager                    4.18.3   True        False         False	  4h57m
+clusteroperator.config.openshift.io/kube-scheduler                             4.18.3   True        False         False	  5h2m
+clusteroperator.config.openshift.io/kube-storage-version-migrator              4.18.3   True        False         False	  5h14m
+clusteroperator.config.openshift.io/machine-approver                           4.18.3   True        False         False	  5h14m
+clusteroperator.config.openshift.io/machine-config                             4.18.3   True        False         False	  5h14m
+clusteroperator.config.openshift.io/monitoring                                 4.18.3   True        False         False	  4h57m
+clusteroperator.config.openshift.io/network                                    4.18.3   True        False         False	  5h14m
+clusteroperator.config.openshift.io/node-tuning                                4.18.3   True        False         False	  5m38s
+clusteroperator.config.openshift.io/openshift-apiserver                        4.18.3   True        False         False	  5m32s
+clusteroperator.config.openshift.io/openshift-controller-manager               4.18.3   True        False         False	  5m22s
+clusteroperator.config.openshift.io/operator-lifecycle-manager                 4.18.3   True        False         False	  5h14m
+clusteroperator.config.openshift.io/operator-lifecycle-manager-catalog         4.18.3   True        False         False	  5h14m
+clusteroperator.config.openshift.io/operator-lifecycle-manager-packageserver   4.18.3   True        False         False	  5m31s
+clusteroperator.config.openshift.io/service-ca                                 4.18.3   True        False         False	  5h14m</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1663,7 +1663,7 @@ NAME                                                             PAUSED   PROVIS
 clusterinstance.siteconfig.open-cluster-management.io/ocp-sno-ibi            Completed         Provisioning completed   32m
 
 NAME                                       INFRAID      PLATFORM        REGION   VERSION       CLUSTERTYPE   PROVISIONSTATUS   POWERSTATE   AGE
-clusterdeployment.hive.openshift.io/sno-ibi   sno-ibi-vcd52   none-platform            4.18.1                 Provisioned       Running      32m
+clusterdeployment.hive.openshift.io/sno-ibi   sno-ibi-vcd52   none-platform            4.18.3                 Provisioned       Running      32m
 
 NAME                                                    REQUIREMENTSMET           COMPLETED                      BAREMETALHOSTREF
 imageclusterinstall.extensions.hive.openshift.io/sno-ibi   HostValidationSucceeded   ClusterInstallationSucceeded   ocp-sno-ibi
@@ -1697,7 +1697,7 @@ dataimage.metal3.io/ocp-sno-ibi   32m</code></pre>
 <p>As explained in the <a href="ztp-workflow.html">ZTP Workflow</a> section, the process culminates with the CNF workload deployed and running on the site nodes. While the workload isn&#8217;t yet deployed, the foundation is set with the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a> applied.</p>
 </div>
 <div class="paragraph">
-<p>First, confirm that OpenShift, specifically the platform, is installed with version 4.18.1:</p>
+<p>First, confirm that OpenShift, specifically the platform, is installed with version 4.18.3:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1707,7 +1707,7 @@ dataimage.metal3.io/ocp-sno-ibi   32m</code></pre>
 <div class="listingblock console">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                                         VERSION       AVAILABLE   PROGRESSING   SINCE   STATUS
-clusterversion.config.openshift.io/version   4.18.1   True        False         6h4m    Cluster version is 4.18.1
+clusterversion.config.openshift.io/version   4.18.3   True        False         6h4m    Cluster version is 4.18.3
 
 NAME                                   STATUS   ROLES                         AGE   VERSION
 node/ocp-sno-ibi.sno-ibi.5g-deployment.lab   Ready    control-plane,master,worker   32m   v1.31.4</code></pre>

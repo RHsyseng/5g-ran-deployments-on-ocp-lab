@@ -813,7 +813,7 @@
 <p>In this section, we will perform an image-based upgrade to both managed clusters (<code>sno-abi</code> and <code>sno-ibi</code>) by leveraging the <a href="missing">Lifecycle Agent</a> (LCA) and the <a href="talm.html">Topology Aware Lifecycle Manager</a> (TALM) operators. The LCA provides an alternative way to upgrade the platform version of a single-node OpenShift cluster, while TALM manages the rollout of configurations throughout the lifecycle of the cluster fleet.</p>
 </div>
 <div class="paragraph">
-<p>The image-based upgrade is faster than the standard upgrade method and allows direct upgrades from OpenShift Container Platform &lt;4.y&gt; to &lt;4.y+2&gt;, and &lt;4.y.z&gt; to &lt;4.y.z+n&gt;. These upgrades utilize a generated OCI image from a dedicated seed cluster. We have already provided a seed image with version 4.18.4. The process to generate this seed image is the same as the one we executed in <a href="creating-seed-image.html">Creating the Seed Image</a> for version 4.18.1 to install <code>sno-ibi</code>.</p>
+<p>The image-based upgrade is faster than the standard upgrade method and allows direct upgrades from OpenShift Container Platform &lt;4.y&gt; to &lt;4.y+2&gt;, and &lt;4.y.z&gt; to &lt;4.y.z+n&gt;. These upgrades utilize a generated OCI image from a dedicated seed cluster. We have already provided a seed image with version 4.18.4. The process to generate this seed image is the same as the one we executed in <a href="creating-seed-image.html">Creating the Seed Image</a> for version 4.18.3 to install <code>sno-ibi</code>.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -828,7 +828,7 @@ Image-based upgrades rely on custom images specific to the hardware platform on 
 </table>
 </div>
 <div class="paragraph">
-<p>Below are the steps to upgrade both managed clusters and their configuration from 4.18.1 to 4.18.4:</p>
+<p>Below are the steps to upgrade both managed clusters and their configuration from 4.18.3 to 4.18.4:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -962,7 +962,7 @@ openshift-storage                      lvms-operator.v4.18.0                    
 </div>
 </div>
 <div class="paragraph">
-<p>On the other hand, <code>sno-ibi</code> is running all the required operators: Day 2 Operators plus LCA and OADP, which are necessary to run the image-based upgrade process. This is because they were already included in the seed image version v4.18.1. See <a href="creating-seed-image.html#_running_the_seed_image_generation">Running the Seed Image Generation</a> for a list of the operators installed in the seed cluster. They are the same versions because <code>sno-ibi</code> was provisioned with that seed image (image-based installation).</p>
+<p>On the other hand, <code>sno-ibi</code> is running all the required operators: Day 2 Operators plus LCA and OADP, which are necessary to run the image-based upgrade process. This is because they were already included in the seed image version v4.18.3. See <a href="creating-seed-image.html#_running_the_seed_image_generation">Running the Seed Image Generation</a> for a list of the operators installed in the seed cluster. They are the same versions because <code>sno-ibi</code> was provisioned with that seed image (image-based installation).</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
