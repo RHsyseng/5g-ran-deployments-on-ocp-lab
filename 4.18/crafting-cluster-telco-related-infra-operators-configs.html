@@ -433,10 +433,6 @@
   </li>
 </ul>
   </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
@@ -578,10 +574,6 @@
   </li>
 </ul>
   </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
@@ -829,7 +821,7 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in <a href="telco-related-infra-operators-intro.html" class="xref page">Introduction to Telco Related Infrastructure Operators</a>. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ref-design-overview_telco-ran-du">v4.18 Telco RAN Reference Design Specification</a> in the official documentation.
+The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in <a href="telco-related-infra-operators-intro.html" class="xref page">Introduction to Telco Related Infrastructure Operators</a>. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ref-design-overview_telco-ran-du">v4.18 Telco RAN Reference Design Specification</a> in the official documentation.
 </td>
 </tr>
 </table>
@@ -1069,7 +1061,7 @@ By leveraging hub site templating we are reducing the number of policies on our 
 </div>
 </li>
 <li>
-<p>We&#8217;re using policy templating, so we need to create a <code>ConfigMap</code> with the templating values to be used. Notice that the following resource contains values for multiple hardware specifications that we may have in our infrastructure. In the policy we just applied, the values are obtained depending on the label <code>hardware-type</code> that each cluster is assigned to. This label is set in the <code>ClusterInstance</code> definition. More information about Template processing can be found in <a href="https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/governance/governance#template-processing">Red Hat Advanced Cluster Management documentation</a>.</p>
+<p>We&#8217;re using policy templating, so we need to create a <code>ConfigMap</code> with the templating values to be used. Notice that the following resource contains values for multiple hardware specifications that we may have in our infrastructure. In the policy we just applied, the values are obtained depending on the label <code>hardware-type</code> that each cluster is assigned to. This label is set in the <code>ClusterInstance</code> definition. More information about Template processing can be found in <a href="https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html/governance/governance#template-processing">Red Hat Advanced Cluster Management documentation</a>.</p>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/group-hardware-types-configmap.yaml
@@ -1267,7 +1259,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>More information about Template processing can be found in <a href="https://access.redhat.com/documentation/en-us/red_hat_advanced_cluster_management_for_kubernetes/2.12/html/governance/governance#template-processing">Red Hat Advanced Cluster Management documentation</a>.</p>
+<p>More information about Template processing can be found in <a href="https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html/governance/governance#template-processing">Red Hat Advanced Cluster Management documentation</a>.</p>
 </div>
 </div>
 </div>
@@ -1299,7 +1291,7 @@ podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:844
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that we can add content not included in the ZTP container image by creating the required source CR in the <code>source-crs/custom-crs</code> folder. Once pushed to our Git repo, we can reference it in any of the common, group or site <code>PolicyGenTemplates</code>. More information on deploying additional changes to cluster can be found in the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/policygentemplate_for_ztp/ztp-advanced-policy-config.html#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config">docs</a>.</p>
+<p>Notice that we can add content not included in the ZTP container image by creating the required source CR in the <code>source-crs/custom-crs</code> folder. Once pushed to our Git repo, we can reference it in any of the common, group or site <code>PolicyGenTemplates</code>. More information on deploying additional changes to cluster can be found in the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/managing-cluster-policies-with-policygentemplate-resources#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config">docs</a>.</p>
 </div>
 </div>
 </div>

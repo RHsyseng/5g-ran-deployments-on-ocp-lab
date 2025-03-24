@@ -433,10 +433,6 @@
   </li>
 </ul>
   </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
@@ -578,10 +574,6 @@
   </li>
 </ul>
   </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
@@ -938,7 +930,7 @@ Some of these configurations are configured at install time (through the use of 
 <p>Above picture describes what areas are covered by the 5G Ran profile. Red Hat covers all layers but the two on the top which are part of the application domain. Below the different 5G RAN profile configurations are described.</p>
 </div>
 <div class="paragraph">
-<p>A more in-detail explanation of the 5G RAN Profile is covered in the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ran-du-reference-design-components_telco-ran-du">Telco RAN DU reference design components</a>.</p>
+<p>A more in-detail explanation of the 5G RAN Profile is covered in the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-design-components_telco-ran-du">Telco RAN DU reference design components</a>.</p>
 </div>
 <div class="sect2">
 <h3 id="workload-partitioning"><a class="anchor" href="#workload-partitioning"></a>Workload Partitioning</h3>
@@ -1178,7 +1170,7 @@ Some of these configurations are configured at install time (through the use of 
 <p>These CRs are referenced (by filename) from the PolicyGenTemplate CRs in Git. The PolicyGenTemplate CRs act as a manifest of which configuration CRs should be included and how they should be combined into Policy CRs. In addition, the PolicyGenTemplate can contain an "overlay" (or patch) that is applied to the CR before it is wrapped into the Policy.</p>
 </div>
 <div class="paragraph">
-<p>The way this works is a follows. We will have one or more PolicyGenTemplates where we will reference these base configuration CRs. We can see an example <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.17/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml">here</a>.</p>
+<p>The way this works is a follows. We will have one or more PolicyGenTemplates where we will reference these base configuration CRs. We can see an example <a href="https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.18/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml">here</a>.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s use the following PolicyGenTemplate as example.</p>
@@ -1234,7 +1226,7 @@ Inside the templates we can often see references to what may appear variables li
 <div class="sect2">
 <h3 id="custom-policy-templates"><a class="anchor" href="#custom-policy-templates"></a>Policies Custom Templating</h3>
 <div class="paragraph">
-<p>In the previous section we have seen how we can use pre-defined templates to craft our policies, sometimes we may need to configure things that do not have a specific template pre-defined. In such cases, we can create our own templates by creating the template files within the same repository. Complete information can be found in <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/policygentemplate_for_ztp/ztp-advanced-policy-config.html#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config">the docs</a>.</p>
+<p>In the previous section we have seen how we can use pre-defined templates to craft our policies, sometimes we may need to configure things that do not have a specific template pre-defined. In such cases, we can create our own templates by creating the template files within the same repository. Complete information can be found in <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/managing-cluster-policies-with-policygentemplate-resources#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config">the docs</a>.</p>
 </div>
 </div>
 </div>

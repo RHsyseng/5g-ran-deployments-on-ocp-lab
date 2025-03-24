@@ -433,10 +433,6 @@
   </li>
 </ul>
   </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
@@ -578,10 +574,6 @@
   </li>
 </ul>
   </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
@@ -1242,7 +1234,7 @@ EOF</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Remember that, during seed image generation, the catalog sources are removed from the seed image. Also, the LVMCluster CR is not allowed to exist in the seed cluster; it has to be added during the reconfiguration process. More information on the prerequisites for generating a seed image can be found <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-preparing-for-image-based-install.html#cnf-image-based-upgrade-generate-seed-image_ibi-preparing-image-based-install">here</a>.
+Remember that, during seed image generation, the catalog sources are removed from the seed image. Also, the LVMCluster CR is not allowed to exist in the seed cluster; it has to be added during the reconfiguration process. More information on the prerequisites for generating a seed image can be found <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/image-based-installation-for-single-node-openshift#ibi-preparing-for-image-based-install">here</a>.
 </td>
 </tr>
 </table>
@@ -1702,7 +1694,7 @@ dataimage.metal3.io/ocp-sno-ibi   32m</code></pre>
 <h2 id="verifying-install"><a class="anchor" href="#verifying-install"></a>Verifying the RAN DU Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>As explained in the <a href="ztp-workflow.html">ZTP Workflow</a> section, the process culminates with the CNF workload deployed and running on the site nodes. While the workload isn&#8217;t yet deployed, the foundation is set with the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a> applied.</p>
+<p>As explained in the <a href="ztp-workflow.html">ZTP Workflow</a> section, the process culminates with the CNF workload deployed and running on the site nodes. While the workload isn&#8217;t yet deployed, the foundation is set with the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a> applied.</p>
 </div>
 <div class="paragraph">
 <p>First, confirm that OpenShift, specifically the platform, is installed with version 4.18.0-rc.7:</p>
@@ -1765,7 +1757,7 @@ openshift-storage   lvmcluster.lvm.topolvm.io/lvmcluster   Ready</code></pre>
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-The SR-IOV configuration was included in the seed cluster because the hardware of both the seed and target clusters was identical. If the SR-IOV configuration differs, it can be included as another extra-manifest, similar to how the LVM operator was reconfigured. Further information can be found <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi_deploying_sno_clusters/ibi-edge-image-based-install.html#ibi-create-extra-manifest-configmap_ibi-edge-image-based-install">here</a>.
+The SR-IOV configuration was included in the seed cluster because the hardware of both the seed and target clusters was identical. If the SR-IOV configuration differs, it can be included as another extra-manifest, similar to how the LVM operator was reconfigured. Further information can be found <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/image-based-installation-for-single-node-openshift#ibi-create-extra-manifest-configmap_ibi-edge-image-based-install">here</a>.
 </td>
 </tr>
 </table>

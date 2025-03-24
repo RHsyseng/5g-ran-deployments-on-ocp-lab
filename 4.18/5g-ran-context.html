@@ -433,10 +433,6 @@
   </li>
 </ul>
   </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
@@ -578,10 +574,6 @@
   </li>
 </ul>
   </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
@@ -934,7 +926,7 @@
 <h2 id="cpu-reduction-tuning"><a class="anchor" href="#cpu-reduction-tuning"></a>Tuning for CPU Reduction</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In RAN environments, on Single-Node OpenShift (SNO) the CPU usage by the platform must be reduced to the bare minimum so RAN workloads can benefit from as much CPU as possible. In order to accomplish that, the OpenShift platform will be limited to run their infrastructure components on a limited set of CPUs. This is what we call <a href="https://docs.openshift.com/container-platform/4.17/scalability_and_performance/enabling-workload-partitioning.html"><em>workload partitioning</em></a>, the operating system (OS) and OCP components will be allowed to run only in a sub set of the available CPUs, leaving the rest of CPUs available for the RAN workloads.</p>
+<p>In RAN environments, on Single-Node OpenShift (SNO) the CPU usage by the platform must be reduced to the bare minimum so RAN workloads can benefit from as much CPU as possible. In order to accomplish that, the OpenShift platform will be limited to run their infrastructure components on a limited set of CPUs. This is what we call <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/scalability_and_performance/enabling-workload-partitioning"><em>workload partitioning</em></a>, the operating system (OS) and OCP components will be allowed to run only in a sub set of the available CPUs, leaving the rest of CPUs available for the RAN workloads.</p>
 </div>
 <div class="paragraph">
 <p>On top of <em>workload partitioning</em>, the CNF team has tuned the OpenShift platform for RAN workloads by removing components that are not required in a RAN context such as Grafana Web Console, OpenShift Web Console, etc.</p>
@@ -1004,7 +996,7 @@
 </ul>
 </div>
 <div class="paragraph">
-<p>A major field of application for SR-IOV is within high-performance computing (HPC). You can use SR-IOV network devices with additional networks on your OpenShift Container Platform cluster installed on bare metal for applications that require high bandwidth or low latency. OpenShift Container Platform supports the <a href="https://docs.openshift.com/container-platform/4.17/networking/hardware_networks/about-sriov.html#supported-devices_about-sriov">following network interface controllers</a>.</p>
+<p>A major field of application for SR-IOV is within high-performance computing (HPC). You can use SR-IOV network devices with additional networks on your OpenShift Container Platform cluster installed on bare metal for applications that require high bandwidth or low latency. OpenShift Container Platform supports the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/networking/hardware-networks#supported-devices_about-sriov">following network interface controllers</a>.</p>
 </div>
 </div>
 </div>

@@ -433,10 +433,6 @@
   </li>
 </ul>
   </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
@@ -578,10 +574,6 @@
   </li>
 </ul>
   </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
@@ -830,7 +822,7 @@
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Image-based upgrades rely on custom images specific to the hardware platform on which the clusters are running. Each distinct hardware platform requires its own seed image. You can find more information <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">here</a>.
+Image-based upgrades rely on custom images specific to the hardware platform on which the clusters are running. Each distinct hardware platform requires its own seed image. You can find more information <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/image-based-installation-for-single-node-openshift#seed-cluster-guidelines">here</a>.
 </td>
 </tr>
 </table>
@@ -844,10 +836,10 @@ Image-based upgrades rely on custom images specific to the hardware platform on 
 <p>Create a seed image using the Lifecycle Agent. As mentioned, the seed image <code>infra.5g-deployment.lab:8443/ibi/lab5gran:4.18.0-rc.8</code> is already available in the <a href="lab-environment-introduction.html#container-registry">container registry</a>.</p>
 </li>
 <li>
-<p>Verify that all software components meet the required versions. You can find the minimum software requirements <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#ztp-image-based-upgrade-prereqs_ibi-understanding-image-based-install">here</a>.</p>
+<p>Verify that all software components meet the required versions. You can find the minimum software requirements <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/image-based-installation-for-single-node-openshift#ztp-image-based-upgrade-prereqs_ibi-understanding-image-based-install">here</a>.</p>
 </li>
 <li>
-<p>Install the Lifecycle Agent operator and the <a href="https://docs.openshift.com/container-platform/4.18/backup_and_restore/application_backup_and_restore/oadp-intro.html">OpenShift API for Data Protection</a> (OADP) in the managed clusters.</p>
+<p>Install the Lifecycle Agent operator and the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/backup_and_restore/oadp-application-backup-and-restore#oadp-introduction">OpenShift API for Data Protection</a> (OADP) in the managed clusters.</p>
 </li>
 <li>
 <p>Configure OADP to back up and restore the configuration of the managed clusters that isn&#8217;t included in the seed image.</p>
@@ -864,7 +856,7 @@ Image-based upgrades rely on custom images specific to the hardware platform on 
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Both clusters were installed using different methodologies. While <code>sno-abi</code> was provisioned using the <a href="ztp-workflow.html#abi-deployment">agent-based install</a> workflow, <code>sno-ibi</code> was deployed using the <a href="ztp-workflow.html#ibi-deployment">image-based install</a>. However, as long as they both meet the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">Seed cluster guidelines</a> and have the same combination of hardware, Day 2 Operators, and cluster configuration as the 4.18.0-rc.8 seed cluster, we&#8217;re ready to proceed.
+Both clusters were installed using different methodologies. While <code>sno-abi</code> was provisioned using the <a href="ztp-workflow.html#abi-deployment">agent-based install</a> workflow, <code>sno-ibi</code> was deployed using the <a href="ztp-workflow.html#ibi-deployment">image-based install</a>. However, as long as they both meet the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/image-based-installation-for-single-node-openshift#seed-cluster-guidelines">Seed cluster guidelines</a> and have the same combination of hardware, Day 2 Operators, and cluster configuration as the 4.18.0-rc.8 seed cluster, we&#8217;re ready to proceed.
 </td>
 </tr>
 </table>
@@ -910,7 +902,7 @@ image-based-install-operator-7f7659f86c-cd46k   2/2     Running   0          46h
 </div>
 </div>
 <div class="paragraph">
-<p>Next, double-check that the TALM operator is running. Note that the name of the Pod is <code>cluster-group-upgrade-controller-manager</code>, which is based on the name of the upstream project <a href="https://github.com/openshift-kni/cluster-group-upgrades-operator">Cluster Group Upgrade Operator</a>.</p>
+<p>Next, double-check that the TALM operator is running. Note that the name of the Pod is <code>cluster-group-upgrade-controller-manager</code>, which is based on the name of the upstream project <a href="https://github.com/openshift-kni/cluster-group-upgrades-">Cluster Group Upgrade Operator</a>.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -939,7 +931,7 @@ pod/openshift-gitops-operator-controller-manager-6794f4f9cc-vpm2b   2/2     Runn
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-We already know that both SNO clusters meet the <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-understanding-image-based-install.html#seed-cluster-guidelines">seed cluster guidelines</a> and have the same combination of hardware, Day 2 Operators, and cluster configuration as the target seed cluster from which the seed image version v4.18.0-rc.8 was obtained.
+We already know that both SNO clusters meet the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/image-based-installation-for-single-node-openshift#seed-cluster-guidelines">seed cluster guidelines</a> and have the same combination of hardware, Day 2 Operators, and cluster configuration as the target seed cluster from which the seed image version v4.18.0-rc.8 was obtained.
 </td>
 </tr>
 </table>
@@ -1705,7 +1697,7 @@ Note the time it took to update the SNO clusters. As shown above, the <code>sno-
 </table>
 </div>
 <div class="paragraph">
-<p>As a final verification, check that both upgraded clusters comply with the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a> configuration:</p>
+<p>As a final verification, check that both upgraded clusters comply with the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a> configuration:</p>
 </div>
 <div class="imageblock">
 <div class="content">

@@ -433,10 +433,6 @@
   </li>
 </ul>
   </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
@@ -578,10 +574,6 @@
   </li>
 </ul>
   </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
@@ -818,7 +810,7 @@
 <h2 id="intro-to-seed-image-gen"><a class="anchor" href="#intro-to-seed-image-gen"></a>Introduction to Seed Image Generation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this section, we will create a seed image from the <a href="lab-environment-introduction.html#openshift-seed-sno">Seed single-node OpenShift cluster</a>. This seed cluster has the same hardware and a similar cluster configuration to the OpenShift clusters we will create and upgrade later. More information on the allowed configuration of the seed SNO cluster can be found <a href="https://docs.openshift.com/container-platform/4.18/edge_computing/image_base_install/ibi-preparing-for-image-based-install.html#cnf-image-based-upgrade-generate-seed-image_ibi-preparing-image-based-install">here</a>.</p>
+<p>In this section, we will create a seed image from the <a href="lab-environment-introduction.html#openshift-seed-sno">Seed single-node OpenShift cluster</a>. This seed cluster has the same hardware and a similar cluster configuration to the OpenShift clusters we will create and upgrade later. More information on the allowed configuration of the seed SNO cluster can be found <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/image-based-installation-for-single-node-openshift#ibi-preparing-for-image-based-install">here</a>.</p>
 </div>
 <div class="paragraph">
 <p>We will use the Lifecycle Agent to generate a seed image from a managed cluster. The Operator checks for required system configurations, performs necessary system cleanup before generating the image, and launches the image generation process. The seed image generation includes the following tasks:</p>

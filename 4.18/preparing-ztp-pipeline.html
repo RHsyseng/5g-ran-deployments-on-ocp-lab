@@ -433,10 +433,6 @@
   </li>
 </ul>
   </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
@@ -578,10 +574,6 @@
   </li>
 </ul>
   </li>
-</ul>
-  </li>
-  <li class="nav-item" data-depth="0">
-<ul class="nav-list">
   <li class="nav-item" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
@@ -828,13 +820,13 @@
 <h2 id="introduction-to-clusterinstance"><a class="anchor" href="#introduction-to-clusterinstance"></a>Introduction to the ClusterInstance</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The <code>ClusterInstance</code> is an abstraction layer on top of the different components managed by the <a href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a>, responsible for deploying OpenShift clusters using either the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> or <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html">Image Based Installation</a> flow. For the ones familiar with the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> and particularly with the <code>Assisted Service</code>, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like: <code>ClusterDeployment</code>, <code>InfraEnv</code>, <code>AgentClusterInstall</code>, etc.</p>
+<p>The <code>ClusterInstance</code> is an abstraction layer on top of the different components managed by the <a href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a>, responsible for deploying OpenShift clusters using either the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/ztp-deploying-far-edge-sites#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> or <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/image-based-installation-for-single-node-openshift#ibi-understanding-image-based-install">Image Based Installation</a> flow. For the ones familiar with the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/ztp-deploying-far-edge-sites#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> and particularly with the <code>Assisted Service</code>, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like: <code>ClusterDeployment</code>, <code>InfraEnv</code>, <code>AgentClusterInstall</code>, etc.</p>
 </div>
 <div class="paragraph">
 <p>The ClusterInstance simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place. In this <a href="https://github.com/stolostron/siteconfig/blob/release-2.13/config/samples/siteconfig_v1alpha1_clusterinstance.yaml">link</a> you can find an example of a ClusterInstance for a SNO deployment.</p>
 </div>
 <div class="paragraph">
-<p>In the comming sections, we will create our own ClusterInstances using the <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/image_base_install/ibi-understanding-image-based-install.html">Image Based Installation</a> and <a href="https://docs.openshift.com/container-platform/4.17/edge_computing/ztp-deploying-far-edge-sites.html#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> flows to deploy a couple of SNO clusters in our lab environment.</p>
+<p>In the comming sections, we will create our own ClusterInstances using the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/image-based-installation-for-single-node-openshift#ibi-understanding-image-based-install">Image Based Installation</a> and <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/ztp-deploying-far-edge-sites#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> flows to deploy a couple of SNO clusters in our lab environment.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -985,7 +977,7 @@ Below commands must be executed from the infrastucture host if not specified oth
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://docs.openshift.com/container-platform/4.17/cli_reference/openshift_cli/getting-started-cli.html">oc client</a>.</p>
+<p><a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/cli_tools/openshift-cli-oc#cli-about-cli_cli-developer-commands">oc client</a>.</p>
 </li>
 <li>
 <p><a href="https://podman.io/getting-started/installation">podman</a>.</p>
@@ -1109,7 +1101,7 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 <div class="paragraph">
 <p>At this stage, we have our ZTP GitOps pipeline running and waiting for committing declarative Infrastructure and Configuration as Code to the <code>ztp-repository</code> Git repository.
 * <strong>clusters</strong>. It is responsible for managing the deployment of Single Node OpenShift clusters from the Git repository.
-* <strong>policies</strong>. It is responsible for managing the configuration via RHACM policies that will be applied to Single Node OpenShift clusters. Basically, it configures the <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco-ran-du-rds.html#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a>.</p>
+* <strong>policies</strong>. It is responsible for managing the configuration via RHACM policies that will be applied to Single Node OpenShift clusters. Basically, it configures the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a>.</p>
 </div>
 <div class="paragraph">
 <p>You can access the Argo CD instance on the lab by clicking <a href="https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab">here</a> and login in with the OpenShift admin credentials.</p>
