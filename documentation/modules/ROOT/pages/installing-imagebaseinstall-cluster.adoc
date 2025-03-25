@@ -158,7 +158,7 @@ Create the Installation ISO by running the following command:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-~/openshift-install image-based create image --dir ibi-iso-workdir
+openshift-install image-based create image --dir ibi-iso-workdir
 -----
 
 Verify that the *rhcos-ibi.iso* image has been created in our working directory:
@@ -579,7 +579,7 @@ configMapGenerator:
     - hub-1/extra-manifest/enable-crun-master.yaml
     - hub-1/extra-manifest/enable-crun-worker.yaml
     name: ran-rds-418-manifests
-    namespace: sno-ibi
+    namespace: sno-abi
 
 generatorOptions:
   disableNameSuffixHash: true
@@ -630,7 +630,7 @@ With the changes committed and pushed to the Git repository, the link:ocp-gitops
 oc --kubeconfig ~/hub-kubeconfig -n sno-ibi get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage
 -----
 
-[.console-input]
+[.console]
 [source,bash,subs="attributes+,+macros"]
 -----
 NAMESPACE   NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
