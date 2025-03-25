@@ -215,4 +215,4 @@ NAME                      STATUS   ROLES                         AGE   VERSION
 node/openshift-master-0   Ready    control-plane,master,worker   16h   {sno-cluster-version1-kubeversion}
 -----
 
-At this point, the seed image is created and pushed to our container registry under `infra.5g-deployment.lab:8443/ibi/lab5gran:{sno-seed-version}`. The seed image is ready to be used to provision new SNO clusters using the image-based installation method.
+At this point, the seed image is created and pushed to our container registry under `infra.5g-deployment.lab:8443/ibi/lab5gran:{sno-cluster-version1}`. The seed image is ready to be used to provision new SNO clusters using the image-based installation method.

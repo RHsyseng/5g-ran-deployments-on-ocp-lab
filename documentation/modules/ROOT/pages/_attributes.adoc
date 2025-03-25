@@ -29,7 +29,7 @@ code:experimental:
 :hub-cluster-kubeversion: v1.31.6
 :sno-cluster-version1: v4.18.3
 :sno-cluster-version2: v4.18.4
-:sno-seed-version: v4.18.1
+:sno-seed-version: v4.18.3
 :sno-cluster-version1-kubeversion: v1.31.6
 :sno-cluster-version2-kubeversion: v1.31.6
 :sno-cluster-version1-cvo: 4.18.3
