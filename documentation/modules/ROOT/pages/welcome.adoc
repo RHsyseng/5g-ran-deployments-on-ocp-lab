@@ -1,0 +1,120 @@
+= Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift
+:!sectids:
+
+[.text-center.strong]
+[#5g-ran-lab]
+== Red Hat Lab - 5G RAN Deployments on OpenShift
+
+This lab will guide you through the deployment of a RAN ready infrastructure.
+
+IMPORTANT: This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
+
+[#showroom-intro]
+== Introduction to the Showroom Environment
+
+As part of the lab deployment, a web application for accessing the lab environment has been deployed. We refer to this application as `Showroom`. This app consists of two parts:
+
+- The left side of the app displays the lab content.
+- The right side of the app provides access to the lab environment. This section contains multiple tabs: one or more terminals for running commands, and a web browser for accessing various web consoles.
+
+The following image shows how the web app looks like:
+
+image::showroom-app.png[Showroom App]
+
+[#resizing-sections]
+=== Resizing App Sections
+
+You can resize the sections (Content/Terminal) using the split bar, as shown in the image below. Click the bar (red arrow) and drag it left or right to resize the sections.
+
+image::showroom-app-2.png[Showroom App Resize]
+
+[#multiple-terminals]
+=== Opening Multiple Terminals
+
+You can have multiple terminals open. Each terminal operates independently. You cannot close the first terminal or move it to a different position. Closed terminals cannot be recovered.
+
+To open a new terminal, click the "+ New Terminal" tab:
+
+image::showroom-app-3.png[Showroom App New Terminal]
+
+To close a terminal, click the "x" button.
+
+image::showroom-app-4.png[Showroom App Close Terminal]
+
+[#web-browser]
+=== Web Browser
+
+To access the lab's web browser, click the "Web Browser" tab.
+
+image::showroom-app-5.png[Showroom App Web Browser]
+
+From this Firefox browser, you can access various consoles. The consoles used in the lab are pre-configured as bookmarks. Feel free to use them.
+
+image::showroom-app-6.png[Showroom App Web Browser Bookmarks]
+
+If you close the Firefox browser, you can reopen it by right-clicking on the right side of the screen and selecting "Firefox".
+
+image::showroom-app-7.png[Showroom App Web Browser Recovery]
+
+To send copied content to the browser's clipboard, click the small black menu on the left, then select "Clipboard."
+
+image::showroom-app-8.png[Showroom App Web Browser Clipboard Menu]
+
+image::showroom-app-9.png[Showroom App Web Browser Clipboard]
+
+[#current-contributors]
+== Current Lab Contributors
+
+[cols="1,1"]
+|===
+|Name |Role
+
+|Alberto Losada
+|Lab Developer / Maintainer
+
+|Ian Miller
+|Lab Reviewer / CNF Developer
+
+|Mario Vázquez
+|Lab Developer / Maintainer
+
+|===
+
+[#past-contributors]
+== Past Lab Contributors
+
+[cols="1,1"]
+|===
+|Name |Role
+
+|Alberto Losada
+|Lab Developer / Maintainer
+
+|Ethan Siegel
+|Lab Contributor
+
+|Ian Miller
+|Lab Contributor / CNF Developer
+
+|Mario Vázquez
+|Lab Developer / Maintainer
+
+|Leo Ochoa
+|Lab Reviewer
+
+|Scott Collier
+|Lab Reviewer
+
+|Rob Fisher
+|Lab Reviewer
+
+|Federico Ferrando
+|Lab Reviewer
+
+|Daniel Munné
+|Lab Reviewer
+
+|John Herr
+|Lab Reviewer
+
+|===
