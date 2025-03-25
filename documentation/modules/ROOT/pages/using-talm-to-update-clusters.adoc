@@ -49,7 +49,7 @@ Verify that the Image-Based Install (IBI) operator is installed:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc get pods -n multicluster-engine -lapp=image-based-install-operator
+oc --kubeconfig ~/hub-kubeconfig get pods -n multicluster-engine -lapp=image-based-install-operator
 -----
 [source,console]
 -----
@@ -319,6 +319,7 @@ patches:
     - op: replace
       path: /spec/policy-templates/0/objectDefinition/spec/object-templates/0/objectDefinition/data
       value: '{{hub copyConfigMapData "ztp-policies" "disconnected-ran-config" hub}}'
+EOF
 -----
 
 Then commit all the changes:
@@ -750,6 +751,8 @@ upgrade   9m37s   Idle            Idle    Idle
 
 IMPORTANT: Note the time it took to update the SNO clusters. As shown above, the `sno-ibi` took less than 10 minutes to run a z-stream update. Compared with the regular update time of around 40 minutes, the upgrade time reduction is significant.
 
-As a final verification, check that both upgraded clusters comply with the {rds-config}[Telco RAN DU reference configuration] configuration:
+As a final verification, check that both upgraded clusters comply with the {rds-config}[Telco RAN DU reference configuration] configuration and the OpenShift version showed is the Infrastructure tab is the expected one:
 
 image::ibu07.png[IBU policies]
+
+image::ibu-upgraded.png[IBU OCP version]
