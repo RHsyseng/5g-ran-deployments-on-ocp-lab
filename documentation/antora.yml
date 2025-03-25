@@ -4,4 +4,4 @@ version: ~
 nav:
   - modules/ROOT/nav.adoc
 
-start_page: ROOT:index.adoc
+start_page: ROOT:welcome.adoc
