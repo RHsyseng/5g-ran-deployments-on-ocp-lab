@@ -1327,6 +1327,21 @@ ztp-policies   requirements-upgrade   2m52s   Completed   All clusters are compl
 <img src="_images/ibu03.png" alt="IBU policies">
 </div>
 </div>
+<div class="paragraph">
+<p>Finally, once the upgrade policy is applied successfully we can remove it so it is not checked against our SNO clusters and consuming resources. Do not forget to commit the changes:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "s|- requirements-upgrade.yaml|#- requirements-upgrade.yaml|" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
+cd ~/5g-deployment-lab/ztp-repository/site-policies
+git add ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
+git commit -m "Removes upgrade policy once it is applied"
+git push origin main</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>ArgoCD will automatically synchronize the new changes and remove them from the RHACM WebUI.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
