@@ -910,7 +910,7 @@ topology-aware-lifecycle-manager.openshift-operators   28h</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n multicluster-engine -lapp=image-based-install-operator</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get pods -n multicluster-engine -lapp=image-based-install-operator</code></pre>
 </div>
 </div>
 <div class="listingblock">
@@ -1226,7 +1226,8 @@ patches:
   patch: |-
     - op: replace
       path: /spec/policy-templates/0/objectDefinition/spec/object-templates/0/objectDefinition/data
-      value: '{{hub copyConfigMapData "ztp-policies" "disconnected-ran-config" hub}}'</code></pre>
+      value: '{{hub copyConfigMapData "ztp-policies" "disconnected-ran-config" hub}}'
+EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1715,11 +1716,16 @@ Note the time it took to update the SNO clusters. As shown above, the <code>sno-
 </table>
 </div>
 <div class="paragraph">
-<p>As a final verification, check that both upgraded clusters comply with the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a> configuration:</p>
+<p>As a final verification, check that both upgraded clusters comply with the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a> configuration and the OpenShift version showed is the Infrastructure tab is the expected one:</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/ibu07.png" alt="IBU policies">
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ibu-upgraded.png" alt="IBU OCP version">
 </div>
 </div>
 </div>
