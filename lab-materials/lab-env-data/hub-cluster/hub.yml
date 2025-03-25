@@ -29,9 +29,6 @@ disconnected_operators:
 - name: lvms-operator
   channels:
   - name: stable-4.18
-#- name: ansible-automation-platform-operator
-#  channels:
-#  - name: stable-2.4-cluster-scoped
 - name: sriov-network-operator
   channels:
   - name: stable
@@ -43,8 +40,7 @@ disconnected_operators:
   - name: stable-1.4
 disconnected_extra_images:
 - registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.18.0-39
-- quay.io/rhsysdeseng/5granlab-ee:lab
-- quay.io/rhsysdeseng/lab5gran:v4.18.0-rc.8
+- quay.io/rhsysdeseng/lab5gran:v4.18.4
 disconnected_extra_release: 4.18.3
 disk_size: 120
 #extra_disks: [200]
