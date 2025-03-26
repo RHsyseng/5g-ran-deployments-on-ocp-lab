@@ -11,7 +11,7 @@ disconnected_url: infra.5g-deployment.lab:8443
 disconnected_update: True
 disconnected_user: admin
 disconnected_password: r3dh4t1!
-disconnected_operators_version: v4.18-1742450053
+disconnected_operators_version: v4.18-1742933492
 prega: False
 disconnected_operators:
 - name: advanced-cluster-management
