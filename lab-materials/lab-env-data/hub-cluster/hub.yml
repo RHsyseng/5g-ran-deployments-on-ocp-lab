@@ -12,7 +12,7 @@ disconnected_update: True
 disconnected_user: admin
 disconnected_password: r3dh4t1!
 disconnected_operators_version: v4.18-1742933492
-disconnected_prefix: /openshift/release-images
+disconnected_prefix: openshift/release-images
 prega: False
 disconnected_operators:
 - name: advanced-cluster-management
