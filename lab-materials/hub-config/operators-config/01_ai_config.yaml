@@ -168,7 +168,7 @@ data:
     mirror-by-digest-only = true
 
     [[registry.mirror]]
-      location = "infra.5g-deployment.lab:8443/openshift-release-dev/ocp-v4.0-art-dev"
+      location = "infra.5g-deployment.lab:8443/openshift/release"
 
     [[registry]]
     prefix = ""
@@ -176,7 +176,8 @@ data:
     mirror-by-digest-only = true
 
     [[registry.mirror]]
-      location = "infra.5g-deployment.lab:8443/openshift-release-dev/ocp-release"
+      location = "infra.5g-deployment.lab:8443/openshift/release-images"
+
 ---
 apiVersion: v1
 kind: ConfigMap
