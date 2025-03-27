@@ -231,7 +231,7 @@ metadata:
         argocd.argoproj.io/sync-wave: "4"
   name: openshift-v4.18.3-disconnected
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift-release-dev/ocp-release:4.18.3-x86_64
+  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.18.3-x86_64
 ---
 apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
@@ -240,4 +240,4 @@ metadata:
         argocd.argoproj.io/sync-wave: "4"
   name: openshift-v4.18.4-disconnected
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift-release-dev/ocp-release:4.18.4-x86_64
+  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.18.4-x86_64
