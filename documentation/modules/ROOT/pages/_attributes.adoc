@@ -34,7 +34,7 @@ code:experimental:
 :sno-cluster-version2-kubeversion: v1.31.6
 :sno-cluster-version1-cvo: 4.18.3
 :sno-cluster-version2-cvo: 4.18.4
-:active-ocp-version-clusterimageset: infra.5g-deployment.lab:8443/openshift-release-dev/ocp-release:{sno-cluster-version1-cvo}-x86_64
+:active-ocp-version-clusterimageset: infra.5g-deployment.lab:8443/openshift/release-images:{sno-cluster-version1-cvo}-x86_64
 :talm-update-file: zone-europe-upgrade-418-1.yaml
 :talm-update-channel: stable-4.18
 :talm-update-version: 4.18.1
