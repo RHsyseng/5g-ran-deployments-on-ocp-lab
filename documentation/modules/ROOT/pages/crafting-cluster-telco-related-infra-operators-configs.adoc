@@ -692,11 +692,11 @@ Once the changes are commited to the Git repository, ArgoCD will synchronize the
 
 image::argocd-policies-app.png[ArgoCD Policies App]
 
-The resulting policies can be seen from the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome[RHACM WebUI]:
+The resulting policies can be seen from the RHACM Console at https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome. You can also access through the pre-configured Firefox image:bookmark-rhacm-console.png[RHACM bookmark icon] bookmark.
 
 WARNING: It may take up to 5 minutes for the policies to show up, this is due to Argo CD syncing period.
 
-1. Access the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome[RHACM WebUI] and login with the OpenShift credentials.
+1. Access the RHACM console and login with the OpenShift credentials.
 +
 2. Once you're in, click on `Governance` -> `Policies`. You will see the following screen where we can see several policies registered.
 
