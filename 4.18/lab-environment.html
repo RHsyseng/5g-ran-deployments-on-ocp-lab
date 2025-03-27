@@ -1227,6 +1227,48 @@ passwd lab-user</code></pre>
 </div>
 </div>
 <div class="paragraph">
+<p>Make sure the new user can use rootless podman:</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Below command may fail with <code>ERRO[0000] running `/usr/bin/newuidmap 66372 0 1000 1 1 100000 65536</code>: newuidmap: write to uid_map failed: Operation not permitted`.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">su - lab-user
+podman version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If above command failed, run the following command as root, and try rootless podman again:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">chmod 4755 /usr/bin/newuidmap /usr/bin/newgidmap</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, make sure <code>lab-user</code> has the correct git config:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">su - lab-user
+git config --global user.email "<a href="mailto:student@5g-deployment.lab">student@5g-deployment.lab</a>"
+git config --global user.name "Student"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now that lab-user is configured, make sure you continue to run the next commands as root.</p>
+</div>
+<div class="paragraph">
 <p>Generate lab content on the hypervisor host:</p>
 </div>
 <div class="listingblock console-input">

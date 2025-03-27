@@ -866,13 +866,25 @@ The steps below rely on the lab environment being up and running.
 <div class="paragraph">
 <p>We need a Git repository where we will store our clusters configurations, we will create a new Git repository in the <a href="lab-environment-introduction.html#git-server">Git server</a> running on the infrastructure node.</p>
 </div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+Remember you can access the git server through the pre-configured Firefox <span class="image"><img src="_images/bookmark-gitea.png" alt="Gitea bookmark icon"></span> bookmark.
+</td>
+</tr>
+</table>
+</div>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
 <p>Login into the <a href="http://infra.5g-deployment.lab:3000/">Git server</a> (user: student, password: student).</p>
 </li>
 <li>
-<p>You will see that two Git repositories already exist, you <strong>must not</strong> change these repositories, instead you will create a new one.</p>
+<p>You will see that one Git repository already exist, you <strong>must not</strong> change this repository, instead you will create a new one.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/gitea-repository.png" alt="Gitea Repository">
@@ -1005,18 +1017,6 @@ Below commands must be executed from the infrastucture host if not specified oth
 <div class="paragraph">
 <p>In the infrastructure server, run the following command to extract the pipeline installation files:</p>
 </div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-If you get <code>ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 65536</code>: newuidmap: write to uid_map failed: Operation not permitted` when running podman commands, run them with sudo.
-</td>
-</tr>
-</table>
-</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/5g-deployment-lab/ztp-pipeline/argocd
@@ -1122,7 +1122,7 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 * <strong>policies</strong>. It is responsible for managing the configuration via RHACM policies that will be applied to Single Node OpenShift clusters. Basically, it configures the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a>.</p>
 </div>
 <div class="paragraph">
-<p>You can access the Argo CD instance on the lab by clicking <a href="https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab">here</a> and login in with the OpenShift admin credentials.</p>
+<p>You can access the Argo CD instance on the lab at <a href="https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab" class="bare">https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab</a> and login in with the OpenShift admin credentials. You can also access through the pre-configured Firefox <span class="image"><img src="_images/bookmark-argocd.png" alt="ArgoCD bookmark icon"></span> bookmark.</p>
 </div>
 <div class="paragraph">
 <p>You can see what the ArgoCD Apps are running in the following images:</p>

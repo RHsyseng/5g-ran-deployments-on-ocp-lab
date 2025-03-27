@@ -1162,18 +1162,6 @@ podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:844
 <div class="paragraph">
 <p>This configuration is applied during installation time.</p>
 </div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-If you get <code>ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 65536</code>: newuidmap: write to uid_map failed: Operation not permitted` when running podman commands, run them with sudo.
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
 <p>Our recommendation is to always create a reference and keep the reference and user defined manifests (see next section) separately. This makes later updates to the reference based on z-stream releases significantly easier (simply replace the contents of reference-manifests with updated content)</p>
 </div>

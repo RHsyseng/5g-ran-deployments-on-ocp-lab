@@ -855,7 +855,7 @@ The following lab sections rely on having a lab environment accessible in order 
 <h2 id="git-server"><a class="anchor" href="#git-server"></a>Git Server</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A <a href="https://github.com/go-gitea/gitea">gitea</a> server is running on the infrastructure host, you can reach it at <a href="http://infra.5g-deployment.lab:3000/" class="bare">http://infra.5g-deployment.lab:3000/</a>.</p>
+<p>A <a href="https://github.com/go-gitea/gitea">gitea</a> server is running on the infrastructure host, you can reach it at <a href="http://infra.5g-deployment.lab:3000/" class="bare">http://infra.5g-deployment.lab:3000/</a>. You can access through the pre-configured Firefox <span class="image"><img src="_images/bookmark-gitea.png" alt="Gitea bookmark icon"></span> bookmark.</p>
 </div>
 <div class="paragraph">
 <p>Credentials for the git server:</p>
@@ -912,6 +912,9 @@ If you receive an error message regarding the certificate please re-run update-c
 <p>An OpenShift cluster is running on the infrastructure host, you can reach it at <a href="https://console-openshift-console.apps.hub.5g-deployment.lab" class="bare">https://console-openshift-console.apps.hub.5g-deployment.lab</a> and <a href="https://api.hub.5g-deployment.lab:6443" class="bare">https://api.hub.5g-deployment.lab:6443</a></p>
 </div>
 <div class="paragraph">
+<p>You can reach the Hub&#8217;s cluster OCP console through the pre-configured Firefox <span class="image"><img src="_images/bookmark-hub-ocp-console.png" alt="HUB OCP Console bookmark icon"></span> bookmark.</p>
+</div>
+<div class="paragraph">
 <p>Credentials for the OCP cluster:</p>
 </div>
 <div class="ulist">
@@ -920,7 +923,7 @@ If you receive an error message regarding the certificate please re-run update-c
 <p>Username: <code>admin</code></p>
 </li>
 <li>
-<p>Password: The password is randomly generated for each environment, and can be found in the email from demo.redhat.com or in case you configured the lab yourself, you defined this password.</p>
+<p>Password: The password is randomly generated for each environment. In case you configured the lab yourself, you defined this password.</p>
 </li>
 </ul>
 </div>
@@ -930,19 +933,7 @@ If you receive an error message regarding the certificate please re-run update-c
 <h2 id="webserver"><a class="anchor" href="#webserver"></a>HTTP Server</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>An HTTP server is deployed on the infrastructure host to publish the Red Hat CoreOS ISO and Red Hat CoreOS Rootfs images locally. These images are required to deploy the already existing infrastructure and the OpenShift Clusters that will be deployed in our lab.</p>
-</div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-The HTTP server cannot be contacted from outside the infrastructure node. It can be reached it at <a href="http://infra.5g-deployment.lab:8080" class="bare">http://infra.5g-deployment.lab:8080</a> from the infrastucture host.
-</td>
-</tr>
-</table>
+<p>An HTTP server is deployed on the infrastructure host to publish the Red Hat CoreOS ISO and Red Hat CoreOS Rootfs images locally. These images are required to deploy the already existing infrastructure and the OpenShift Clusters that will be deployed in our lab. Server can be reached at <a href="http://infra.5g-deployment.lab:8080" class="bare">http://infra.5g-deployment.lab:8080</a> from the infrastructure host.</p>
 </div>
 </div>
 </div>
@@ -950,7 +941,7 @@ The HTTP server cannot be contacted from outside the infrastructure node. It can
 <h2 id="s3-storage"><a class="anchor" href="#s3-storage"></a>S3 Storage Server</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>An S3 storage server is running on the infrastructure host in order to provide S3 backup and restore capabilities for the image-based upgrade process. You can access the management console at <a href="http://infra.5g-deployment.lab:9001/login" class="bare">http://infra.5g-deployment.lab:9001/login</a>.</p>
+<p>An S3 storage server is running on the infrastructure host in order to provide S3 backup and restore capabilities for the image-based upgrade process. You can access the management console at <a href="http://infra.5g-deployment.lab:9001/login" class="bare">http://infra.5g-deployment.lab:9001/login</a> and through the pre-configured Firefox <span class="image"><img src="_images/bookmark-minio.png" alt="Minio bookmark icon"></span> bookmark.</p>
 </div>
 <div class="ulist">
 <ul>
