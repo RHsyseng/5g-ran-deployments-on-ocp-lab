@@ -277,8 +277,6 @@ podman run --log-driver=none --rm --tls-verify=false {ztp-sitegenerate-disconnec
 
 This configuration is applied during installation time. 
 
-WARNING: If you get `ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 65536`: newuidmap: write to uid_map failed: Operation not permitted` when running podman commands, run them with sudo.
-
 Our recommendation is to always create a reference and keep the reference and user defined manifests (see next section) separately. This makes later updates to the reference based on z-stream releases significantly easier (simply replace the contents of reference-manifests with updated content)
 
 [#extra-manifest-clusterinstance]

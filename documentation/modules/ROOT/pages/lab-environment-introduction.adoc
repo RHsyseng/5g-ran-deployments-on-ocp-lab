@@ -15,7 +15,7 @@ image::telco5g-lab.png[Telco 5G Lab environment]
 [#git-server]
 == Git Server
 
-A https://github.com/go-gitea/gitea[gitea] server is running on the infrastructure host, you can reach it at http://infra.5g-deployment.lab:3000/.
+A https://github.com/go-gitea/gitea[gitea] server is running on the infrastructure host, you can reach it at http://infra.5g-deployment.lab:3000/. You can access through the pre-configured Firefox image:bookmark-gitea.png[Gitea bookmark icon] bookmark.
 
 Credentials for the git server:
 
@@ -39,22 +39,27 @@ NOTE: If you receive an error message regarding the certificate please re-run up
 
 An OpenShift cluster is running on the infrastructure host, you can reach it at https://console-openshift-console.apps.hub.5g-deployment.lab and https://api.hub.5g-deployment.lab:6443
 
+You can reach the Hub's cluster OCP console through the pre-configured Firefox image:bookmark-hub-ocp-console.png[HUB OCP Console bookmark icon] bookmark.
+
 Credentials for the OCP cluster:
 
-* Username: `admin` 
-* Password: The password is randomly generated for each environment, and can be found in the email from demo.redhat.com or in case you configured the lab yourself, you defined this password.
+* Username: `admin`
+ifeval::["{demo_environment}" != "true"]
+* Password: The password is randomly generated for each environment. In case you configured the lab yourself, you defined this password.
+endif::[]
+ifeval::["{demo_environment}" == "true"]
+* Password: `{hub_admin_password}`
+endif::[]
 
 [#webserver]
 == HTTP Server
 
-An HTTP server is deployed on the infrastructure host to publish the Red Hat CoreOS ISO and Red Hat CoreOS Rootfs images locally. These images are required to deploy the already existing infrastructure and the OpenShift Clusters that will be deployed in our lab.
-
-IMPORTANT: The HTTP server cannot be contacted from outside the infrastructure node. It can be reached it at http://infra.5g-deployment.lab:8080 from the infrastucture host.
+An HTTP server is deployed on the infrastructure host to publish the Red Hat CoreOS ISO and Red Hat CoreOS Rootfs images locally. These images are required to deploy the already existing infrastructure and the OpenShift Clusters that will be deployed in our lab. Server can be reached at http://infra.5g-deployment.lab:8080 from the infrastructure host.
 
 [#s3-storage]
 == S3 Storage Server
 
-An S3 storage server is running on the infrastructure host in order to provide S3 backup and restore capabilities for the image-based upgrade process. You can access the management console at http://infra.5g-deployment.lab:9001/login. 
+An S3 storage server is running on the infrastructure host in order to provide S3 backup and restore capabilities for the image-based upgrade process. You can access the management console at http://infra.5g-deployment.lab:9001/login and through the pre-configured Firefox image:bookmark-minio.png[Minio bookmark icon] bookmark.
 
 * Username: `admin` 
 * Password: `admin1234`

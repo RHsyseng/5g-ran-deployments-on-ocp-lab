@@ -22,8 +22,10 @@ IMPORTANT: The steps below rely on the lab environment being up and running.
 
 We need a Git repository where we will store our clusters configurations, we will create a new Git repository in the link:lab-environment-introduction.html#git-server[Git server] running on the infrastructure node.
 
+TIP: Remember you can access the git server through the pre-configured Firefox image:bookmark-gitea.png[Gitea bookmark icon] bookmark.
+
 1. Login into the http://infra.5g-deployment.lab:3000/[Git server] (user: student, password: student).
-2. You will see that two Git repositories already exist, you **must not** change these repositories, instead you will create a new one.
+2. You will see that one Git repository already exist, you **must not** change this repository, instead you will create a new one.
 +
 image::gitea-repository.png[Gitea Repository]
 +
@@ -102,8 +104,6 @@ Before continuing, make sure you have the following tooling installed in your wo
 
 In the infrastructure server, run the following command to extract the pipeline installation files:
 
-WARNING: If you get `ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 65536`: newuidmap: write to uid_map failed: Operation not permitted` when running podman commands, run them with sudo.
-
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -180,7 +180,7 @@ At this stage, we have our ZTP GitOps pipeline running and waiting for committin
 * **clusters**. It is responsible for managing the deployment of Single Node OpenShift clusters from the Git repository.
 * **policies**. It is responsible for managing the configuration via RHACM policies that will be applied to Single Node OpenShift clusters. Basically, it configures the {rds-config}[Telco RAN DU reference configuration]. 
 
-You can access the Argo CD instance on the lab by clicking {argocd-hub-link}[here] and login in with the OpenShift admin credentials.
+You can access the Argo CD instance on the lab at {argocd-hub-link} and login in with the OpenShift admin credentials. You can also access through the pre-configured Firefox image:bookmark-argocd.png[ArgoCD bookmark icon] bookmark.
 
 You can see what the ArgoCD Apps are running in the following images:
 

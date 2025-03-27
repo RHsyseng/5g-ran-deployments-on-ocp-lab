@@ -294,6 +294,37 @@ useradd lab-user -G libvirt
 passwd lab-user
 -----
 
+Make sure the new user can use rootless podman:
+
+WARNING: Below command may fail with `ERRO[0000] running `/usr/bin/newuidmap 66372 0 1000 1 1 100000 65536`: newuidmap: write to uid_map failed: Operation not permitted`.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+su - lab-user
+podman version
+-----
+
+If above command failed, run the following command as root, and try rootless podman again:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+chmod 4755 /usr/bin/newuidmap /usr/bin/newgidmap
+-----
+
+Next, make sure `lab-user` has the correct git config:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+su - lab-user
+git config --global user.email "student@5g-deployment.lab"
+git config --global user.name "Student"
+-----
+
+Now that lab-user is configured, make sure you continue to run the next commands as root.
+
 Generate lab content on the hypervisor host:
 
 [.console-input]
