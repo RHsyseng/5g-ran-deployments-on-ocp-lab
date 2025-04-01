@@ -679,10 +679,10 @@
     <a class="nav-link" href="troubleshooting-tips.html#verification-lab">Verification of the lab status</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="troubleshooting-tips.html#git-registry">Git repository and registry</a>
+    <a class="nav-link" href="troubleshooting-tips.html#containerized-infra">Containerized Infrastructure Services</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="troubleshooting-tips.html#sno2">SNO2 virtual machine</a>
+    <a class="nav-link" href="troubleshooting-tips.html#sno-vms">SNO Virtual Machines</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="troubleshooting-tips.html#hub">Hub cluster</a>
@@ -691,12 +691,6 @@
     <a class="nav-link" href="troubleshooting-tips.html#dns">DNS resolution</a>
   </li>
 </ul>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="troubleshooting-tips.html#argocd-red">ArgoCD sync not working</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="troubleshooting-tips.html#sno2-down">SNO2 is down after syncing Argo applications</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="troubleshooting-tips.html#policies-blank">Policies not showing in the Governance console</a>
@@ -1316,7 +1310,7 @@ ztp-policies   requirements-upgrade   35s   InProgress   Remediating non-complia
 <div class="paragraph">
 <p>In a few minutes, we will see a similar output as the one described below:</p>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE      NAME                   AGE     STATE       DETAILS
 ztp-policies   requirements-upgrade   2m52s   Completed   All clusters are compliant with all the managed policies</code></pre>
@@ -1497,6 +1491,18 @@ The <code>Prep</code> stage is the current stage, as indicated by the <code>Desi
 </tr>
 </table>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+During the <code>Prep</code> stage, the clusters will start pulling images. This will put some IO pressure in the hypervisor, you may lose connectivity to clusters APIs multiple times for about 10 minutes.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/abi-cluster-kubeconfig get ibu</code></pre>
@@ -1576,7 +1582,7 @@ At some point during the <code>Upgrade</code> stage, the SNO clusters will resta
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .status</code></pre>
 </div>
 </div>
-<div class="listingblock console">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
   "clusters": [
@@ -1627,7 +1633,7 @@ At some point during the <code>Upgrade</code> stage, the SNO clusters will resta
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/ibi-cluster-kubeconfig get ibu</code></pre>
 </div>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME      AGE     DESIRED STAGE   STATE        DETAILS
 upgrade   8m46s   Upgrade         InProgress   Restore of Application Data is in progress</code></pre>
@@ -1641,7 +1647,7 @@ upgrade   8m46s   Upgrade         InProgress   Restore of Application Data is in
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .status</code></pre>
 </div>
 </div>
-<div class="listingblock console">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-json hljs" data-lang="json">{
   "clusters": [
@@ -1695,7 +1701,7 @@ upgrade   8m46s   Upgrade         InProgress   Restore of Application Data is in
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get ibgu,cgu -n default</code></pre>
 </div>
 </div>
-<div class="listingblock console">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE   NAME                                                  AGE
 default     imagebasedgroupupgrade.lcm.openshift.io/telco5g-lab   22m
@@ -1712,7 +1718,7 @@ default        clustergroupupgrade.ran.openshift.io/telco5g-lab-prep-upgrade-fin
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/ibi-cluster-kubeconfig get ibu</code></pre>
 </div>
 </div>
-<div class="listingblock console">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME      AGE     DESIRED STAGE   STATE   DETAILS
 upgrade   9m37s   Idle            Idle    Idle</code></pre>

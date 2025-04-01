@@ -679,10 +679,10 @@
     <a class="nav-link" href="troubleshooting-tips.html#verification-lab">Verification of the lab status</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="troubleshooting-tips.html#git-registry">Git repository and registry</a>
+    <a class="nav-link" href="troubleshooting-tips.html#containerized-infra">Containerized Infrastructure Services</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="troubleshooting-tips.html#sno2">SNO2 virtual machine</a>
+    <a class="nav-link" href="troubleshooting-tips.html#sno-vms">SNO Virtual Machines</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="troubleshooting-tips.html#hub">Hub cluster</a>
@@ -691,12 +691,6 @@
     <a class="nav-link" href="troubleshooting-tips.html#dns">DNS resolution</a>
   </li>
 </ul>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="troubleshooting-tips.html#argocd-red">ArgoCD sync not working</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="troubleshooting-tips.html#sno2-down">SNO2 is down after syncing Argo applications</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="troubleshooting-tips.html#policies-blank">Policies not showing in the Governance console</a>
@@ -1574,7 +1568,7 @@ cd ~</code></pre>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno-ibi get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage</code></pre>
 </div>
 </div>
-<div class="listingblock console">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE   NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
 sno-ibi        baremetalhost.metal3.io/ocp-sno-ibi   externally provisioned              true             35s
@@ -1613,10 +1607,10 @@ sno-ibi        dataimage.metal3.io/ocp-sno-ibi   34s</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">watch oc --kubeconfig ~/ibi-cluster-kubeconfig get clusterversion,nodes,mcp,co</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/ibi-cluster-kubeconfig get clusterversion,nodes,mcp,co</code></pre>
 </div>
 </div>
-<div class="listingblock console">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                                         VERSION	   AVAILABLE   PROGRESSING   SINCE   STATUS
 clusterversion.config.openshift.io/version   4.18.3   False       False         4h54m   Error while reconciling 4.18.3: an unknown error has occurred: MultipleErrors
@@ -1672,7 +1666,7 @@ Verify that the <code>clusterInstance</code> is shown as "Provisioning completed
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno-ibi get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage</code></pre>
 </div>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
 baremetalhost.metal3.io/ocp-sno-ibi   externally provisioned              true             32m

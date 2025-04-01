@@ -678,10 +678,10 @@
     <a class="nav-link" href="troubleshooting-tips.html#verification-lab">Verification of the lab status</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="troubleshooting-tips.html#git-registry">Git repository and registry</a>
+    <a class="nav-link" href="troubleshooting-tips.html#containerized-infra">Containerized Infrastructure Services</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="troubleshooting-tips.html#sno2">SNO2 virtual machine</a>
+    <a class="nav-link" href="troubleshooting-tips.html#sno-vms">SNO Virtual Machines</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="troubleshooting-tips.html#hub">Hub cluster</a>
@@ -690,12 +690,6 @@
     <a class="nav-link" href="troubleshooting-tips.html#dns">DNS resolution</a>
   </li>
 </ul>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="troubleshooting-tips.html#argocd-red">ArgoCD sync not working</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="troubleshooting-tips.html#sno2-down">SNO2 is down after syncing Argo applications</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="troubleshooting-tips.html#policies-blank">Policies not showing in the Governance console</a>
@@ -1248,12 +1242,7 @@ podman version</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>If above command failed, run the following command as root, and try rootless podman again:</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">chmod 4755 /usr/bin/newuidmap /usr/bin/newgidmap</code></pre>
-</div>
+<p>If above command failed, you need to either configure root-less podman or run podman as root.</p>
 </div>
 <div class="paragraph">
 <p>Next, make sure <code>lab-user</code> has the correct git config:</p>

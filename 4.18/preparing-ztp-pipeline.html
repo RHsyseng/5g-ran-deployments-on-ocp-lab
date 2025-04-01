@@ -679,10 +679,10 @@
     <a class="nav-link" href="troubleshooting-tips.html#verification-lab">Verification of the lab status</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="troubleshooting-tips.html#git-registry">Git repository and registry</a>
+    <a class="nav-link" href="troubleshooting-tips.html#containerized-infra">Containerized Infrastructure Services</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="troubleshooting-tips.html#sno2">SNO2 virtual machine</a>
+    <a class="nav-link" href="troubleshooting-tips.html#sno-vms">SNO Virtual Machines</a>
   </li>
   <li class="nav-item" data-depth="3">
     <a class="nav-link" href="troubleshooting-tips.html#hub">Hub cluster</a>
@@ -691,12 +691,6 @@
     <a class="nav-link" href="troubleshooting-tips.html#dns">DNS resolution</a>
   </li>
 </ul>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="troubleshooting-tips.html#argocd-red">ArgoCD sync not working</a>
-  </li>
-  <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="troubleshooting-tips.html#sno2-down">SNO2 is down after syncing Argo applications</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="troubleshooting-tips.html#policies-blank">Policies not showing in the Governance console</a>
@@ -904,6 +898,18 @@ Remember you can access the git server through the pre-configured Firefox <span 
 </div>
 <div class="paragraph">
 <p>Now that we have a repository ready to be used we will clone it to the infrastructure host.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Remember you have a terminal ready at the <code>Terminal 1</code> tab.
+</td>
+</tr>
+</table>
 </div>
 <div class="listingblock console-input">
 <div class="content">
