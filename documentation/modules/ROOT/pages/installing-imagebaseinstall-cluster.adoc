@@ -630,7 +630,7 @@ With the changes committed and pushed to the Git repository, the link:ocp-gitops
 oc --kubeconfig ~/hub-kubeconfig -n sno-ibi get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage
 -----
 
-[.console]
+[console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 NAMESPACE   NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
@@ -666,10 +666,10 @@ Now that we have the `sno-ibi` admin credentials, let's examine the current stat
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-watch oc --kubeconfig {ibi-cluster-kubeconfig} get clusterversion,nodes,mcp,co
+oc --kubeconfig {ibi-cluster-kubeconfig} get clusterversion,nodes,mcp,co
 -----
 
-[.console]
+[console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 NAME                                         VERSION	   AVAILABLE   PROGRESSING   SINCE   STATUS
@@ -716,7 +716,7 @@ WARNING: Verify that the `clusterInstance` is shown as "Provisioning completed",
 oc --kubeconfig ~/hub-kubeconfig -n sno-ibi get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage
 -----
 
-[.console-input]
+[console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE

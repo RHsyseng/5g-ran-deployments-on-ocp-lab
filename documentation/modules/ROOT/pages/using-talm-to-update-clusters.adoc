@@ -395,7 +395,7 @@ ztp-policies   requirements-upgrade   35s   InProgress   Remediating non-complia
 
 In a few minutes, we will see a similar output as the one described below:
 
-[.console-input]
+[console-input]
 [source,bash,subs="attributes+"]
 -----
 NAMESPACE      NAME                   AGE     STATE       DETAILS
@@ -546,6 +546,8 @@ We can also monitor progress by connecting directly to the managed clusters and 
 
 IMPORTANT: The `Prep` stage is the current stage, as indicated by the `Desired Stage` field. The `Details` field provides extra information; in this case, it indicates preparation to copy the stateroot seed image.
 
+WARNING: During the `Prep` stage, the clusters will start pulling images. This will put some IO pressure in the hypervisor, you may lose connectivity to clusters APIs multiple times for about 10 minutes.
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -618,7 +620,7 @@ After some time, the SNO clusters will move to the `FinalizeUpgrade` stage. The 
 oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .status
 -----
 
-[.console]
+[console-input]
 [source,json]
 -----
 {
@@ -670,7 +672,7 @@ During the `FinalizeUpgrade` stage, the SNO clusters are restoring the data that
 oc --kubeconfig {ibi-cluster-kubeconfig} get ibu
 -----
 
-[.console-input]
+[console-input]
 [source,bash,subs="attributes+"]
 -----
 NAME      AGE     DESIRED STAGE   STATE        DETAILS
@@ -685,7 +687,7 @@ Finally, both SNO clusters have moved to the `FinalizeUpgrade` stage:
 oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .status
 -----
 
-[.console]
+[console-input]
 [source,json]
 -----
 {
@@ -740,7 +742,7 @@ We can also check that the CGU associated with the IBGU shows as `Completed`:
 oc --kubeconfig ~/hub-kubeconfig get ibgu,cgu -n default
 -----
 
-[.console]
+[console-input]
 [source,bash]
 -----
 NAMESPACE   NAME                                                  AGE
@@ -758,7 +760,7 @@ Note that once the upgrade is finished, the IBU CR from both clusters moves back
 oc --kubeconfig {ibi-cluster-kubeconfig} get ibu
 -----
 
-[.console]
+[console-input]
 [source,bash]
 -----
 NAME      AGE     DESIRED STAGE   STATE   DETAILS

@@ -141,7 +141,7 @@ IMPORTANT: The cluster reboots and loses API capabilities while the Lifecycle Ag
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig {seed-cluster-kubeconfig} get seedgen -A
+oc --kubeconfig {seed-cluster-kubeconfig} get seedgen
 -----
 
 [.console]
@@ -155,7 +155,7 @@ After the cluster recovers and is available, you can continue checking the statu
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig {seed-cluster-kubeconfig} get seedgenerator seedimage -o json | jq '.status'
+oc --kubeconfig {seed-cluster-kubeconfig} get seedgen seedimage -o json | jq '.status'
 -----
 
 [.console]
@@ -187,7 +187,7 @@ oc --kubeconfig {seed-cluster-kubeconfig} get seedgenerator seedimage -o json | 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-oc --kubeconfig {seed-cluster-kubeconfig} get seedgenerator
+oc --kubeconfig {seed-cluster-kubeconfig} get seedgen
 -----
 
 [.console]
