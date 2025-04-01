@@ -35,6 +35,8 @@ image::gitea-repository.png[Gitea Repository]
 
 Now that we have a repository ready to be used we will clone it to the infrastructure host.
 
+IMPORTANT: Remember you have a terminal ready at the `Terminal 1` tab.
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -71,7 +73,9 @@ As we saw in link:deployment-considerations.html#git-repo-structure[Git Reposito
 
 Let's replicate it:
 
+ifeval::["{demo_environment}" != "true"]
 WARNING: If it is the first time that you are using `git` in your machine, a message requiring you to setup a Git Username and Email may be shown.
+endif::[]
 
 IMPORTANT: The cluster name for the SNO that we will be deploying using the agent-based install will be **sno-abi**. On the other hand, **sno-ibi** is the name of the cluster that we will deploy using the image-based install flow. That's why those folder exists in the repository structure that we are creating.
 

@@ -195,12 +195,12 @@
 
 * xref:troubleshooting-tips.adoc[Troubleshooting Tips]
 ** xref:troubleshooting-tips.adoc#verification-lab[Verification of the lab status]
-*** xref:troubleshooting-tips.adoc#git-registry[Git repository and registry]
-*** xref:troubleshooting-tips.adoc#sno2[SNO2 virtual machine]
+*** xref:troubleshooting-tips.adoc#containerized-infra[Containerized Infrastructure Services]
+*** xref:troubleshooting-tips.adoc#sno-vms[SNO Virtual Machines]
 *** xref:troubleshooting-tips.adoc#hub[Hub cluster]
 *** xref:troubleshooting-tips.adoc#dns[DNS resolution]
-** xref:troubleshooting-tips.adoc#argocd-red[ArgoCD sync not working]
-** xref:troubleshooting-tips.adoc#sno2-down[SNO2 is down after syncing Argo applications]
+//** xref:troubleshooting-tips.adoc#argocd-red[ArgoCD sync not working]
+//** xref:troubleshooting-tips.adoc#sno2-down[SNO2 is down after syncing Argo applications]
 ** xref:troubleshooting-tips.adoc#policies-blank[Policies not showing in the Governance console]
 ** xref:troubleshooting-tips.adoc#policies-not-applied[Policies not applied]
 

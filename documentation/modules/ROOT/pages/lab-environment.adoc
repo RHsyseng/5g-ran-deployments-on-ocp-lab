@@ -305,13 +305,7 @@ su - lab-user
 podman version
 -----
 
-If above command failed, run the following command as root, and try rootless podman again:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-chmod 4755 /usr/bin/newuidmap /usr/bin/newgidmap
------
+If above command failed, you need to either configure root-less podman or run podman as root.
 
 Next, make sure `lab-user` has the correct git config:
 
