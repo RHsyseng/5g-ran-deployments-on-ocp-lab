@@ -811,6 +811,18 @@ If you get <code>ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 
 </tr>
 </table>
 </div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+There is no ARM version of the ztp-site-generate-rhel8 container image. So if you are running the lab on an ARM laptop, remember to enable <a href="https://gist.github.com/alosadagrande/b5cb12d5acb467d8f22e8c462d0f05a0">multi-architecture support</a>.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/5g-deployment-lab/ztp-pipeline/argocd
