@@ -366,6 +366,8 @@ WARNING: We recommend a directory structure to keep reference manifests correspo
 
 In this lab we do not need extra content, however we are going to pave the way for future requirements. Let's first extract the predefined source-crs from the ztp-generate container {lab-major-version} version to the reference-crs folder.
 
+WARNING: There is no ARM version of the ztp-site-generate-rhel8 container image. So if you are running the lab on an ARM laptop, remember to enable https://gist.github.com/alosadagrande/b5cb12d5acb467d8f22e8c462d0f05a0[multi-architecture support].
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
