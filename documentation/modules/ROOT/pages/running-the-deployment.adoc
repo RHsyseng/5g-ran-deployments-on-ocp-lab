@@ -20,6 +20,8 @@ In the workstation, run the following command to extract the pipeline installati
 
 WARNING: If you get `ERRO[0000] running `/usr/bin/newuidmap 51706 0 1000 1 1 100000 65536`: newuidmap: write to uid_map failed: Operation not permitted` when running podman commands, run them with sudo.
 
+WARNING: There is no ARM version of the ztp-site-generate-rhel8 container image. So if you are running the lab on an ARM laptop, remember to enable https://gist.github.com/alosadagrande/b5cb12d5acb467d8f22e8c462d0f05a0[multi-architecture support].
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
