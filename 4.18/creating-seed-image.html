@@ -403,9 +403,6 @@
     <a class="nav-link" href="policygen-deepdive.html#hide-container-mount">Container Mount Hiding</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="policygen-deepdive.html#recovery-optimization">Recovery Optimization</a>
-  </li>
-  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="policygen-deepdive.html#monitoring-footprint">Monitoring Operator Config</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -995,9 +992,9 @@ INFO[0000] Executing /usr/bin/env with args [-- systemctl cat var-lib-containers
 2025-02-03T17:47:18Z	INFO	setup	starting manager
 2025-02-03T17:47:18Z	INFO	controller-runtime.metrics	Starting metrics server
 ... REDACTED ...
-2025-02-04T09:37:08Z	INFO	controllers.SeedGenerator	Generating seed image: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.6
+2025-02-04T09:37:08Z	INFO	controllers.SeedGenerator	Generating seed image: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.3
 2025-02-04T09:37:08Z	INFO	controllers.SeedGenerator	Checking system health
-INFO[57054] Executing /usr/bin/env with args [-- systemd-run --collect --wait --unit lca-generate-seed-image --setenv HTTP_PROXY --setenv HTTPS_PROXY --setenv NO_PROXY podman run --privileged --pid=host --name=lca_image_builder --replace --net=host --http-proxy=true -v /etc:/etc -v /var:/var -v /var/run:/var/run -v /run/systemd/journal/socket:/run/systemd/journal/socket -v /var/lib/lca/ibu-seedgen-orch/auth.json:/var/lib/lca/ibu-seedgen-orch/auth.json --entrypoint lca-cli registry.redhat.io/openshift4/lifecycle-agent-rhel9-operator@sha256:7c5bed953d0f2a774bc099c22d3c520f98cad0605723218624cc3737be4086ac create --authfile /var/lib/lca/ibu-seedgen-orch/auth.json --image infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.6 --recert-image registry.redhat.io/openshift4/recert-rhel9@sha256:f78fd5c29b78bf429596679d8104cd629bf2dca1265638824b39ed56cb3dbb13]</code></pre>
+INFO[57054] Executing /usr/bin/env with args [-- systemd-run --collect --wait --unit lca-generate-seed-image --setenv HTTP_PROXY --setenv HTTPS_PROXY --setenv NO_PROXY podman run --privileged --pid=host --name=lca_image_builder --replace --net=host --http-proxy=true -v /etc:/etc -v /var:/var -v /var/run:/var/run -v /run/systemd/journal/socket:/run/systemd/journal/socket -v /var/lib/lca/ibu-seedgen-orch/auth.json:/var/lib/lca/ibu-seedgen-orch/auth.json --entrypoint lca-cli registry.redhat.io/openshift4/lifecycle-agent-rhel9-operator@sha256:7c5bed953d0f2a774bc099c22d3c520f98cad0605723218624cc3737be4086ac create --authfile /var/lib/lca/ibu-seedgen-orch/auth.json --image infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.3 --recert-image registry.redhat.io/openshift4/recert-rhel9@sha256:f78fd5c29b78bf429596679d8104cd629bf2dca1265638824b39ed56cb3dbb13]</code></pre>
 </div>
 </div>
 <div class="admonitionblock important">

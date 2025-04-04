@@ -403,9 +403,6 @@
     <a class="nav-link" href="policygen-deepdive.html#hide-container-mount">Container Mount Hiding</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="policygen-deepdive.html#recovery-optimization">Recovery Optimization</a>
-  </li>
-  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="policygen-deepdive.html#monitoring-footprint">Monitoring Operator Config</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -823,18 +820,6 @@
 <div class="paragraph">
 <p>In this section, we will provide some useful tips to troubleshoot any issue that can arise during the execution of this lab.</p>
 </div>
-<div class="admonitionblock important">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-important" title="Important"></i>
-</td>
-<td class="content">
-Below commands must be executed from the hypervisor host as root if not specified otherwise.
-</td>
-</tr>
-</table>
-</div>
 </div>
 </div>
 <div class="sect1">
@@ -1030,10 +1015,10 @@ openshift-marketplace   cs-redhat-operator-index-v4-18-174293             grpc  
 <h2 id="policies-blank"><a class="anchor" href="#policies-blank"></a>Policies not showing in the Governance console</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In cases where the policies are not shown in the Governance section of the Multicloud console we have to check first, if the <strong>policies</strong> Argo application was synced successfully. If not, repeat the steps detailed in <a href="troubleshooting-tips.html#argocd-red">the previous section</a></p>
+<p>In cases where the policies are not shown in the Governance section of the Multicloud console we have to check first, if the <strong>policies</strong> Argo application was synced successfully.</p>
 </div>
 <div class="paragraph">
-<p>Verfiy that the policies in the hub cluster are similar to the ones shown below. Remember that <strong>inform</strong> as remediation is correct.</p>
+<p>Verify that the policies in the hub cluster are similar to the ones shown below. Remember that <strong>inform</strong> as remediation is correct.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">

@@ -403,9 +403,6 @@
     <a class="nav-link" href="policygen-deepdive.html#hide-container-mount">Container Mount Hiding</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="policygen-deepdive.html#recovery-optimization">Recovery Optimization</a>
-  </li>
-  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="policygen-deepdive.html#monitoring-footprint">Monitoring Operator Config</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -870,7 +867,19 @@ The following lab sections rely on having a lab environment accessible in order 
 <h2 id="container-registry"><a class="anchor" href="#container-registry"></a>Container Registry</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A <a href="https://docs.openshift.com/container-platform/4.13/installing/disconnected_install/installing-mirroring-creating-registry.html">container registry</a> is running on the infrastructure host, you can reach it at <a href="https://infra.5g-deployment.lab:8443/" class="bare">https://infra.5g-deployment.lab:8443/</a>.</p>
+<p>A <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/disconnected_environments/mirroring-in-disconnected-environments#installing-mirroring-creating-registry">container registry</a> is running on the infrastructure host, you can reach it at <a href="https://infra.5g-deployment.lab:8443/" class="bare">https://infra.5g-deployment.lab:8443/</a>.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The mirror registry doesn&#8217;t have the WebUI enabled, you can only access it via terminal.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Credentials for the container registry:</p>

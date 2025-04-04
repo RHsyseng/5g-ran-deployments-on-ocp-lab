@@ -403,9 +403,6 @@
     <a class="nav-link" href="#hide-container-mount">Container Mount Hiding</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="#recovery-optimization">Recovery Optimization</a>
-  </li>
-  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="#monitoring-footprint">Monitoring Operator Config</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -981,15 +978,6 @@ Some of these configurations are configured at install time (through the use of 
 </div>
 </div>
 <div class="sect2">
-<h3 id="recovery-optimization"><a class="anchor" href="#recovery-optimization"></a>Recovery Optimization</h3>
-<div class="paragraph">
-<p>Systemd service which will assign additional CPUs to systemd services during reboot recovery.</p>
-</div>
-<div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.18/ztp/source-crs/extra-manifest/04-accelerated-container-startup-master.yaml">Manifest</a></p>
-</div>
-</div>
-<div class="sect2">
 <h3 id="monitoring-footprint"><a class="anchor" href="#monitoring-footprint"></a>Monitoring Operator Config</h3>
 <div class="paragraph">
 <p>Reduce footprint of the monitoring stack by:</p>
@@ -1148,10 +1136,10 @@ Some of these configurations are configured at install time (through the use of 
 <p>For optimal cluster performance, it enables <code>crun</code> as container runtime instead of runc for master and worker nodes. This is an optional choice but suggested for telco deployments.</p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.18/ztp/source-crs/optional-extra-manifest/enable-crun-master.yaml">Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.18/ztp/source-crs/optional-extra-manifest/enable-crun-master.yaml">Master Manifest</a></p>
 </div>
 <div class="paragraph">
-<p><a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.18/ztp/source-crs/optional-extra-manifest/enable-crun-master.yaml">Manifest</a></p>
+<p><a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.18/ztp/source-crs/optional-extra-manifest/enable-crun-worker.yaml">Worker Manifest</a></p>
 </div>
 </div>
 </div>

@@ -403,9 +403,6 @@
     <a class="nav-link" href="policygen-deepdive.html#hide-container-mount">Container Mount Hiding</a>
   </li>
   <li class="nav-item" data-depth="3">
-    <a class="nav-link" href="policygen-deepdive.html#recovery-optimization">Recovery Optimization</a>
-  </li>
-  <li class="nav-item" data-depth="3">
     <a class="nav-link" href="policygen-deepdive.html#monitoring-footprint">Monitoring Operator Config</a>
   </li>
   <li class="nav-item" data-depth="3">
@@ -822,7 +819,7 @@
 <h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction to Image-based Upgrades</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this section, we will perform an image-based upgrade to both managed clusters (<code>sno-abi</code> and <code>sno-ibi</code>) by leveraging the <a href="missing">Lifecycle Agent</a> (LCA) and the <a href="talm.html">Topology Aware Lifecycle Manager</a> (TALM) operators. The LCA provides an alternative way to upgrade the platform version of a single-node OpenShift cluster, while TALM manages the rollout of configurations throughout the lifecycle of the cluster fleet.</p>
+<p>In this section, we will perform an image-based upgrade to both managed clusters (<code>sno-abi</code> and <code>sno-ibi</code>) by leveraging the <a href="lca.html">Lifecycle Agent</a> (LCA) and the <a href="talm.html">Topology Aware Lifecycle Manager</a> (TALM) operators. The LCA provides an alternative way to upgrade the platform version of a single-node OpenShift cluster, while TALM manages the rollout of configurations throughout the lifecycle of the cluster fleet.</p>
 </div>
 <div class="paragraph">
 <p>The image-based upgrade is faster than the standard upgrade method and allows direct upgrades from OpenShift Container Platform &lt;4.y&gt; to &lt;4.y+2&gt;, and &lt;4.y.z&gt; to &lt;4.y.z+n&gt;. These upgrades utilize a generated OCI image from a dedicated seed cluster. We have already provided a seed image with version 4.18.4. The process to generate this seed image is the same as the one we executed in <a href="creating-seed-image.html">Creating the Seed Image</a> for version 4.18.3 to install <code>sno-ibi</code>.</p>
@@ -845,7 +842,7 @@ Image-based upgrades rely on custom images specific to the hardware platform on 
 <div class="ulist">
 <ul>
 <li>
-<p>Create a seed image using the Lifecycle Agent. As mentioned, the seed image <code>infra.5g-deployment.lab:8443/ibi/lab5gran:4.18.4</code> is already available in the <a href="lab-environment-introduction.html#container-registry">container registry</a>.</p>
+<p>Create a seed image using the Lifecycle Agent. As mentioned, the seed image <code>infra.5g-deployment.lab:8443/rhsysdeseng/lab5gran:v4.18.4</code> is already available in the <a href="lab-environment-introduction.html#container-registry">container registry</a>.</p>
 </li>
 <li>
 <p>Verify that all software components meet the required versions. You can find the minimum software requirements <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/image-based-installation-for-single-node-openshift#ztp-image-based-upgrade-prereqs_ibi-understanding-image-based-install">here</a>.</p>
@@ -914,7 +911,7 @@ image-based-install-operator-7f7659f86c-cd46k   2/2     Running   0          46h
 </div>
 </div>
 <div class="paragraph">
-<p>Next, double-check that the TALM operator is running. Note that the name of the Pod is <code>cluster-group-upgrade-controller-manager</code>, which is based on the name of the upstream project <a href="https://github.com/openshift-kni/cluster-group-upgrades-">Cluster Group Upgrade Operator</a>.</p>
+<p>Next, double-check that the TALM operator is running. Note that the name of the Pod is <code>cluster-group-upgrade-controller-manager</code>, which is based on the name of the upstream project <a href="https://github.com/openshift-kni/cluster-group-upgrades-operator">Cluster Group Upgrade Operator</a>.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1051,7 +1048,7 @@ sno-abi   7m26s   Completed   All clusters are compliant with all the managed po
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-An S3-compatible storage server is required for backup and restore operations. See the <a href="s3-storage">S3 Storage Server</a> section.
+An S3-compatible storage server is required for backup and restore operations. See the <a href="lab-environment-introduction.html#s3-storage">S3 Storage Server</a> section.
 </td>
 </tr>
 </table>
