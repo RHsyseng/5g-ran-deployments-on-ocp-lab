@@ -39,7 +39,8 @@ code:experimental:
 :talm-update-channel: stable-4.18
 :talm-update-version: 4.18.1
 // oc adm release info 4.17.4 | grep "Pull From"
-:talm-update-image: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.4
+:seed-image: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.3
+:talm-update-image: infra.5g-deployment.lab:8443/rhsysdeseng/lab5gran:v4.18.4
 //:talm-update-image:  infra.5g-deployment.lab:8443/openshift/release-images@sha256:bada2d7626c8652e0fb68d3237195cb37f425e960347fbdd747beb17f671cf13
 :talm-update-policy-name: version-418-4
 :rhacm-version: v2.13
@@ -67,7 +68,7 @@ code:experimental:
 :sno-installing-docs: https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/installing_on_a_single_node/install-sno-installing-sno#install-sno-generating-the-discovery-iso-with-the-assisted-installer_install-sno-installing-sno-with-the-assisted-installer
 :sno-install-manually-docs: https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/installing_on_a_single_node/install-sno-installing-sno#install-sno-installing-sno-manually
 :talm-cluster-upgrades-doc: https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/cnf-talm-for-cluster-updates
-:talm-upstream-project: https://github.com/openshift-kni/cluster-group-upgrades-
+:talm-upstream-project: https://github.com/openshift-kni/cluster-group-upgrades-operator
 :talm-recovery-from-failed-upgrade-doc: https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/image-based-upgrade-for-single-node-openshift-clusters#ztp-image-based-upgrade-procedure-cancel_ztp-gitops
 :talm-precachingconfig-doc: https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/managing-cluster-policies-with-policygenerator-resources#talm-prechache-user-specified-images-concept_ztp-talm-pg
 :workload-hints-doc: https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/scalability_and_performance/cnf-understanding-low-latency
@@ -79,6 +80,7 @@ code:experimental:
 :workload-partitioning-docs: https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/scalability_and_performance/enabling-workload-partitioning
 :advanced-ztp-policy-config: https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/managing-cluster-policies-with-policygentemplate-resources#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config
 :ztp-precaching-config-docs: https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/managing-cluster-policies-with-policygentemplate-resources#talm-prechache-user-specified-images-concept_ztp-talm
+:mirror-registry-link: https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/disconnected_environments/mirroring-in-disconnected-environments#installing-mirroring-creating-registry
 :ssh-pub-key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5pFKFLOuxrd9Q/TRu9sRtwGg2PV+kl2MHzBIGUhCcR0LuBJk62XG9tQWPQYTQ3ZUBKb6pRTqPXg+cDu5FmcpTwAKzqgUb6ArnjECxLJzJvWieBJ7k45QzhlZPeiN2Omik5bo7uM/P1YIo5pTUdVk5wJjaMOb7Xkcmbjc7r22xY54cce2Wb7B1QDtLWJkq++eJHSX2GlEjfxSlEvQzTN7m2N5pmoZtaXpLKcbOqtuSQSVKC4XPgb57hgEs/ZZy/LbGGHZyLAW5Tqfk1JCTFGm6Q+oOd3wAOF1SdUxM7frdrN3UOB12u/E6YuAx3fDvoNZvcrCYEpjkfrsjU91oz78aETZV43hOK9NWCOhdX5djA7G35/EMn1ifanVoHG34GwNuzMdkb7KdYQUztvsXIC792E2XzWfginFZha6kORngokZ2DwrzFj3wgvmVyNXyEOqhwi6LmlsYdKxEvUtiYhdISvh2Y9GPrFcJ5DanXe7NVAKXe5CyERjBnxWktqAPBzXJa36FKIlkeVF5G+NWgufC6ZWkDCD98VZDiPP9sSgqZF8bSR4l4/vxxAW4knKIZv11VX77Sa1qZOR9Ml12t5pNGT7wDlSOiDqr5EWsEexga/2s/t9itvfzhcWKt+k66jd8tdws2dw6+8JYJeiBbU63HBjxCX+vCVZASrNBjiXhFw==
 :sriov-channel: stable
 :ibu-docs: https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/image-based-upgrade-for-single-node-openshift-clusters#cnf-understanding-image-based-upgrade

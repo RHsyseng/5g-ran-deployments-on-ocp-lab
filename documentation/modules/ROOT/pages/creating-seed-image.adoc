@@ -91,7 +91,7 @@ kind: SeedGenerator
 metadata:
   name: seedimage
 spec:
-  seedImage: infra.5g-deployment.lab:8443/ibi/lab5gran:{sno-cluster-version1}
+  seedImage: {seed-image}
 EOF
 -----
 
@@ -131,9 +131,9 @@ INFO[0000] Executing /usr/bin/env with args [-- systemctl cat var-lib-containers
 2025-02-03T17:47:18Z	INFO	setup	starting manager
 2025-02-03T17:47:18Z	INFO	controller-runtime.metrics	Starting metrics server
 ... REDACTED ...
-2025-02-04T09:37:08Z	INFO	controllers.SeedGenerator	Generating seed image: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.6
+2025-02-04T09:37:08Z	INFO	controllers.SeedGenerator	Generating seed image: {seed-image}
 2025-02-04T09:37:08Z	INFO	controllers.SeedGenerator	Checking system health
-INFO[57054] Executing /usr/bin/env with args [-- systemd-run --collect --wait --unit lca-generate-seed-image --setenv HTTP_PROXY --setenv HTTPS_PROXY --setenv NO_PROXY podman run --privileged --pid=host --name=lca_image_builder --replace --net=host --http-proxy=true -v /etc:/etc -v /var:/var -v /var/run:/var/run -v /run/systemd/journal/socket:/run/systemd/journal/socket -v /var/lib/lca/ibu-seedgen-orch/auth.json:/var/lib/lca/ibu-seedgen-orch/auth.json --entrypoint lca-cli registry.redhat.io/openshift4/lifecycle-agent-rhel9-operator@sha256:7c5bed953d0f2a774bc099c22d3c520f98cad0605723218624cc3737be4086ac create --authfile /var/lib/lca/ibu-seedgen-orch/auth.json --image infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.6 --recert-image registry.redhat.io/openshift4/recert-rhel9@sha256:f78fd5c29b78bf429596679d8104cd629bf2dca1265638824b39ed56cb3dbb13]
+INFO[57054] Executing /usr/bin/env with args [-- systemd-run --collect --wait --unit lca-generate-seed-image --setenv HTTP_PROXY --setenv HTTPS_PROXY --setenv NO_PROXY podman run --privileged --pid=host --name=lca_image_builder --replace --net=host --http-proxy=true -v /etc:/etc -v /var:/var -v /var/run:/var/run -v /run/systemd/journal/socket:/run/systemd/journal/socket -v /var/lib/lca/ibu-seedgen-orch/auth.json:/var/lib/lca/ibu-seedgen-orch/auth.json --entrypoint lca-cli registry.redhat.io/openshift4/lifecycle-agent-rhel9-operator@sha256:7c5bed953d0f2a774bc099c22d3c520f98cad0605723218624cc3737be4086ac create --authfile /var/lib/lca/ibu-seedgen-orch/auth.json --image {seed-image} --recert-image registry.redhat.io/openshift4/recert-rhel9@sha256:f78fd5c29b78bf429596679d8104cd629bf2dca1265638824b39ed56cb3dbb13]
 -----
 
 IMPORTANT: The cluster reboots and loses API capabilities while the Lifecycle Agent generates the seed image. Applying the SeedGenerator CR stops the kubelet and the CRI-O operations, then it starts the image generation. This process may take up to 10 minutes.
@@ -215,4 +215,4 @@ NAME                      STATUS   ROLES                         AGE   VERSION
 node/openshift-master-0   Ready    control-plane,master,worker   16h   {sno-cluster-version1-kubeversion}
 -----
 
-At this point, the seed image is created and pushed to our container registry under `infra.5g-deployment.lab:8443/ibi/lab5gran:{sno-cluster-version1}`. The seed image is ready to be used to provision new SNO clusters using the image-based installation method.
+At this point, the seed image is created and pushed to our container registry under `{seed-image}`. The seed image is ready to be used to provision new SNO clusters using the image-based installation method.

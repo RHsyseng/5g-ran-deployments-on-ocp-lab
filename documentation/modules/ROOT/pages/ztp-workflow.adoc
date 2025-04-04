@@ -16,7 +16,7 @@ Starting with OpenShift Container Platform 4.18, there are *two ZTP deployment f
 
 The Agent Based Installation flow was the only option available until the 4.18 OpenShift release. The link:ztp-at-scale.html#ai[Assisted Service] is central to this deployment method.
 
-It starts with creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is defined in a custom resource called `ClusterInstance`. In a disconnected environment, a container registry is needed to deliver the OpenShift container images required for the installation. This can be achieved using {disconnected-registry-docs}[oc-mirror]. More information about disconnected environments can be found in link:deployment-considerations.html#disconnected-environments[Deployment Considerations section].
+It starts with creating declarative configurations for the provisioning of your OpenShift clusters. This manifest is defined in a custom resource called `ClusterInstance`. In a disconnected environment, a container registry is needed to deliver the OpenShift container images required for the installation. This can be achieved using {disconnected-registry-docs}[oc-mirror] (starting in OCP 4.18, oc-mirror v2 is the preferred approach). More information about disconnected environments can be found in link:deployment-considerations.html#disconnected-environments[Deployment Considerations section].
 
 WARNING: Depending on your specific environment, you might need extra services such as DHCP, DNS, NTP, or HTTP. The latter is needed for downloading the RHCOS live ISO and the RootFS image locally instead of using the default http://mirror.openshift.com site.
 
@@ -72,7 +72,7 @@ First, let's describe the components in an image-based installation and deployme
 
 image::ibi-installation.png[ZTP Workflow 2]
 
-As shown in the previous image, the Preinstall host is deployed using the SiteConfig operator in this lab. Similar to the link:ztp-workflow.html#abi-deployment[Agent Based Installation], the SiteConfig Operator transforms the ClusterInstance CR into the following Installation Manifests:
+As shown in the previous image, the Preinstall host is installed in a central location, and then we get the host configured using the SiteConfig operator. In this lab we cover how to create the preinstall host via the `openshift-install` binary as well as how to configure it using the SiteConfig operator. Similar to the link:ztp-workflow.html#abi-deployment[Agent Based Installation], the SiteConfig Operator transforms the ClusterInstance CR into the following Installation Manifests:
 
 * *ImageClusterInstall*: This is the main difference in terms of manifests between Agent Based and Image Based Installations.
 * ClusterDeployment
@@ -88,7 +88,7 @@ Using the Lifecycle Agent, you can generate an OCI container image that encapsul
 
 The following is a high-level overview of the image-based installation process:
 
-* Install a single-node OpenShift cluster with the target OpenShift version you want to install in the rest of the future clusters.
+* Install a single-node OpenShift cluster with the target OpenShift version you want to install in the rest of the future clusters. #TODO: Explain how to install this seed cluster and the requirements
 * Generate an image from that single-node OpenShift cluster.
 * Use the `openshift-install` program to embed the seed image URL and other installation artifacts in a live installation ISO.
 * Start the host using the live installation ISO to preinstall the host.

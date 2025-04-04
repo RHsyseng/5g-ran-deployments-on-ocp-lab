@@ -100,12 +100,13 @@ In order to reduce system mount scanning overhead, creates a mount namespaces fo
 
 {cnf-features-source-crs}/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml[Manifest]
 
-[#recovery-optimization]
-=== Recovery Optimization
-
-Systemd service which will assign additional CPUs to systemd services during reboot recovery.
-
-{cnf-features-source-crs}/extra-manifest/04-accelerated-container-startup-master.yaml[Manifest]
+// Seems like this is no longer required, it may be part of the product. TODO: investigate
+//[#recovery-optimization]
+//=== Recovery Optimization
+//
+//Systemd service which will assign additional CPUs to systemd services during reboot recovery.
+//
+//{cnf-features-source-crs}/extra-manifest/04-accelerated-container-startup-master.yaml[Manifest]
 
 [#monitoring-footprint]
 === Monitoring Operator Config
@@ -209,9 +210,9 @@ Enables collection and shipping of logs off the edge node for remote analysis.
 
 For optimal cluster performance, it enables `crun` as container runtime instead of runc for master and worker nodes. This is an optional choice but suggested for telco deployments.
 
-{cnf-features-source-crs}/optional-extra-manifest/enable-crun-master.yaml[Manifest]
+{cnf-features-source-crs}/optional-extra-manifest/enable-crun-master.yaml[Master Manifest]
 
-{cnf-features-source-crs}/optional-extra-manifest/enable-crun-master.yaml[Manifest]
+{cnf-features-source-crs}/optional-extra-manifest/enable-crun-worker.yaml[Worker Manifest]
 
 [#policies-templating]
 == Policies Templating

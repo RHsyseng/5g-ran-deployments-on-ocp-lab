@@ -4,8 +4,6 @@ include::_attributes.adoc[]
 
 In this section, we will provide some useful tips to troubleshoot any issue that can arise during the execution of this lab. 
 
-IMPORTANT: Below commands must be executed from the hypervisor host as root if not specified otherwise.
-
 [#verification-lab]
 == Verification of the lab status
 
@@ -335,9 +333,9 @@ dig +short oauth-openshift.apps.hub.5g-deployment.lab
 [#policies-blank]
 == Policies not showing in the Governance console
 
-In cases where the policies are not shown in the Governance section of the Multicloud console we have to check first, if the **policies** Argo application was synced successfully. If not, repeat the steps detailed in link:troubleshooting-tips.html#argocd-red[the previous section]
+In cases where the policies are not shown in the Governance section of the Multicloud console we have to check first, if the **policies** Argo application was synced successfully.
 
-Verfiy that the policies in the hub cluster are similar to the ones shown below. Remember that **inform** as remediation is correct.
+Verify that the policies in the hub cluster are similar to the ones shown below. Remember that **inform** as remediation is correct.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]

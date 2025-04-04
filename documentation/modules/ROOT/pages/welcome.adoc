@@ -5,9 +5,19 @@
 [#5g-ran-lab]
 == Red Hat Lab - 5G RAN Deployments on OpenShift
 
-This lab will guide you through the deployment of a RAN ready infrastructure.
+This lab will guide you through the deployment of a RAN ready infrastructure. The lab consists of two parts, the first part introduces essential concepts for planning and executing a 5G RAN Deployment on OpenShift. The second part involves a practical scenario where you will deploy RAN-enabled OCP using ZTP technologies and methodologies.
 
 IMPORTANT: This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
+
+ifeval::["{demo_environment}" == "true"]
+You have been provided with a lab environment ready for you to use for the second part of the lab. Please note that running this lab incurs a cost of approximately $56. When the lab is launched, by default you will have 12 hours to complete it before it is destroyed. The estimated total duration for completing the lab is approximately 12 hours, including 2 hours for provisioning, 5 hours for hands-on work, and a 5-hour buffer. If additional time is required, the duration can be manually extended up to a maximum of 24 hours.
+endif::[]
+
+ifeval::["{demo_environment}" != "true"]
+Since the second part requires a lab environment, we recommend ordering it before starting the first part to ensure it is ready when needed. If you are a Red Hat employee, you can order a pre-configured lab environment through the https://demo.redhat.com[Red Hat Demo Platform]. Please note that running this lab incurs a cost of approximately $56. When the lab is launched, by default you will have 12 hours to complete it before it is destroyed. The estimated total duration for completing the lab is approximately 12 hours, including 2 hours for provisioning, 5 hours for hands-on work, and a 5-hour buffer. If additional time is required, the duration can be manually extended up to a maximum of 24 hours.
+
+For users without access to the demo platform, an alternative guide for deploying the lab environment is available at xref:lab-environment.adoc[here].
+endif::[]
 
 [#showroom-intro]
 == Introduction to the Showroom Environment
@@ -74,6 +84,9 @@ image::showroom-app-9.png[Showroom App Web Browser Clipboard]
 
 |Ian Miller
 |Lab Reviewer / CNF Developer
+
+|Juan Carlos Tovar
+|Lab Reviewer
 
 |Mario Vázquez
 |Lab Developer / Maintainer
