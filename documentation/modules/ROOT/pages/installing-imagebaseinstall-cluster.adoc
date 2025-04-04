@@ -56,7 +56,7 @@ apiVersion: v1beta1
 kind: ImageBasedInstallationConfig
 metadata:
   name: example-image-based-installation-config
-seedImage: infra.5g-deployment.lab:8443/ibi/lab5gran:{sno-cluster-version1}
+seedImage: {seed-image}
 seedVersion: {sno-cluster-version1-cvo}
 extraPartitionStart: "-60G"
 installationDisk: "/dev/vda"
@@ -221,7 +221,7 @@ Feb 04 10:37:52 ocp-sno-ibi systemd[1]: Starting SNO Image-based Installation...
 Feb 04 10:37:52 ocp-sno-ibi systemd[1]: iscsi.service: Unit cannot be reloaded because it is inactive.
 Feb 04 10:37:53 ocp-sno-ibi systemd[1]: var-lib-containers-storage-overlay-opaque\x2dbug\x2dcheck2861559422-merged.mount: Deactivated successfully.
 Feb 04 10:37:53 ocp-sno-ibi podman[1625]: 2025-02-04 10:37:53.120804852 +0000 UTC m=+0.201463935 system refresh
-Feb 04 10:37:53 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1625]: Trying to pull infra.5g-deployment.lab:8443/ibi/lab5gran:v4.18.0-rc.7...
+Feb 04 10:37:53 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1625]: Trying to pull {seed-image}...
 Feb 04 10:37:53 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1625]: Getting image source signatures
 Feb 04 10:37:53 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1625]: Copying blob sha256:93570925bc4c04f7a453bd0eb530ddad84ea634c54defef1ec2a6410ad1eb683
 ...
@@ -654,6 +654,8 @@ You can also observe the progress from the Red Hat ACM console in the hub cluste
 image::ibi-acm-reconfig01.png[IBI Installation in ACM]
 
 To check the OpenShift installation progress in the target cluster, we need the `sno-ibi` credentials. Obtain them from the hub cluster using this command:
+
+WARNING: The command below may timeout if the SNO API is still starting, give it up to 10 minutes for the API to start responding.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]

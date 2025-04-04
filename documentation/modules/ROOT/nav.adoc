@@ -107,7 +107,7 @@
 *** xref:policygen-deepdive.adoc#kubelet-tuning[Kubelet Tuning]
 *** xref:policygen-deepdive.adoc#sctp[SCTP]
 *** xref:policygen-deepdive.adoc#hide-container-mount[Container Mount Hiding]
-*** xref:policygen-deepdive.adoc#recovery-optimization[Recovery Optimization]
+//*** xref:policygen-deepdive.adoc#recovery-optimization[Recovery Optimization]
 *** xref:policygen-deepdive.adoc#monitoring-footprint[Monitoring Operator Config]
 *** xref:policygen-deepdive.adoc#ocp-console[Console Operator]
 *** xref:policygen-deepdive.adoc#networking-diags[Networking Operator]

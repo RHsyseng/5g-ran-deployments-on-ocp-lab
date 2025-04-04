@@ -30,8 +30,6 @@ IMPORTANT: See that the policies in the Governance section are also compliant fo
 [#check-sno-deployment-cli]
 == Check SNO Deployment has Finished via the CLI
 
-IMPORTANT: Sometimes you may hit a https://issues.redhat.com/browse/OCPBUGS-13286[bug] that will cause the policies to not be properly applied. Follow the instructions xref:troubleshooting-tips.adoc#olm-bug[here] if after 20 minutes policies are not ready.
-
 IMPORTANT: Below commands must be executed from the workstation host if not specified otherwise.
 
 1. Check the `ManagedCluster` for SNO ABI cluster (including its labels). You should see the `ztp-done` label, just as we saw in the WebUI.

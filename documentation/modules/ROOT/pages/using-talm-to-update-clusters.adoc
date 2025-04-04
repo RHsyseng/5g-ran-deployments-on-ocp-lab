@@ -5,7 +5,7 @@ include::_attributes.adoc[]
 [#introduction]
 == Introduction to Image-based Upgrades
 
-In this section, we will perform an image-based upgrade to both managed clusters (`sno-abi` and `sno-ibi`) by leveraging the link:missing[Lifecycle Agent] (LCA) and the link:talm.html[Topology Aware Lifecycle Manager] (TALM) operators. The LCA provides an alternative way to upgrade the platform version of a single-node OpenShift cluster, while TALM manages the rollout of configurations throughout the lifecycle of the cluster fleet.
+In this section, we will perform an image-based upgrade to both managed clusters (`sno-abi` and `sno-ibi`) by leveraging the link:lca.html[Lifecycle Agent] (LCA) and the link:talm.html[Topology Aware Lifecycle Manager] (TALM) operators. The LCA provides an alternative way to upgrade the platform version of a single-node OpenShift cluster, while TALM manages the rollout of configurations throughout the lifecycle of the cluster fleet.
 
 The image-based upgrade is faster than the standard upgrade method and allows direct upgrades from OpenShift Container Platform <4.y> to <4.y+2>, and <4.y.z> to <4.y.z+n>. These upgrades utilize a generated OCI image from a dedicated seed cluster. We have already provided a seed image with version {sno-cluster-version2-cvo}. The process to generate this seed image is the same as the one we executed in link:creating-seed-image.html[Creating the Seed Image] for version {sno-cluster-version1-cvo} to install `sno-ibi`.
 
@@ -13,7 +13,7 @@ IMPORTANT: Image-based upgrades rely on custom images specific to the hardware p
 
 Below are the steps to upgrade both managed clusters and their configuration from {sno-cluster-version1-cvo} to {sno-cluster-version2-cvo}:
 
-* Create a seed image using the Lifecycle Agent. As mentioned, the seed image `infra.5g-deployment.lab:8443/ibi/lab5gran:{sno-cluster-version2-cvo}` is already available in the link:lab-environment-introduction.html#container-registry[container registry].
+* Create a seed image using the Lifecycle Agent. As mentioned, the seed image `{talm-update-image}` is already available in the link:lab-environment-introduction.html#container-registry[container registry].
 * Verify that all software components meet the required versions. You can find the minimum software requirements {ibi-minimum-software}[here].
 * Install the Lifecycle Agent operator and the {ibu-oadp}[OpenShift API for Data Protection] (OADP) in the managed clusters.
 * Configure OADP to back up and restore the configuration of the managed clusters that isn't included in the seed image.
@@ -152,7 +152,7 @@ At this stage, we are going to fulfill the image-based upgrade prerequisites usi
 * Configuring the managed clusters with configurations that were not or could not be included in the seed image.
 * Running the IBGU process.
 
-IMPORTANT: An S3-compatible storage server is required for backup and restore operations. See the link:s3-storage[S3 Storage Server] section.
+IMPORTANT: An S3-compatible storage server is required for backup and restore operations. See the link:lab-environment-introduction.html#s3-storage[S3 Storage Server] section.
 
 Let's create a PGT called `requirements-upgrade` on the hub cluster. This will help us to create multiple RHACM policies, as explained in the link:policygen-deepdive.html[PolicyGen DeepDive] section.
 
@@ -458,7 +458,7 @@ spec:
         - sno-ibi
   ibuSpec:
     seedImageRef: 
-      image: infra.5g-deployment.lab:8443/rhsysdeseng/lab5gran:v4.18.4
+      image: {talm-update-image}
       version: 4.18.4
       pullSecretRef:
         name: disconnected-registry-pull-secret
