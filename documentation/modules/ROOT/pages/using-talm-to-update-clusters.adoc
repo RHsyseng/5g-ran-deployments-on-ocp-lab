@@ -151,7 +151,7 @@ git commit -m "adds upgrade policy"
 git push origin main 
 -----
 
-Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named `europe-snos-upgrade-{talm-update-policy-name}` has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule. 
+Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named `europe-snos-upgrade-{talm-update-policy-name}` has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That's because the SNO1 cluster does not have the labels `du-zone: "europe"` and `logicalGroup: "active"` that the PGT is targeting in its binding rule. 
 
 WARNING: Notice in the following picture that there are policies not applying to any cluster. Those are policies targeting the test environment. This is expected since we do not have any clusters in the test environment, e.g, no clusters are labeled with the proper label for testing: logicalGroup=test.
 
