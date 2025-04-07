@@ -954,7 +954,7 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named <code>europe-snos-upgrade-version-417-4</code> has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That&#8217;s because the SNO1 cluster does not have the labels zone-europe and active logicalGroup that the PGT is targeting in its binding rule.</p>
+<p>Once committed, in a couple of minutes we will see a new policy in the multicloud RHACM console. As noticed, the policy named <code>europe-snos-upgrade-version-417-4</code> has a violation. However, only one cluster is not compliant. If we check the policy information we will see that this policy is only targeting SNO2 cluster. That&#8217;s because the SNO1 cluster does not have the labels <code>du-zone: "europe"</code> and <code>logicalGroup: "active"</code> that the PGT is targeting in its binding rule.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
