@@ -40,15 +40,15 @@ MCE provides most of the functionality to provision OpenShift clusters, since it
 [#siteconfig]
 === SiteConfig Operator
 
-#TODO: explain cluster templates / node templates
-
 The SiteConfig Operator introduces a unified ClusterInstance API, which is derived from the SiteConfig API from the SiteConfig Generator kustomize plugin. This API decouples parameters that define a cluster from the manner in which the cluster is deployed. This separation removed certain limitations that were presented by the SiteConfig kustomize plugin in the past.
 
 Because of this decoupling, the SiteConfig Operator allows deploying OpenShift clusters using either the {ai-workflow}[Agent Based Installation] or {ibi-docs}[Image Based Installation] flows depending on the user's needs. See as well that the operator is the entry point for any GitOps ZTP deployment.
 
-IMPORTANT: In telco environments, especially in RAN, the *Image Based Installation* deployment method is the preferred one due to the reduced installation times and the scalability requirements required in edge deployments.
+IMPORTANT: In Telco environments, especially in RAN, the *Image Based Installation* deployment method is the preferred one due to the reduced installation times and the scalability requirements required in edge deployments.
 
-The SiteConfig Operator dynamically generates installation manifests based on user-defined cluster templates that are instantiated from the data in the ClusterInstance CR. You can source the ClusterInstance CR from your Git repository through ArgoCD, or manually on the hub cluster. 
+The SiteConfig Operator dynamically generates installation manifests based on user-defined cluster templates that are instantiated from the data in the ClusterInstance CR. You can source the ClusterInstance CR from your Git repository through ArgoCD, or manually on the hub cluster.
+
+TIP: The SiteConfig Operator creates two Red Hat tested cluster templates by default. One for Agent Based Installations and one for Image Based Installations. Users can provide their own templates, the specific process of bringing your own templates is not covered in this lab.
 
 As shown in the picture, the process involves the following steps:
 
@@ -65,9 +65,7 @@ image:siteconfig-operator-flow.png[SiteConfig Operator flow]
 [#ibio]
 === Image Based Install Operator
 
-#TODO: Add more info explaining that this is done later in the lab.
-
-WARNING: The IBI Operator requires an Installation ISO preinstalled on the host we want to deploy before creating the configuration ISO. The installation ISO and seed image process creation is described in the link:ztp-workflow.html#ibi-deployment[ZTP workflow] section.
+WARNING: The IBI Operator requires an Installation ISO preinstalled on the host we want to deploy before creating the configuration ISO. The installation ISO and seed image process creation is described in the link:ztp-workflow.html#ibi-deployment[ZTP workflow] section. We will go through the deployment of an IBI cluster in a later section of the lab.
 
 The Image Based Install (IBI) Operator creates a *configuration ISO* from the installation manifests created by the link:ztp-at-scale.html#siteconfig[SiteConfig Operator]. Then, it automatically boots the host with the configuration ISO attached. The host mounts the configuration ISO and runs the reconfiguration process. When the reconfiguration completes, the single-node OpenShift cluster is ready.
 

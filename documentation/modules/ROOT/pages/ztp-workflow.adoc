@@ -88,7 +88,7 @@ Using the Lifecycle Agent, you can generate an OCI container image that encapsul
 
 The following is a high-level overview of the image-based installation process:
 
-* Install a single-node OpenShift cluster with the target OpenShift version you want to install in the rest of the future clusters. #TODO: Explain how to install this seed cluster and the requirements
+* Install a single-node OpenShift cluster with the target OpenShift version you want to install in the rest of the future clusters (this is also known as seed cluster). The seed cluster can be deployed using any supported installation method for SNO deployments. In this lab we used Assisted Installer to deploy the seed cluster.
 * Generate an image from that single-node OpenShift cluster.
 * Use the `openshift-install` program to embed the seed image URL and other installation artifacts in a live installation ISO.
 * Start the host using the live installation ISO to preinstall the host.

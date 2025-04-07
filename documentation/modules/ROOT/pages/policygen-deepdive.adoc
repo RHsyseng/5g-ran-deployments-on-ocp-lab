@@ -100,7 +100,7 @@ In order to reduce system mount scanning overhead, creates a mount namespaces fo
 
 {cnf-features-source-crs}/extra-manifest/01-container-mount-ns-and-kubelet-conf-master.yaml[Manifest]
 
-// Seems like this is no longer required, it may be part of the product. TODO: investigate
+// This is no longer required, https://issues.redhat.com/browse/CNF-9381
 //[#recovery-optimization]
 //=== Recovery Optimization
 //
