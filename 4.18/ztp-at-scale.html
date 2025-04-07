@@ -918,9 +918,6 @@ The Multicluster Engine for Kubernetes operator is entitled with OpenShift.
 <div class="sect2">
 <h3 id="siteconfig"><a class="anchor" href="#siteconfig"></a>SiteConfig Operator</h3>
 <div class="paragraph">
-<p>#TODO: explain cluster templates / node templates</p>
-</div>
-<div class="paragraph">
 <p>The SiteConfig Operator introduces a unified ClusterInstance API, which is derived from the SiteConfig API from the SiteConfig Generator kustomize plugin. This API decouples parameters that define a cluster from the manner in which the cluster is deployed. This separation removed certain limitations that were presented by the SiteConfig kustomize plugin in the past.</p>
 </div>
 <div class="paragraph">
@@ -933,13 +930,25 @@ The Multicluster Engine for Kubernetes operator is entitled with OpenShift.
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-In telco environments, especially in RAN, the <strong>Image Based Installation</strong> deployment method is the preferred one due to the reduced installation times and the scalability requirements required in edge deployments.
+In Telco environments, especially in RAN, the <strong>Image Based Installation</strong> deployment method is the preferred one due to the reduced installation times and the scalability requirements required in edge deployments.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
 <p>The SiteConfig Operator dynamically generates installation manifests based on user-defined cluster templates that are instantiated from the data in the ClusterInstance CR. You can source the ClusterInstance CR from your Git repository through ArgoCD, or manually on the hub cluster.</p>
+</div>
+<div class="admonitionblock tip">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-tip" title="Tip"></i>
+</td>
+<td class="content">
+The SiteConfig Operator creates two Red Hat tested cluster templates by default. One for Agent Based Installations and one for Image Based Installations. Users can provide their own templates, the specific process of bringing your own templates is not covered in this lab.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>As shown in the picture, the process involves the following steps:</p>
@@ -975,9 +984,6 @@ In telco environments, especially in RAN, the <strong>Image Based Installation</
 </div>
 <div class="sect2">
 <h3 id="ibio"><a class="anchor" href="#ibio"></a>Image Based Install Operator</h3>
-<div class="paragraph">
-<p>#TODO: Add more info explaining that this is done later in the lab.</p>
-</div>
 <div class="admonitionblock warning">
 <table>
 <tr>
@@ -985,7 +991,7 @@ In telco environments, especially in RAN, the <strong>Image Based Installation</
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-The IBI Operator requires an Installation ISO preinstalled on the host we want to deploy before creating the configuration ISO. The installation ISO and seed image process creation is described in the <a href="ztp-workflow.html#ibi-deployment">ZTP workflow</a> section.
+The IBI Operator requires an Installation ISO preinstalled on the host we want to deploy before creating the configuration ISO. The installation ISO and seed image process creation is described in the <a href="ztp-workflow.html#ibi-deployment">ZTP workflow</a> section. We will go through the deployment of an IBI cluster in a later section of the lab.
 </td>
 </tr>
 </table>
