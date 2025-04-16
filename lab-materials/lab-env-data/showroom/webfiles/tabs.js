@@ -21,6 +21,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Refresh tab to avoid issues with kasmvnc
+document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+        const iframe = document.querySelector("#firefox_tab iframe");
+        iframe.src = iframe.src;
+    }
+});
+
 // Counter to keep track of terminal tabs
 let terminalCounter = 1;
 
