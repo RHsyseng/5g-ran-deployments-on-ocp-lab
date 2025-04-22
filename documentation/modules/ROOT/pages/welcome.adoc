@@ -1,11 +1,11 @@
-= Welcome to the Red Hat Lab 5G RAN Deployments on OpenShift
+= Welcome to the Red Hat Lab 5G RAN RDS Deployments on OpenShift
 :!sectids:
 
 [.text-center.strong]
 [#5g-ran-lab]
-== Red Hat Lab - 5G RAN Deployments on OpenShift
+== Red Hat Lab - 5G RAN RDS Deployments on OpenShift
 
-This lab will guide you through the deployment of a RAN ready infrastructure. The lab consists of two parts, the first part introduces essential concepts for planning and executing a 5G RAN Deployment on OpenShift. The second part involves a practical scenario where you will deploy RAN-enabled OCP using ZTP technologies and methodologies.
+This lab will guide you through the deployment of a RAN ready infrastructure following the Reference Design Specification (RDS) crafted by the Red Hat CNF team. The lab consists of two parts, the first part introduces essential concepts for planning and executing a 5G RAN Deployment on OpenShift. The second part involves a practical scenario where you will deploy RAN-enabled OCP using ZTP technologies and methodologies.
 
 IMPORTANT: This is not an official Red Hat Training. Please, contact with your Red Hat representative if you want more information about Training or Guidelines about this topic / product.
 
