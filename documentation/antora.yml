@@ -1,5 +1,5 @@
 name: 4.18
-title: LAB - 5G RAN Deployments on OpenShift
+title: LAB - 5G RAN RDS Deployments on OpenShift
 version: ~
 nav:
   - modules/ROOT/nav.adoc

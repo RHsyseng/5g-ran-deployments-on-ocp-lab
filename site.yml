@@ -2,7 +2,7 @@ runtime:
   cache_dir: ./.cache/antora
 
 site:
-  title: LAB - 5G RAN Deployments on OpenShift
+  title: LAB - 5G RAN RDS Deployments on OpenShift
   url: https://labs.sysdeseng.com/
   start_page: 5g-ran-deployments-on-ocp-lab::index.adoc
 
