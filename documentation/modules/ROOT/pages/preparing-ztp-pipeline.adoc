@@ -62,13 +62,20 @@ As we saw in link:deployment-considerations.html#git-repo-structure[Git Reposito
 │   └── resources
 └── site-policies
     ├── fleet
-    │   ├── active
-    |   │   └── source-crs
-    |   |   |   └── reference-crs
-    |   |   |   └── custom-crs
+    │   ├── active    
+    |   │   └── {openshift-release}
+    |   |   │   └── source-crs
+    |   |   |   |   └── reference-crs
+    |   |   |   |   └── custom-crs
+    |   │   └── {openshift-previous-release}
+    |   |   │   └── source-crs
+    |   |   |   |   └── reference-crs
+    |   |   |   |   └── custom-crs
     │   └── testing
-    └── sites
-        └── hub-1
+    |   |   │   └── {openshift-next-release}
+    |   |   |   │   └── source-crs
+    |   |   |   |   |   └── reference-crs
+    |   |   |   |   |   └── custom-crs
 -----
 
 Let's replicate it:
@@ -84,9 +91,10 @@ IMPORTANT: The cluster name for the SNO that we will be deploying using the agen
 -----
 cd ~/5g-deployment-lab/ztp-repository/
 mkdir -p site-configs/{hub-1,resources,pre-reqs/sno-abi,pre-reqs/sno-ibi,hub-1/extra-manifest,reference-manifest/{lab-major-version}}
-mkdir -p site-policies/{fleet/active/source-crs/reference-crs,fleet/active/source-crs/custom-crs,fleet/testing,sites/hub-1}
+mkdir -p site-policies/{fleet/active/{openshift-release}/source-crs/reference-crs,fleet/active/{openshift-release}/source-crs/custom-crs,fleet/active/{openshift-previous-release}/source-crs/reference-crs,fleet/active/{openshift-previous-release}/source-crs/custom-crs}
+mkdir -p site-policies/{fleet/testing/{openshift-next-release}/source-crs/reference-crs,fleet/testing/{openshift-next-release}/source-crs/custom-crs}
 touch site-configs/{hub-1,resources,pre-reqs/sno-abi,pre-reqs/sno-ibi,hub-1/extra-manifest,reference-manifest/{lab-major-version}}/.gitkeep
-touch site-policies/{fleet/active/source-crs/reference-crs,fleet/active/source-crs/custom-crs,fleet/testing,sites/hub-1}/.gitkeep
+touch site-policies/{fleet,fleet/active,fleet/testing,fleet/active/{openshift-release},fleet/active/{openshift-previous-release},fleet/testing/{openshift-next-release},fleet/active/{openshift-release}/source-crs/reference-crs,fleet/active/{openshift-release}/source-crs/custom-crs,fleet/active/{openshift-previous-release}/source-crs/reference-crs,fleet/active/{openshift-previous-release}/source-crs/custom-crs,fleet/testing/{openshift-next-release}/source-crs/reference-crs,fleet/testing/{openshift-next-release}/source-crs/custom-crs}/.gitkeep
 git add --all
 git commit -m 'Initialized repo structure'
 git push origin main

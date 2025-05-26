@@ -24,59 +24,85 @@ IMPORTANT: If you check the binding rules, you see that we are targeting cluster
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{policygen-common-file}
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/{policygen-common-file}
 ---
-apiVersion: ran.openshift.io/v1
-kind: PolicyGenTemplate
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
 metadata:
-  name: "common"
-  namespace: "ztp-policies"
-spec:
-  bindingRules:
-    common: "{policygen-common-label}"
-    logicalGroup: "active"
-  mcp: master
+  name: common
+placementBindingDefaults:
+  name: common-placement-binding
+policyDefaults:
+  namespace: ztp-policies
+  placement:
+    labelSelector:
+      common: "{policygen-common-label}"
+      logicalGroup: "active"
   remediationAction: inform
-  sourceFiles:
-    - fileName: DefaultCatsrc.yaml
-      metadata:
-        name: redhat-operator-index
-      spec:
-        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:{catalogsource-index-image-tag}
-      policyName: config-policy
-    - fileName: ReduceMonitoringFootprint.yaml
-      policyName: config-policy
-    - fileName: StorageLVMSubscriptionNS.yaml
-      metadata:
-        annotations:
-          workload.openshift.io/allowed: management
-      policyName: subscriptions-policy
-    - fileName: StorageLVMSubscriptionOperGroup.yaml
-      policyName: subscriptions-policy
-    - fileName: StorageLVMSubscription.yaml
-      spec:
-        channel: {lvms-channel}
-        source: redhat-operator-index
-        installPlanApproval: Automatic
-      policyName: subscriptions-policy
-    - fileName: LVMOperatorStatus.yaml
-      policyName: subscriptions-policy
-    - fileName: SriovSubscriptionNS.yaml
-      policyName: "subscriptions-policy"
-    - fileName: SriovSubscriptionOperGroup.yaml
-      policyName: "subscriptions-policy"
-    - fileName: SriovSubscription.yaml
-      spec:
-        channel: {sriov-channel}
-        source: redhat-operator-index
-        config:
-          env:
-            - name: "DEV_MODE"
-              value: "TRUE"
-        installPlanApproval: Automatic
-      policyName: "subscriptions-policy"
-    - fileName: SriovOperatorStatus.yaml
-      policyName: subscriptions-policy
+  severity: low
+  namespaceSelector:
+    exclude:
+      - kube-*
+    include:
+      - '*'
+  evaluationInterval:
+    compliant: 10m
+    noncompliant: 10s
+policies:
+- name: common-config-policy
+  policyAnnotations:
+    ran.openshift.io/ztp-deploy-wave: "1"
+  manifests:
+    - path: source-crs/reference-crs/ReduceMonitoringFootprint.yaml
+    - path: source-crs/reference-crs/DefaultCatsrc.yaml
+      patches:
+        - metadata:
+            name: redhat-operator-index
+          spec:
+            displayName: disconnected-redhat-operators
+            image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:{catalogsource-index-image-tag}
+- name: common-subscriptions-policy
+  policyAnnotations:
+    ran.openshift.io/ztp-deploy-wave: "2"
+  manifests:
+    # Ptp operator
+#    - path: source-crs/reference-crs/PtpSubscriptionNS.yaml
+#      patches:
+#        - spec:
+#            channel: stable
+#            source: redhat-operator-index
+#            installPlanApproval: Automatic
+#    - path: source-crs/reference-crs/PtpSubscription.yaml
+#    - path: source-crs/reference-crs/PtpSubscriptionOperGroup.yaml
+#    - path: source-crs/reference-crs/PtpOperatorStatus.yaml
+    # SRIOV operator
+    - path: source-crs/reference-crs/SriovSubscriptionNS.yaml
+    - path: source-crs/reference-crs/SriovSubscription.yaml
+      patches:
+        - spec:
+            channel: {sriov-channel}
+            source: redhat-operator-index
+            config:
+              env:
+                - name: "DEV_TRUE"
+                  value: "TRUE"
+            installPlanApproval: Automatic
+    - path: source-crs/reference-crs/SriovSubscriptionOperGroup.yaml
+    - path: source-crs/reference-crs/SriovOperatorStatus.yaml
+    # Storage operator
+    - path: source-crs/reference-crs/StorageLVMSubscriptionNS.yaml
+      patches:
+      - metadata:
+          annotations:
+            workload.openshift.io/allowed: "management"
+    - path: source-crs/reference-crs/StorageLVMSubscriptionOperGroup.yaml
+    - path: source-crs/reference-crs/StorageLVMSubscription.yaml
+      patches:
+        - spec:
+            channel: {lvms-channel}
+            source: redhat-operator-index
+            installPlanApproval: Automatic
+    - path: source-crs/reference-crs/LVMOperatorStatus.yaml
 EOF
 -----
 
@@ -94,94 +120,102 @@ IMPORTANT: If you check the binding rules you can see that we are targeting clus
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/group-du-sno.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/group-du-sno.yaml
 ---
-apiVersion: ran.openshift.io/v1
-kind: PolicyGenTemplate
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
 metadata:
-  name: "du-sno"
-  namespace: "ztp-policies"
-spec:
-  bindingRules:
-    group-du-sno: ""
-    logicalGroup: "active"
-    hardware-type: "hw-type-platform-1"
-  mcp: master
+  name: du-sno
+placementBindingDefaults:
+  name: group-du-sno-placement-binding
+policyDefaults:
+  namespace: ztp-policies
+  placement:
+    labelSelector:
+      group-du-sno: ""
+      logicalGroup: "active"
+      hardware-type: "hw-type-platform-1"
   remediationAction: inform
-  sourceFiles:
-    - fileName: DisableSnoNetworkDiag.yaml
-      policyName: "group-policy"
-    - fileName: DisableOLMPprof.yaml # wave 10
-      policyName: "group-policy"
-    - fileName: ConsoleOperatorDisable.yaml
-      policyName: "group-policy"
-    - fileName: SriovOperatorConfig.yaml
-      policyName: "group-policy"
-      # Using hub templating to obtain if the SR-IOV card is supported for this hw type
-      spec:
-        disableDrain: true
-        enableOperatorWebhook: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-supported-sriov-nic" (index .ManagedClusterLabels "hardware-type")) | toBool hub}}'
-    - fileName: StorageLVMCluster.yaml
-      # Using hub templating to obtain the storage device name for this hw type
-      spec:
-        storage:
-          deviceClasses:
-            - name: vg1
-              thinPoolConfig:
-                name: thin-pool-1
-                sizePercent: 90
-                overprovisionRatio: 10
-              deviceSelector:
-                paths:
-                - '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-storage-path" (index .ManagedClusterLabels "hardware-type")) hub}}'
-      policyName: "group-policy"
-    - fileName: PerformanceProfile.yaml
-      # Using hub templating to obtain if the tunning config for this hw type
-      policyName: "group-policy"
-      metadata:
-        annotations:
-          kubeletconfig.experimental: |
-            {"topologyManagerScope": "pod",
-             "systemReserved": {"memory": "3Gi"}
-            }
-      spec:
-        cpu:
-          isolated: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-cpu-isolated" (index .ManagedClusterLabels "hardware-type")) hub}}'
-          reserved: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-cpu-reserved" (index .ManagedClusterLabels "hardware-type")) hub}}'
-        hugepages:
-          defaultHugepagesSize: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-hugepages-default" (index .ManagedClusterLabels "hardware-type"))| hub}}'
-          pages:
-          - count: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-hugepages-count" (index .ManagedClusterLabels "hardware-type")) | toInt hub}}'
-            size: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-hugepages-size" (index .ManagedClusterLabels "hardware-type")) hub}}'
-        numa:
-          topologyPolicy: single-numa-node
-        realTimeKernel:
-          enabled: false
-        globallyDisableIrqLoadBalancing: false
-        # WorkloadHints defines the set of upper level flags for different type of workloads.
-        # The configuration below is set for a low latency, performance mode.
-        workloadHints:
-          realTime: true
-          highPowerConsumption: false
-          perPodPowerManagement: false
-    - fileName: TunedPerformancePatch.yaml
-      policyName: "group-policy"
-      spec:
-        profile:
-          - name: performance-patch
-            data: |
-              [main]
-              summary=Configuration changes profile inherited from performance created tuned
-              include=openshift-node-performance-openshift-node-performance-profile
-              [sysctl]
-              # When using the standard (non-realtime) kernel, remove the kernel.timer_migration override from the [sysctl] section
-              # kernel.timer_migration=0
-              [scheduler]
-              group.ice-ptp=0:f:10:*:ice-ptp.*
-              group.ice-gnss=0:f:10:*:ice-gnss.*
-              [service]
-              service.stalld=start,enable
-              service.chronyd=stop,disable
+  severity: low
+  # standards: []
+  namespaceSelector:
+    exclude:
+      - kube-*
+    include:
+      - '*'
+  evaluationInterval:
+    compliant: 10m
+    noncompliant: 10s
+policies:
+- name: du-sno-group-policy
+  policyAnnotations:
+    ran.openshift.io/ztp-deploy-wave: "10"
+  manifests:
+    - path: source-crs/reference-crs/DisableOLMPprof.yaml
+    - path: source-crs/reference-crs/DisableSnoNetworkDiag.yaml
+    - path: source-crs/reference-crs/ConsoleOperatorDisable.yaml
+    - path: source-crs/reference-crs/SriovOperatorConfig.yaml
+      patches:
+      - spec:
+          disableDrain: true
+          enableOperatorWebhook: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-supported-sriov-nic" (index .ManagedClusterLabels "hardware-type")) | toBool hub}}'
+    - path: source-crs/reference-crs/StorageLVMCluster.yaml
+      patches:
+      - spec:
+          storage:
+            deviceClasses:
+              - name: vg1
+                thinPoolConfig:
+                  name: thin-pool-1
+                  sizePercent: 90
+                  overprovisionRatio: 10
+                deviceSelector:
+                  paths:
+                  - '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-storage-path" (index .ManagedClusterLabels "hardware-type")) hub}}'
+    - path: source-crs/reference-crs/PerformanceProfile-SetSelector.yaml
+      patches:
+      - spec:
+          cpu:
+            isolated: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-cpu-isolated" (index .ManagedClusterLabels "hardware-type")) hub}}'
+            reserved: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-cpu-reserved" (index .ManagedClusterLabels "hardware-type")) hub}}'
+          hugepages:
+            defaultHugepagesSize: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-hugepages-default" (index .ManagedClusterLabels "hardware-type"))| hub}}'
+            pages:
+            - count: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-hugepages-count" (index .ManagedClusterLabels "hardware-type")) | toInt hub}}'
+              size: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-hugepages-size" (index .ManagedClusterLabels "hardware-type")) hub}}'
+          numa:
+            topologyPolicy: single-numa-node
+          realTimeKernel:
+            enabled: false
+          globallyDisableIrqLoadBalancing: false
+          # WorkloadHints defines the set of upper level flags for different type of workloads.
+          # The configuration below is set for a low latency, performance mode.
+          workloadHints:
+            realTime: true
+            highPowerConsumption: false
+            perPodPowerManagement: false
+          machineConfigPoolSelector:
+            pools.operator.machineconfiguration.openshift.io/master: ""
+          nodeSelector:
+            node-role.kubernetes.io/master: ''
+    - path: source-crs/reference-crs/TunedPerformancePatch.yaml
+      patches:
+      - spec:
+          profile:
+            - name: performance-patch
+              data: |
+                [main]
+                summary=Configuration changes profile inherited from performance created tuned
+                include=openshift-node-performance-openshift-node-performance-profile
+                [sysctl]
+                # When using the standard (non-realtime) kernel, remove the kernel.timer_migration override from the [sysctl] section
+                # kernel.timer_migration=0
+                [scheduler]
+                group.ice-ptp=0:f:10:*:ice-ptp.*
+                group.ice-gnss=0:f:10:*:ice-gnss.*
+                [service]
+                service.stalld=start,enable
+                service.chronyd=stop,disable
 EOF
 -----
 +
@@ -189,10 +223,11 @@ IMPORTANT: By leveraging hub site templating we are reducing the number of polic
 +
 2. We're using policy templating, so we need to create a `ConfigMap` with the templating values to be used. Notice that the following resource contains values for multiple hardware specifications that we may have in our infrastructure. In the policy we just applied, the values are obtained depending on the label `hardware-type` that each cluster is assigned to. This label is set in the `ClusterInstance` definition. More information about Template processing can be found in {rhacm-template-processing}[Red Hat Advanced Cluster Management documentation].
 +
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/group-hardware-types-configmap.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/group-hardware-types-configmap.yaml
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -226,24 +261,45 @@ EOF
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/group-du-sno-validator.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/group-du-sno-validator.yaml
 ---
-apiVersion: ran.openshift.io/v1
-kind: PolicyGenTemplate
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
 metadata:
-  name: "du-sno-validator"
-  namespace: "ztp-policies"
-spec:
-  bindingRules:
-    group-du-sno: ""
-    logicalGroup: "active"
-  bindingExcludedRules:
-    ztp-done: ""
-  mcp: "master"
-  sourceFiles:
-    - fileName: validatorCRs/informDuValidator.yaml
-      remediationAction: inform
-      policyName: "validation"
+  name: du-sno-validator
+placementBindingDefaults:
+  name: group-du-sno-placement-binding
+policyDefaults:
+  namespace: ztp-group
+  placement:
+    labelSelector:
+      matchExpressions:
+      - key: group-du-sno
+        operator: Exists
+      - key: logicalGroup
+        operator: In
+        values: ["active"]
+      - key: ztp-done
+        operator: DoesNotExist
+  remediationAction: inform
+  severity: low
+  namespaceSelector:
+    exclude:
+      - kube-*
+    include:
+      - '*'
+  evaluationInterval:
+   # This low setting is only valid if the validation policy is disconnected from the cluster at steady-state
+   # using a bindingExcludeRules entry with ztp-done
+    compliant: 5s
+    noncompliant: 10s
+policies:
+- name: group-du-sno-validator
+  policyAnnotations:
+    ran.openshift.io/soak-seconds: "30"
+    ran.openshift.io/ztp-deploy-wave: "10000"
+  manifests:
+    - path: source-crs/validatorCRs/informDuValidatorMaster.yaml
 EOF
 -----
 
@@ -259,79 +315,96 @@ We are going to create the SR-IOV network device configurations for the OpenShif
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/sites/hub-1/sites-specific.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/sites-specific.yaml
 ---
-apiVersion: ran.openshift.io/v1
-kind: PolicyGenTemplate
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
 metadata:
-  name: "du-sno-sites"
-  namespace: "ztp-policies"
-spec:
-  bindingRules:
-    common: "{policygen-common-label}"
-    logicalGroup: "active"
-    hardware-type: "hw-type-platform-1"
-  mcp: master
+  name: du-sno-sites
+placementBindingDefaults:
+  name: group-du-sno-placement-binding
+policyDefaults:
+  namespace: ztp-policies
+  placement:
+    labelSelector:
+      common: "ocp418"
+      logicalGroup: "active"
+      hardware-type: "hw-type-platform-1"
   remediationAction: inform
-  sourceFiles:
-    - fileName: SriovNetwork.yaml
+  severity: low
+  namespaceSelector:
+    exclude:
+      - kube-*
+    include:
+      - '*'
+  evaluationInterval:
+    compliant: 10m
+    noncompliant: 10s
+policies:
+- name: du-sno-sites-sites-policy
+  policyAnnotations:
+    ran.openshift.io/ztp-deploy-wave: "100"
+  manifests:
+    - path: source-crs/reference-crs/SriovNetwork.yaml
       # Using hub templating to obtain the SR-IOV config of each SNO
-      policyName: "sites-policy"
-      metadata:
-        name: "sriov-nw-du-netdev"
-      spec:  
-        ipam: '{"type": "host-local","ranges": [[{"subnet": "192.168.100.0/24"}]],"dataDir":
-      "/run/my-orchestrator/container-ipam-state-1"}'
-        resourceName: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename1" .ManagedClusterName) hub}}'
-        spoofChk: "off"
-        trust: "on"
-    - fileName: SriovNetworkNodePolicy.yaml
-      policyName: "sites-policy"
-      complianceType: mustonlyhave
-      metadata:
-        name: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename1" .ManagedClusterName) hub}}'
-      spec:
-        deviceType: netdevice
-        needVhostNet: false
-        mtu: 1500
-        linkType: eth
-        isRdma: false
-        nicSelector:
-          vendor: "8086"
-          deviceID: "10c9"
-          pfNames:
-            - '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-sriovnic1" .ManagedClusterName) hub}}'
-        numVfs: 2
-        resourceName: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename1" .ManagedClusterName) hub}}'
-    - fileName: SriovNetwork.yaml
-      policyName: "sites-policy"
-      metadata:
-        name: "sriov-nw-du-vfio"
-      spec:
-        ipam: '{"type": "host-local","ranges": [[{"subnet": "192.168.100.0/24"}]],"dataDir":
-      "/run/my-orchestrator/container-ipam-state-1"}'
-        resourceName: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename2" .ManagedClusterName) hub}}'
-        spoofChk: "off"
-        trust: "on"
-    - fileName: SriovNetworkNodePolicy.yaml
-      policyName: "sites-policy"
-      metadata:
-        name: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename2" .ManagedClusterName) hub}}'
-      spec:
-        deviceType: vfio-pci
-        mtu: 1500
-        linkType: eth
-        isRdma: false
-        needVhostNet: false
-        nicSelector:
-          vendor: "8086"
-          deviceID: "10c9"
-          pfNames:
-            - '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-sriovnic2" .ManagedClusterName) hub}}'
-        numVfs: 2
-        resourceName: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename2" .ManagedClusterName) hub}}'
+      patches:
+      - spec:
+          ipam: '{"type": "host-local","ranges": [[{"subnet": "192.168.100.0/24"}]],"dataDir":
+        "/run/my-orchestrator/container-ipam-state-1"}'
+          resourceName: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename1" .ManagedClusterName) hub}}'
+          spoofChk: "off"
+          trust: "on"
+        metadata:
+          name: "sriov-nw-du-netdev"
+    - path: source-crs/reference-crs/SriovNetworkNodePolicy.yaml
+      patches:
+        - metadata:
+            name: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename1" .ManagedClusterName) hub}}'
+          spec:
+            deviceType: netdevice
+            needVhostNet: false
+            mtu: 1500
+            linkType: eth
+            isRdma: false
+            nicSelector:
+              vendor: "8086"
+              deviceID: "10c9"
+              pfNames:
+                - '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-sriovnic1" .ManagedClusterName) hub}}'
+            numVfs: 2
+            priority: 99
+            resourceName: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename1" .ManagedClusterName) hub}}'
+    - path: source-crs/reference-crs/SriovNetwork.yaml
+      patches:
+        - metadata:
+            name: "sriov-nw-du-vfio"
+          spec:
+            ipam: '{"type": "host-local","ranges": [[{"subnet": "192.168.100.0/24"}]],"dataDir":
+          "/run/my-orchestrator/container-ipam-state-1"}'
+            resourceName: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename2" .ManagedClusterName) hub}}'
+            spoofChk: "off"
+            trust: "on"
+    - path: source-crs/reference-crs/SriovNetworkNodePolicy.yaml
+      patches:
+        - metadata:
+            name: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename2" .ManagedClusterName) hub}}'
+          spec:
+            deviceType: vfio-pci
+            mtu: 1500
+            linkType: eth
+            isRdma: false
+            needVhostNet: false
+            nicSelector:
+              vendor: "8086"
+              deviceID: "10c9"
+              pfNames:
+                - '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-sriovnic2" .ManagedClusterName) hub}}'
+            numVfs: 2
+            priority: 99
+            resourceName: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename2" .ManagedClusterName) hub}}'
 EOF
 -----
+
 IMPORTANT: By leveraging hub site templating we are reducing the number of policies on our hub cluster. This makes the clusters's deployment and maintenance process a lot less cumbersome. Notice that with large fleets of clusters, it can quickly become hard to maintain per-site configurations.
 
 2. We're using policy templating, so we have to create a `ConfigMap` with the templating values to be used. Observe that the following manifest contains SR-IOV information for each cluster deployed by our Hub-1. This network information is required to configure the SR-IOV network devices and provide SR-IOV capabilities to the Pods deployed in our SNO clusters. In the previous policy, it is captured the name of the SR-IOV interfaces (PFs) recognized on the host node to present additional virtual functions (VFs) on your OpenShift cluster. Those values are retrieved by obtaining the name of the cluster managed by the hub. The information is not obtained from a label set in the `ClusterInstance` definition, it is the `ManagedClusterName`, e.g., the name of the cluster used instead. 
@@ -339,7 +412,7 @@ IMPORTANT: By leveraging hub site templating we are reducing the number of polic
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/sites/hub-1/site-data-hw-1-configmap.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/site-data-hw-1-configmap.yaml
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -380,7 +453,7 @@ In this lab we do not need extra content, however we are going to pave the way f
 [source,bash,subs="attributes+,+macros"]
 -----
 podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
-podman run --log-driver=none --rm --tls-verify=false {ztp-sitegenerate-disconnected-image} extract /home/ztp/source-crs --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/source-crs/reference-crs/
+podman run --log-driver=none --rm --tls-verify=false {ztp-sitegenerate-disconnected-image} extract /home/ztp/source-crs --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/source-crs/reference-crs/
 -----
 
 Notice that we can add content not included in the ZTP container image by creating the required source CR in the `source-crs/custom-crs` folder. Once pushed to our Git repo, we can reference it in any of the common, group or site `PolicyGenTemplates`. More information on deploying additional changes to cluster can be found in the {advanced-ztp-policy-config}[docs].
@@ -395,57 +468,86 @@ Testing policies before applying them to our production clusters is a must, in o
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/{policygen-common-file}
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/{openshift-next-release}/common-{openshift-next-release}
 ---
-apiVersion: ran.openshift.io/v1
-kind: PolicyGenTemplate
+---
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
 metadata:
-  name: "common-test"
-  namespace: "ztp-policies"
-spec:
-  bindingRules:
-    common: "{policygen-common-label}"
-    logicalGroup: "testing"
-  mcp: master
+  name: common-test
+placementBindingDefaults:
+  name: common-placement-binding
+policyDefaults:
+  namespace: ztp-policies
+  placement:
+    labelSelector:
+      common: "ocp419"
+      logicalGroup: "testing"
   remediationAction: inform
-  sourceFiles:
-    - fileName: DefaultCatsrc.yaml
-      metadata:
-        name: redhat-operator-index
-      spec:
-        image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:{catalogsource-index-image-tag}
-      policyName: config-policy
-    - fileName: ReduceMonitoringFootprint.yaml
-      policyName: config-policy
-    - fileName: StorageLVMSubscriptionNS.yaml
-      metadata:
-        annotations:
-          workload.openshift.io/allowed: management
-      policyName: subscriptions-policy
-    - fileName: StorageLVMSubscriptionOperGroup.yaml
-      policyName: subscriptions-policy
-    - fileName: StorageLVMSubscription.yaml
-      spec:
-        channel: {lvms-channel}
-        source: redhat-operator-index
-      policyName: subscriptions-policy
-    - fileName: LVMOperatorStatus.yaml
-      policyName: subscriptions-policy
-    - fileName: SriovSubscriptionNS.yaml
-      policyName: "subscriptions-policy"
-    - fileName: SriovSubscriptionOperGroup.yaml
-      policyName: "subscriptions-policy"
-    - fileName: SriovSubscription.yaml
-      spec:
-        channel: {sriov-channel}
-        source: redhat-operator-index
-        config:
-          env:
-            - name: "DEV_MODE"
-              value: "TRUE"
-      policyName: "subscriptions-policy"
-    - fileName: SriovOperatorStatus.yaml
-      policyName: subscriptions-policy
+  severity: low
+  namespaceSelector:
+    exclude:
+      - kube-*
+    include:
+      - '*'
+  evaluationInterval:
+    compliant: 10m
+    noncompliant: 10s
+policies:
+- name: common-test-config-policy
+  policyAnnotations:
+    ran.openshift.io/ztp-deploy-wave: "1"
+  manifests:
+    - path: source-crs/reference-crs/ReduceMonitoringFootprint.yaml
+    - path: source-crs/reference-crs/DefaultCatsrc.yaml
+      patches:
+        - metadata:
+            name: redhat-operator-index
+          spec:
+            displayName: disconnected-redhat-operators
+            image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.18-1742933492
+- name: common-test-subscriptions-policy
+  policyAnnotations:
+    ran.openshift.io/ztp-deploy-wave: "2"
+  manifests:
+    # Ptp operator
+#    - path: source-crs/reference-crs/PtpSubscriptionNS.yaml
+#      patches:
+#        - spec:
+#            channel: stable
+#            source: redhat-operator-index
+#            installPlanApproval: Automatic
+#    - path: source-crs/reference-crs/PtpSubscription.yaml
+#    - path: source-crs/reference-crs/PtpSubscriptionOperGroup.yaml
+#    - path: source-crs/reference-crs/PtpOperatorStatus.yaml
+    # SRIOV operator
+    - path: source-crs/reference-crs/SriovSubscriptionNS.yaml
+    - path: source-crs/reference-crs/SriovSubscription.yaml
+      patches:
+        - spec:
+            channel: stable
+            source: redhat-operator-index
+            config:
+              env:
+                - name: "DEV_TRUE"
+                  value: "TRUE"
+            installPlanApproval: Automatic
+    - path: source-crs/reference-crs/SriovSubscriptionOperGroup.yaml
+    - path: source-crs/reference-crs/SriovOperatorStatus.yaml
+    # Storage operator
+    - path: source-crs/reference-crs/StorageLVMSubscriptionNS.yaml
+      patches:
+      - metadata:
+          annotations:
+            workload.openshift.io/allowed: "management"
+    - path: source-crs/reference-crs/StorageLVMSubscriptionOperGroup.yaml
+    - path: source-crs/reference-crs/StorageLVMSubscription.yaml
+      patches:
+        - spec:
+            channel: stable-4.18
+            source: redhat-operator-index
+            installPlanApproval: Automatic
+    - path: source-crs/reference-crs/LVMOperatorStatus.yaml
 EOF
 -----
 +
@@ -454,91 +556,104 @@ EOF
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/group-du-sno.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/{openshift-next-release}/group-du-sno.yaml
 ---
-apiVersion: ran.openshift.io/v1
-kind: PolicyGenTemplate
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
 metadata:
-  name: "du-sno-test"
-  namespace: "ztp-policies"
-spec:
-  bindingRules:
-    group-du-sno: ""
-    logicalGroup: "testing"
-    hardware-type: "hw-type-platform-1"
-  mcp: master
+  name: du-sno-test
+placementBindingDefaults:
+  name: group-du-sno-placement-binding
+policyDefaults:
+  namespace: ztp-policies
+  placement:
+    labelSelector:
+      group-du-sno: ""
+      logicalGroup: "testing"
+      hardware-type: "hw-type-platform-1"
   remediationAction: inform
-  sourceFiles:
-    - fileName: DisableSnoNetworkDiag.yaml
-      policyName: "group-policy"
-    - fileName: DisableOLMPprof.yaml # wave 10
-      policyName: "group-policy"
-    - fileName: SriovOperatorConfig.yaml
-      policyName: "group-policy"
-      spec:
-        disableDrain: true
-        enableOperatorWebhook: '{{hub fromConfigMap "" "group-hardware-types-configmap-test" (printf "%s-supported-sriov-nic" (index .ManagedClusterLabels "hardware-type")) | toBool hub}}'
-    - fileName: StorageLVMCluster.yaml
-      spec:
-        storage:
-          deviceClasses:
-            - name: vg1
-              thinPoolConfig:
-                name: thin-pool-1
-                sizePercent: 90
-                overprovisionRatio: 10
-              deviceSelector:
-                paths:
-                - '{{hub fromConfigMap "" "group-hardware-types-configmap-test" (printf "%s-storage-path" (index .ManagedClusterLabels "hardware-type")) hub}}'
-      policyName: "group-policy"
-    - fileName: PerformanceProfile.yaml
-      policyName: "group-policy"
-      metadata:
-        annotations:
-          kubeletconfig.experimental: |
-            {"topologyManagerScope": "pod",
-             "systemReserved": {"memory": "3Gi"}
-            }
-      spec:
-        cpu:
-          isolated: '{{hub fromConfigMap "" "group-hardware-types-configmap-test" (printf "%s-cpu-isolated" (index .ManagedClusterLabels "hardware-type")) hub}}'
-          reserved: '{{hub fromConfigMap "" "group-hardware-types-configmap-test" (printf "%s-cpu-reserved" (index .ManagedClusterLabels "hardware-type")) hub}}'
-        hugepages:
-          defaultHugepagesSize: '{{hub fromConfigMap "" "group-hardware-types-configmap-test" (printf "%s-hugepages-default" (index .ManagedClusterLabels "hardware-type"))| hub}}'
-          pages:
-          - count: '{{hub fromConfigMap "" "group-hardware-types-configmap-test" (printf "%s-hugepages-count" (index .ManagedClusterLabels "hardware-type")) | toInt hub}}'
-            size: '{{hub fromConfigMap "" "group-hardware-types-configmap-test" (printf "%s-hugepages-size" (index .ManagedClusterLabels "hardware-type")) hub}}'
-        numa:
-          topologyPolicy: single-numa-node
-        realTimeKernel:
-          enabled: false
-        globallyDisableIrqLoadBalancing: false
-        # WorkloadHints defines the set of upper level flags for different type of workloads.
-        # The configuration below is set for a low latency, performance mode.
-        workloadHints:
-          realTime: true
-          highPowerConsumption: false
-          perPodPowerManagement: false
-    - fileName: TunedPerformancePatch.yaml
-      policyName: "group-policy"
-      spec:
-        profile:
-          - name: performance-patch
-            data: |
-              [main]
-              summary=Configuration changes profile inherited from performance created tuned
-              include=openshift-node-performance-openshift-node-performance-profile
-              [sysctl]
-              # When using the standard (non-realtime) kernel, remove the kernel.timer_migration override from the [sysctl] section
-              # kernel.timer_migration=0
-              [scheduler]
-              group.ice-ptp=0:f:10:*:ice-ptp.*
-              group.ice-gnss=0:f:10:*:ice-gnss.*
-              [service]
-              service.stalld=start,enable
-              service.chronyd=stop,disable
+  severity: low
+  # standards: []
+  namespaceSelector:
+    exclude:
+      - kube-*
+    include:
+      - '*'
+  evaluationInterval:
+    compliant: 10m
+    noncompliant: 10s
+policies:
+- name: du-sno-test-group-policy
+  policyAnnotations:
+    ran.openshift.io/ztp-deploy-wave: "10"
+  manifests:
+    - path: source-crs/reference-crs/DisableOLMPprof.yaml
+    - path: source-crs/reference-crs/DisableSnoNetworkDiag.yaml
+    - path: source-crs/reference-crs/ConsoleOperatorDisable.yaml
+    - path: source-crs/reference-crs/SriovOperatorConfig.yaml
+      patches:
+      - spec:
+          disableDrain: true
+          enableOperatorWebhook: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-supported-sriov-nic" (index .ManagedClusterLabels "hardware-type")) | toBool hub}}'
+    - path: source-crs/reference-crs/StorageLVMCluster.yaml
+      patches:
+      - spec:
+          storage:
+            deviceClasses:
+              - name: vg1
+                thinPoolConfig:
+                  name: thin-pool-1
+                  sizePercent: 90
+                  overprovisionRatio: 10
+                deviceSelector:
+                  paths:
+                  - '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-storage-path" (index .ManagedClusterLabels "hardware-type")) hub}}'
+    - path: source-crs/reference-crs/PerformanceProfile-SetSelector.yaml
+      patches:
+      - spec:
+          cpu:
+            isolated: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-cpu-isolated" (index .ManagedClusterLabels "hardware-type")) hub}}'
+            reserved: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-cpu-reserved" (index .ManagedClusterLabels "hardware-type")) hub}}'
+          hugepages:
+            defaultHugepagesSize: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-hugepages-default" (index .ManagedClusterLabels "hardware-type"))| hub}}'
+            pages:
+            - count: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-hugepages-count" (index .ManagedClusterLabels "hardware-type")) | toInt hub}}'
+              size: '{{hub fromConfigMap "" "group-hardware-types-configmap" (printf "%s-hugepages-size" (index .ManagedClusterLabels "hardware-type")) hub}}'
+          numa:
+            topologyPolicy: single-numa-node
+          realTimeKernel:
+            enabled: false
+          globallyDisableIrqLoadBalancing: false
+          # WorkloadHints defines the set of upper level flags for different type of workloads.
+          # The configuration below is set for a low latency, performance mode.
+          workloadHints:
+            realTime: true
+            highPowerConsumption: false
+            perPodPowerManagement: false
+          machineConfigPoolSelector:
+            pools.operator.machineconfiguration.openshift.io/master: ""
+          nodeSelector:
+            node-role.kubernetes.io/master: ''
+    - path: source-crs/reference-crs/TunedPerformancePatch.yaml
+      patches:
+      - spec:
+          profile:
+            - name: performance-patch
+              data: |
+                [main]
+                summary=Configuration changes profile inherited from performance created tuned
+                include=openshift-node-performance-openshift-node-performance-profile
+                [sysctl]
+                # When using the standard (non-realtime) kernel, remove the kernel.timer_migration override from the [sysctl] section
+                # kernel.timer_migration=0
+                [scheduler]
+                group.ice-ptp=0:f:10:*:ice-ptp.*
+                group.ice-gnss=0:f:10:*:ice-gnss.*
+                [service]
+                service.stalld=start,enable
+                service.chronyd=stop,disable
 EOF
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/group-hardware-types-configmap-test.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/{openshift-next-release}/group-hardware-types-configmap-test.yaml
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -564,26 +679,57 @@ data:
   hw-type-platform-2-supported-sriov-nic: "true"
   hw-type-platform-2-storage-path: "/dev/nvme0n1"
 EOF
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/group-du-sno-validator.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/{openshift-next-release}/group-du-sno-validator.yaml
 ---
-apiVersion: ran.openshift.io/v1
-kind: PolicyGenTemplate
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
 metadata:
-  name: "du-sno-validator-test"
-  namespace: "ztp-policies"
-spec:
-  bindingRules:
-    group-du-sno: ""
-    logicalGroup: "testing"
-  bindingExcludedRules:
-    ztp-done: ""
-  mcp: "master"
-  sourceFiles:
-    - fileName: validatorCRs/informDuValidator.yaml
-      remediationAction: inform
-      policyName: "validation"
+  name: du-sno-validator-test
+placementBindingDefaults:
+  name: group-du-sno-placement-binding
+policyDefaults:
+  namespace: ztp-group
+  placement:
+    labelSelector:
+      matchExpressions:
+      - key: group-du-sno
+        operator: Exists
+      - key: logicalGroup
+        operator: In
+        values: ["testing"]
+      - key: ztp-done
+        operator: DoesNotExist
+  remediationAction: inform
+  severity: low
+  namespaceSelector:
+    exclude:
+      - kube-*
+    include:
+      - '*'
+  evaluationInterval:
+   # This low setting is only valid if the validation policy is disconnected from the cluster at steady-state
+   # using a bindingExcludeRules entry with ztp-done
+    compliant: 5s
+    noncompliant: 10s
+policies:
+- name: group-du-sno-validator-test
+  policyAnnotations:
+    ran.openshift.io/soak-seconds: "30"
+    ran.openshift.io/ztp-deploy-wave: "10000"
+  manifests:
+    - path: source-crs/validatorCRs/informDuValidatorMaster.yaml
 EOF
 -----
+
+TBD -> Remember to extract the source-crs to the testing environment. While this is a 4.18 source-crs it should be 4.19
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
+podman run --log-driver=none --rm --tls-verify=false {ztp-sitegenerate-disconnected-image} extract /home/ztp/source-crs --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/{openshift-next-release}/source-crs/reference-crs/
+-----
+
 
 At this point, policies are the same as in production (active). In the future, you prior want to apply these groups of testing policies for the clusters running in your test environment before promoting changes to production (active).
 
@@ -608,6 +754,22 @@ metadata:
 EOF
 -----
 +
+2. A managedclusterbinding is required
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/managedclusterbinding.yaml
+---
+apiVersion: cluster.open-cluster-management.io/v1beta2
+kind: ManagedClusterSetBinding
+metadata:
+  name: global
+  namespace: ztp-policies
+spec:
+  clusterSet: global
+EOF
+-----
 2. Create the required Kustomization files
 +
 WARNING: You can see that we commented the `group-du-sno-validator.yaml` files in our Kustomization files. Since this is a lab environment and we don't have PTP/SR-IOV hardware, the validator policies won't be able to verify our SNOs as a well-configured DU. We kept the files here so you know how a real environment should be configured.
@@ -622,25 +784,26 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   - fleet/
-  - sites/
+  #- sites/
   - policies-namespace.yaml
+  - managedclusterbinding.yaml
 EOF
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/sites/kustomization.yaml
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-bases:
-  - hub-1/
-EOF
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/sites/hub-1/kustomization.yaml
----
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-generators:
-  - sites-specific.yaml
-resources:
-  - site-data-hw-1-configmap.yaml
-EOF
+#cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/sites/kustomization.yaml
+#---
+#apiVersion: kustomize.config.k8s.io/v1beta1
+#kind: Kustomization
+#bases:
+#  - hub-1/
+#EOF
+#cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/sites/hub-1/kustomization.yaml
+#---
+#apiVersion: kustomize.config.k8s.io/v1beta1
+#kind: Kustomization
+#generators:
+#  - sites-specific.yaml
+#resources:
+#  - site-data-hw-1-configmap.yaml
+#EOF
 cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -653,19 +816,36 @@ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustom
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-generators:
-  - {policygen-common-file}
-  - group-du-sno.yaml
-#  - group-du-sno-validator.yaml
 resources:
-  - group-hardware-types-configmap.yaml
+  - {openshift-release}/
+  #- v4.17/
 EOF
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/kustomization.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 generators:
   - {policygen-common-file}
+  - group-du-sno.yaml
+  - sites-specific.yaml
+#  - group-du-sno-validator.yaml
+resources:
+  - group-hardware-types-configmap.yaml
+  - site-data-hw-1-configmap.yaml
+EOF
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/kustomization.yaml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - {openshift-next-release}/
+EOF
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/{openshift-next-release}/kustomization.yaml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+generators:
+  - common-{openshift-next-release}
   - group-du-sno.yaml
 #  - group-du-sno-validator.yaml
 resources:
