@@ -39,8 +39,12 @@ disconnected_operators:
 - name: redhat-oadp-operator
   channels:
   - name: stable-1.4
+- name: ptp-operator
+  channels:
+  - name: stable
 disconnected_extra_images:
 - registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.18.0-39
+- registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.13
 - quay.io/rhsysdeseng/lab5gran:v4.18.4
 disconnected_extra_release: 4.18.3
 disk_size: 120
