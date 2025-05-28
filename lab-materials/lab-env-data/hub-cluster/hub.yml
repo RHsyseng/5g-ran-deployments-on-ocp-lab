@@ -81,11 +81,18 @@ vmrules:
     nets:
     - name: 5gdeploymentlab
       mac: aa:aa:aa:aa:01:01
+    - name: ptp-network
+      sriov: true
+      # srio: true creates an igb devices which supports hw timestamp
 - hub-ctlplane-1:
     nets:
     - name: 5gdeploymentlab
       mac: aa:aa:aa:aa:01:02
+    - name: ptp-network
+      sriov: true
 - hub-ctlplane-2:
     nets:
     - name: 5gdeploymentlab
       mac: aa:aa:aa:aa:01:03
+    - name: ptp-network
+      sriov: true

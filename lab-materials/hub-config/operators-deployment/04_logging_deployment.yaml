@@ -9,7 +9,6 @@ metadata:
     openshift.io/cluster-monitoring: "true"
   name: openshift-logging
 ---
----
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
@@ -32,6 +31,7 @@ spec:
   channel: "stable-6.2"
   name: cluster-logging
   source: cs-redhat-operator-index-v4-18-174293
+  sourceNamespace: openshift-marketplace
 ---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
@@ -44,3 +44,4 @@ spec:
   channel: "stable-6.2"
   name: loki-operator
   source: cs-redhat-operator-index-v4-18-174293
+  sourceNamespace: openshift-marketplace
