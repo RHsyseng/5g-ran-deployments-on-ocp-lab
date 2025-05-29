@@ -9,7 +9,7 @@ spec:
   profile:
   - name: "grandmaster"
     # The interface name is hardware-specific
-    interface: ens3
+    interface: enp2s0
     ptp4lOpts: "-2"
     phc2sysOpts: "-a -r -r -n 24"
     ptpSchedulingPolicy: SCHED_FIFO
@@ -123,4 +123,4 @@ spec:
   - profile: "grandmaster"
     priority: 4
     match:
-    - nodeLabel: "node-role.kubernetes.io/master"
+    - nodeName: "hub-ctlplane-0.5g-deployment.lab"
