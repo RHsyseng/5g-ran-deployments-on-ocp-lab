@@ -10,7 +10,7 @@ spec:
   - name: "grandmaster"
     # The interface name is hardware-specific
     interface: enp2s0
-    ptp4lOpts: "-2"
+    ptp4lOpts: "-2 -A --clientOnly=1 --step_threshold=0.1"
     phc2sysOpts: "-a -r -r -n 24"
     ptpSchedulingPolicy: SCHED_FIFO
     ptpSchedulingPriority: 10

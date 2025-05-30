@@ -203,6 +203,7 @@ chmod +x /usr/local/bin/mc
 mc alias set minio http://192.168.125.1:9002 admin admin1234
 mc mb minio/sno-abi
 mc mb minio/sno-ibi
+mc mb minio/logs
 -----
 
 [#install-ksushytool]
@@ -559,18 +560,26 @@ curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/02_lca_deployment.yaml -o /tmp/02_lca_deployment.yaml
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/02_sriov_deployment.yaml -o /tmp/02_sriov_deployment.yaml
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/02_lvms_deployment.yaml -o /tmp/02_lvms_deployment.yaml
+curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/02_ptp_deployment.yaml -o /tmp/02_ptp_deployment.yaml
+curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/02_logging_deployment.yaml -o /tmp/02_logging_deployment.yaml
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/03_sriovoperatorconfig.yaml -o /tmp/03_sriovoperatorconfig.yaml
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/03_sriov-nw-du-netdev.yaml -o /tmp/03_sriov-nw-du-netdev.yaml
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/03_sriov-nw-du-vfio.yaml -o /tmp/03_sriov-nw-du-vfio.yaml
+curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/03_ptpoperatorconfig.yaml -o /tmp/03_ptpoperatorconfig.yaml
+curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/03_logging_config.yaml -o /tmp/03_logging_config.yaml
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/04_performance_profile.yaml -o /tmp/04_performance_profile.yaml
 curl -sL https://raw.githubusercontent.com/{repo_user}/5g-ran-deployments-on-ocp-lab/{branch}/lab-materials/sno-config/05_TunedPerformancePatch.yaml -o /tmp/05_TunedPerformancePatch.
-oc apply -f /tmp/02_oadp_deployment.yaml -f /tmp/02_lca_deployment.yaml -f /tmp/02_lvms_deployment.yaml -f /tmp/02_sriov_deployment.yaml
+oc apply -f /tmp/02_oadp_deployment.yaml -f /tmp/02_lca_deployment.yaml -f /tmp/02_lvms_deployment.yaml -f /tmp/02_sriov_deployment.yaml -f /tmp/02_ptp_deployment.yaml -f /tmp/02_logging_deployment.yaml
 sleep 30
 oc -n openshift-adp wait clusterserviceversion -l operators.coreos.com/redhat-oadp-operator.openshift-adp --for=jsonpath='{.status.phase}'=Succeeded --timeout=900s
 oc -n openshift-lifecycle-agent wait clusterserviceversion -l operators.coreos.com/lifecycle-agent.openshift-lifecycle-agent --for=jsonpath='{.status.phase}'=Succeeded --timeout=900s
 oc -n openshift-storage wait clusterserviceversion -l operators.coreos.com/lvms-operator.openshift-storage --for=jsonpath='{.status.phase}'=Succeeded --timeout=900s
 oc -n openshift-sriov-network-operator wait clusterserviceversion -l operators.coreos.com/sriov-network-operator.openshift-sriov-network-operator --for=jsonpath='{.status.phase}'=Succeeded --timeout=900s
 oc apply -f /tmp/03_sriovoperatorconfig.yaml -f /tmp/03_sriov-nw-du-netdev.yaml -f /tmp/03_sriov-nw-du-vfio.yaml
+oc -n openshift-ptp wait clusterserviceversion -l operators.coreos.com/ptp-operator.openshift-ptp --for=jsonpath='{.status.phase}'=Succeeded --timeout=900s
+oc apply -f /tmp/03_ptpoperatorconfig.yaml
+oc -n openshift-operators wait clusterserviceversion -l operators.coreos.com/cluster-logging.openshift-operators --for=jsonpath='{.status.phase}'=Succeeded --timeout=900s
+oc apply -f /tmp/03_logging_config.yaml
 sleep 30
 oc wait node openshift-master-0 --for=jsonpath='{.status.allocatable.openshift\.io/virt-enp4s0}'=2 --timeout=900s
 oc wait node openshift-master-0 --for=jsonpath='{.status.allocatable.openshift\.io/virt-enp5s0}'=2 --timeout=900s
