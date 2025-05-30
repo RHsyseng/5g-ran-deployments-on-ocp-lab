@@ -1,0 +1,74 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: logging-loki-s3
+  namespace: openshift-logging
+stringData:
+  access_key_id: admin
+  access_key_secret: admin1234
+  bucketnames: logs
+  endpoint: http://infra.5g-deployment.lab:9002
+  region: eu-east-1
+---
+apiVersion: loki.grafana.com/v1
+kind: LokiStack
+metadata:
+  name: logging-loki
+  namespace: openshift-logging
+spec:
+  limits:
+    global: 
+      retention: 
+        days: 1
+        streams:
+        - days: 1
+          priority: 1
+          selector: '{kubernetes_namespace_name=~"test.+"}' 
+        - days: 1
+          priority: 1
+          selector: '{log_type="infrastructure"}'
+  managementState: Managed
+  replicationFactor: 1
+  # https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/logging/logging-6-2#log6x-loki-sizing_log6x-loki-6.2
+  size: 1x.demo
+  storage:
+    schemas:
+    - effectiveDate: "2024-10-01"
+      version: v13
+    secret:
+      name: logging-loki-s3
+      type: s3
+  storageClassName: lvms-vg1
+  tenants:
+    mode: openshift-logging
+  rules:
+    enabled: true
+    selector:
+      matchLabels:
+        openshift.io/cluster-monitoring: "true"
+    namespaceSelector:
+      matchLabels:
+        openshift.io/cluster-monitoring: "true"
+---
+# This route allows sending logs without auth
+# don't use this in production.
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  labels:
+    app.kubernetes.io/component: lokistack-gateway
+    app.kubernetes.io/created-by: lokistack-controller
+    app.kubernetes.io/instance: logging-loki
+    app.kubernetes.io/managed-by: lokistack-controller
+    app.kubernetes.io/name: lokistack
+  name: loki-demo-insecure
+  namespace: openshift-logging
+spec:
+  host: loki-demo-insecure-logstore.apps.hub.5g-deployment.lab
+  port:
+    targetPort: public
+  to:
+    kind: ""
+    name: logging-loki-gateway-http
+    weight: 100

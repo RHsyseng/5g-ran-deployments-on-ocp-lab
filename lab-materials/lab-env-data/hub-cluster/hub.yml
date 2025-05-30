@@ -48,6 +48,9 @@ disconnected_operators:
 - name: loki-operator
   channels:
   - name: stable-6.2
+- name: cluster-observability-operator
+  channels:
+  - name: stable
 disconnected_extra_images:
 - registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.18.0-39
 - registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.13
@@ -83,16 +86,17 @@ vmrules:
     - name: 5gdeploymentlab
       mac: aa:aa:aa:aa:01:01
     - name: ptp-network
-      ptp: true
+      # sriov: true creates virtual igb ifaces with ptp support
+      sriov: true
 - hub-ctlplane-1:
     nets:
     - name: 5gdeploymentlab
       mac: aa:aa:aa:aa:01:02
     - name: ptp-network
-      ptp: true
+      sriov: true
 - hub-ctlplane-2:
     nets:
     - name: 5gdeploymentlab
       mac: aa:aa:aa:aa:01:03
     - name: ptp-network
-      ptp: true
+      sriov: true
