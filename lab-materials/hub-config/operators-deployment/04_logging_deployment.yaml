@@ -26,7 +26,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
   name: cluster-logging
-  namespace: openshift-operators
+  namespace: openshift-logging
 spec:
   channel: "stable-6.2"
   name: cluster-logging
@@ -39,7 +39,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
   name: loki-operator
-  namespace: openshift-operators
+  namespace: openshift-logging
 spec:
   channel: "stable-6.2"
   name: loki-operator

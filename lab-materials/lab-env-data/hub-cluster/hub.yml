@@ -45,9 +45,11 @@ disconnected_operators:
 - name: cluster-logging
   channels:
   - name: stable-6.2
+  - name: stable-6.1
 - name: loki-operator
   channels:
   - name: stable-6.2
+  - name: stable-6.1
 - name: cluster-observability-operator
   channels:
   - name: stable
