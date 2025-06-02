@@ -69,6 +69,6 @@ spec:
   port:
     targetPort: public
   to:
-    kind: ""
+    kind: "Service"
     name: logging-loki-gateway-http
     weight: 100
