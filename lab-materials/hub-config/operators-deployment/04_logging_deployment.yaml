@@ -39,7 +39,7 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "0"
   name: loki-operator
-  namespace: openshift-logging
+  namespace: openshift-operators
 spec:
   channel: "stable-6.2"
   name: loki-operator
