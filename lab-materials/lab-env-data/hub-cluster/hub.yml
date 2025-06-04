@@ -45,14 +45,9 @@ disconnected_operators:
 - name: cluster-logging
   channels:
   - name: stable-6.2
-  - name: stable-6.1
 - name: loki-operator
   channels:
   - name: stable-6.2
-  - name: stable-6.1
-- name: cluster-observability-operator
-  channels:
-  - name: stable
 disconnected_extra_images:
 - registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.18.0-39
 - registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.13
