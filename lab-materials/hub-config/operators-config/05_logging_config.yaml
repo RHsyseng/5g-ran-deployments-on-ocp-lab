@@ -4,12 +4,56 @@ kind: Secret
 metadata:
   name: logging-loki-s3
   namespace: openshift-logging
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 stringData:
   access_key_id: admin
   access_key_secret: admin1234
   bucketnames: logs
   endpoint: http://infra.5g-deployment.lab:9002
   region: eu-east-1
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tenant-snos
+  namespace: openshift-logging
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+data:
+  service-ca.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIFmTCCA4GgAwIBAgIURFAyAtr+HQT+fve5+RcuN4D7lKswDQYJKoZIhvcNAQEL
+    BQAwWzELMAkGA1UEBhMCRVMxGjAYBgNVBAoMEWxvZ2dpbmctb2NtLWFkZG9uMRow
+    GAYDVQQLDBFsb2dnaW5nLW9jbS1hZGRvbjEUMBIGA1UEAwwLdGVuYW50LXNub3Mw
+    IBcNMjUwNjA0MDkzNTI0WhgPMjA1MjEwMTkwOTM1MjRaMFsxCzAJBgNVBAYTAkVT
+    MRowGAYDVQQKDBFsb2dnaW5nLW9jbS1hZGRvbjEaMBgGA1UECwwRbG9nZ2luZy1v
+    Y20tYWRkb24xFDASBgNVBAMMC3RlbmFudC1zbm9zMIICIjANBgkqhkiG9w0BAQEF
+    AAOCAg8AMIICCgKCAgEAwdt9fSrm6F+fVXDHCJQ2JTRYu1RkHtyhm0owVyBH72H0
+    Cv7xiNVnUaZWrg3eXgyupGPITJX72P4euSBTkIg8dXIOpoJbIH9/p/mmpoprf2xn
+    wxRQ/3Qxf+km/fj9WwOzY1icOC6V3HQJ0hSrX0TlDTsFuTNCfxMJGRevNYBcMHfr
+    TjLHmDkMW+9vVor9x9LdxctXW9sWU1O838JOhR1iGmfj0xq7TeYqAGwaH1ah3vsJ
+    qOwRiXu5uEkq7rE2DdpdwiDGSZT0VTl2BR4Wrt+eIqq7Xo7At24CfU8ksqYCOWrE
+    0+CcGAkeHjj0AHqGG+9UnK78gN609c8Kd3bka8NnivSMk/DuY85AHCePsbNZWOSA
+    vpHBgaEkgCF0ab86v4jL5uh2mVuPviaqDMnWQspdRPMCQXPL7xl6XQ4mJsfWXZyX
+    Ws9K2QmeQ53qnIzOrnbWgbspMoPQlXnKpkp2w27roTapB+EUUv4G50IvHeMmC/T+
+    8onjtE9NMhmmeU/5cS/AUmTvVdi5514pNs2yvRvrfJ3B6SfQu+0DewJ7vhOqRS04
+    99BVd5jR9Wnk+SHFEN6jSbqkio6dcHpY7Q8MzMEMVnLGQ47MkVi5dzTCqk3jEmjN
+    XQGSz50+0Kk7xDsXoskG4ZcbPlikF5f0KL7ttyPe7oRH53DSuKBySS8zPoi7ockC
+    AwEAAaNTMFEwHQYDVR0OBBYEFBF/IhsPZ3wJGkMc67g+gVPvtaKeMB8GA1UdIwQY
+    MBaAFBF/IhsPZ3wJGkMc67g+gVPvtaKeMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZI
+    hvcNAQELBQADggIBALaoFV44m4fxI1DLFr3fAq8o0rpQ79WVEP+U60e3AWLuGPP/
+    Jy9DJQBw6nHKjh1WSK+Xo9+atr/jB2tNOadA8nTBe6uvOvFsgL55Gxabek1coVRv
+    myU0fkOzqqdUdIz3k2JsdcN66Ia6XviwEPncur4xg6rauGuT6+94D+OYvWmls50h
+    PNfp8MjPhPBj/u21PEulGWiunxixwHO0IMbsxtEqNcizYfGdFrcOHlc7GMR13Laj
+    j1Vjhi1fRTJYC2HufQTRBU59q5UMCJv9h4DL7PXxdU/pU6QcSqCjhdW23h5v3jFf
+    D2ZstQ/cXUdYuYwAL4IrUapzFj5O1uRS0u8Wi4rxVbV6IGkBmxoRjYZ/BDB58z0L
+    DIYF8NDS/3nLcK1W3U5WWyELwMLeTnA8tbihURDpn37hCGrdST/lZRNkts0sKGTU
+    UBKh3363kdcTs6n9WvxO2c0mdcrH0oD/JspJJ3Z0xfKiYLGKH4Y8YwaXO+Lc1d7A
+    T7R7Vq5p+7mYVBUqVzuZGCovedrB5Pg4eUBuTKgq58qmNUD3r1KHNxxhUNxOXdw0
+    zb9EcGGBChoihLC8I6AO181ftCsRm62uwxdJB0HAkW7otgHNvaeLxPni12hKgZPn
+    T68qyOGPeUPHw5DYCzR8NYNofkS89L0a9o/ikaTjs3bqs+50zBqXbQGSCVjq
+    -----END CERTIFICATE-----
 ---
 apiVersion: loki.grafana.com/v1
 kind: LokiStack
@@ -18,16 +62,9 @@ metadata:
   namespace: openshift-logging
 spec:
   limits:
-    global: 
-      retention: 
-        days: 1
-        streams:
-        - days: 1
-          priority: 1
-          selector: '{kubernetes_namespace_name=~"test.+"}' 
-        - days: 1
-          priority: 1
-          selector: '{log_type="infrastructure"}'
+    global:
+      ingestion:
+        ingestionRate: 15
   managementState: Managed
   replicationFactor: 1
   # https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/logging/logging-6-2#log6x-loki-sizing_log6x-loki-6.2
@@ -41,7 +78,42 @@ spec:
       type: s3
   storageClassName: lvms-vg1
   tenants:
-    mode: openshift-logging
+    authentication:
+    - mTLS:
+        ca:
+          caName: tenant-snos
+      tenantId: tenant-snos
+      tenantName: tenant-snos
+    authorization:
+      roleBindings:
+      - name: write-logs
+        roles:
+        - write-logs
+        subjects:
+        - kind: group
+          name: logging-ocm-addon
+      - name: read-logs
+        roles:
+        - read-logs
+        subjects:
+        - kind: group
+          name: logging-ocm-addon
+      roles:
+      - name: read-logs
+        permissions:
+        - read
+        resources:
+        - logs
+        tenants:
+        - tenant-snos
+      - name: write-logs
+        permissions:
+        - write
+        resources:
+        - logs
+        tenants:
+        - tenant-snos
+    mode: static
   rules:
     enabled: true
     selector:
@@ -50,25 +122,3 @@ spec:
     namespaceSelector:
       matchLabels:
         openshift.io/cluster-monitoring: "true"
----
-# This route allows sending logs without auth
-# don't use this in production.
-apiVersion: route.openshift.io/v1
-kind: Route
-metadata:
-  labels:
-    app.kubernetes.io/component: lokistack-gateway
-    app.kubernetes.io/created-by: lokistack-controller
-    app.kubernetes.io/instance: logging-loki
-    app.kubernetes.io/managed-by: lokistack-controller
-    app.kubernetes.io/name: lokistack
-  name: loki-demo-insecure
-  namespace: openshift-logging
-spec:
-  host: loki-demo-insecure-logstore.apps.hub.5g-deployment.lab
-  port:
-    targetPort: public
-  to:
-    kind: "Service"
-    name: logging-loki-gateway-http
-    weight: 100
