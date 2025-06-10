@@ -4,41 +4,41 @@ kind: ServiceAccount
 metadata:
   name: collector
   namespace: openshift-logging
+#---
+#apiVersion: rbac.authorization.k8s.io/v1
+#kind: ClusterRoleBinding
+#metadata:
+#  name: logging-collector-logs-writer
+#roleRef:
+#  apiGroup: rbac.authorization.k8s.io
+#  kind: ClusterRole
+#  name: logging-collector-logs-writer
+#subjects:
+#- kind: ServiceAccount
+#  name: collector
+#  namespace: openshift-logging
+#---
+#apiVersion: rbac.authorization.k8s.io/v1
+#kind: ClusterRoleBinding
+#metadata:
+#  name: collect-application-logs
+#roleRef:
+#  apiGroup: rbac.authorization.k8s.io
+#  kind: ClusterRole
+#  name: collect-application-logs
+#subjects:
+#- kind: ServiceAccount
+#  name: collector
+#  namespace: openshift-logging
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: logging-collector-logs-writer
+  name: logcollector-audit-logs-binding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: logging-collector-logs-writer
-subjects:
-- kind: ServiceAccount
-  name: collector
-  namespace: openshift-logging
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: collect-application-logs
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: collect-application-logs
-subjects:
-- kind: ServiceAccount
-  name: collector
-  namespace: openshift-logging
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
   name: collect-audit-logs
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: collect-audit-logs
 subjects:
 - kind: ServiceAccount
   name: collector
@@ -47,7 +47,7 @@ subjects:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: collect-infrastructure-logs
+  name: logcollector-infrastructure-logs-binding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -56,45 +56,45 @@ subjects:
 - kind: ServiceAccount
   name: collector
   namespace: openshift-logging
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: cluster-logging-write-application-logs
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-logging-write-application-logs
-subjects:
-- kind: ServiceAccount
-  name: collector
-  namespace: openshift-logging
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: cluster-logging-write-infrastructure-logs
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-logging-write-infrastructure-logs
-subjects:
-- kind: ServiceAccount
-  name: collector
-  namespace: openshift-logging
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: cluster-logging-write-audit-logs
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: cluster-logging-write-audit-logs
-subjects:
-- kind: ServiceAccount
-  name: collector
-  namespace: openshift-logging
+#---
+#apiVersion: rbac.authorization.k8s.io/v1
+#kind: ClusterRoleBinding
+#metadata:
+#  name: cluster-logging-write-application-logs
+#roleRef:
+#  apiGroup: rbac.authorization.k8s.io
+#  kind: ClusterRole
+#  name: cluster-logging-write-application-logs
+#subjects:
+#- kind: ServiceAccount
+#  name: collector
+#  namespace: openshift-logging
+#---
+#apiVersion: rbac.authorization.k8s.io/v1
+#kind: ClusterRoleBinding
+#metadata:
+#  name: cluster-logging-write-infrastructure-logs
+#roleRef:
+#  apiGroup: rbac.authorization.k8s.io
+#  kind: ClusterRole
+#  name: cluster-logging-write-infrastructure-logs
+#subjects:
+#- kind: ServiceAccount
+#  name: collector
+#  namespace: openshift-logging
+#---
+#apiVersion: rbac.authorization.k8s.io/v1
+#kind: ClusterRoleBinding
+#metadata:
+#  name: cluster-logging-write-audit-logs
+#roleRef:
+#  apiGroup: rbac.authorization.k8s.io
+#  kind: ClusterRole
+#  name: cluster-logging-write-audit-logs
+#subjects:
+#- kind: ServiceAccount
+#  name: collector
+#  namespace: openshift-logging
 ---
 apiVersion: v1
 kind: Secret
@@ -112,34 +112,41 @@ metadata:
   name: instance
   namespace: openshift-logging
 spec:
+  filters:
+  - name: ran-du-labels
+    type: openshiftLabels
+    openshiftLabels:
+      cluster-type: "du-sno"
   serviceAccount:
     name: collector
   outputs:
-   - name: loki-hub
-     type: "loki"
-     loki:
-       url: https://logging-loki-openshift-logging.apps.hub.5g-deployment.lab/api/logs/v1/tenant-snos
-       labelKeys:
-       - log_type
-       - kubernetes.namespace_name
-       - kubernetes.pod_name
-       - openshift.cluster_id
-     tls:
-       insecureSkipVerify: true
-       ca:
-         key: ca-bundle.crt
-         secretName: mtls-tenant-snos
-       certificate:
-         key: tls.crt
-         secretName: mtls-tenant-snos
-       key:
-         key: tls.key
-         secretName: mtls-tenant-snos
+  - name: loki-hub
+    type: "loki"
+    loki:
+      url: https://logging-loki-openshift-logging.apps.hub.5g-deployment.lab/api/logs/v1/tenant-snos
+      labelKeys:
+      - log_type
+      - kubernetes.namespace_name
+      - kubernetes.pod_name
+      - openshift.cluster_id
+    tls:
+      insecureSkipVerify: true
+      ca:
+        key: ca-bundle.crt
+        secretName: mtls-tenant-snos
+      certificate:
+        key: tls.crt
+        secretName: mtls-tenant-snos
+      key:
+        key: tls.key
+        secretName: mtls-tenant-snos
   pipelines:
-   - name: sno-logs
-     inputRefs:
-     - application
-     - infrastructure
-     - audit
-     outputRefs:
-     - loki-hub
+  - name: sno-logs
+    inputRefs:
+#    - application
+    - infrastructure
+    - audit
+    outputRefs:
+    - loki-hub
+    filterRefs:
+    - ran-du-labels
