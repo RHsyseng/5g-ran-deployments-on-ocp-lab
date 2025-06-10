@@ -3,12 +3,12 @@
 apiVersion: ptp.openshift.io/v1
 kind: PtpConfig
 metadata:
-  name: ordinaryclock
+  name: du-ptp-slave
   namespace: openshift-ptp
 spec:
   profile:
   - interface: enp4s0
-    name: ordinaryclock
+    name: slave
     ptp4lOpts: "-2 -s -A --clientOnly=1 --step_threshold=0.1"
     # ptp4lOpts  -A --clientOnly=1 --step_threshold=0.1 are required for this
     # lab environment running on virtual hardware
