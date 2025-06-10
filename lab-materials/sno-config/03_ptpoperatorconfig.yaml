@@ -125,4 +125,4 @@ spec:
   - match:
     - nodeLabel: node-role.kubernetes.io/master
     priority: 4
-    profile: ordinaryclock
+    profile: slave
