@@ -1,0 +1,256 @@
+= KubeCompare Results
+include::_attributes.adoc[]
+:profile: 5g-ran-lab
+
+Below you can find the kubecompare results for a SNO configured during this lab.
+
+The following deviations are expected:
+
+- PTP: We are in a virtual environment, hardware time stamping is not possible. We had to configure the policy to use software time stamping instead. There is a warning in the lab advising this is not supported.
+- Subscriptions: We use the channels for 4.18 release and an install strategy automated rather than manual.
+- SriovNetworkNodePolicy: We add three extra parameters for the NICs.
+- Missing CRs:
+  - StorageLV.yaml: Expected since we use LVMs Operator.
+  - StoragePV.yaml: Expected since we use LVMs Operator.
+  - DisconnectedICSP.yaml: Expected since we use ImageDigestMirrorSet.
+
+[console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+Cluster CR: ptp.openshift.io/v1_PtpConfig_openshift-ptp_du-ptp-slave
+Reference File: optional/ptp-config/PtpConfigSlave.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-ptp-operator_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-2723761606/ptp-openshift-io-v1_ptpconfig_openshift-ptp_du-ptp-slave /tmp/LIVE-215132605/ptp-openshift-io-v1_ptpconfig_openshift-ptp_du-ptp-slave
+--- /tmp/MERGED-2723761606/ptp-openshift-io-v1_ptpconfig_openshift-ptp_du-ptp-slave     2025-06-11 09:41:27.964294094 +0000
++++ /tmp/LIVE-215132605/ptp-openshift-io-v1_ptpconfig_openshift-ptp_du-ptp-slave        2025-06-11 09:41:27.964294094 +0000
+@@ -7,7 +7,7 @@
+   profile:
+   - interface: enp4s0
+     name: slave
+-    phc2sysOpts: -a -r -n 24
++    phc2sysOpts: -r -n 24 -s /dev/ptp0
+     ptp4lConf: |
+       [global]
+       #
+@@ -62,7 +62,8 @@
+       summary_interval 0
+       kernel_leap 1
+       check_fup_sync 0
+-      clock_class_threshold 7
++      #clock_class_threshold 7 -> we use threshold 248 since GM doesn't have a GPS source
++      clock_class_threshold 248
+       #
+       # Servo Options
+       #
+@@ -95,7 +96,7 @@
+       clock_type OC
+       network_transport L2
+       delay_mechanism E2E
+-      time_stamping hardware
++      time_stamping software
+       tsproc_mode filter
+       delay_filter moving_median
+       delay_filter_length 10
+@@ -110,7 +111,7 @@
+       manufacturerIdentity 00:00:00
+       userDescription ;
+       timeSource 0xA0
+-    ptp4lOpts: -2 -s
++    ptp4lOpts: -2 -s -A --clientOnly=1 --step_threshold=0.1
+     ptpSchedulingPolicy: SCHED_FIFO
+     ptpSchedulingPriority: 10
+     ptpSettings:
+
+**********************************
+
+Cluster CR: operators.coreos.com/v1alpha1_Subscription_openshift-storage_lvms-operator
+Reference File: optional/storage/StorageLVMSubscription.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-lvms-operator_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-1076112886/operators-coreos-com-v1alpha1_subscription_openshift-storage_lvms-operator /tmp/LIVE-1440451828/operators-coreos-com-v1alpha1_subscription_openshift-storage_lvms-operator
+--- /tmp/MERGED-1076112886/operators-coreos-com-v1alpha1_subscription_openshift-storage_lvms-operator   2025-06-11 09:41:27.991294322 +0000
++++ /tmp/LIVE-1440451828/operators-coreos-com-v1alpha1_subscription_openshift-storage_lvms-operator     2025-06-11 09:41:27.991294322 +0000
+@@ -6,8 +6,8 @@
+   name: lvms-operator
+   namespace: openshift-storage
+ spec:
+-  channel: stable
+-  installPlanApproval: Manual
++  channel: stable-4.18
++  installPlanApproval: Automatic
+   name: lvms-operator
+   source: redhat-operator-index
+   sourceNamespace: openshift-marketplace
+
+**********************************
+
+Cluster CR: observability.openshift.io/v1_ClusterLogForwarder_openshift-logging_instance
+Reference File: required/cluster-logging/ClusterLogForwarder.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-logging_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-798312331/observability-openshift-io-v1_clusterlogforwarder_openshift-logging_instance /tmp/LIVE-2467593980/observability-openshift-io-v1_clusterlogforwarder_openshift-logging_instance
+--- /tmp/MERGED-798312331/observability-openshift-io-v1_clusterlogforwarder_openshift-logging_instance  2025-06-11 09:41:27.960294060 +0000
++++ /tmp/LIVE-2467593980/observability-openshift-io-v1_clusterlogforwarder_openshift-logging_instance   2025-06-11 09:41:27.961294069 +0000
+@@ -11,17 +11,33 @@
+     type: openshiftLabels
+   managementState: Managed
+   outputs:
+-  - kafka:
+-      url: null
++  - loki:
++      labelKeys:
++      - log_type
++      - kubernetes.namespace_name
++      - kubernetes.pod_name
++      - openshift.cluster_id
++      url: https://logging-loki-openshift-logging.apps.hub.5g-deployment.lab/api/logs/v1/tenant-snos
+     name: loki-hub
+-    type: kafka
++    tls:
++      ca:
++        key: ca-bundle.crt
++        secretName: mtls-tenant-snos
++      certificate:
++        key: tls.crt
++        secretName: mtls-tenant-snos
++      insecureSkipVerify: true
++      key:
++        key: tls.key
++        secretName: mtls-tenant-snos
++    type: loki
+   pipelines:
+   - filterRefs:
+     - ran-du-labels
+     inputRefs:
+-    - audit
+     - infrastructure
+-    name: all-to-default
++    - audit
++    name: sno-logs
+     outputRefs:
+     - loki-hub
+   serviceAccount:
+
+**********************************
+
+Cluster CR: operators.coreos.com/v1alpha1_Subscription_openshift-logging_cluster-logging
+Reference File: required/cluster-logging/ClusterLogSubscription.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-logging_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-3065126892/operators-coreos-com-v1alpha1_subscription_openshift-logging_cluster-logging /tmp/LIVE-3770876464/operators-coreos-com-v1alpha1_subscription_openshift-logging_cluster-logging
+--- /tmp/MERGED-3065126892/operators-coreos-com-v1alpha1_subscription_openshift-logging_cluster-logging 2025-06-11 09:41:27.986294279 +0000
++++ /tmp/LIVE-3770876464/operators-coreos-com-v1alpha1_subscription_openshift-logging_cluster-logging   2025-06-11 09:41:27.986294279 +0000
+@@ -6,8 +6,8 @@
+   name: cluster-logging
+   namespace: openshift-logging
+ spec:
+-  channel: stable-6.1
+-  installPlanApproval: Manual
++  channel: stable-6.2
++  installPlanApproval: Automatic
+   name: cluster-logging
+   source: redhat-operator-index
+   sourceNamespace: openshift-marketplace
+
+**********************************
+
+Cluster CR: operators.coreos.com/v1alpha1_Subscription_openshift-ptp_ptp-operator-subscription
+Reference File: required/ptp-operator/PtpSubscription.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-ptp-operator_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-2653432405/operators-coreos-com-v1alpha1_subscription_openshift-ptp_ptp-operator-subscription /tmp/LIVE-4159637412/operators-coreos-com-v1alpha1_subscription_openshift-ptp_ptp-operator-subscription
+--- /tmp/MERGED-2653432405/operators-coreos-com-v1alpha1_subscription_openshift-ptp_ptp-operator-subscription   2025-06-11 09:41:27.987294288 +0000
++++ /tmp/LIVE-4159637412/operators-coreos-com-v1alpha1_subscription_openshift-ptp_ptp-operator-subscription     2025-06-11 09:41:27.988294296 +0000
+@@ -7,7 +7,7 @@
+   namespace: openshift-ptp
+ spec:
+   channel: stable
+-  installPlanApproval: Manual
++  installPlanApproval: Automatic
+   name: ptp-operator
+   source: redhat-operator-index
+   sourceNamespace: openshift-marketplace
+
+**********************************
+
+Cluster CR: sriovnetwork.openshift.io/v1_SriovNetworkNodePolicy_openshift-sriov-network-operator_virt-enp4s0
+Reference File: required/sriov-operator/SriovNetworkNodePolicy.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-sr-iov-operator_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-3740604193/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp4s0 /tmp/LIVE-1783959392/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp4s0
+--- /tmp/MERGED-3740604193/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp4s0     2025-06-11 09:41:27.951293984 +0000
++++ /tmp/LIVE-1783959392/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp4s0       2025-06-11 09:41:27.951293984 +0000
+@@ -6,6 +6,9 @@
+ spec:
+   deviceType: netdevice
+   isRdma: false
++  linkType: eth
++  mtu: 1500
++  needVhostNet: false
+   nicSelector:
+     deviceID: 10c9
+     pfNames:
+
+**********************************
+
+Cluster CR: sriovnetwork.openshift.io/v1_SriovNetworkNodePolicy_openshift-sriov-network-operator_virt-enp5s0
+Reference File: required/sriov-operator/SriovNetworkNodePolicy.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-sr-iov-operator_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-304967710/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp5s0 /tmp/LIVE-224839892/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp5s0
+--- /tmp/MERGED-304967710/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp5s0      2025-06-11 09:41:27.952293993 +0000
++++ /tmp/LIVE-224839892/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp5s0        2025-06-11 09:41:27.953294001 +0000
+@@ -6,6 +6,9 @@
+ spec:
+   deviceType: vfio-pci
+   isRdma: false
++  linkType: eth
++  mtu: 1500
++  needVhostNet: false
+   nicSelector:
+     deviceID: 10c9
+     pfNames:
+
+**********************************
+
+Cluster CR: operators.coreos.com/v1alpha1_Subscription_openshift-sriov-network-operator_sriov-network-operator-subscription
+Reference File: required/sriov-operator/SriovSubscription.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-sr-iov-operator_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-3838910212/operators-coreos-com-v1alpha1_subscription_openshift-sriov-network-operator_sriov-network-operator-subscription /tmp/LIVE-2954688387/operators-coreos-com-v1alpha1_subscription_openshift-sriov-network-operator_sriov-network-operator-subscription
+--- /tmp/MERGED-3838910212/operators-coreos-com-v1alpha1_subscription_openshift-sriov-network-operator_sriov-network-operator-subscription  2025-06-11 09:41:27.989294305 +0000
++++ /tmp/LIVE-2954688387/operators-coreos-com-v1alpha1_subscription_openshift-sriov-network-operator_sriov-network-operator-subscription    2025-06-11 09:41:27.989294305 +0000
+@@ -11,7 +11,7 @@
+     env:
+     - name: DEV_TRUE
+       value: "TRUE"
+-  installPlanApproval: Manual
++  installPlanApproval: Automatic
+   name: sriov-network-operator
+   source: redhat-operator-index
+   sourceNamespace: openshift-marketplace
+
+**********************************
+
+Summary
+CRs with diffs: 8/52
+CRs in reference missing from the cluster: 3
+optional-storage:
+  storage:
+    Missing CRs:
+    - optional/local-storage-operator/StorageLV.yaml
+optional-storage-lvm:
+  storage-operator:
+    Missing CRs:
+    - optional/storage/StoragePV.yaml
+required-cluster-tuning:
+  cluster-tuning:
+    Missing CRs:
+    - required/cluster-tuning/operator-hub/DisconnectedICSP.yaml
+      Description:
+        https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-cluster-tuning_ran-ref-design-components
+No CRs are unmatched to reference CRs
+Metadata Hash: cb16ce6e26891f9b18f9f6d86d110fdc4d3e6cb0d20c18452fa335394f75afdb
+No patched CRs
+-----

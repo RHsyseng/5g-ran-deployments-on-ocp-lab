@@ -75,7 +75,7 @@ policies:
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/PtpSubscriptionOperGroup.yaml
     - path: source-crs/reference-crs/PtpOperatorStatus.yaml
-    - path: source-crs/reference-crs/PtpOperatorConfig.yaml
+    - path: source-crs/reference-crs/PtpOperatorConfig-SetSelector.yaml
       patches:
         - spec:
             daemonNodeSelector:
@@ -131,6 +131,8 @@ The CNF team has prepared some common tuning configurations that should be appli
 IMPORTANT: If you check the binding rules you can see that we are targeting clusters labeled with `group-du-sno: ""`, `logicalGroup: "active"` and `hardware-type: "hw-type-platform-1"`. These labels are set in the `ClusterInstance` definition.
 
 1. Create the `group` PolicyGenTemplate for SNOs:
++
+IMPORTANT: The policy below configures PTP with software time stamping. This is not supported in production environments, we had to configure it like that to be able to run PTP in the virtual environment.
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -328,11 +330,11 @@ policies:
             ptpSchedulingPriority: 10
             ptpSettings:
               logReduce: "true"
-        recommend:
-        - match:
-          - nodeLabel: node-role.kubernetes.io/master
-          priority: 4
-          profile: slave
+          recommend:
+          - match:
+            - nodeLabel: node-role.kubernetes.io/master
+            priority: 4
+            profile: slave
     - path: source-crs/reference-crs/DisableOLMPprof.yaml
     - path: source-crs/reference-crs/DisableSnoNetworkDiag.yaml
     - path: source-crs/reference-crs/ConsoleOperatorDisable.yaml
@@ -639,6 +641,8 @@ podman run --log-driver=none --rm --tls-verify=false {ztp-sitegenerate-disconnec
 -----
 
 Notice that we can add content not included in the ZTP container image by creating the required source CR in the `source-crs/custom-crs` folder. Once pushed to our Git repo, we can reference it in any of the common, group or site `PolicyGenTemplates`. More information on deploying additional changes to cluster can be found in the {advanced-ztp-policy-config}[docs].
+
+For this lab we need to configure a secret for sending logs to our central location using mTLS authentication. In a production environment you don't want to put your secrets in plain text in git. Other solutions like Vault are more convinient for this.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
