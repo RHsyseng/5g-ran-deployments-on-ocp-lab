@@ -927,7 +927,7 @@ policies:
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/PtpSubscriptionOperGroup.yaml
     - path: source-crs/reference-crs/PtpOperatorStatus.yaml
-    - path: source-crs/reference-crs/PtpOperatorConfig.yaml
+    - path: source-crs/reference-crs/PtpOperatorConfig-SetSelector.yaml
       patches:
         - spec:
             daemonNodeSelector:
@@ -1003,6 +1003,18 @@ If you check the binding rules you can see that we are targeting clusters labele
 <ol class="arabic">
 <li>
 <p>Create the <code>group</code> PolicyGenTemplate for SNOs:</p>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The policy below configures PTP with software time stamping. This is not supported in production environments, we had to configure it like that to be able to run PTP in the virtual environment.
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.18/group-du-sno.yaml
@@ -1198,11 +1210,11 @@ policies:
             ptpSchedulingPriority: 10
             ptpSettings:
               logReduce: "true"
-        recommend:
-        - match:
-          - nodeLabel: node-role.kubernetes.io/master
-          priority: 4
-          profile: slave
+          recommend:
+          - match:
+            - nodeLabel: node-role.kubernetes.io/master
+            priority: 4
+            profile: slave
     - path: source-crs/reference-crs/DisableOLMPprof.yaml
     - path: source-crs/reference-crs/DisableSnoNetworkDiag.yaml
     - path: source-crs/reference-crs/ConsoleOperatorDisable.yaml
@@ -1558,6 +1570,9 @@ podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:844
 </div>
 <div class="paragraph">
 <p>Notice that we can add content not included in the ZTP container image by creating the required source CR in the <code>source-crs/custom-crs</code> folder. Once pushed to our Git repo, we can reference it in any of the common, group or site <code>PolicyGenTemplates</code>. More information on deploying additional changes to cluster can be found in the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/managing-cluster-policies-with-policygentemplate-resources#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config">docs</a>.</p>
+</div>
+<div class="paragraph">
+<p>For this lab we need to configure a secret for sending logs to our central location using mTLS authentication. In a production environment you don&#8217;t want to put your secrets in plain text in git. Other solutions like Vault are more convinient for this.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
