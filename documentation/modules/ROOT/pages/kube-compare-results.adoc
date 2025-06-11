@@ -6,13 +6,13 @@ Below you can find the kubecompare results for a SNO configured during this lab.
 
 The following deviations are expected:
 
-- PTP: We are in a virtual environment, hardware time stamping is not possible. We had to configure the policy to use software time stamping instead. There is a warning in the lab advising this is not supported.
-- Subscriptions: We use the channels for 4.18 release and an install strategy automated rather than manual.
-- SriovNetworkNodePolicy: We add three extra parameters for the NICs.
-- Missing CRs:
-  - StorageLV.yaml: Expected since we use LVMs Operator.
-  - StoragePV.yaml: Expected since we use LVMs Operator.
-  - DisconnectedICSP.yaml: Expected since we use ImageDigestMirrorSet.
+* PTP: We are in a virtual environment, hardware time stamping is not possible. We had to configure the policy to use software time stamping instead. There is a warning in the lab advising this is not supported.
+* Subscriptions: We use the channels for 4.18 release and an install strategy automated rather than manual.
+* SriovNetworkNodePolicy: We add three extra parameters for the NICs.
+* Missing CRs:
+.. StorageLV.yaml: Expected since we use LVMs Operator.
+.. StoragePV.yaml: Expected since we use LVMs Operator.
+.. DisconnectedICSP.yaml: Expected since we use ImageDigestMirrorSet.
 
 [console-input]
 [source,bash,subs="attributes+,+macros"]
