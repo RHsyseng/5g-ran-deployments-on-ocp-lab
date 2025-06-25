@@ -1,6 +1,7 @@
 plan: hub-cluster
 force: false
 version: stable
+disconnected_channel: fast
 tag: "4.19.0"
 cluster: "hub"
 domain: 5g-deployment.lab
