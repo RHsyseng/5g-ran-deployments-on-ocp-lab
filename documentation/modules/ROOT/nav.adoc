@@ -188,7 +188,7 @@
 * xref:using-talm-to-update-clusters.adoc[Image-based Upgrade for SNO clusters]
 ** xref:using-talm-to-update-clusters.adoc#introduction[Introduction to Image-based Upgrades]
 ** xref:using-talm-to-update-clusters.adoc#verify-talm[Verifying Hub Software Requirements]
-** xref:using-talm-to-update-clusters.adoc#upgrade-policy-creation[Verifying Managed Clusters Requirements]
+** xref:using-talm-to-update-clusters.adoc#getting-snos-kubeconfigs[Verifying Managed Clusters Requirements]
 ** xref:using-talm-to-update-clusters.adoc#install-lca[Preparing Managed Clusters for Upgrade]
 ** xref:using-talm-to-update-clusters.adoc#upgrade-policy-creation[Creating the Image Base Group Upgrade]
 ** xref:using-talm-to-update-clusters.adoc#monitoring-ibu[Monitoring the Image Based Group Upgrade ]
