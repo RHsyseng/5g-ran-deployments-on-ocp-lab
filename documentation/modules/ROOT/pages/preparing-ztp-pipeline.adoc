@@ -53,6 +53,9 @@ As we saw in link:deployment-considerations.html#git-repo-structure[Git Reposito
 -----
 ├── site-configs
 │   ├── hub-1
+│   │   ├── pre-reqs
+│   │   │   └── sno-abi
+|   │   |   └── sno-ibi
 |   |   └── extra-manifest
 |   |   └── reference-manifest
 |   |   |   └── {lab-major-version}
