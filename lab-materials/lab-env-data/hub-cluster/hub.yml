@@ -1,7 +1,7 @@
 plan: hub-cluster
 force: false
 version: stable
-disconnected_channel: fast
+#disconnected_channel: fast
 tag: "4.19.0"
 cluster: "hub"
 domain: 5g-deployment.lab
@@ -13,16 +13,16 @@ disconnected_update: True
 disconnected_user: admin
 disconnected_password: r3dh4t1!
 #disconnected_operators_version: v4.18-1742933492
-disconnected_operators_version: v4.19-1750660822
+disconnected_operators_version: v4.19-1754067857
 disconnected_prefix: openshift/release-images
 prega: False
 disconnected_operators:
 - name: advanced-cluster-management
   channels:
-  - name: release-2.13
+  - name: release-2.14
 - name: multicluster-engine
   channels:
-  - name: stable-2.8
+  - name: stable-2.9
 - name: topology-aware-lifecycle-manager
   channels:
   - name: stable
@@ -31,7 +31,7 @@ disconnected_operators:
   - name: latest
 - name: lvms-operator
   channels:
-  - name: stable-4.18
+  - name: stable-4.19
 - name: sriov-network-operator
   channels:
   - name: stable
@@ -52,7 +52,7 @@ disconnected_operators:
   - name: stable-6.2
 disconnected_extra_images:
 - registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.19.0-1
-- registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.13
+- registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:2.14.0-1 #waiting for v2.14 to be released
 - quay.io/rhsysdeseng/lab5gran:v4.18.4
 disconnected_extra_release: 4.19.1
 disk_size: 120

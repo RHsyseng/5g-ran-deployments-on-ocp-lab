@@ -228,9 +228,9 @@ spec:
   osImages:
   - cpuArchitecture: x86_64
     openshiftVersion: "4.19"
-    rootFSUrl: http://infra.5g-deployment.lab:8080/rhcos-4.18.1-x86_64-live-rootfs.x86_64.img
-    url: http://infra.5g-deployment.lab:8080/rhcos-4.18.1-x86_64-live.x86_64.iso
-    version: 418.94.202503061016-0
+    rootFSUrl: http://infra.5g-deployment.lab:8080/rhcos-4.19.0-x86_64-live-rootfs.x86_64.img
+    url: http://infra.5g-deployment.lab:8080/rhcos-4.19.0-x86_64-live.x86_64.iso
+    version: 419.96.20250530-0
 ---
 apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
