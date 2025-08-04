@@ -40,7 +40,7 @@
             }
           ],
           "terminationMessagePolicy": "File",
-          "image": "infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.18.0-39"
+          "image": "infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.19.0-1"
         },
         {
           "args": [
@@ -50,7 +50,7 @@
           "command": [
             "/bin/bash"
           ],
-          "image": "infra.5g-deployment.lab:8443/rhacm2/multicluster-operators-subscription-rhel9:v2.13",
+          "image": "infra.5g-deployment.lab:8443/rhacm2/multicluster-operators-subscription-rhel9:2.14.0-1",
           "name": "policy-generator-install",
           "imagePullPolicy": "Always",
           "volumeMounts": [
