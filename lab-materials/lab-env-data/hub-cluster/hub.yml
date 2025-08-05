@@ -52,7 +52,7 @@ disconnected_operators:
 disconnected_extra_images:
 - registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.19.0-1
 - registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:2.14.0-1
-- quay.io/rhsysdeseng/lab5gran:v4.19.1
+- quay.io/rhsysdeseng/lab5gran:v4.18.4
 disconnected_extra_release: 4.19.1
 disk_size: 120
 extra_disks: [120]
