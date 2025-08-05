@@ -12,7 +12,6 @@ disconnected_url: infra.5g-deployment.lab:8443
 disconnected_update: True
 disconnected_user: admin
 disconnected_password: r3dh4t1!
-#disconnected_operators_version: v4.18-1742933492
 disconnected_operators_version: v4.19-1754067857
 disconnected_prefix: openshift/release-images
 prega: False
@@ -52,13 +51,11 @@ disconnected_operators:
   - name: stable-6.3
 disconnected_extra_images:
 - registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.19.0-1
-- registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:2.14.0-1 #waiting for v2.14 to be released
-- quay.io/rhsysdeseng/lab5gran:v4.18.4
+- registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:2.14.0-1
+- quay.io/rhsysdeseng/lab5gran:v4.19.1
 disconnected_extra_release: 4.19.1
 disk_size: 120
-#extra_disks: [200]
 extra_disks: [120]
-#memory: 48000
 memory: 24000
 numcpus: 16
 ctlplanes: 3
