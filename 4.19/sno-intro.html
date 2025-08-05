@@ -893,7 +893,7 @@ The use of OpenShiftSDN with single-node OpenShift is not supported. OVN-Kuberne
 <p>The server must have access to the internet or access to a local (disconnected) registry if it is not connected to an externally routable network.</p>
 </li>
 <li>
-<p>The server must have a DHCP reservation or a static IP address for the Kubernetes API, ingress route, and cluster node domain names. You must also configure the proper DNS records to resolve the previous reservations. More information with regards to the DNS records that must be configured can be found in the official documentation, specifically at <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/installing_on_a_single_node/preparing-to-install-sno">Requirements for installing OpenShift on a single node</a> section. Notice that all the DNS records must be subdomains of the same base domain.</p>
+<p>The server must have a DHCP reservation or a static IP address for the Kubernetes API, ingress route, and cluster node domain names. You must also configure the proper DNS records to resolve the previous reservations. More information with regards to the DNS records that must be configured can be found in the official documentation, specifically at <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/installing_on_a_single_node/preparing-to-install-sno">Requirements for installing OpenShift on a single node</a> section. Notice that all the DNS records must be subdomains of the same base domain.</p>
 </li>
 </ul>
 </div>
@@ -918,10 +918,10 @@ Starting at OpenShift 4.11, you can now add workers to a Single-Node OpenShift (
 <p><strong>Red Hat Advanced Cluster Management for Kubernetes</strong> - allows provisioning single-node OpenShift using kube-native APIs. In this lab we will use a GitOps Zero Touch Provisioning (ZTP) method for installing clusters which leverages RHACM under the hood.</p>
 </li>
 <li>
-<p><strong>Web-based Assisted Installer</strong> and a discovery ISO that you generate using the Assisted Installer. Basically, you need to follow the web-based Assisted Installer wizard from <a href="https://console.redhat.com/openshift/assisted-installer/clusters">the Red Hat OpenShift Cluster Manager</a> that will guide you through the process and manage the installation. Once the discovery ISO is created, attach the image to the target host and  boot your server from the attached discovery ISO. Detailed information can be found <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/installing_on_a_single_node/install-sno-installing-sno#install-sno-generating-the-discovery-iso-with-the-assisted-installer_install-sno-installing-sno-with-the-assisted-installer">here</a>.</p>
+<p><strong>Web-based Assisted Installer</strong> and a discovery ISO that you generate using the Assisted Installer. Basically, you need to follow the web-based Assisted Installer wizard from <a href="https://console.redhat.com/openshift/assisted-installer/clusters">the Red Hat OpenShift Cluster Manager</a> that will guide you through the process and manage the installation. Once the discovery ISO is created, attach the image to the target host and  boot your server from the attached discovery ISO. Detailed information can be found <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/installing_on_a_single_node/install-sno-installing-sno#install-sno-generating-the-discovery-iso-with-the-assisted-installer_install-sno-installing-sno-with-the-assisted-installer">here</a>.</p>
 </li>
 <li>
-<p><strong>coreos-installer</strong>. You can also install single-node OpenShift by using coreos-installer to generate the installation ISO and then boot the server from the ISO. Detailed information can be found <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/installing_on_a_single_node/install-sno-installing-sno#install-sno-installing-sno-manually">here</a>.</p>
+<p><strong>coreos-installer</strong>. You can also install single-node OpenShift by using coreos-installer to generate the installation ISO and then boot the server from the ISO. Detailed information can be found <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/installing_on_a_single_node/install-sno-installing-sno#install-sno-installing-sno-manually">here</a>.</p>
 </li>
 </ul>
 </div>
@@ -945,7 +945,7 @@ Starting at OpenShift 4.11, you can now add workers to a Single-Node OpenShift (
 <p><a href="https://www.redhat.com/en/blog/meet-single-node-openshift-our-smallest-openshift-footprint-edge-architectures">Meet single node OpenShift: Our newest small OpenShift footprint for edge architectures</a>.</p>
 </li>
 <li>
-<p><a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/installing_on_a_single_node/preparing-to-install-sno">Preparing to install on a single node</a> in the official documentation.</p>
+<p><a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/installing_on_a_single_node/preparing-to-install-sno">Preparing to install on a single node</a> in the official documentation.</p>
 </li>
 </ul>
 </div>

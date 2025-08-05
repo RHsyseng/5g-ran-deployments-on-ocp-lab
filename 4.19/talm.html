@@ -960,7 +960,7 @@ TALM will basically enforce all existing policies that are bound to a cluster th
 <h2 id="waves"><a class="anchor" href="#waves"></a>Waves</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every <a href="policygen-deepdive.html#policies-templating">policy</a> generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.18/ztp/source-crs/SriovSubscriptionNS.yaml">SriovSubscriptionNS.yaml</a>:</p>
+<p>A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every <a href="policygen-deepdive.html#policies-templating">policy</a> generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.19/ztp/source-crs/SriovSubscriptionNS.yaml">SriovSubscriptionNS.yaml</a>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -998,7 +998,7 @@ Detailed information on policy templates can be found in the following <a href="
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate. Default ztp-deploy-wave value can be found on the proper <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.18/ztp/source-crs">source crs</a>.
+All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate. Default ztp-deploy-wave value can be found on the proper <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.19/ztp/source-crs">source crs</a>.
 </td>
 </tr>
 </table>
@@ -1009,7 +1009,7 @@ All CRs in the same policy must have the same setting for the ztp-deploy-wave an
 <h2 id="sno-upgrades-at-scale"><a class="anchor" href="#sno-upgrades-at-scale"></a>SNO Upgrades at Scale</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>TALM helps with the orchestration of SNO clusters upgrades at scale. The recommended upgrade method for SNOs is the Image Based Upgrade (IBU), but as we described in the <a href="lca.html">LCA section</a>, LCA works at a single cluster level. TALM runs on the Hub cluster and can handle the upgrade of multiple clusters. In order to orchestrate such upgrades, the <code>ImageBasedGroupUpgrade</code> API can be used. We will see how to leverage this API in the hands-on section of the lab. You can read more on Image Based Group Upgrades on <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/image-based-upgrade-for-single-node-openshift-clusters#ztp-image-based-upgrade">the official docs</a>.</p>
+<p>TALM helps with the orchestration of SNO clusters upgrades at scale. The recommended upgrade method for SNOs is the Image Based Upgrade (IBU), but as we described in the <a href="lca.html">LCA section</a>, LCA works at a single cluster level. TALM runs on the Hub cluster and can handle the upgrade of multiple clusters. In order to orchestrate such upgrades, the <code>ImageBasedGroupUpgrade</code> API can be used. We will see how to leverage this API in the hands-on section of the lab. You can read more on Image Based Group Upgrades on <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/edge_computing/image-based-upgrade-for-single-node-openshift-clusters#ztp-image-based-upgrade">the official docs</a>.</p>
 </div>
 </div>
 </div>

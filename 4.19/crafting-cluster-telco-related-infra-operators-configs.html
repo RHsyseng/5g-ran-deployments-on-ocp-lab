@@ -830,7 +830,7 @@
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in <a href="telco-related-infra-operators-intro.html" class="xref page">Introduction to Telco Related Infrastructure Operators</a>. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ref-design-overview_telco-ran-du">v4.18 Telco RAN Reference Design Specification</a> in the official documentation.
+The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in <a href="telco-related-infra-operators-intro.html" class="xref page">Introduction to Telco Related Infrastructure Operators</a>. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ref-design-overview_telco-ran-du">v4.19 Telco RAN Reference Design Specification</a> in the official documentation.
 </td>
 </tr>
 </table>
@@ -856,7 +856,7 @@ Below commands must be executed from the infrastructure host if not specified ot
 <p>The common policies apply to every cluster in our infrastructure that matches our binding rule. These policies are often used to configure things like CatalogSources, operator deployments, etc. that are common to all our clusters.</p>
 </div>
 <div class="paragraph">
-<p>These configs may vary from release to release, that&#8217;s why we create a <code>common-418.yaml</code> file. We will likely have a common configuration profile for each release we deploy.</p>
+<p>These configs may vary from release to release, that&#8217;s why we create a <code>common-419.yaml</code> file. We will likely have a common configuration profile for each release we deploy.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -865,7 +865,7 @@ Below commands must be executed from the infrastructure host if not specified ot
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-If you check the binding rules, you see that we are targeting clusters labeled with <code>common: "ocp418"</code> and <code>logicalGroup: "active"</code>. These labels are set in the <code>ClusterInstance</code> definition.
+If you check the binding rules, you see that we are targeting clusters labeled with <code>common: "ocp419"</code> and <code>logicalGroup: "active"</code>. These labels are set in the <code>ClusterInstance</code> definition.
 </td>
 </tr>
 </table>
@@ -873,10 +873,10 @@ If you check the binding rules, you see that we are targeting clusters labeled w
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Create the <code>common</code> PolicyGenTemplate for v4.18 SNOs:</p>
+<p>Create the <code>common</code> PolicyGenTemplate for v4.19 SNOs:</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.18/common-418.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.19/common-419.yaml
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
@@ -888,7 +888,7 @@ policyDefaults:
   namespace: ztp-policies
   placement:
     labelSelector:
-      common: "ocp418"
+      common: "ocp419"
       logicalGroup: "active"
   remediationAction: inform
   severity: low
@@ -912,7 +912,7 @@ policies:
             name: redhat-operator-index
           spec:
             displayName: disconnected-redhat-operators
-            image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.18-1742933492
+            image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.19-1754067857
 - name: common-subscriptions-policy
   policyAnnotations:
     ran.openshift.io/ztp-deploy-wave: "2"
@@ -956,7 +956,7 @@ policies:
     - path: source-crs/reference-crs/StorageLVMSubscription.yaml
       patches:
         - spec:
-            channel: stable-4.18
+            channel: stable-4.19
             source: redhat-operator-index
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/LVMOperatorStatus.yaml
@@ -1017,7 +1017,7 @@ The policy below configures PTP with software time stamping. This is not support
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.18/group-du-sno.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.19/group-du-sno.yaml
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
@@ -1297,10 +1297,10 @@ By leveraging hub site templating we are reducing the number of policies on our 
 </div>
 </li>
 <li>
-<p>We&#8217;re using policy templating, so we need to create a <code>ConfigMap</code> with the templating values to be used. Notice that the following resource contains values for multiple hardware specifications that we may have in our infrastructure. In the policy we just applied, the values are obtained depending on the label <code>hardware-type</code> that each cluster is assigned to. This label is set in the <code>ClusterInstance</code> definition. More information about Template processing can be found in <a href="https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html/governance/governance#template-processing">Red Hat Advanced Cluster Management documentation</a>.</p>
+<p>We&#8217;re using policy templating, so we need to create a <code>ConfigMap</code> with the templating values to be used. Notice that the following resource contains values for multiple hardware specifications that we may have in our infrastructure. In the policy we just applied, the values are obtained depending on the label <code>hardware-type</code> that each cluster is assigned to. This label is set in the <code>ClusterInstance</code> definition. More information about Template processing can be found in <a href="https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html/governance/governance#template-processing">Red Hat Advanced Cluster Management documentation</a>.</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.18/group-hardware-types-configmap.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.19/group-hardware-types-configmap.yaml
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -1334,7 +1334,7 @@ EOF</code></pre>
 <p>Next, let&#8217;s include the DU validator policy crafted by the CNF team. It will let us know if the specific telco RAN RDS group policies are eventually applied.</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.18/group-du-sno-validator.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.19/group-du-sno-validator.yaml
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
@@ -1396,7 +1396,7 @@ EOF</code></pre>
 <p>Create the <code>du-sno-sites</code> PolicyGenTemplate for the clusters that contain <code>hw-type-platform-1</code> hardware type in our <code>5glab</code> site.</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.18/sites-specific.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.19/sites-specific.yaml
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
@@ -1510,7 +1510,7 @@ By leveraging hub site templating we are reducing the number of policies on our 
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.18/site-data-hw-1-configmap.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.19/site-data-hw-1-configmap.yaml
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -1537,7 +1537,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>More information about Template processing can be found in <a href="https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html/governance/governance#template-processing">Red Hat Advanced Cluster Management documentation</a>.</p>
+<p>More information about Template processing can be found in <a href="https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html/governance/governance#template-processing">Red Hat Advanced Cluster Management documentation</a>.</p>
 </div>
 </div>
 </div>
@@ -1560,23 +1560,23 @@ We recommend a directory structure to keep reference manifests corresponding to 
 </table>
 </div>
 <div class="paragraph">
-<p>In this lab we have extra content for a secret required by our Cluster Logging configuration. Let&#8217;s first extract the predefined source-crs from the ztp-generate container 4.18 version to the reference-crs folder.</p>
+<p>In this lab we have extra content for a secret required by our Cluster Logging configuration. Let&#8217;s first extract the predefined source-crs from the ztp-generate container 4.19 version to the reference-crs folder.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
-podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.18.0-39 extract /home/ztp/source-crs --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.18/source-crs/reference-crs/</code></pre>
+podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.19.0-1 extract /home/ztp/source-crs --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.19/source-crs/reference-crs/</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that we can add content not included in the ZTP container image by creating the required source CR in the <code>source-crs/custom-crs</code> folder. Once pushed to our Git repo, we can reference it in any of the common, group or site <code>PolicyGenTemplates</code>. More information on deploying additional changes to cluster can be found in the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/managing-cluster-policies-with-policygentemplate-resources#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config">docs</a>.</p>
+<p>Notice that we can add content not included in the ZTP container image by creating the required source CR in the <code>source-crs/custom-crs</code> folder. Once pushed to our Git repo, we can reference it in any of the common, group or site <code>PolicyGenTemplates</code>. More information on deploying additional changes to cluster can be found in the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/edge_computing/managing-cluster-policies-with-policygentemplate-resources#ztp-adding-new-content-to-gitops-ztp_ztp-advanced-policy-config">docs</a>.</p>
 </div>
 <div class="paragraph">
 <p>For this lab we need to configure a secret for sending logs to our central location using mTLS authentication. In a production environment you don&#8217;t want to put your secrets in plain text in git. Other solutions like Vault are more convinient for this.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.18/source-crs/custom-crs/logging-mtls-secret.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.19/source-crs/custom-crs/logging-mtls-secret.yaml
 apiVersion: v1
 kind: Secret
 metadata:
@@ -1603,10 +1603,10 @@ EOF</code></pre>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Create the <code>common</code> testing PolicyGenTemplate for v4.18 SNOs:</p>
+<p>Create the <code>common</code> testing PolicyGenTemplate for v4.19 SNOs:</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/v4.19/common-v4.19
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/v4.20/common-v4.20
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
@@ -1642,7 +1642,7 @@ policies:
             name: redhat-operator-index
           spec:
             displayName: disconnected-redhat-operators
-            image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.18-1742933492
+            image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.19-1754067857
 - name: common-test-subscriptions-policy
   policyAnnotations:
     ran.openshift.io/ztp-deploy-wave: "2"
@@ -1681,7 +1681,7 @@ policies:
     - path: source-crs/reference-crs/StorageLVMSubscription.yaml
       patches:
         - spec:
-            channel: stable-4.18
+            channel: stable-4.19
             source: redhat-operator-index
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/LVMOperatorStatus.yaml
@@ -1703,7 +1703,7 @@ EOF</code></pre>
 <p>Create the <code>group</code> testing PolicyGenTemplate for SNOs:</p>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/v4.19/group-du-sno.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/v4.20/group-du-sno.yaml
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
@@ -1800,7 +1800,7 @@ policies:
                 service.stalld=start,enable
                 service.chronyd=stop,disable
 EOF
-cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/v4.19/group-hardware-types-configmap-test.yaml
+cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/v4.20/group-hardware-types-configmap-test.yaml
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -1826,7 +1826,7 @@ data:
   hw-type-platform-2-supported-sriov-nic: "true"
   hw-type-platform-2-storage-path: "/dev/nvme0n1"
 EOF
-cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/v4.19/group-du-sno-validator.yaml
+cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/v4.20/group-du-sno-validator.yaml
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
@@ -1877,7 +1877,7 @@ EOF</code></pre>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
-podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.18.0-39 extract /home/ztp/source-crs --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/v4.19/source-crs/reference-crs/</code></pre>
+podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.19.0-1 extract /home/ztp/source-crs --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/v4.20/source-crs/reference-crs/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1985,15 +1985,15 @@ cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/acti
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - v4.18/
+  - v4.19/
   #- v4.17/
 EOF
-cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.18/kustomization.yaml
+cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.19/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 generators:
-  - common-418.yaml
+  - common-419.yaml
   - group-du-sno.yaml
   - sites-specific.yaml
 #  - group-du-sno-validator.yaml
@@ -2006,14 +2006,14 @@ cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/test
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-  - v4.19/
+  - v4.20/
 EOF
-cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/v4.19/kustomization.yaml
+cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/v4.20/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 generators:
-  - common-v4.19
+  - common-v4.20
   - group-du-sno.yaml
 #  - group-du-sno-validator.yaml
 resources:

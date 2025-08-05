@@ -1001,7 +1001,7 @@ spec:
   cpuPartitioningMode: AllNodes
   extraLabels:
     ManagedCluster:
-      common: "ocp418"
+      common: "ocp419"
       logicalGroup: "active"
       group-du-sno: ""
       du-site: "sno-abi"
@@ -1009,7 +1009,7 @@ spec:
       hardware-type: "hw-type-platform-1"
   holdInstallation: false
   extraManifestsRefs:
-    - name: ran-rds-418-manifests
+    - name: ran-rds-419-manifests
   installConfigOverrides: |
     {
       "capabilities": {
@@ -1112,7 +1112,7 @@ EOF</code></pre>
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Check that the above ClusterInstance CR is using the <code>ai-node-templates-v1</code> (Agent Based Install) templates to deploy the <code>sno-abi</code> OpenShift cluster. We added an <code>ignitionConfigOverride</code> that creates a separate partition for <code>/var/lib/containers</code>, which is a pre-requisite for upgrading clusters using the image-based Upgrade method. We will address image-based upgrades later in this lab. Detailed information about the requirements can be found <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/edge_computing/image-based-upgrade-for-single-node-openshift-clusters#cnf-image-based-upgrade-shared-container-partition_shared-container-partition">here</a>.
+Check that the above ClusterInstance CR is using the <code>ai-node-templates-v1</code> (Agent Based Install) templates to deploy the <code>sno-abi</code> OpenShift cluster. We added an <code>ignitionConfigOverride</code> that creates a separate partition for <code>/var/lib/containers</code>, which is a pre-requisite for upgrading clusters using the image-based Upgrade method. We will address image-based upgrades later in this lab. Detailed information about the requirements can be found <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/edge_computing/image-based-upgrade-for-single-node-openshift-clusters#cnf-image-based-upgrade-shared-container-partition_shared-container-partition">here</a>.
 </td>
 </tr>
 </table>
@@ -1129,7 +1129,7 @@ kind: ClusterImageSet
 metadata:
   name: active-ocp-version
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.18.3-x86_64
+  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.19.0-x86_64
 EOF</code></pre>
 </div>
 </div>
@@ -1139,16 +1139,16 @@ EOF</code></pre>
 <h2 id="reference-manifest-clusterinstance"><a class="anchor" href="#reference-manifest-clusterinstance"></a>Reference Manifest Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Let&#8217;s add the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.18/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-configuration-crs">reference RAN DU configuration</a> for the version of OCP we are about to deploy. In the workstation, run the following command to extract the reference ZTP 4.18 RAN configuration. These manifests are extracted from the <code>/extra-manifest</code> folder of the <code>ztp-site-generate</code> container.</p>
+<p>Let&#8217;s add the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-configuration-crs">reference RAN DU configuration</a> for the version of OCP we are about to deploy. In the workstation, run the following command to extract the reference ZTP 4.19 RAN configuration. These manifests are extracted from the <code>/extra-manifest</code> folder of the <code>ztp-site-generate</code> container.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=false
-podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.18.0-39 extract /home/ztp/extra-manifest --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-configs/reference-manifest/4.18/</code></pre>
+podman run --log-driver=none --rm --tls-verify=false infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.19.0-1 extract /home/ztp/extra-manifest --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-configs/reference-manifest/4.19/</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p><code>reference-manifest/4.18/</code> refers to the Git subdirectory that stores the contents of the RAN configuration for a specific version, in this case 4.18. Different versions of the RAN DU configuration can coexist by extracting them from the appropriate <code>ztp-site-generate</code> container version to a different <code>extra-manifest</code> folder. Then, the user only needs to include the right <code>reference-manifest</code> version folder to the cluster version being installed.</p>
+<p><code>reference-manifest/4.19/</code> refers to the Git subdirectory that stores the contents of the RAN configuration for a specific version, in this case 4.19. Different versions of the RAN DU configuration can coexist by extracting them from the appropriate <code>ztp-site-generate</code> container version to a different <code>extra-manifest</code> folder. Then, the user only needs to include the right <code>reference-manifest</code> version folder to the cluster version being installed.</p>
 </div>
 <div class="paragraph">
 <p>This configuration is applied during installation time.</p>
@@ -1216,7 +1216,7 @@ As of version 4.16 the default cgroups configuration is <strong>cgroupsv2</stron
 <h2 id="preparing-installation"><a class="anchor" href="#preparing-installation"></a>Get Ready for the Installation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Finally, we will add the kustomizations for the ClusterInstance. Note that the Reference RAN DU and the extra-manifests configuration are included as a <code>ConfigMap</code> custom resource named <strong>ran-rds-418-manifests</strong>.</p>
+<p>Finally, we will add the kustomizations for the ClusterInstance. Note that the Reference RAN DU and the extra-manifests configuration are included as a <code>ConfigMap</code> custom resource named <strong>ran-rds-419-manifests</strong>.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1264,7 +1264,7 @@ configMapGenerator:
     - reference-manifest/4.18/99-sync-time-once-worker.yaml
     - hub-1/extra-manifest/enable-crun-master.yaml
     - hub-1/extra-manifest/enable-crun-worker.yaml
-    name: ran-rds-418-manifests
+    name: ran-rds-419-manifests
     namespace: sno-abi
 
 generatorOptions:
@@ -1457,7 +1457,7 @@ sno-abi   sno-abi   finalizing</code></pre>
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">- lastProbeTime: "2025-03-24T16:18:20Z"
   lastTransitionTime: "2025-03-24T16:18:20Z"
   message: 'The installation is in progress: Finalizing cluster installation. Cluster
-    version status: progressing, message: Working towards 4.18.3: 523 of 829 done
+    version status: progressing, message: Working towards 4.19.0: 523 of 829 done
     (63% complete)'
   reason: InstallationInProgress
   status: "False"
