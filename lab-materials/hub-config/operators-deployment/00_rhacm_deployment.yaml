@@ -28,8 +28,7 @@ metadata:
   name: advanced-cluster-management
   namespace: open-cluster-management
 spec:
-  channel: "release-2.13"
+  channel: "release-2.14"
   name: advanced-cluster-management
-  source: cs-redhat-operator-index-v4-18-174293
-#  source: cs-prega-operator-index-v4-18
+  source: cs-redhat-operator-index-v4-19-175406
   sourceNamespace: openshift-marketplace

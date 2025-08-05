@@ -9,6 +9,6 @@ metadata:
 spec:
   channel: "stable"
   name: topology-aware-lifecycle-manager
-  source: cs-redhat-operator-index-v4-18-174293
+  source: cs-redhat-operator-index-v4-19-175406
 #  source: cs-prega-operator-index-v4-18
   sourceNamespace: openshift-marketplace

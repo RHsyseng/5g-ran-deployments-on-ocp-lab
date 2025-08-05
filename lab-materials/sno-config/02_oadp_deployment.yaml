@@ -20,7 +20,7 @@ metadata:
   name: redhat-oadp-operator
   namespace: openshift-adp
 spec:
-  channel: stable-1.4
+  channel: stable
   installPlanApproval: Automatic
   name: redhat-oadp-operator
   source: redhat-operator-index
