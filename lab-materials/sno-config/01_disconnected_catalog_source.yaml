@@ -7,7 +7,7 @@ metadata:
   namespace: openshift-marketplace
 spec:
   displayName: default-cat-source
-  image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.19-1750660822
+  image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.19-1754067857
   publisher: Red Hat
   sourceType: grpc
   updateStrategy:
