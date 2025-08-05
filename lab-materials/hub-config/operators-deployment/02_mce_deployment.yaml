@@ -31,5 +31,4 @@ spec:
   channel: "stable-2.9"
   name: multicluster-engine
   source: cs-redhat-operator-index-v4-19-175406
-  #source: cs-prega-operator-index-v4-18
   sourceNamespace: openshift-marketplace

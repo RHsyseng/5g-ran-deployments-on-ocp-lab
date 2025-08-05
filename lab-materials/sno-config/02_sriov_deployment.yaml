@@ -25,7 +25,6 @@ spec:
   channel: "stable"
   name: sriov-network-operator
   source: redhat-operator-index
-  #source: cs-prega-operator-index-v4-18
   sourceNamespace: openshift-marketplace
   installPlanApproval: Automatic
   config:
