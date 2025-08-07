@@ -27,12 +27,12 @@ code:experimental:
 //:demo_environment: demo_environment_here --> This attribute needs to be defined in site.yml for being able to use it in nav.adoc
 :hub_admin_password: admin_password_here
 :hub-cluster-ocp-version: v4.19.0
-:hub-cluster-kubeversion: v1.31.6
+:hub-cluster-kubeversion: v1.32.5
 :sno-cluster-version1: v4.19.0
 :sno-cluster-version2: v4.19.1
 :sno-seed-version: v4.19.0
-:sno-cluster-version1-kubeversion: v1.31.6
-:sno-cluster-version2-kubeversion: v1.31.6
+:sno-cluster-version1-kubeversion: v1.32.5
+:sno-cluster-version2-kubeversion: v1.32.5
 :sno-cluster-version1-cvo: 4.19.0
 :sno-cluster-version2-cvo: 4.19.1
 :active-ocp-version-clusterimageset: infra.5g-deployment.lab:8443/openshift/release-images:{sno-cluster-version1-cvo}-x86_64
