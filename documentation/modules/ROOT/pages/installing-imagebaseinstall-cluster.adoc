@@ -774,7 +774,7 @@ NAME                                         VERSION       AVAILABLE   PROGRESSI
 clusterversion.config.openshift.io/version   {sno-cluster-version1-cvo}   True        False         6h4m    Cluster version is {sno-cluster-version1-cvo}
 
 NAME                                   STATUS   ROLES                         AGE   VERSION
-node/ocp-sno-ibi.sno-ibi.5g-deployment.lab   Ready    control-plane,master,worker   32m   v1.31.4
+node/ocp-sno-ibi.sno-ibi.5g-deployment.lab   Ready    control-plane,master,worker   32m   {sno-cluster-version1-kubeversion}
 -----
 
 Check the installed operators. These operators were included in the seed image:
@@ -789,10 +789,12 @@ oc --kubeconfig {ibi-cluster-kubeconfig} get operators
 [source,bash,subs="attributes+,+macros"]
 -----
 NAME                                                      AGE
-lifecycle-agent.openshift-lifecycle-agent                 6h5m
-lvms-operator.openshift-storage                           6h5m
-redhat-oadp-operator.openshift-adp                        6h5m
-sriov-network-operator.openshift-sriov-network-operator   6h5m
+cluster-logging.openshift-logging                         3h51m
+lifecycle-agent.openshift-lifecycle-agent                 3h51m
+lvms-operator.openshift-storage                           3h51m
+ptp-operator.openshift-ptp                                3h51m
+redhat-oadp-operator.openshift-adp                        3h51m
+sriov-network-operator.openshift-sriov-network-operator   3h51m
 -----
 
 Verify that the LVMS Operator is ready to provision persistent storage for the cluster. Recall that we added an link:installing-imagebaseinstall-cluster.html#creating-the-configuration-iso[extra-manifest] in the form of a `ConfigMap` to our image-based installation to configure it.

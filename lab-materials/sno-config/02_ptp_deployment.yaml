@@ -11,7 +11,7 @@ metadata:
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
-  name: ptp-operator-operatorgroup
+  name: ptp-operators
   namespace: openshift-ptp
 spec:
   targetNamespaces:
