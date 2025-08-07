@@ -511,7 +511,7 @@ policyDefaults:
   namespace: ztp-policies
   placement:
     labelSelector:
-      common: "ocp418"
+      common: "{policygen-common-label}"
       logicalGroup: "active"
       hardware-type: "hw-type-platform-1"
   remediationAction: inform
@@ -685,7 +685,7 @@ policyDefaults:
   namespace: ztp-policies
   placement:
     labelSelector:
-      common: "ocp419"
+      common: "ocp420"
       logicalGroup: "testing"
   remediationAction: inform
   severity: low

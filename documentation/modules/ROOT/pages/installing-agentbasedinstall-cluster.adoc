@@ -357,23 +357,23 @@ resources:
 
 configMapGenerator:
   - files:
-    - reference-manifest/4.18/01-container-mount-ns-and-kubelet-conf-master.yaml
-    - reference-manifest/4.18/01-container-mount-ns-and-kubelet-conf-worker.yaml
-    - reference-manifest/4.18/01-disk-encryption-pcr-rebind-master.yaml
-    - reference-manifest/4.18/01-disk-encryption-pcr-rebind-worker.yaml
-    - reference-manifest/4.18/03-sctp-machine-config-master.yaml
-    - reference-manifest/4.18/03-sctp-machine-config-worker.yaml
-    - reference-manifest/4.18/06-kdump-master.yaml
-    - reference-manifest/4.18/06-kdump-worker.yaml
-    - reference-manifest/4.18/07-sriov-related-kernel-args-master.yaml
-    - reference-manifest/4.18/07-sriov-related-kernel-args-worker.yaml
-    - reference-manifest/4.18/08-set-rcu-normal-master.yaml
-    - reference-manifest/4.18/08-set-rcu-normal-worker.yaml
-    - reference-manifest/4.18/09-openshift-marketplace-ns.yaml
-    - reference-manifest/4.18/99-crio-disable-wipe-worker.yaml
-    - reference-manifest/4.18/99-sync-time-once-master.yaml
-    - reference-manifest/4.18/99-crio-disable-wipe-master.yaml
-    - reference-manifest/4.18/99-sync-time-once-worker.yaml
+    - reference-manifest/{{lab-major-version}}/01-container-mount-ns-and-kubelet-conf-master.yaml
+    - reference-manifest/{{lab-major-version}}/01-container-mount-ns-and-kubelet-conf-worker.yaml
+    - reference-manifest/{{lab-major-version}}/01-disk-encryption-pcr-rebind-master.yaml
+    - reference-manifest/{{lab-major-version}}/01-disk-encryption-pcr-rebind-worker.yaml
+    - reference-manifest/{{lab-major-version}}/03-sctp-machine-config-master.yaml
+    - reference-manifest/{{lab-major-version}}/03-sctp-machine-config-worker.yaml
+    - reference-manifest/{{lab-major-version}}/06-kdump-master.yaml
+    - reference-manifest/{{lab-major-version}}/06-kdump-worker.yaml
+    - reference-manifest/{{lab-major-version}}/07-sriov-related-kernel-args-master.yaml
+    - reference-manifest/{{lab-major-version}}/07-sriov-related-kernel-args-worker.yaml
+    - reference-manifest/{{lab-major-version}}/08-set-rcu-normal-master.yaml
+    - reference-manifest/{{lab-major-version}}/08-set-rcu-normal-worker.yaml
+    - reference-manifest/{{lab-major-version}}/09-openshift-marketplace-ns.yaml
+    - reference-manifest/{{lab-major-version}}/99-crio-disable-wipe-worker.yaml
+    - reference-manifest/{{lab-major-version}}/99-sync-time-once-master.yaml
+    - reference-manifest/{{lab-major-version}}/99-crio-disable-wipe-master.yaml
+    - reference-manifest/{{lab-major-version}}/99-sync-time-once-worker.yaml
     - hub-1/extra-manifest/enable-crun-master.yaml
     - hub-1/extra-manifest/enable-crun-worker.yaml
     name: {ran-rds-version-manifests}

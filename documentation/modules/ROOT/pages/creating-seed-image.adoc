@@ -36,12 +36,13 @@ oc --kubeconfig {seed-cluster-kubeconfig} get csv -A
 [.console]
 [source,bash]
 -----
-NAMESPACE                              NAME                                          DISPLAY                   VERSION               REPLACES   PHASE
-openshift-adp                          oadp-operator.v1.4.2                          OADP Operator             1.4.2                            Succeeded
-openshift-lifecycle-agent              lifecycle-agent.v4.18.0                       Lifecycle Agent           4.18.0                           Succeeded
-openshift-operator-lifecycle-manager   packageserver                                 Package Server            0.0.1-snapshot                   Succeeded
-openshift-sriov-network-operator       sriov-network-operator.v4.18.0-202502121533   SR-IOV Network Operator   4.18.0-202502121533              Succeeded
-openshift-storage                      lvms-operator.v4.18.0                         LVM Storage               4.18.0                           Succeeded
+openshift-adp                          oadp-operator.v1.5.0                          OADP Operator               1.5.0                            Succeeded
+openshift-lifecycle-agent              lifecycle-agent.v4.19.0                       Lifecycle Agent             4.19.0                           Succeeded
+openshift-logging                      cluster-logging.v6.3.0                        Red Hat OpenShift Logging   6.3.0                            Succeeded
+openshift-operator-lifecycle-manager   packageserver                                 Package Server              0.0.1-snapshot                   Succeeded
+openshift-ptp                          ptp-operator.v4.19.0-202507180107             PTP Operator                4.19.0-202507180107              Succeeded
+openshift-sriov-network-operator       sriov-network-operator.v4.19.0-202507212206   SR-IOV Network Operator     4.19.0-202507212206              Succeeded
+openshift-storage                      lvms-operator.v4.19.0                         LVM Storage                 4.19.0                           Succeeded
 -----
 
 Verify that the OpenShift Container Platform version of the seed SNO cluster is {sno-cluster-version1}:
