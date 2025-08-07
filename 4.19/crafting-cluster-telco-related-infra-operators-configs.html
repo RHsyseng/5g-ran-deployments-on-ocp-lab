@@ -965,7 +965,7 @@ policies:
     - path: source-crs/reference-crs/ClusterLogSubscription.yaml
       patches:
         - spec:
-            channel: stable-6.2
+            channel: stable-6.3
             source: redhat-operator-index
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/ClusterLogOperGroup.yaml
@@ -1408,7 +1408,7 @@ policyDefaults:
   namespace: ztp-policies
   placement:
     labelSelector:
-      common: "ocp418"
+      common: "ocp419"
       logicalGroup: "active"
       hardware-type: "hw-type-platform-1"
   remediationAction: inform
@@ -1618,7 +1618,7 @@ policyDefaults:
   namespace: ztp-policies
   placement:
     labelSelector:
-      common: "ocp419"
+      common: "ocp420"
       logicalGroup: "testing"
   remediationAction: inform
   severity: low
@@ -1690,7 +1690,7 @@ policies:
     - path: source-crs/reference-crs/ClusterLogSubscription.yaml
       patches:
         - spec:
-            channel: stable-6.2
+            channel: stable-6.3
             source: redhat-operator-index
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/ClusterLogOperGroup.yaml
