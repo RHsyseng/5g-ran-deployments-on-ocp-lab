@@ -889,11 +889,14 @@ Both clusters were installed using different methodologies. While <code>sno-abi<
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                                   AGE
-advanced-cluster-management.open-cluster-management    28h
-lvms-operator.openshift-storage                        28h
-multicluster-engine.multicluster-engine                28h
-openshift-gitops-operator.openshift-operators          28h
-topology-aware-lifecycle-manager.openshift-operators   28h</code></pre>
+advanced-cluster-management.open-cluster-management    2d1h
+cluster-logging.openshift-logging                      2d1h
+loki-operator.openshift-operators                      2d1h
+lvms-operator.openshift-storage                        2d1h
+multicluster-engine.multicluster-engine                2d1h
+openshift-gitops-operator.openshift-operators          2d1h
+ptp-operator.openshift-ptp                             2d1h
+topology-aware-lifecycle-manager.openshift-operators   2d1h</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -906,8 +909,8 @@ topology-aware-lifecycle-manager.openshift-operators   28h</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                            READY   STATUS    RESTARTS   AGE
-image-based-install-operator-7f7659f86c-cd46k   2/2     Running   0          46h</code></pre>
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                           READY   STATUS    RESTARTS   AGE
+image-based-install-operator-7f9587bbc-8fmg5   2/2     Running   0          2d1h</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -920,9 +923,10 @@ image-based-install-operator-7f7659f86c-cd46k   2/2     Running   0          46h
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                                                READY   STATUS    RESTARTS   AGE
-pod/cluster-group-upgrades-controller-manager-v2-789fd8fbcd-nn4k5   2/2     Running   0          103m
-pod/openshift-gitops-operator-controller-manager-6794f4f9cc-vpm2b   2/2     Running   0          106m</code></pre>
+<pre class="highlightjs highlight"><code class="language-console hljs" data-lang="console">NAME                                                            READY   STATUS    RESTARTS       AGE
+cluster-group-upgrades-controller-manager-v2-5df6886875-cvwj4   1/1     Running   3 (2d1h ago)   2d1h
+loki-operator-controller-manager-576ff479bf-hjrfp               2/2     Running   0              2d1h
+openshift-gitops-operator-controller-manager-57684fcdc9-9p5rm   2/2     Running   0              2d1h</code></pre>
 </div>
 </div>
 </div>
@@ -955,7 +959,7 @@ oc --kubeconfig ~/hub-kubeconfig -n sno-ibi extract secret/sno-ibi-admin-kubecon
 </div>
 </div>
 <div class="paragraph">
-<p>If we check the operators installed in <code>sno-abi</code>, we&#8217;ll notice that neither LCA nor OADP are installed. This is expected because, as we saw in the <a href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a> section, only SR-IOV and LVM operators were installed as Day 2 Operators.</p>
+<p>If we check the operators installed in <code>sno-abi</code>, we&#8217;ll notice that neither LCA nor OADP are installed. This is expected because, as we saw in the <a href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a> section, only SR-IOV, PTP, Logging and LVM operators were installed as Day 2 Operators.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -964,10 +968,12 @@ oc --kubeconfig ~/hub-kubeconfig -n sno-ibi extract secret/sno-ibi-admin-kubecon
 </div>
 <div class="listingblock console">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE                              NAME                                          DISPLAY                   VERSION               REPLACES   PHASE
-openshift-operator-lifecycle-manager   packageserver                                 Package Server            0.0.1-snapshot                   Succeeded
-openshift-sriov-network-operator       sriov-network-operator.v4.18.0-202502121533   SR-IOV Network Operator   4.18.0-202502121533              Succeeded
-openshift-storage                      lvms-operator.v4.18.0                         LVM Storage               4.18.0                           Succeeded</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE                              NAME                                          DISPLAY                     VERSION               REPLACES   PHASE
+openshift-logging                      cluster-logging.v6.3.0                        Red Hat OpenShift Logging   6.3.0                            Succeeded
+openshift-operator-lifecycle-manager   packageserver                                 Package Server              0.0.1-snapshot                   Succeeded
+openshift-ptp                          ptp-operator.v4.19.0-202507180107             PTP Operator                4.19.0-202507180107              Succeeded
+openshift-sriov-network-operator       sriov-network-operator.v4.19.0-202507212206   SR-IOV Network Operator     4.19.0-202507212206              Succeeded
+openshift-storage                      lvms-operator.v4.19.0                         LVM Storage                 4.19.0                           Succeeded</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -980,12 +986,14 @@ openshift-storage                      lvms-operator.v4.18.0                    
 </div>
 <div class="listingblock console">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE                              NAME                                          DISPLAY                   VERSION               REPLACES   PHASE
-openshift-adp                          oadp-operator.v1.4.2                          OADP Operator             1.4.2                            Succeeded
-openshift-lifecycle-agent              lifecycle-agent.v4.18.0                       Lifecycle Agent           4.18.0                           Succeeded
-openshift-operator-lifecycle-manager   packageserver                                 Package Server            0.0.1-snapshot                   Succeeded
-openshift-sriov-network-operator       sriov-network-operator.v4.18.0-202502121533   SR-IOV Network Operator   4.18.0-202502121533              Succeeded
-openshift-storage                      lvms-operator.v4.18.0                         LVM Storage               4.18.0                           Succeeded</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE                              NAME                                          DISPLAY                     VERSION               REPLACES   PHASE
+openshift-adp                          oadp-operator.v1.5.0                          OADP Operator               1.5.0                            Succeeded
+openshift-lifecycle-agent              lifecycle-agent.v4.19.0                       Lifecycle Agent             4.19.0                           Succeeded
+openshift-logging                      cluster-logging.v6.3.0                        Red Hat OpenShift Logging   6.3.0                            Succeeded
+openshift-operator-lifecycle-manager   packageserver                                 Package Server              0.0.1-snapshot                   Succeeded
+openshift-ptp                          ptp-operator.v4.19.0-202507180107             PTP Operator                4.19.0-202507180107              Succeeded
+openshift-sriov-network-operator       sriov-network-operator.v4.19.0-202507212206   SR-IOV Network Operator     4.19.0-202507212206              Succeeded
+openshift-storage                      lvms-operator.v4.19.0                         LVM Storage                 4.19.0                           Succeeded</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1058,7 +1066,7 @@ An S3-compatible storage server is required for backup and restore operations. S
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/requirements-upgrade.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.19/requirements-upgrade.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
@@ -1067,7 +1075,7 @@ metadata:
   namespace: "ztp-policies"
 spec:
   bindingRules:
-    common: "ocp418"
+    common: "ocp419"
     logicalGroup: "active"
     du-zone: europe
   mcp: master
@@ -1135,7 +1143,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/ns-oadp.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.19/ns-oadp.yaml
 ---
 apiVersion: v1
 kind: Namespace
@@ -1152,7 +1160,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/extra-manifests.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.19/extra-manifests.yaml
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -1184,12 +1192,12 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.19/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 generators:
-  - common-418.yaml
+  - common-419.yaml
   - group-du-sno.yaml
   - requirements-upgrade.yaml
 #  - group-du-sno-validator.yaml
