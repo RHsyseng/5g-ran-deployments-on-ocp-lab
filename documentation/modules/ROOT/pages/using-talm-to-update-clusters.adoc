@@ -37,11 +37,14 @@ oc --kubeconfig ~/hub-kubeconfig get operators
 [source,console]
 -----
 NAME                                                   AGE
-advanced-cluster-management.open-cluster-management    28h
-lvms-operator.openshift-storage                        28h
-multicluster-engine.multicluster-engine                28h
-openshift-gitops-operator.openshift-operators          28h
-topology-aware-lifecycle-manager.openshift-operators   28h
+advanced-cluster-management.open-cluster-management    2d1h
+cluster-logging.openshift-logging                      2d1h
+loki-operator.openshift-operators                      2d1h
+lvms-operator.openshift-storage                        2d1h
+multicluster-engine.multicluster-engine                2d1h
+openshift-gitops-operator.openshift-operators          2d1h
+ptp-operator.openshift-ptp                             2d1h
+topology-aware-lifecycle-manager.openshift-operators   2d1h
 -----
 
 Verify that the Image-Based Install (IBI) operator is installed:
@@ -53,8 +56,8 @@ oc --kubeconfig ~/hub-kubeconfig get pods -n multicluster-engine -lapp=image-bas
 -----
 [source,console]
 -----
-NAME                                            READY   STATUS    RESTARTS   AGE
-image-based-install-operator-7f7659f86c-cd46k   2/2     Running   0          46h
+NAME                                           READY   STATUS    RESTARTS   AGE
+image-based-install-operator-7f9587bbc-8fmg5   2/2     Running   0          2d1h
 -----
 
 Next, double-check that the TALM operator is running. Note that the name of the Pod is `cluster-group-upgrade-controller-manager`, which is based on the name of the upstream project {talm-upstream-project}[Cluster Group Upgrade Operator].
@@ -68,9 +71,10 @@ oc --kubeconfig ~/hub-kubeconfig get pods -n openshift-operators
 [console-input]
 [source,console]
 -----
-NAME                                                                READY   STATUS    RESTARTS   AGE
-pod/cluster-group-upgrades-controller-manager-v2-789fd8fbcd-nn4k5   2/2     Running   0          103m
-pod/openshift-gitops-operator-controller-manager-6794f4f9cc-vpm2b   2/2     Running   0          106m
+NAME                                                            READY   STATUS    RESTARTS       AGE
+cluster-group-upgrades-controller-manager-v2-5df6886875-cvwj4   1/1     Running   3 (2d1h ago)   2d1h
+loki-operator-controller-manager-576ff479bf-hjrfp               2/2     Running   0              2d1h
+openshift-gitops-operator-controller-manager-57684fcdc9-9p5rm   2/2     Running   0              2d1h
 -----
 
 [#getting-snos-kubeconfigs]
@@ -89,7 +93,7 @@ oc --kubeconfig ~/hub-kubeconfig -n sno-abi extract secret/sno-abi-admin-kubecon
 oc --kubeconfig ~/hub-kubeconfig -n sno-ibi extract secret/sno-ibi-admin-kubeconfig --to=- > {ibi-cluster-kubeconfig}
 -----
 
-If we check the operators installed in `sno-abi`, we'll notice that neither LCA nor OADP are installed. This is expected because, as we saw in the link:crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies[Crafting Common Policies] section, only SR-IOV and LVM operators were installed as Day 2 Operators.
+If we check the operators installed in `sno-abi`, we'll notice that neither LCA nor OADP are installed. This is expected because, as we saw in the link:crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies[Crafting Common Policies] section, only SR-IOV, PTP, Logging and LVM operators were installed as Day 2 Operators.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -99,10 +103,12 @@ oc --kubeconfig {abi-cluster-kubeconfig} get csv -A
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----
-NAMESPACE                              NAME                                          DISPLAY                   VERSION               REPLACES   PHASE
-openshift-operator-lifecycle-manager   packageserver                                 Package Server            0.0.1-snapshot                   Succeeded
-openshift-sriov-network-operator       sriov-network-operator.v4.18.0-202502121533   SR-IOV Network Operator   4.18.0-202502121533              Succeeded
-openshift-storage                      lvms-operator.v4.18.0                         LVM Storage               4.18.0                           Succeeded
+NAMESPACE                              NAME                                          DISPLAY                     VERSION               REPLACES   PHASE
+openshift-logging                      cluster-logging.v6.3.0                        Red Hat OpenShift Logging   6.3.0                            Succeeded
+openshift-operator-lifecycle-manager   packageserver                                 Package Server              0.0.1-snapshot                   Succeeded
+openshift-ptp                          ptp-operator.v4.19.0-202507180107             PTP Operator                4.19.0-202507180107              Succeeded
+openshift-sriov-network-operator       sriov-network-operator.v4.19.0-202507212206   SR-IOV Network Operator     4.19.0-202507212206              Succeeded
+openshift-storage                      lvms-operator.v4.19.0                         LVM Storage                 4.19.0                           Succeeded
 -----
 
 On the other hand, `sno-ibi` is running all the required operators: Day 2 Operators plus LCA and OADP, which are necessary to run the image-based upgrade process. This is because they were already included in the seed image version {sno-cluster-version1}. See link:creating-seed-image.html#_running_the_seed_image_generation[Running the Seed Image Generation] for a list of the operators installed in the seed cluster. They are the same versions because `sno-ibi` was provisioned with that seed image (image-based installation).
@@ -115,12 +121,14 @@ oc --kubeconfig  {ibi-cluster-kubeconfig} get csv -A
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----
-NAMESPACE                              NAME                                          DISPLAY                   VERSION               REPLACES   PHASE
-openshift-adp                          oadp-operator.v1.4.2                          OADP Operator             1.4.2                            Succeeded
-openshift-lifecycle-agent              lifecycle-agent.v4.18.0                       Lifecycle Agent           4.18.0                           Succeeded
-openshift-operator-lifecycle-manager   packageserver                                 Package Server            0.0.1-snapshot                   Succeeded
-openshift-sriov-network-operator       sriov-network-operator.v4.18.0-202502121533   SR-IOV Network Operator   4.18.0-202502121533              Succeeded
-openshift-storage                      lvms-operator.v4.18.0                         LVM Storage               4.18.0                           Succeeded
+NAMESPACE                              NAME                                          DISPLAY                     VERSION               REPLACES   PHASE
+openshift-adp                          oadp-operator.v1.5.0                          OADP Operator               1.5.0                            Succeeded
+openshift-lifecycle-agent              lifecycle-agent.v4.19.0                       Lifecycle Agent             4.19.0                           Succeeded
+openshift-logging                      cluster-logging.v6.3.0                        Red Hat OpenShift Logging   6.3.0                            Succeeded
+openshift-operator-lifecycle-manager   packageserver                                 Package Server              0.0.1-snapshot                   Succeeded
+openshift-ptp                          ptp-operator.v4.19.0-202507180107             PTP Operator                4.19.0-202507180107              Succeeded
+openshift-sriov-network-operator       sriov-network-operator.v4.19.0-202507212206   SR-IOV Network Operator     4.19.0-202507212206              Succeeded
+openshift-storage                      lvms-operator.v4.19.0                         LVM Storage                 4.19.0                           Succeeded
 -----
 
 Okay, let's install the missing LCA and OADP operators in `sno-abi` and configure them appropriately in both managed clusters. To achieve this, a PolicyGenTemplate and a cluster group upgrade (CGU) CR will be created in the hub cluster so that TALM manages the installation and configuration process.
@@ -159,7 +167,7 @@ Let's create a PGT called `requirements-upgrade` on the hub cluster. This will h
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/requirements-upgrade.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/requirements-upgrade.yaml
 ---
 apiVersion: ran.openshift.io/v1
 kind: PolicyGenTemplate
@@ -168,7 +176,7 @@ metadata:
   namespace: "ztp-policies"
 spec:
   bindingRules:
-    common: "ocp418"
+    common: "ocp419"
     logicalGroup: "active"
     du-zone: europe
   mcp: master
@@ -236,7 +244,7 @@ Create the `openshift-adp` namespace on the hub cluster. This is required so tha
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/ns-oadp.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/ns-oadp.yaml
 ---
 apiVersion: v1
 kind: Namespace
@@ -253,7 +261,7 @@ Include the configuration of a disconnected catalog source as an extra manifest.
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/extra-manifests.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/extra-manifests.yaml
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -285,12 +293,12 @@ Modify the `kustomization.yaml` inside the `site-policies` folder so that it inc
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 generators:
-  - common-418.yaml
+  - common-419.yaml
   - group-du-sno.yaml
   - requirements-upgrade.yaml
 #  - group-du-sno-validator.yaml
