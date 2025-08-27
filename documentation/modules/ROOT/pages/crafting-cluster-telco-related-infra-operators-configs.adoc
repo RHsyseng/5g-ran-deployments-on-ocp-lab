@@ -545,6 +545,8 @@ policies:
         - metadata:
             name: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename1" .ManagedClusterName) hub}}'
           spec:
+            nodeSelector:
+              node-role.kubernetes.io/master: ""
             deviceType: netdevice
             needVhostNet: false
             mtu: 1500
@@ -573,6 +575,8 @@ policies:
         - metadata:
             name: '{{hub fromConfigMap "" "site-data-configmap" (printf "%s-resourcename2" .ManagedClusterName) hub}}'
           spec:
+            nodeSelector:
+              node-role.kubernetes.io/master: ""
             deviceType: vfio-pci
             mtu: 1500
             linkType: eth
