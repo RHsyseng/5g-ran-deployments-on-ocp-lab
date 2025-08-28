@@ -59,7 +59,6 @@ policies:
         - metadata:
             name: redhat-operator-index
           spec:
-            displayName: disconnected-redhat-operators
             image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:{catalogsource-index-image-tag}
 - name: common-subscriptions-policy
   policyAnnotations:
@@ -737,7 +736,7 @@ policies:
             source: redhat-operator-index
             config:
               env:
-                - name: "DEV_TRUE"
+                - name: "DEV_MODE"
                   value: "TRUE"
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/SriovSubscriptionOperGroup.yaml
