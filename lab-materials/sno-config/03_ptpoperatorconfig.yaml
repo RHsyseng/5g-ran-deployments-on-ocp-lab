@@ -5,6 +5,8 @@ kind: PtpConfig
 metadata:
   name: du-ptp-slave
   namespace: openshift-ptp
+  annotations:
+    ran.openshift.io/ztp-deploy-wave: "10"
 spec:
   profile:
   - interface: enp4s0
@@ -121,6 +123,8 @@ spec:
     ptpSchedulingPriority: 10
     ptpSettings:
       logReduce: "true"
+    daemonNodeSelector:
+      node-role.kubernetes.io/master: ""
   recommend:
   - match:
     - nodeLabel: node-role.kubernetes.io/master

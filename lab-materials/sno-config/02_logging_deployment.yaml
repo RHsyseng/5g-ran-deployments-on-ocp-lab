@@ -6,6 +6,8 @@ metadata:
     workload.openshift.io/allowed: management
   labels:
     openshift.io/cluster-monitoring: "true"
+  annotations:
+    ran.openshift.io/ztp-deploy-wave: "2"
   name: openshift-logging
 ---
 apiVersion: operators.coreos.com/v1
@@ -13,6 +15,8 @@ kind: OperatorGroup
 metadata:
   name: cluster-logging
   namespace: openshift-logging
+  annotations:
+    ran.openshift.io/ztp-deploy-wave: "2"
 spec:
   targetNamespaces:
   - openshift-logging
@@ -22,8 +26,11 @@ kind: Subscription
 metadata:
   name: cluster-logging
   namespace: openshift-logging
+  annotations:
+    ran.openshift.io/ztp-deploy-wave: "2"
 spec:
   channel: "stable-6.3"
   name: cluster-logging
   source: redhat-operator-index
   sourceNamespace: openshift-marketplace
+  installPlanApproval: Automatic

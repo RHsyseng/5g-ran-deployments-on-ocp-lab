@@ -7,12 +7,15 @@ metadata:
     workload.openshift.io/allowed: management
   annotations:
     workload.openshift.io/allowed: management
+    ran.openshift.io/ztp-deploy-wave: "2"
 ---
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
   name: lvms-operator-operatorgroup
   namespace: openshift-storage
+  annotations:
+    ran.openshift.io/ztp-deploy-wave: "2"
 spec:
   targetNamespaces:
   - openshift-storage
@@ -22,6 +25,8 @@ kind: Subscription
 metadata:
   name: lvms-operator
   namespace: openshift-storage
+  annotations:
+    ran.openshift.io/ztp-deploy-wave: "2"
 spec:
   channel: "stable-4.19"
   name: lvms-operator
