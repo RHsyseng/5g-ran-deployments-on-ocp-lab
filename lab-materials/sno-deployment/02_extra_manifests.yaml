@@ -82,6 +82,8 @@ data:
     apiVersion: operators.coreos.com/v1alpha1
     kind: CatalogSource
     metadata:
+      annotations:
+        ran.openshift.io/ztp-deploy-wave: "1"
       name: redhat-operator-index
       namespace: openshift-marketplace
     spec:
@@ -773,6 +775,7 @@ data:
     metadata:
       name: cluster
       annotations:
+        ran.openshift.io/ztp-deploy-wave: "10"
     spec:
       disableNetworkDiagnostics: true
   ConsoleOperatorDisable.yaml: |
@@ -785,6 +788,7 @@ data:
         include.release.openshift.io/self-managed-high-availability: "false"
         include.release.openshift.io/single-node-developer: "false"
         release.openshift.io/create-only: "true"
+        ran.openshift.io/ztp-deploy-wave: "10"
       name: cluster
     spec:
       logLevel: Normal

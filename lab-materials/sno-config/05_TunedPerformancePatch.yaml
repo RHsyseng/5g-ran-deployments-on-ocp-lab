@@ -3,6 +3,8 @@ kind: Tuned
 metadata:
   name: performance-patch
   namespace: openshift-cluster-node-tuning-operator
+  annotations:
+    ran.openshift.io/ztp-deploy-wave: "10"
 spec:
   profile:
   - data: |
@@ -15,6 +17,7 @@ spec:
       [scheduler]
       group.ice-ptp=0:f:10:*:ice-ptp.*
       group.ice-gnss=0:f:10:*:ice-gnss.*
+      group.ice-dplls=0:f:10:*:ice-dplls.*
       [service]
       service.stalld=start,enable
       service.chronyd=stop,disable

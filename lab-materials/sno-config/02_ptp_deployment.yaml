@@ -4,6 +4,7 @@ kind: Namespace
 metadata:
   annotations:
     workload.openshift.io/allowed: management
+    ran.openshift.io/ztp-deploy-wave: "2"
   labels:
     openshift.io/cluster-monitoring: "true"
   name: openshift-ptp
@@ -13,6 +14,10 @@ kind: OperatorGroup
 metadata:
   name: ptp-operators
   namespace: openshift-ptp
+  labels:
+    openshift.io/cluster-monitoring: "true"
+  annotations:
+    ran.openshift.io/ztp-deploy-wave: "2"
 spec:
   targetNamespaces:
   - openshift-ptp
@@ -22,6 +27,8 @@ kind: Subscription
 metadata:
   name: ptp-operator-subscription
   namespace: openshift-ptp
+  annotations:
+    ran.openshift.io/ztp-deploy-wave: "2"
 spec:
   channel: "stable"
   name: ptp-operator

@@ -7,6 +7,7 @@ metadata:
        "systemReserved": {"memory": "3Gi"}
       }
     ran.openshift.io/reference-configuration: ran-du.redhat.com
+    ran.openshift.io/ztp-deploy-wave: "10"
   name: openshift-node-performance-profile
 spec:
   additionalKernelArgs:
@@ -29,7 +30,7 @@ spec:
   nodeSelector:
     node-role.kubernetes.io/master: ""
   numa:
-    topologyPolicy: single-numa-node
+    topologyPolicy: restricted
   realTimeKernel:
     enabled: false
   workloadHints:
