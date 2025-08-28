@@ -164,78 +164,150 @@ IMPORTANT: An S3-compatible storage server is required for backup and restore op
 
 Let's create a PGT called `requirements-upgrade` on the hub cluster. This will help us to create multiple RHACM policies, as explained in the link:policygen-deepdive.html[PolicyGen DeepDive] section.
 
+WARNING: Due to an issue with the OADP Data Protection source CR and a deprecation of one of the configuration in this version, a custom source CR must be created and referenced in the Policy.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/source-crs/custom-crs/OadpDataProtectionApplication.yaml
+---
+# The configuration CR for OADP operator
+# More information can be found in https://docs.openshift.com/container-platform/4.15/backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.html
+apiVersion: oadp.openshift.io/v1alpha1
+kind: DataProtectionApplication
+metadata:
+  name: dataprotectionapplication
+  namespace: openshift-adp
+  annotations:
+    ran.openshift.io/ztp-deploy-wave: "100"
+spec:
+  configuration:
+    nodeAgent:
+      enable: false
+      uploaderType: restic
+    velero:
+      defaultPlugins:
+        - aws
+        - openshift
+      resourceTimeout: 10m
+# User needs to configure the following backupLocations through PGT overlay
+# backupLocations:
+# - velero:
+#     provider: aws
+#     default: true
+#     credential:
+#       key: cloud
+#       name: cloud-credentials
+#     config:
+#       profile: "default"
+#       region: minio
+#       s3Url: $url
+#       insecureSkipTLSVerify: "true"
+#       s3ForcePathStyle: "true"
+#     objectStorage:
+#       bucket: $bucketName
+#       prefix: $prefixName
+status:
+  conditions:
+  - reason: Complete
+    status: "True"
+    type: Reconciled
+EOF
+-----
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/requirements-upgrade.yaml
 ---
-apiVersion: ran.openshift.io/v1
-kind: PolicyGenTemplate
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
 metadata:
-  name: "requirements-upgrade"
-  namespace: "ztp-policies"
-spec:
-  bindingRules:
-    common: "ocp419"
-    logicalGroup: "active"
-    du-zone: europe
-  mcp: master
+  name: requirements-upgrade
+placementBindingDefaults:
+  name: requirements-upgrade-placement-binding
+policyDefaults:
+  namespace: ztp-policies
+  placement:
+    labelSelector:
+      common: "ocp419"
+      logicalGroup: "active"
+      du-zone: "europe"
   remediationAction: inform
-  sourceFiles:
-    - fileName: LcaSubscriptionOperGroup.yaml
-      metadata:
-        name: lifecycle-agent-operatorgroup
-      policyName: subscriptions-policy
-    - fileName: LcaSubscription.yaml
-      spec:
-        channel: stable
-        source: redhat-operator-index
-      policyName: subscriptions-policy
-    - fileName: LcaOperatorStatus.yaml
-      policyName: subscriptions-policy
-    - fileName: LcaSubscriptionNS.yaml
-      policyName: subscriptions-policy
-    - fileName: OadpSubscriptionOperGroup.yaml
-      policyName: subscriptions-policy
-    - fileName: OadpSubscription.yaml
-      spec:
-        source: redhat-operator-index
-      policyName: subscriptions-policy
-    - fileName: OadpOperatorStatus.yaml
-      policyName: subscriptions-policy
-    - fileName: OadpSubscriptionNS.yaml
-      policyName: subscriptions-policy
-    - fileName: OadpSecret.yaml
-      data:
-        cloud: W2RlZmF1bHRdCmF3c19hY2Nlc3Nfa2V5X2lkPWFkbWluCmF3c19zZWNyZXRfYWNjZXNzX2tleT1hZG1pbjEyMzQK
-      policyName: config-policy
-    - fileName: OadpDataProtectionApplication.yaml
-      spec:
-        backupLocations:
-        - velero:
-            config:
-              insecureSkipTLSVerify: "true"
-              profile: default
-              region: minio
-              s3ForcePathStyle: "true"
-              s3Url: http://192.168.125.1:9002
-            credential:
-              key: cloud
-              name: cloud-credentials
-            default: true
-            objectStorage:
-              bucket: '{{hub .ManagedClusterName hub}}'
-              prefix: velero
-            provider: aws
-      policyName: config-policy
-    - fileName: OadpBackupStorageLocationStatus.yaml
-      policyName: config-policy
-    - fileName: ConfigMapGeneric.yaml
-      complianceType: mustonlyhave
-      policyName: "extra-manifests"
-      metadata:
-        name: disconnected-ran-config
-        namespace: openshift-lifecycle-agent
+  severity: low
+  namespaceSelector:
+    exclude:
+      - kube-*
+    include:
+      - '*'
+  evaluationInterval:
+   # This low setting is only valid if the validation policy is disconnected from the cluster at steady-state
+   # using a bindingExcludeRules entry with ztp-done
+    compliant: 5s
+    noncompliant: 10s
+policies:
+- name: requirements-upgrade-subscriptions-policy
+  policyAnnotations:
+    ran.openshift.io/soak-seconds: "30"
+    ran.openshift.io/ztp-deploy-wave: "10000"
+  manifests:
+    - path: source-crs/reference-crs/LcaSubscriptionOperGroup.yaml
+      patches:
+      - metadata:
+          name: lifecycle-agent-operatorgroup
+    - path: source-crs/reference-crs/LcaSubscription.yaml
+      patches:
+      - spec:
+          channel: stable
+          source: redhat-operator-index
+    - path: source-crs/reference-crs/LcaOperatorStatus.yaml
+    - path: source-crs/reference-crs/LcaSubscriptionNS.yaml
+    - path: source-crs/reference-crs/OadpSubscriptionOperGroup.yaml
+    - path: source-crs/reference-crs/OadpSubscription.yaml
+      patches:
+      - spec:
+          source: redhat-operator-index
+    - path: source-crs/reference-crs/OadpOperatorStatus.yaml
+    - path: source-crs/reference-crs/OadpSubscriptionNS.yaml
+- name: requirements-upgrade-config-policy
+  policyAnnotations:
+    ran.openshift.io/soak-seconds: "30"
+    ran.openshift.io/ztp-deploy-wave: "20000"
+  manifests:
+    - path: source-crs/reference-crs/OadpSecret.yaml
+      patches:
+      - data:
+          cloud: W2RlZmF1bHRdCmF3c19hY2Nlc3Nfa2V5X2lkPWFkbWluCmF3c19zZWNyZXRfYWNjZXNzX2tleT1hZG1pbjEyMzQK
+    - path: source-crs/custom-crs/OadpDataProtectionApplication.yaml
+      patches:
+      - spec:
+          backupLocations:
+          - velero:
+              config:
+                insecureSkipTLSVerify: "true"
+                profile: default
+                region: minio
+                s3ForcePathStyle: "true"
+                s3Url: http://192.168.125.1:9002
+              credential:
+                key: cloud
+                name: cloud-credentials
+              default: true
+              objectStorage:
+                bucket: '{{hub .ManagedClusterName hub}}'
+                prefix: velero
+              provider: aws
+    - path: source-crs/reference-crs/OadpBackupStorageLocationStatus.yaml
+- name: requirements-upgrade-extra-manifests
+  policyAnnotations:
+    ran.openshift.io/soak-seconds: "30"
+    ran.openshift.io/ztp-deploy-wave: "30000"
+  manifests:
+    - path: source-crs/reference-crs/ConfigMapGeneric.yaml
+      patches:
+      - metadata:
+          name: disconnected-ran-config
+          namespace: openshift-lifecycle-agent
 EOF
 -----
 
@@ -418,9 +490,9 @@ Finally, once the upgrade policy is applied successfully we can remove it so it 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-sed -i "s|- requirements-upgrade.yaml|#- requirements-upgrade.yaml|" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
+sed -i "s|- requirements-upgrade.yaml|#- requirements-upgrade.yaml|" ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/kustomization.yaml
 cd ~/5g-deployment-lab/ztp-repository/site-policies
-git add ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/kustomization.yaml
+git add ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/kustomization.yaml
 git commit -m "Removes upgrade policy once it is applied"
 git push origin main
 -----
