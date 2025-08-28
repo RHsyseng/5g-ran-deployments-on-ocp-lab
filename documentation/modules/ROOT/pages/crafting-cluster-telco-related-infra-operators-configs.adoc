@@ -399,6 +399,9 @@ policies:
                 [service]
                 service.stalld=start,enable
                 service.chronyd=stop,disable
+          recommend:
+            - machineConfigLabels:
+                machineconfiguration.openshift.io/role: master
 EOF
 -----
 +
