@@ -911,7 +911,6 @@ policies:
         - metadata:
             name: redhat-operator-index
           spec:
-            displayName: disconnected-redhat-operators
             image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.19-1754067857
 - name: common-subscriptions-policy
   policyAnnotations:
@@ -1280,6 +1279,9 @@ policies:
                 [service]
                 service.stalld=start,enable
                 service.chronyd=stop,disable
+          recommend:
+            - machineConfigLabels:
+                machineconfiguration.openshift.io/role: master
 EOF</code></pre>
 </div>
 </div>
@@ -1670,7 +1672,7 @@ policies:
             source: redhat-operator-index
             config:
               env:
-                - name: "DEV_TRUE"
+                - name: "DEV_MODE"
                   value: "TRUE"
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/SriovSubscriptionOperGroup.yaml
