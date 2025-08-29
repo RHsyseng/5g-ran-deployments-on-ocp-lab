@@ -88,7 +88,7 @@ policies:
             source: redhat-operator-index
             config:
               env:
-                - name: "DEV_TRUE"
+                - name: "DEV_MODE"
                   value: "TRUE"
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/SriovSubscriptionOperGroup.yaml
