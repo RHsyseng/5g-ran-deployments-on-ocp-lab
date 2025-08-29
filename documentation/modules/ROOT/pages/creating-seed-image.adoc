@@ -34,8 +34,9 @@ oc --kubeconfig {seed-cluster-kubeconfig} get csv -A
 -----
 
 [.console]
-[source,bash]
+[source,bash,subs="attributes+,+macros"]
 -----
+NAMESPACE                              NAME                                          DISPLAY                     VERSION               REPLACES   PHASE
 openshift-adp                          oadp-operator.v1.5.0                          OADP Operator               1.5.0                            Succeeded
 openshift-lifecycle-agent              lifecycle-agent.v4.19.0                       Lifecycle Agent             4.19.0                           Succeeded
 openshift-logging                      cluster-logging.v6.3.0                        Red Hat OpenShift Logging   6.3.0                            Succeeded
@@ -53,7 +54,7 @@ Verify that the OpenShift Container Platform version of the seed SNO cluster is 
 oc --kubeconfig {seed-cluster-kubeconfig} get clusterversion
 -----
 
-[.console-input]
+[.console]
 [source,bash,subs="attributes+,+macros"]
 -----
 NAME      VERSION       AVAILABLE   PROGRESSING   SINCE   STATUS
