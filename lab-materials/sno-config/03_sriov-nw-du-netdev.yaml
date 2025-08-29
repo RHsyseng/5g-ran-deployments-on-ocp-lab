@@ -4,6 +4,8 @@ kind: SriovNetwork
 metadata:
   name: sriov-nw-du-netdev
   namespace: openshift-sriov-network-operator
+  annotations:
+    ran.openshift.io/ztp-deploy-wave: "100"
 spec:
   ipam: '{"type": "host-local","ranges": [[{"subnet": "192.168.100.0/24"}]],"dataDir":
     "/run/my-orchestrator/container-ipam-state-1"}'
@@ -18,6 +20,8 @@ kind: SriovNetworkNodePolicy
 metadata:
   name: virt-enp4s0
   namespace: openshift-sriov-network-operator
+  annotations:
+    ran.openshift.io/ztp-deploy-wave: "100"
 spec:
   deviceType: netdevice
   isRdma: false
