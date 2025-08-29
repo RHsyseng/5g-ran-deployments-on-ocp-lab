@@ -223,7 +223,7 @@ Diff Output: diff -u -N /tmp/MERGED-3838910212/operators-coreos-com-v1alpha1_sub
 +++ /tmp/LIVE-2954688387/operators-coreos-com-v1alpha1_subscription_openshift-sriov-network-operator_sriov-network-operator-subscription    2025-06-11 09:41:27.989294305 +0000
 @@ -11,7 +11,7 @@
      env:
-     - name: DEV_TRUE
+     - name: DEV_MODE
        value: "TRUE"
 -  installPlanApproval: Manual
 +  installPlanApproval: Automatic
