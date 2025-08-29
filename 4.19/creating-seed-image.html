@@ -891,7 +891,8 @@ If the following command throws an error saying: <code>The connection to the ser
 </div>
 <div class="listingblock console">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openshift-adp                          oadp-operator.v1.5.0                          OADP Operator               1.5.0                            Succeeded
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE                              NAME                                          DISPLAY                     VERSION               REPLACES   PHASE
+openshift-adp                          oadp-operator.v1.5.0                          OADP Operator               1.5.0                            Succeeded
 openshift-lifecycle-agent              lifecycle-agent.v4.19.0                       Lifecycle Agent             4.19.0                           Succeeded
 openshift-logging                      cluster-logging.v6.3.0                        Red Hat OpenShift Logging   6.3.0                            Succeeded
 openshift-operator-lifecycle-manager   packageserver                                 Package Server              0.0.1-snapshot                   Succeeded
@@ -908,7 +909,7 @@ openshift-storage                      lvms-operator.v4.19.0                    
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/seed-cluster-kubeconfig get clusterversion</code></pre>
 </div>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock console">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME      VERSION       AVAILABLE   PROGRESSING   SINCE   STATUS
 version   v4.19.0  True        False         13m     Cluster version is v4.19.0</code></pre>
