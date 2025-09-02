@@ -410,7 +410,7 @@ data:
       serviceAccount:
         name: collector
   mtls-tenant-snos.yaml: |
-	  apiVersion: v1
+    apiVersion: v1
     kind: Secret
     metadata:
       name: mtls-tenant-snos
