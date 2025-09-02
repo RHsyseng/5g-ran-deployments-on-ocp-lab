@@ -130,3 +130,14 @@ spec:
     - nodeLabel: node-role.kubernetes.io/master
     priority: 4
     profile: slave
+---
+apiVersion: ptp.openshift.io/v1
+kind: PtpOperatorConfig
+metadata:
+  name: default
+  namespace: openshift-ptp
+  annotations:
+    ran.openshift.io/ztp-deploy-wave: "10"
+spec:
+  daemonNodeSelector:
+    node-role.kubernetes.io/master: ""
