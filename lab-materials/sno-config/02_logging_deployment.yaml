@@ -4,10 +4,9 @@ kind: Namespace
 metadata:
   annotations:
     workload.openshift.io/allowed: management
+    ran.openshift.io/ztp-deploy-wave: "2"
   labels:
     openshift.io/cluster-monitoring: "true"
-  annotations:
-    ran.openshift.io/ztp-deploy-wave: "2"
   name: openshift-logging
 ---
 apiVersion: operators.coreos.com/v1

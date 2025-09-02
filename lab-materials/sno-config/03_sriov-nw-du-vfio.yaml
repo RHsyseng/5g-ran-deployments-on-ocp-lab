@@ -36,4 +36,5 @@ spec:
   nodeSelector:
     node-role.kubernetes.io/master: ""
   numVfs: 2
+  priority: 99
   resourceName: virt-enp5s0
