@@ -529,7 +529,7 @@ We can monitor the remediation process using the command line as well:
 -----
 oc --kubeconfig ~/hub-kubeconfig get cgu -n ztp-policies
 -----
-[.console-input]
+[console-input]
 [source,bash,subs="attributes+"]
 -----
 NAMESPACE      NAME                   AGE   STATE        DETAILS
