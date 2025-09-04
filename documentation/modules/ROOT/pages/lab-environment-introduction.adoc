@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-Before jumping into the hands-on sections, let's get familiar with the lab environment we have available.
+Before jumping into the hands-on sections, let's get familiar with the lab environment we have available and I would recommend taking a second read of the xref:introduction.adoc#what-you-will-achieve[What You Will Achieve] section.
 
 ifeval::["{demo_environment}" != "true"]
 CAUTION: The following lab sections rely on having a lab environment accessible in order to do the hands-on work. If you're a Red Hatter, you can order a lab environment already set up for you on the https://demo.redhat.com[Red Hat Demo Platform]. You just need to order the lab named `5G RAN Deployment on OpenShift`. Notice that it has a cost of ~ $56 to run through the lab. When the lab is launched, by default you will have 12 hours to complete it before it is destroyed. The estimated time to finish the lab might look like 12 hours total (2h provisioning time, 5h lab work, 5h margin). If you need further time, it can be manually extended up to 24h in total. If you still need to deploy a lab environment, follow the guide available xref:lab-environment.adoc[here].
@@ -17,10 +17,12 @@ image::telco5g-lab.png[Telco 5G Lab environment]
 
 A https://github.com/go-gitea/gitea[gitea] server is running on the infrastructure host, you can reach it at http://infra.5g-deployment.lab:3000/. You can access through the pre-configured Firefox image:bookmark-gitea.png[Gitea bookmark icon] bookmark.
 
-Credentials for the git server:
+Credentials for the git server. 
 
 * Username: `student` 
 * Password: `student`
+
+You will use these credentials to log in to the Gitea WebUI and manage your GitOps repositories.
 
 [#container-registry]
 == Container Registry
@@ -33,6 +35,8 @@ Credentials for the container registry:
 
 * Username: `admin` 
 * Password: `r3dh4t1!`
+
+These credentials are required for podman login or similar commands when interacting with the mirror registry from the terminal.
 
 NOTE: If you receive an error message regarding the certificate please re-run update-ca-trust on the hypervisor or add `--tls-verify=false` to the command line. 
 
@@ -65,6 +69,8 @@ An S3 storage server is running on the infrastructure host in order to provide S
 
 * Username: `admin` 
 * Password: `admin1234`
+
+Access the management console with these credentials to manage S3 buckets for backup and restore operations related to image-based upgrades.
 
 [#openshift-seed-sno]
 == OpenShift Seed SNO Cluster
