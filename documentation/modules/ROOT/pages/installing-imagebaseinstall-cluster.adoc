@@ -193,7 +193,7 @@ cp ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir/rhcos-ibi.iso /opt/webca
 
 Now we are ready to boot sno-ibi with the Installation ISO. Run the following command from the infrastructure host:
 
-IMPORTANT: We're using the `kcli` tool to boot the server from the ISO by leveraging the RedFish API. You can boot the server using other methods as needed.
+IMPORTANT: We’re using the `kcli` tool, a command-line interface for managing virtual machines and bare-metal nodes, to boot the server from the ISO by leveraging the RedFish API. You can boot the server using other methods as needed.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -491,6 +491,8 @@ spec:
   additionalNTPSources:
     - "clock.corp.redhat.com"
   baseDomain: "5g-deployment.lab"
+  # The active-ocp-version" points to a ClusterImageSet resource, which defines the specific OpenShift release image (e.g., {sno-seed-version})
+  that the cluster should be deployed with. This abstraction allows for easier management of OpenShift versions.
   clusterImageSetNameRef: "active-ocp-version"
   clusterName: "sno-ibi"
   clusterNetwork:
