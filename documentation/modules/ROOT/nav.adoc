@@ -8,7 +8,8 @@
 ** xref:welcome.adoc#past-contributors[Past Contributors]
 
 * xref:introduction.adoc[Introduction]
-** xref:introduction.adoc#lab-aim[Who is this lab aimed at? ]
+** xref:introduction.adoc#lab-aim[Who Is This Lab Aimed At?]
+** xref:introduction.adoc#what-you-will-achieve[What You Will Achieve]
 ** xref:introduction.adoc#lab-software-versions[Lab Software Versions]
 
 * xref:acronyms.adoc[Acronyms used in the lab]

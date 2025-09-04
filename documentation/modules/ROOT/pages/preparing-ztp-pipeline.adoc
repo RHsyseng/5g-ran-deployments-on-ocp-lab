@@ -11,7 +11,7 @@ By describing our infrastructure as code (IaC) the Git repository holds declarat
 
 The `ClusterInstance` is an abstraction layer on top of the different components managed by the link:ztp-at-scale.html#siteconfig[SiteConfig Operator], responsible for deploying OpenShift clusters using either the {ai-workflow}[Agent Based Installation] or {ibi-docs}[Image Based Installation] flow. For the ones familiar with the {ai-workflow}[Agent Based Installation] and particularly with the `Assisted Service`, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like: `ClusterDeployment`, `InfraEnv`, `AgentClusterInstall`, etc.
 
-The ClusterInstance simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place. In this {example-sno-clusterinstance-link}[link] you can find an example of a ClusterInstance for a SNO deployment. 
+The ClusterInstance is fundamental for scaling the management of SNO fleets, as it abstracts the complexity of multiple Kubernetes objects into a unified and simplified definition for cluster deployment. It simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place. In this {example-sno-clusterinstance-link}[link] you can find an example of a ClusterInstance for a SNO deployment.
 
 In the comming sections, we will create our own ClusterInstances using the {ibi-docs}[Image Based Installation] and {ai-workflow}[Agent Based Installation] flows to deploy a couple of SNO clusters in our lab environment.
 
@@ -44,7 +44,7 @@ mkdir -p ~/5g-deployment-lab/
 git clone http://student:student@infra.5g-deployment.lab:3000/student/ztp-repository.git ~/5g-deployment-lab/ztp-repository/
 -----
 
-We're ready to start working in the Git repository folder structure.
+We're ready to start working in the Git repository folder structure. The following well-defined repository structure is essential for the efficiency of GitOps and ZTP, enabling a logical separation of cluster configurations (site-configs) and configuration policies (site-policies), which facilitates automated management at scale.
 
 As we saw in link:deployment-considerations.html#git-repo-structure[Git Repository Structure] section, the Git repository we will be using will have the following structure:
 
@@ -173,7 +173,7 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app.yaml
 -----
 +
-3. Include `openshift-adp` namespace in the list of namespaces managed by the GitOps operator.
+3. Include `openshift-adp` namespace in the list of namespaces managed by the GitOps operator to ensure that policies related to OpenShift Data Protection (such as backup and restore operations) are also managed by the GitOps pipeline.
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -188,16 +188,22 @@ sed -i "/destinations:/a \ \ - namespace: \'openshift-adp\'\n \ \ \ server: '\*\
 -----
 oc --kubeconfig ~/hub-kubeconfig apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/
 -----
++
+At this stage, we have our ZTP GitOps pipeline running and waiting for committing declarative Infrastructure and Configuration as Code to the `ztp-repository` Git repository.
 
-Above command creates the required Argo CD Applications in the Hub cluster that handles the ZTP Pipeline.
+* **clusters**. It is responsible for the infrastructure and physical deployment of Single Node OpenShift clusters from the Git repository.
+* **policies**. It focuses on the logical and operational configuration of those clusters by applying the {rds-config}[Telco RAN DU reference configuration] via RHACM policies.
 
-At this stage, we have our ZTP GitOps pipeline running and waiting for committing declarative Infrastructure and Configuration as Code to the `ztp-repository` Git repository. 
-* **clusters**. It is responsible for managing the deployment of Single Node OpenShift clusters from the Git repository.
-* **policies**. It is responsible for managing the configuration via RHACM policies that will be applied to Single Node OpenShift clusters. Basically, it configures the {rds-config}[Telco RAN DU reference configuration]. 
 
-You can access the Argo CD instance on the lab at {argocd-hub-link} and login in with the OpenShift admin credentials. You can also access through the pre-configured Firefox image:bookmark-argocd.png[ArgoCD bookmark icon] bookmark.
+To confirm that the Argo CD applications for clusters and policies are present and healthy, access the Argo CD instance on the lab at {argocd-hub-link} and login in with the OpenShift admin credentials. You can also access through the pre-configured Firefox image:bookmark-argocd.png[ArgoCD bookmark icon] bookmark. Another option is running:
++
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+oc --kubeconfig ~/hub-kubeconfig apply get applications -n openshift-gitops
+-----
 
-You can see what the ArgoCD Apps are running in the following images:
+You should see the following ArgoCD Apps running:
 
 image::ztp-pipeline-01.png[ZTP pipeline]
 

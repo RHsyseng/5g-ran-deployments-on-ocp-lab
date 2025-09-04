@@ -45,6 +45,7 @@ code:experimental:
 //:talm-update-image:  infra.5g-deployment.lab:8443/openshift/release-images@sha256:bada2d7626c8652e0fb68d3237195cb37f425e960347fbdd747beb17f671cf13
 :talm-update-policy-name: version-419-1
 :rhacm-version: v2.14
+:multicluster-policygenerator-version: v2.14.0-1
 :rhacm-template-processing: https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.14/html/governance/governance#template-processing
 :mce-version: v2.9
 :policygentool-version: v4.19
@@ -57,12 +58,12 @@ code:experimental:
 :rhcos-liveiso-filename: rhcos-4.19.0-x86_64-live-iso.x86_64.iso
 :disconnected-registry-docs: https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/disconnected_environments/mirroring-in-disconnected-environments#installing-mirroring-creating-registry
 :openshift-gitops-docs: https://docs.redhat.com/en/documentation/red_hat_openshift_gitops/1.15/html/understanding_openshift_gitops/about-redhat-openshift-gitops
-:cnf-features-source-crs: https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.19/ztp/source-crs
+:cnf-features-source-crs: https://github.com/openshift-kni/telco-reference/tree/release-4.19/telco-ran/configuration/source-crs
 :cnf-features-siteconfig-gen: https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.19/ztp/siteconfig-generator
-:cnf-features-policy-gen: https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.19/ztp/policygenerator
+:cnf-features-policy-gen: https://github.com/open-cluster-management-io/policy-generator-plugin
 :cnf-features-clustersgo: https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.19/ztp/siteconfig-generator/siteConfig/clusterCRsV1.go
 :cnf-features-siteconfig-plugin: https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.19/ztp/siteconfig-generator-kustomize-plugin
-:cnf-features-policygen-plugin: https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.19/ztp/policygenerator-kustomize-plugin
+:cnf-features-policygen-plugin: https://github.com/open-cluster-management-io/policy-generator-plugin
 :rhacm-governance-doc: https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html/governance/governance
 :ocp-cli-docs: https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/cli_tools/openshift-cli-oc#cli-about-cli_cli-developer-commands
 :sno-preparing-docs: https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/installing_on_a_single_node/preparing-to-install-sno

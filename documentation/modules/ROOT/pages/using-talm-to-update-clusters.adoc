@@ -19,7 +19,7 @@ Below are the steps to upgrade both managed clusters and their configuration fro
 * Configure OADP to back up and restore the configuration of the managed clusters that isn't included in the seed image.
 * Perform the upgrade using the `ImageBasedGroupUpgrade` CR, which combines the ImageBasedUpgrade (LCA) and ClusterGroupUpgrade APIs (TALM).
 
-IMPORTANT: Both clusters were installed using different methodologies. While `sno-abi` was provisioned using the link:ztp-workflow.html#abi-deployment[agent-based install] workflow, `sno-ibi` was deployed using the link:ztp-workflow.html#ibi-deployment[image-based install]. However, as long as they both meet the {seed-guidelines}[Seed cluster guidelines] and have the same combination of hardware, Day 2 Operators, and cluster configuration as the {sno-cluster-version2-cvo} seed cluster, we're ready to proceed.
+IMPORTANT: Both clusters were installed using different methodologies. While `sno-abi` was provisioned using the link:ztp-workflow.html#abi-deployment[agent-based install] workflow, `sno-ibi` was deployed using the link:ztp-workflow.html#ibi-deployment[image-based install]. However, as long as they both meet the {seed-guidelines}[Seed cluster guidelines] (which ensure the base image is compatible with the installed hardware and software configuration on the target clusters) and have the same combination of hardware, Day 2 Operators, and cluster configuration as the {sno-cluster-version2-cvo} seed cluster, we're ready to proceed.
 
 First, let's verify the software requirements in our *hub cluster*:
 
@@ -131,7 +131,7 @@ openshift-sriov-network-operator       sriov-network-operator.v4.19.0-2025072122
 openshift-storage                      lvms-operator.v4.19.0                         LVM Storage                 4.19.0                           Succeeded
 -----
 
-Okay, let's install the missing LCA and OADP operators in `sno-abi` and configure them appropriately in both managed clusters. To achieve this, a PolicyGenTemplate and a cluster group upgrade (CGU) CR will be created in the hub cluster so that TALM manages the installation and configuration process.
+Okay, let's install the missing LCA and OADP operators in `sno-abi` and configure them appropriately in both managed clusters. To achieve this, a PolicyGenerator and a cluster group upgrade (CGU) CR will be created in the hub cluster so that TALM manages the installation and configuration process.
 
 Remember that an already completed CGU was applied to `sno-abi`. As mentioned in the link:talm.html#inform-policies[inform policies] section, not all policies are enforced automatically; the user has to create the appropriate CGU resource to enforce them. However, when using ZTP, we want our cluster provisioned and configured automatically. This is where TALM steps in, processing the set of created policies (inform) and enforcing them once the cluster has been successfully provisioned. Therefore, the configuration stage starts without any intervention, resulting in our OpenShift cluster being ready to process workloads.
 
@@ -155,16 +155,16 @@ sno-abi   7m26s   Completed   All clusters are compliant with all the managed po
 
 At this stage, we are going to fulfill the image-based upgrade prerequisites using a GitOps approach. This will allow us to easily scale from our two SNOs to a fleet of thousands of SNO clusters if needed. We will achieve this by:
 
-* Creating a `PolicyGenTemplate` to install LCA and OADP. This also configures OADP to back up and restore the ACM and LVM setup.
+* Creating a `PolicyGenerator` to install LCA and OADP. This also configures OADP to back up and restore the ACM and LVM setup.
 * Creating a CGU to enforce the policies on the target clusters.
 * Configuring the managed clusters with configurations that were not or could not be included in the seed image.
-* Running the IBGU process.
+* Running the image-based group upgrade (IBGU) process.
 
 IMPORTANT: An S3-compatible storage server is required for backup and restore operations. See the link:lab-environment-introduction.html#s3-storage[S3 Storage Server] section.
 
-Let's create a PGT called `requirements-upgrade` on the hub cluster. This will help us to create multiple RHACM policies, as explained in the link:policygen-deepdive.html[PolicyGen DeepDive] section.
+Let's create a PolicyGenerator manifest called `requirements-upgrade` on the hub cluster. This will help us to create multiple RHACM policies, as explained in the link:policygen-deepdive.html[PolicyGen DeepDive] section.
 
-WARNING: Due to an issue with the OADP Data Protection source CR and a deprecation of one of the configuration in this version, a custom source CR must be created and referenced in the Policy.
+WARNING: Due to an issue with the OADP Data Protection source CR because of a deprecated configuration in version 1.5 of OADP, a custom source CR must be created and referenced in the Policy. Below is shown the new source CR of OadpDataProtectionApplication.yaml stored as custom CR.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -172,7 +172,6 @@ WARNING: Due to an issue with the OADP Data Protection source CR and a deprecati
 cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/source-crs/custom-crs/OadpDataProtectionApplication.yaml
 ---
 # The configuration CR for OADP operator
-# More information can be found in https://docs.openshift.com/container-platform/4.15/backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.html
 apiVersion: oadp.openshift.io/v1alpha1
 kind: DataProtectionApplication
 metadata:
@@ -190,23 +189,6 @@ spec:
         - aws
         - openshift
       resourceTimeout: 10m
-# User needs to configure the following backupLocations through PGT overlay
-# backupLocations:
-# - velero:
-#     provider: aws
-#     default: true
-#     credential:
-#       key: cloud
-#       name: cloud-credentials
-#     config:
-#       profile: "default"
-#       region: minio
-#       s3Url: $url
-#       insecureSkipTLSVerify: "true"
-#       s3ForcePathStyle: "true"
-#     objectStorage:
-#       bucket: $bucketName
-#       prefix: $prefixName
 status:
   conditions:
   - reason: Complete
@@ -214,6 +196,8 @@ status:
     type: Reconciled
 EOF
 -----
+
+Next, let's create a `PolicyGenerator` manifest to install and configure the LCA and OADP operators. It also configures OADP to back up and restore the ACM and LVM setup.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -328,7 +312,7 @@ status: {}
 EOF
 -----
 
-Include the configuration of a disconnected catalog source as an extra manifest. Remember that catalog sources are not included during the seed image creation.
+Include the configuration of a disconnected catalog source and cluster logging as extra manifests. Remember that there some components such as the catalog source or the cluster logging certificates that are excluded of the seed image creation.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -421,7 +405,7 @@ data:
 EOF
 -----
 
-Modify the `kustomization.yaml` inside the `site-policies` folder so that it includes this new PGT and eventually will be applied by ArgoCD.
+Modify the `kustomization.yaml` inside the `site-policies` folder so that it includes this new PolicyGenerator manifest which will be eventually applied by ArgoCD.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -480,7 +464,7 @@ ArgoCD will automatically synchronize the new policies and show them as non-comp
 
 image::ibu01.png[IBU policies]
 
-However, only one cluster is not compliant. If we check the policy information, we will see that this policy is only targeting the `sno-abi` cluster. This is because the `sno-ibi` cluster does not have the labels `du-zone=europe` that the PGT is targeting in its binding rule.
+However, notice that only one cluster is not compliant. If we check the policy information, we will see that this policy is only targeting the `sno-abi` cluster. This is because the `sno-ibi` cluster does not have the labels `du-zone=europe` that the PGT is targeting in its binding rule.
 
 Let's add the proper labels to the `sno-ibi` SNO cluster:
 
@@ -548,7 +532,7 @@ ztp-policies   requirements-upgrade   2m52s   Completed   All clusters are compl
 image::ibu03.png[IBU policies]
 
 
-Finally, once the upgrade policy is applied successfully we can remove it so it is not checked against our SNO clusters and consuming resources. Do not forget to commit the changes:
+Finally, once the upgrade policy is applied successfully, we can remove it to prevent continuous compliance checks against our SNO clusters, which would otherwise consume valuable hub cluster resources (CPU and memory cycles). Do not forget to commit the changes:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -689,7 +673,7 @@ We can also monitor progress by connecting directly to the managed clusters and 
 
 IMPORTANT: The `Prep` stage is the current stage, as indicated by the `Desired Stage` field. The `Details` field provides extra information; in this case, it indicates preparation to copy the stateroot seed image.
 
-WARNING: During the `Prep` stage, the clusters will start pulling images. This will put some IO pressure in the hypervisor, you may lose connectivity to clusters APIs multiple times for about 10 minutes.
+WARNING: During the `Prep` stage, the clusters will start pulling images and performing I/O intensive operations to copy the new stateroot seed image. This can put significant pressure on the hypervisor, potentially causing temporary loss of connectivity to cluster APIs multiple times for about 10 minutes.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -807,7 +791,7 @@ oc --kubeconfig ~/hub-kubeconfig get ibgu -n default telco5g-lab -ojson | jq .st
 }
 -----
 
-During the `FinalizeUpgrade` stage, the SNO clusters are restoring the data that was backed up. This data was included in the `disconnected-ran-config` configMap described in the link:using-talm-to-update-clusters.html#install-lca[Preparing Managed Clusters for Upgrade] section. Connecting to `sno-ibi` during this stage will show the restore process running.
+During the `FinalizeUpgrade` stage, the SNO clusters are restoring the data that was backed up. This includes cluster-specific configurations like ACM and LVM setups, which were defined in the `disconnected-ran-config` ConfigMap mentioned in the link:using-talm-to-update-clusters.html#install-lca[Preparing Managed Clusters for Upgrade] section. Connecting to sno-ibi during this stage will show the restore process running.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]

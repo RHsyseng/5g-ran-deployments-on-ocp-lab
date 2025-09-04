@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-As we mentioned in the link:ztp-workflow.html[ZTP Workflow] section, the Red Hat Advanced Cluster Management (RHACM) for Kubernetes allows us to _provision_ and _configure_ multiple clusters in a declarative way and can be easily coupled with GitOps. ZTP and ongoing configuration updates makes intensive use of RHACM Policies for managing the configuration of deployed clusters. In our telco use case, creation of these `Policies` is simplified with the policyGen kustomize plugin. This plugin translates the {rds-config}[Telco RAN DU reference configuration] based on `PolicyGenTemplates` into multiple `Policies` that are understood by the hub cluster and applied to the managed clusters.
+As we mentioned in the link:ztp-workflow.html[ZTP Workflow] section, the Red Hat Advanced Cluster Management (RHACM) for Kubernetes allows us to _provision_ and _configure_ multiple clusters in a declarative way and can be easily coupled with GitOps. ZTP and ongoing configuration updates makes intensive use of RHACM Policies for managing the configuration of deployed clusters. In our telco use case, creation of these `Policies` is simplified with the policyGen kustomize plugin. This plugin translates the {rds-config}[Telco RAN DU reference configuration] based on `PolicyGenerators` into multiple `Policies` that are understood by the hub cluster and applied to the managed clusters.
 
 In this section, we provide an introduction to the concepts behind the {rhacm-governance-doc}[RHACM "Governance" pillar]. Furthermore, we are going to introduce the concept of a policy, which is key for managing the configuration lifecycle of our fleet of clusters.
 
@@ -150,7 +150,7 @@ Policies can be enabled or disabled by setting the _disabled_ parameter value to
 [#policy-remediation]
 === Policy Remediation
 
-As we will detail in the following section link:managing-at-scale.html#inform-policies["Managing at Scale"], for the solution presented in this lab the`PolicyGenTemplates` are by default set to generate Policies in inform mode.
+As we will detail in the following section link:managing-at-scale.html#inform-policies["Managing at Scale"], for the solution presented in this lab the`PolicyGenerators` are by default set to generate Policies in inform mode.
 
 Policy controllers periodically (as set by evaluationInterval) check policies against the current state of CRs on the target clusters. This check sets the Policy to either the Compliant or NonCompliant state. When the policy is set to inform, a report of the violations is created. However, when the controller is set to enforce a report is created _and_ violations are remediated as specified in the policy.
 

@@ -2,24 +2,24 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-In the previous section, the link:preparing-ztp-pipeline.html[ZTP GitOps pipeline] was put in place to deploy our Infrastructure as Code (IaC) and Configuration as Code (CaC). Here, we are going to focus on creating the Configuration as Code (CaC) for the OpenShift clusters that will be installed in the following sections. The configuration of the Telco RAN Reference Design Specification is applied using multiple `PolicyGenTemplate` objects.
+In the previous section, the link:preparing-ztp-pipeline.html[ZTP GitOps pipeline] was put in place to deploy our Infrastructure as Code (IaC) and Configuration as Code (CaC). Here, we are going to focus on creating the Configuration as Code (CaC) for the OpenShift clusters that will be installed in the following sections. The configuration of the Telco RAN Reference Design Specification is applied using multiple `PolicyGenerator` objects.
 
-We described how `PolicyGenTemplate` works in detail xref:policygen-deepdive.adoc#policies-templating[here], so let's jump directly to the creation of the different templates.
+The PolicyGenerator object is the cornerstone for defining Configuration as Code (CaC) within this ZTP pipeline, enabling scalable and consistent configuration of OpenShift clusters. We described how `PolicyGenerator` works in detail xref:policygen-deepdive.adoc#policies-templating[here], so let's jump directly to the creation of the different policies.
 
-NOTE: The configuration defined through these PolicyGenTemplate CRs is only a subset of what was described in xref:telco-related-infra-operators-intro.adoc[Introduction to Telco Related Infrastructure Operators]. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the {rds-link}[{openshift-release} Telco RAN Reference Design Specification] in the official documentation.
+NOTE: The configuration defined through these PolicyGenerator CRs is only a subset of what was described in xref:telco-related-infra-operators-intro.adoc[Introduction to Telco Related Infrastructure Operators]. This is for clarity and tailored to the lab environment. A full production environment for supporting telco 5G vRAN workloads would have additional configuration not included here, but described in detail as the {rds-link}[{openshift-release} Telco RAN Reference Design Specification] in the official documentation.
 
 IMPORTANT: Below commands must be executed from the infrastructure host if not specified otherwise.
 
 [#crafting-common-policies]
 == Crafting Common Policies
 
-The common policies apply to every cluster in our infrastructure that matches our binding rule. These policies are often used to configure things like CatalogSources, operator deployments, etc. that are common to all our clusters.
+The common policies apply to every cluster in our infrastructure that matches our binding rule.  They are designed for universal configurations that apply to a broad set of clusters sharing an OpenShift release. This reinforces the efficiency gains of managing a large fleet. They are often used to configure things like CatalogSources, operator deployments, etc. that are common to all our clusters.
 
 These configs may vary from release to release, that's why we create a `{policygen-common-file}` file. We will likely have a common configuration profile for each release we deploy.
 
-IMPORTANT: If you check the binding rules, you see that we are targeting clusters labeled with `common: "{policygen-common-label}"` and `logicalGroup: "active"`. These labels are set in the `ClusterInstance` definition.
+IMPORTANT: The PolicyGenerator object utilizes binding rules defined by labels (e.g., common: "ocp419" and logicalGroup: "active") that are pre-set within the ClusterInstance definition, ensuring that these common configurations are automatically applied to the designated clusters across your fleet.
 
-1. Create the `common` PolicyGenTemplate for {openshift-release} SNOs:
+1. Create the `common` PolicyGenerator for {openshift-release} SNOs:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -120,16 +120,18 @@ policies:
 EOF
 -----
 
+Notice that the operators included in the PolicyGenerator object are foundational for Telco RAN DU workloads, providing essential capabilities like precise timing, high-performance networking, storage, and centralized logging.
+
 [#crafting-group-policies]
 == Crafting Group Policies
 
-The group policies apply to a group of clusters that typically have something in common, for example they are SNOs, or they have similar hardware: SR-IOV cards, number of CPUs, number of disks, etc.
+The group policies are tailored for logical groupings of clusters that share specific characteristics or hardware requirements, necessitating specialized tuning. This approach allows for applying performance-critical configurations efficiently across similar clusters. Those policies apply to a group of clusters that typically have something in common, for example they are SNOs, or they have similar hardware: SR-IOV cards, number of CPUs, number of disks, etc. 
 
 The CNF team has prepared some common tuning configurations that should be applied on every SNO DU deployed with similar hardware. In this section, we will be crafting these configurations.
 
 IMPORTANT: If you check the binding rules you can see that we are targeting clusters labeled with `group-du-sno: ""`, `logicalGroup: "active"` and `hardware-type: "hw-type-platform-1"`. These labels are set in the `ClusterInstance` definition.
 
-1. Create the `group` PolicyGenTemplate for SNOs:
+1. Create the `group` PolicyGenerator for SNOs:
 +
 IMPORTANT: The policy below configures PTP with software time stamping. This is not supported in production environments, we had to configure it like that to be able to run PTP in the virtual environment.
 +
@@ -444,7 +446,7 @@ data:
 EOF
 -----
 +
-3. Next, let's include the DU validator policy crafted by the CNF team. It will let us know if the specific telco RAN RDS group policies are eventually applied.
+3. Next, let's include the DU validator policy crafted by the CNF team. This validator policy is designed to verify the successful application and compliance of the specific Telco RAN RDS group policies, acting as a crucial assurance mechanism within the ZTP workflow.
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -458,7 +460,7 @@ metadata:
 placementBindingDefaults:
   name: group-du-sno-placement-binding
 policyDefaults:
-  namespace: ztp-group
+  namespace: ztp-policies
   placement:
     labelSelector:
       matchExpressions:
@@ -487,18 +489,18 @@ policies:
     ran.openshift.io/soak-seconds: "30"
     ran.openshift.io/ztp-deploy-wave: "10000"
   manifests:
-    - path: source-crs/validatorCRs/informDuValidatorMaster.yaml
+    - path: source-crs/reference-crs/validatorCRs/informDuValidatorMaster.yaml
 EOF
 -----
 
 [#crafting-site-policies]
 == Crafting Site Policies
 
-Site policies apply to a specific cluster or clusters in our site. They usually configure stuff that is very specific to a single cluster or to a small subset of clusters. For example, we could configure the SR-IOV network devices for a group of clusters if those share the same number of network interfaces, NIC model, etc. otherwise we will need to have different bindings for different clusters.
+Site policies handle configurations that are highly specific and often unique to individual clusters or very small, distinct subsets, particularly for hardware like SR-IOV network devices. Contrast this with the broader scope of common and group policies. For example, SR-IOV configurations are often site-specific because network interface card (NIC) models, physical function (PF) names, and desired virtual function (VF) counts can vary significantly across individual hardware hosts.
 
 We are going to create the SR-IOV network device configurations for the OpenShift cluster whose hardware type belongs to `hw-type-platform-1` (see the `bindingRule`). That sort of servers are built with 2 virtual Intel IGB capable SR-IOV network devices. Notice that this policy leverages hub side templating. Therefore, it is targeting all clusters with this specific hardware configuration, not only one cluster.
 
-1. Create the `du-sno-sites` PolicyGenTemplate for the clusters that contain `hw-type-platform-1` hardware type in our `5glab` site.
+1. Create the `du-sno-sites` PolicyGenerator for the clusters that contain `hw-type-platform-1` hardware type in our `5glab` site.
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -635,11 +637,11 @@ More information about Template processing can be found in {rhacm-template-proce
 [#adding-custom-policies]
 == Adding Custom Content (source-crs)
 
-If you require cluster configuration changes outside of the base GitOps Zero Touch Provisioning (ZTP) pipeline configuration, you can add content to the GitOps ZTP library. The base source custom resources (CRs) that are included in the ztp-generate container that you deploy with the GitOps ZTP pipeline can be augmented with custom content as required.
+If you require cluster configuration changes outside of the base GitOps Zero Touch Provisioning (ZTP) pipeline configuration, you can add content to the GitOps ZTP library. The base source custom resources (CRs) that are included in the ztp-generate container that you deploy with the GitOps ZTP pipeline can be augmented with custom content as required. So, this is a way to extend the base ZTP library and shows the flexibility of the ZTP pipeline. 
 
 WARNING: We recommend a directory structure to keep reference manifests corresponding to the y-stream release.
 
-In this lab we have extra content for a secret required by our Cluster Logging configuration. Let's first extract the predefined source-crs from the ztp-generate container {lab-major-version} version to the reference-crs folder.
+In this lab we have to add extra content required by our Cluster Logging configuration. Let's first extract the predefined source-crs from the ztp-generate container {lab-major-version} version to the reference-crs folder.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -648,7 +650,7 @@ podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=fals
 podman run --log-driver=none --rm --tls-verify=false {ztp-sitegenerate-disconnected-image} extract /home/ztp/source-crs --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/source-crs/reference-crs/
 -----
 
-Notice that we can add content not included in the ZTP container image by creating the required source CR in the `source-crs/custom-crs` folder. Once pushed to our Git repo, we can reference it in any of the common, group or site `PolicyGenTemplates`. More information on deploying additional changes to cluster can be found in the {advanced-ztp-policy-config}[docs].
+Notice that we can add content not included in the ZTP container image by creating the required source CR in the `source-crs/custom-crs` folder. This separation ensures clean upgrades of the base content while preserving custom additions. Once pushed to our Git repo, we can reference it in any of the common, group or site `PolicyGenerators`. More information on deploying additional changes to cluster can be found in the {advanced-ztp-policy-config}[docs].
 
 For this lab we need to configure a secret for sending logs to our central location using mTLS authentication. In a production environment you don't want to put your secrets in plain text in git. Other solutions like Vault are more convinient for this.
 
@@ -674,9 +676,11 @@ EOF
 [#crafting-testing-policies]
 == Crafting Testing Policies
 
-Testing policies before applying them to our production clusters is a must, in order to do that we will create a set of testing policies (which usually will be very similar to the production ones) and these policies will target clusters labeled with `logicalGroup: "testing"`. We won't go over every file, if you check the files that will be created those are the same as in `active`, also known as `production`, but with different names and binding policies.
+Rigorous testing of policies in a dedicated, isolated environment is an essential practice to ensure stability, validate functionality, and prevent unintended consequences before deploying to production. In order to do that we will create a set of testing policies (which usually will be very similar to the production ones) and these policies will target clusters labeled with `logicalGroup: "testing"`. We won't go over every file, the files that will be created are the same as in `active`, also known as `production`, but with different names and binding policies. Testing policies are intentionally structured to mirror production policies but are explicitly bound to clusters in a "testing" logical group. This enables isolated validation without impacting active deployments.
 
-1. Create the `common` testing PolicyGenTemplate for {openshift-release} SNOs:
+This structure demonstrates a strategy for testing policies for an upcoming OpenShift release ({openshift-next-release}) against dedicated testing clusters before promoting them to the current ({openshift-release}) production fleet, ensuring future compatibility.
+
+1. Create the `common` testing PolicyGenerator for {openshift-release} SNOs:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -773,7 +777,7 @@ policies:
 EOF
 -----
 +
-2. Create the `group` testing PolicyGenTemplate for SNOs:
+2. Create the `group` testing PolicyGenerator for SNOs:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -910,7 +914,7 @@ metadata:
 placementBindingDefaults:
   name: group-du-sno-placement-binding
 policyDefaults:
-  namespace: ztp-group
+  namespace: ztp-policies
   placement:
     labelSelector:
       matchExpressions:
@@ -939,11 +943,11 @@ policies:
     ran.openshift.io/soak-seconds: "30"
     ran.openshift.io/ztp-deploy-wave: "10000"
   manifests:
-    - path: source-crs/validatorCRs/informDuValidatorMaster.yaml
+    - path: source-crs/reference-crs/validatorCRs/informDuValidatorMaster.yaml
 EOF
 -----
 
-TBD -> Remember to extract the source-crs to the testing environment. While this is a 4.18 source-crs it should be 4.19
+Extract the ZTP source-crs library to the testing environment.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -952,13 +956,14 @@ podman login infra.5g-deployment.lab:8443 -u admin -p r3dh4t1! --tls-verify=fals
 podman run --log-driver=none --rm --tls-verify=false {ztp-sitegenerate-disconnected-image} extract /home/ztp/source-crs --tar | tar x -C ~/5g-deployment-lab/ztp-repository/site-policies/fleet/testing/{openshift-next-release}/source-crs/reference-crs/
 -----
 
-
-At this point, policies are the same as in production (active). In the future, you prior want to apply these groups of testing policies for the clusters running in your test environment before promoting changes to production (active).
+At this point, policies are the same as in production (active). In the future, you prior want to apply these groups of testing policies for the clusters running in your test environment before promoting changes to production (active) completing the GitOps lifecycle.
 
 [#configure-kustomization-for-policies]
 == Configure Kustomization for Policies
 
-We need to create the required kustomization files as we did for SiteConfigs. In this case, policies also require a namespace where they will be created. Therefore, we will create the required namespace and the kustomization files.
+We need to create the required kustomization files as we did for SiteConfigs. They will enable the structured management of policies across different logical groups and OpenShift versions, allowing for modular and scalable policy application.
+
+In this case, policies also require a namespace where they will be created. Therefore, we will create the required namespace and the kustomization files.
 
 1. Policies need to live in a namespace, let's add it to the repo:
 +
@@ -994,9 +999,6 @@ EOF
 -----
 2. Create the required Kustomization files
 +
-WARNING: You can see that we commented the `group-du-sno-validator.yaml` files in our Kustomization files. Since this is a lab environment and we don't have PTP/SR-IOV hardware, the validator policies won't be able to verify our SNOs as a well-configured DU. We kept the files here so you know how a real environment should be configured.
-+
-
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
@@ -1010,22 +1012,6 @@ resources:
   - policies-namespace.yaml
   - managedclusterbinding.yaml
 EOF
-#cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/sites/kustomization.yaml
-#---
-#apiVersion: kustomize.config.k8s.io/v1beta1
-#kind: Kustomization
-#bases:
-#  - hub-1/
-#EOF
-#cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/sites/hub-1/kustomization.yaml
-#---
-#apiVersion: kustomize.config.k8s.io/v1beta1
-#kind: Kustomization
-#generators:
-#  - sites-specific.yaml
-#resources:
-#  - site-data-hw-1-configmap.yaml
-#EOF
 cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/kustomization.yaml
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -1050,7 +1036,7 @@ generators:
   - {policygen-common-file}
   - group-du-sno.yaml
   - sites-specific.yaml
-#  - group-du-sno-validator.yaml
+  - group-du-sno-validator.yaml
 resources:
   - group-hardware-types-configmap.yaml
   - site-data-hw-1-configmap.yaml
@@ -1069,13 +1055,13 @@ kind: Kustomization
 generators:
   - common-{openshift-next-release}
   - group-du-sno.yaml
-#  - group-du-sno-validator.yaml
+  - group-du-sno-validator.yaml
 resources:
   - group-hardware-types-configmap-test.yaml
 EOF
 -----
 +
-3. At this point, we can push the changes to the repo.
+3. At this point, we can commit and push the changes to the Git repo:
 +
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -1090,11 +1076,13 @@ cd ~
 [#deploying-policies-using-gitops-pipeline]
 == Deploying the Telco 5G RAN RDS using the ZTP GitOps Pipeline
 
-Once the changes are commited to the Git repository, ArgoCD will synchronize the new resources and apply them to the hub cluster automatically. You can see how the **policies** ZTP GitOps pipeline created all the configuration objects. If we check the `policies` app this is what we see:
+Once the changes are commited to the Git repository, ArgoCD will synchronize the new resources and automatically apply them to the hub cluster. Argo CD functions as the automation engine that translates the Configuration as Code from Git into active policies on the hub cluster.
+
+You can see how the **policies** ZTP GitOps pipeline created all the configuration objects. If we check the `policies` app this is what we see:
 
 image::argocd-policies-app.png[ArgoCD Policies App]
 
-The resulting policies can be seen from the RHACM Console at https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome. You can also access through the pre-configured Firefox image:bookmark-rhacm-console.png[RHACM bookmark icon] bookmark.
+The resulting policies can be seen from the RHACM Governance Console at https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome which serves as the centralized monitoring and management interface for observing the status, compliance, and remediation actions of all deployed policies across the managed fleet. You can also access through the pre-configured Firefox image:bookmark-rhacm-console.png[RHACM bookmark icon] bookmark.
 
 WARNING: It may take up to 5 minutes for the policies to show up, this is due to Argo CD syncing period.
 
@@ -1102,6 +1090,7 @@ WARNING: It may take up to 5 minutes for the policies to show up, this is due to
 +
 2. Once you're in, click on `Governance` -> `Policies`. You will see the following screen where we can see several policies registered.
 
+This entire process, from defining policies in Git to their automatic application and monitoring, embodies the Zero Touch Provisioning (ZTP) philosophy, enabling large-scale, automated deployments.
 
 IMPORTANT: The Telco 5G RAN RDS policies are ready but they are not being applied or compared to any cluster yet. That's because we did not provision any SNO cluster. Let's fix that by moving to the next section and deploying the first one.
 

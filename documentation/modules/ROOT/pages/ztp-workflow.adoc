@@ -100,11 +100,11 @@ The following is a high-level overview of the image-based installation process:
 [#ztp-policies]
 == Deployment Configuration
 
-Once the clusters are provisioned, the day-2 configuration defined in one or multiple `PolicyGenTemplate` (PGTs) custom resources will be automatically applied. The `PolicyGenTemplate` custom resource is interpreted by the ZTP pipeline using a specific kustomize plugin called {cnf-features-policygen-plugin}[policy-generator]. These templates generate Policy CRs on the hub cluster, which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters, allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes, these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform-level configurations.
+Once the clusters are provisioned, the day-2 configuration defined in one or multiple `PolicyGenerator` custom resources will be automatically applied. The `PolicyGenerator` custom resource is interpreted by the ZTP pipeline using a specific kustomize plugin called {cnf-features-policygen-plugin}[policy-generator]. These templates generate Policy CRs on the hub cluster, which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters, allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes, these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform-level configurations.
 
 image::ztp_workflow_3.png[ZTP Workflow 3]
 
-If you want to apply a new configuration or replace an existing configuration later, you can update the PolicyGenTemplate in Git, which will automatically propagate to the Policy CRs on the hub cluster. After that, the user decides when those updated policies are applied using TALM.
+If you want to apply a new configuration or replace an existing configuration later, you can update the PolicyGenerator in Git, which will automatically propagate to the Policy CRs on the hub cluster. After that, the user decides when those updated policies are applied using TALM.
 
 [#takeaways]
 == Takeaways
@@ -114,7 +114,7 @@ In summary, the deployment of the clusters includes:
 * Leveraging a GitOps methodology for a scalable, traceable, and reliable deployment model.
 * Installing the host operating system (RHCOS) on a blank server.
 * Deploying OpenShift Container Platform.
-* Creating cluster policies via `PolicyGenTemplate` and site subscriptions via `ClusterInstance`.
+* Creating cluster policies via `PolicyGenerator` and site subscriptions via `ClusterInstance`.
 * Making the necessary network configurations to the server operating system.
 * Deploying profile operators and performing any needed software-related configuration, such as performance profile, PTP, and SR-IOV.
 * Downloading images needed to run workloads (CNFs).
