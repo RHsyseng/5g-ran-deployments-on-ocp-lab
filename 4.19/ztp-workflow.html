@@ -84,7 +84,10 @@
     <a class="nav-link" href="introduction.html">Introduction</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="introduction.html#lab-aim">Who is this lab aimed at? </a>
+    <a class="nav-link" href="introduction.html#lab-aim">Who Is This Lab Aimed At?</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#what-you-will-achieve">What You Will Achieve</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="introduction.html#lab-software-versions">Lab Software Versions</a>
@@ -1071,7 +1074,7 @@ In telco environments, especially in RAN, the <strong>Image Based Installation</
 <h2 id="ztp-policies"><a class="anchor" href="#ztp-policies"></a>Deployment Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Once the clusters are provisioned, the day-2 configuration defined in one or multiple <code>PolicyGenTemplate</code> (PGTs) custom resources will be automatically applied. The <code>PolicyGenTemplate</code> custom resource is interpreted by the ZTP pipeline using a specific kustomize plugin called <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.19/ztp/policygenerator-kustomize-plugin">policy-generator</a>. These templates generate Policy CRs on the hub cluster, which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters, allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes, these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform-level configurations.</p>
+<p>Once the clusters are provisioned, the day-2 configuration defined in one or multiple <code>PolicyGenerator</code> custom resources will be automatically applied. The <code>PolicyGenerator</code> custom resource is interpreted by the ZTP pipeline using a specific kustomize plugin called <a href="https://github.com/open-cluster-management-io/policy-generator-plugin">policy-generator</a>. These templates generate Policy CRs on the hub cluster, which define the configuration to be applied to the deployed clusters. A Policy CR can be bound to multiple clusters, allowing a scalable means to define configuration across a large fleet of clusters. In RAN DU nodes, these policies configure subscriptions for day-two operators, performance tuning, and other necessary platform-level configurations.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -1079,7 +1082,7 @@ In telco environments, especially in RAN, the <strong>Image Based Installation</
 </div>
 </div>
 <div class="paragraph">
-<p>If you want to apply a new configuration or replace an existing configuration later, you can update the PolicyGenTemplate in Git, which will automatically propagate to the Policy CRs on the hub cluster. After that, the user decides when those updated policies are applied using TALM.</p>
+<p>If you want to apply a new configuration or replace an existing configuration later, you can update the PolicyGenerator in Git, which will automatically propagate to the Policy CRs on the hub cluster. After that, the user decides when those updated policies are applied using TALM.</p>
 </div>
 </div>
 </div>
@@ -1101,7 +1104,7 @@ In telco environments, especially in RAN, the <strong>Image Based Installation</
 <p>Deploying OpenShift Container Platform.</p>
 </li>
 <li>
-<p>Creating cluster policies via <code>PolicyGenTemplate</code> and site subscriptions via <code>ClusterInstance</code>.</p>
+<p>Creating cluster policies via <code>PolicyGenerator</code> and site subscriptions via <code>ClusterInstance</code>.</p>
 </li>
 <li>
 <p>Making the necessary network configurations to the server operating system.</p>

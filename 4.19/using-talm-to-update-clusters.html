@@ -84,7 +84,10 @@
     <a class="nav-link" href="introduction.html">Introduction</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="introduction.html#lab-aim">Who is this lab aimed at? </a>
+    <a class="nav-link" href="introduction.html#lab-aim">Who Is This Lab Aimed At?</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#what-you-will-achieve">What You Will Achieve</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="introduction.html#lab-software-versions">Lab Software Versions</a>
@@ -865,7 +868,7 @@ Image-based upgrades rely on custom images specific to the hardware platform on 
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Both clusters were installed using different methodologies. While <code>sno-abi</code> was provisioned using the <a href="ztp-workflow.html#abi-deployment">agent-based install</a> workflow, <code>sno-ibi</code> was deployed using the <a href="ztp-workflow.html#ibi-deployment">image-based install</a>. However, as long as they both meet the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/edge_computing/image-based-installation-for-single-node-openshift#seed-cluster-guidelines">Seed cluster guidelines</a> and have the same combination of hardware, Day 2 Operators, and cluster configuration as the 4.19.1 seed cluster, we&#8217;re ready to proceed.
+Both clusters were installed using different methodologies. While <code>sno-abi</code> was provisioned using the <a href="ztp-workflow.html#abi-deployment">agent-based install</a> workflow, <code>sno-ibi</code> was deployed using the <a href="ztp-workflow.html#ibi-deployment">image-based install</a>. However, as long as they both meet the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/edge_computing/image-based-installation-for-single-node-openshift#seed-cluster-guidelines">Seed cluster guidelines</a> (which ensure the base image is compatible with the installed hardware and software configuration on the target clusters) and have the same combination of hardware, Day 2 Operators, and cluster configuration as the 4.19.1 seed cluster, we&#8217;re ready to proceed.
 </td>
 </tr>
 </table>
@@ -997,7 +1000,7 @@ openshift-storage                      lvms-operator.v4.19.0                    
 </div>
 </div>
 <div class="paragraph">
-<p>Okay, let&#8217;s install the missing LCA and OADP operators in <code>sno-abi</code> and configure them appropriately in both managed clusters. To achieve this, a PolicyGenTemplate and a cluster group upgrade (CGU) CR will be created in the hub cluster so that TALM manages the installation and configuration process.</p>
+<p>Okay, let&#8217;s install the missing LCA and OADP operators in <code>sno-abi</code> and configure them appropriately in both managed clusters. To achieve this, a PolicyGenerator and a cluster group upgrade (CGU) CR will be created in the hub cluster so that TALM manages the installation and configuration process.</p>
 </div>
 <div class="paragraph">
 <p>Remember that an already completed CGU was applied to <code>sno-abi</code>. As mentioned in the <a href="talm.html#inform-policies">inform policies</a> section, not all policies are enforced automatically; the user has to create the appropriate CGU resource to enforce them. However, when using ZTP, we want our cluster provisioned and configured automatically. This is where TALM steps in, processing the set of created policies (inform) and enforcing them once the cluster has been successfully provisioned. Therefore, the configuration stage starts without any intervention, resulting in our OpenShift cluster being ready to process workloads.</p>
@@ -1036,7 +1039,7 @@ sno-abi   7m26s   Completed   All clusters are compliant with all the managed po
 <div class="ulist">
 <ul>
 <li>
-<p>Creating a <code>PolicyGenTemplate</code> to install LCA and OADP. This also configures OADP to back up and restore the ACM and LVM setup.</p>
+<p>Creating a <code>PolicyGenerator</code> to install LCA and OADP. This also configures OADP to back up and restore the ACM and LVM setup.</p>
 </li>
 <li>
 <p>Creating a CGU to enforce the policies on the target clusters.</p>
@@ -1045,7 +1048,7 @@ sno-abi   7m26s   Completed   All clusters are compliant with all the managed po
 <p>Configuring the managed clusters with configurations that were not or could not be included in the seed image.</p>
 </li>
 <li>
-<p>Running the IBGU process.</p>
+<p>Running the image-based group upgrade (IBGU) process.</p>
 </li>
 </ul>
 </div>
@@ -1062,7 +1065,7 @@ An S3-compatible storage server is required for backup and restore operations. S
 </table>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s create a PGT called <code>requirements-upgrade</code> on the hub cluster. This will help us to create multiple RHACM policies, as explained in the <a href="policygen-deepdive.html">PolicyGen DeepDive</a> section.</p>
+<p>Let&#8217;s create a PolicyGenerator manifest called <code>requirements-upgrade</code> on the hub cluster. This will help us to create multiple RHACM policies, as explained in the <a href="policygen-deepdive.html">PolicyGen DeepDive</a> section.</p>
 </div>
 <div class="admonitionblock warning">
 <table>
@@ -1071,7 +1074,7 @@ An S3-compatible storage server is required for backup and restore operations. S
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-Due to an issue with the OADP Data Protection source CR and a deprecation of one of the configuration in this version, a custom source CR must be created and referenced in the Policy.
+Due to an issue with the OADP Data Protection source CR because of a deprecated configuration in version 1.5 of OADP, a custom source CR must be created and referenced in the Policy. Below is shown the new source CR of OadpDataProtectionApplication.yaml stored as custom CR.
 </td>
 </tr>
 </table>
@@ -1081,7 +1084,6 @@ Due to an issue with the OADP Data Protection source CR and a deprecation of one
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.19/source-crs/custom-crs/OadpDataProtectionApplication.yaml
 ---
 # The configuration CR for OADP operator
-# More information can be found in <a href="https://docs.openshift.com/container-platform/4.15/backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.html" class="bare">https://docs.openshift.com/container-platform/4.15/backup_and_restore/application_backup_and_restore/installing/installing-oadp-aws.html</a>
 apiVersion: oadp.openshift.io/v1alpha1
 kind: DataProtectionApplication
 metadata:
@@ -1099,23 +1101,6 @@ spec:
         - aws
         - openshift
       resourceTimeout: 10m
-# User needs to configure the following backupLocations through PGT overlay
-# backupLocations:
-# - velero:
-#     provider: aws
-#     default: true
-#     credential:
-#       key: cloud
-#       name: cloud-credentials
-#     config:
-#       profile: "default"
-#       region: minio
-#       s3Url: $url
-#       insecureSkipTLSVerify: "true"
-#       s3ForcePathStyle: "true"
-#     objectStorage:
-#       bucket: $bucketName
-#       prefix: $prefixName
 status:
   conditions:
   - reason: Complete
@@ -1123,6 +1108,9 @@ status:
     type: Reconciled
 EOF</code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Next, let&#8217;s create a <code>PolicyGenerator</code> manifest to install and configure the LCA and OADP operators. It also configures OADP to back up and restore the ACM and LVM setup.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1237,7 +1225,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Include the configuration of a disconnected catalog source as an extra manifest. Remember that catalog sources are not included during the seed image creation.</p>
+<p>Include the configuration of a disconnected catalog source and cluster logging as extra manifests. Remember that there some components such as the catalog source or the cluster logging certificates that are excluded of the seed image creation.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1330,7 +1318,7 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Modify the <code>kustomization.yaml</code> inside the <code>site-policies</code> folder so that it includes this new PGT and eventually will be applied by ArgoCD.</p>
+<p>Modify the <code>kustomization.yaml</code> inside the <code>site-policies</code> folder so that it includes this new PolicyGenerator manifest which will be eventually applied by ArgoCD.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1393,7 +1381,7 @@ git push origin main</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>However, only one cluster is not compliant. If we check the policy information, we will see that this policy is only targeting the <code>sno-abi</code> cluster. This is because the <code>sno-ibi</code> cluster does not have the labels <code>du-zone=europe</code> that the PGT is targeting in its binding rule.</p>
+<p>However, notice that only one cluster is not compliant. If we check the policy information, we will see that this policy is only targeting the <code>sno-abi</code> cluster. This is because the <code>sno-ibi</code> cluster does not have the labels <code>du-zone=europe</code> that the PGT is targeting in its binding rule.</p>
 </div>
 <div class="paragraph">
 <p>Let&#8217;s add the proper labels to the <code>sno-ibi</code> SNO cluster:</p>
@@ -1471,7 +1459,7 @@ ztp-policies   requirements-upgrade   2m52s   Completed   All clusters are compl
 </div>
 </div>
 <div class="paragraph">
-<p>Finally, once the upgrade policy is applied successfully we can remove it so it is not checked against our SNO clusters and consuming resources. Do not forget to commit the changes:</p>
+<p>Finally, once the upgrade policy is applied successfully, we can remove it to prevent continuous compliance checks against our SNO clusters, which would otherwise consume valuable hub cluster resources (CPU and memory cycles). Do not forget to commit the changes:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1647,7 +1635,7 @@ The <code>Prep</code> stage is the current stage, as indicated by the <code>Desi
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-During the <code>Prep</code> stage, the clusters will start pulling images. This will put some IO pressure in the hypervisor, you may lose connectivity to clusters APIs multiple times for about 10 minutes.
+During the <code>Prep</code> stage, the clusters will start pulling images and performing I/O intensive operations to copy the new stateroot seed image. This can put significant pressure on the hypervisor, potentially causing temporary loss of connectivity to cluster APIs multiple times for about 10 minutes.
 </td>
 </tr>
 </table>
@@ -1775,7 +1763,7 @@ At some point during the <code>Upgrade</code> stage, the SNO clusters will resta
 </div>
 </div>
 <div class="paragraph">
-<p>During the <code>FinalizeUpgrade</code> stage, the SNO clusters are restoring the data that was backed up. This data was included in the <code>disconnected-ran-config</code> configMap described in the <a href="using-talm-to-update-clusters.html#install-lca">Preparing Managed Clusters for Upgrade</a> section. Connecting to <code>sno-ibi</code> during this stage will show the restore process running.</p>
+<p>During the <code>FinalizeUpgrade</code> stage, the SNO clusters are restoring the data that was backed up. This includes cluster-specific configurations like ACM and LVM setups, which were defined in the <code>disconnected-ran-config</code> ConfigMap mentioned in the <a href="using-talm-to-update-clusters.html#install-lca">Preparing Managed Clusters for Upgrade</a> section. Connecting to sno-ibi during this stage will show the restore process running.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">

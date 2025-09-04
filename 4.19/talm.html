@@ -84,7 +84,10 @@
     <a class="nav-link" href="introduction.html">Introduction</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="introduction.html#lab-aim">Who is this lab aimed at? </a>
+    <a class="nav-link" href="introduction.html#lab-aim">Who Is This Lab Aimed At?</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#what-you-will-achieve">What You Will Achieve</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="introduction.html#lab-software-versions">Lab Software Versions</a>
@@ -821,7 +824,7 @@
 <p>Leveraging TALM, we can manage the lifecycle of thousands of clusters at scale in a constrained operational environment. This capability is essential when working in telecom (e.g., RAN) or other environments where service level agreements require managed updates to a fleet of clusters.</p>
 </div>
 <div class="paragraph">
-<p>Remember that <a href="ztp-workflow.html">ZTP</a> generates installation and configuration resources from manifests (<code>ClusterInstances</code> and <code>PolicyGenTemplates</code>) stored in Git. These artifacts are applied to a centralized hub cluster where a combination of OpenShift GitOps, Red Hat Advanced Cluster Management, the Assisted Service deployed by the Infrastructure Operator, and the Topology Aware Lifecycle Manager (TALM) use them to install and configure the cluster. See <a href="ztp-at-scale.html">ZTP components</a> chapter.</p>
+<p>Remember that <a href="ztp-workflow.html">ZTP</a> generates installation and configuration resources from manifests (<code>ClusterInstances</code> and <code>PolicyGenerators</code>) stored in Git. These artifacts are applied to a centralized hub cluster where a combination of OpenShift GitOps, Red Hat Advanced Cluster Management, the Assisted Service deployed by the Infrastructure Operator, and the Topology Aware Lifecycle Manager (TALM) use them to install and configure the cluster. See <a href="ztp-at-scale.html">ZTP components</a> chapter.</p>
 </div>
 <div class="paragraph">
 <p>TALM is responsible for managing the rollout of configuration throughout the lifecycle of the fleet of clusters. During initial deployment, the configuration phase of this ZTP process depends on TALM to orchestrate the application of the configuration custom resources to the cluster. When day-N configuration changes need to be rolled out to the fleet, TALM will manage that rollout in progressive limited size batches of clusters. When upgrades to OpenShift or the day-two operators are needed, TALM will progressively roll those out as well. There are several key integration points between GitOps, RHACM Policy, and TALM.</p>
@@ -960,7 +963,7 @@ TALM will basically enforce all existing policies that are bound to a cluster th
 <h2 id="waves"><a class="anchor" href="#waves"></a>Waves</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every <a href="policygen-deepdive.html#policies-templating">policy</a> generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.19/ztp/source-crs/SriovSubscriptionNS.yaml">SriovSubscriptionNS.yaml</a>:</p>
+<p>A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every <a href="policygen-deepdive.html#policies-templating">policy</a> generated from a PolicyGenerator by ZTP incorporates a wave number such as the <a href="https://github.com/openshift-kni/telco-reference/tree/release-4.19/telco-ran/configuration/source-crs/SriovSubscriptionNS.yaml">SriovSubscriptionNS.yaml</a>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -998,7 +1001,7 @@ Detailed information on policy templates can be found in the following <a href="
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate. Default ztp-deploy-wave value can be found on the proper <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.19/ztp/source-crs">source crs</a>.
+All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenerator. Default ztp-deploy-wave value can be found on the proper <a href="https://github.com/openshift-kni/telco-reference/tree/release-4.19/telco-ran/configuration/source-crs">source crs</a>.
 </td>
 </tr>
 </table>

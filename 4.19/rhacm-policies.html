@@ -84,7 +84,10 @@
     <a class="nav-link" href="introduction.html">Introduction</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="introduction.html#lab-aim">Who is this lab aimed at? </a>
+    <a class="nav-link" href="introduction.html#lab-aim">Who Is This Lab Aimed At?</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#what-you-will-achieve">What You Will Achieve</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="introduction.html#lab-software-versions">Lab Software Versions</a>
@@ -818,7 +821,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>As we mentioned in the <a href="ztp-workflow.html">ZTP Workflow</a> section, the Red Hat Advanced Cluster Management (RHACM) for Kubernetes allows us to <em>provision</em> and <em>configure</em> multiple clusters in a declarative way and can be easily coupled with GitOps. ZTP and ongoing configuration updates makes intensive use of RHACM Policies for managing the configuration of deployed clusters. In our telco use case, creation of these <code>Policies</code> is simplified with the policyGen kustomize plugin. This plugin translates the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a> based on <code>PolicyGenTemplates</code> into multiple <code>Policies</code> that are understood by the hub cluster and applied to the managed clusters.</p>
+<p>As we mentioned in the <a href="ztp-workflow.html">ZTP Workflow</a> section, the Red Hat Advanced Cluster Management (RHACM) for Kubernetes allows us to <em>provision</em> and <em>configure</em> multiple clusters in a declarative way and can be easily coupled with GitOps. ZTP and ongoing configuration updates makes intensive use of RHACM Policies for managing the configuration of deployed clusters. In our telco use case, creation of these <code>Policies</code> is simplified with the policyGen kustomize plugin. This plugin translates the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a> based on <code>PolicyGenerators</code> into multiple <code>Policies</code> that are understood by the hub cluster and applied to the managed clusters.</p>
 </div>
 <div class="paragraph">
 <p>In this section, we provide an introduction to the concepts behind the <a href="https://docs.redhat.com/en/documentation/red_hat_advanced_cluster_management_for_kubernetes/2.13/html/governance/governance">RHACM "Governance" pillar</a>. Furthermore, we are going to introduce the concept of a policy, which is key for managing the configuration lifecycle of our fleet of clusters.</p>
@@ -996,7 +999,7 @@ spec:
 <div class="sect2">
 <h3 id="policy-remediation"><a class="anchor" href="#policy-remediation"></a>Policy Remediation</h3>
 <div class="paragraph">
-<p>As we will detail in the following section <a href="managing-at-scale.html#inform-policies">"Managing at Scale"</a>, for the solution presented in this lab the`PolicyGenTemplates` are by default set to generate Policies in inform mode.</p>
+<p>As we will detail in the following section <a href="managing-at-scale.html#inform-policies">"Managing at Scale"</a>, for the solution presented in this lab the`PolicyGenerators` are by default set to generate Policies in inform mode.</p>
 </div>
 <div class="paragraph">
 <p>Policy controllers periodically (as set by evaluationInterval) check policies against the current state of CRs on the target clusters. This check sets the Policy to either the Compliant or NonCompliant state. When the policy is set to inform, a report of the violations is created. However, when the controller is set to enforce a report is created <em>and</em> violations are remediated as specified in the policy.</p>

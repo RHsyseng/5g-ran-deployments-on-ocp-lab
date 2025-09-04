@@ -84,7 +84,10 @@
     <a class="nav-link" href="introduction.html">Introduction</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="introduction.html#lab-aim">Who is this lab aimed at? </a>
+    <a class="nav-link" href="introduction.html#lab-aim">Who Is This Lab Aimed At?</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#what-you-will-achieve">What You Will Achieve</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="introduction.html#lab-software-versions">Lab Software Versions</a>
@@ -832,7 +835,7 @@
 <p>The <code>ClusterInstance</code> is an abstraction layer on top of the different components managed by the <a href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a>, responsible for deploying OpenShift clusters using either the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/edge_computing/ztp-deploying-far-edge-sites#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> or <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/edge_computing/image-based-installation-for-single-node-openshift#ibi-understanding-image-based-install">Image Based Installation</a> flow. For the ones familiar with the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/edge_computing/ztp-deploying-far-edge-sites#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> and particularly with the <code>Assisted Service</code>, you will know that in order to deploy a cluster using this service there are several Kubernetes objects that need to be created like: <code>ClusterDeployment</code>, <code>InfraEnv</code>, <code>AgentClusterInstall</code>, etc.</p>
 </div>
 <div class="paragraph">
-<p>The ClusterInstance simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place. In this <a href="https://github.com/stolostron/siteconfig/blob/release-2.13/config/samples/siteconfig_v1alpha1_clusterinstance.yaml">link</a> you can find an example of a ClusterInstance for a SNO deployment.</p>
+<p>The ClusterInstance is fundamental for scaling the management of SNO fleets, as it abstracts the complexity of multiple Kubernetes objects into a unified and simplified definition for cluster deployment. It simplifies this process by providing a unified structure to describe the cluster deployment configuration in a single place. In this <a href="https://github.com/stolostron/siteconfig/blob/release-2.13/config/samples/siteconfig_v1alpha1_clusterinstance.yaml">link</a> you can find an example of a ClusterInstance for a SNO deployment.</p>
 </div>
 <div class="paragraph">
 <p>In the comming sections, we will create our own ClusterInstances using the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/edge_computing/image-based-installation-for-single-node-openshift#ibi-understanding-image-based-install">Image Based Installation</a> and <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/edge_computing/ztp-deploying-far-edge-sites#ztp-deploying-a-site_ztp-deploying-far-edge-sites">Agent Based Installation</a> flows to deploy a couple of SNO clusters in our lab environment.</p>
@@ -915,7 +918,7 @@ git clone <a href="http://student:student@infra.5g-deployment.lab:3000/student/z
 </div>
 </div>
 <div class="paragraph">
-<p>We&#8217;re ready to start working in the Git repository folder structure.</p>
+<p>We&#8217;re ready to start working in the Git repository folder structure. The following well-defined repository structure is essential for the efficiency of GitOps and ZTP, enabling a logical separation of cluster configurations (site-configs) and configuration policies (site-policies), which facilitates automated management at scale.</p>
 </div>
 <div class="paragraph">
 <p>As we saw in <a href="deployment-considerations.html#git-repo-structure">Git Repository Structure</a> section, the Git repository we will be using will have the following structure:</p>
@@ -1110,7 +1113,7 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 </div>
 </li>
 <li>
-<p>Include <code>openshift-adp</code> namespace in the list of namespaces managed by the GitOps operator.</p>
+<p>Include <code>openshift-adp</code> namespace in the list of namespaces managed by the GitOps operator to ensure that policies related to OpenShift Data Protection (such as backup and restore operations) are also managed by the GitOps pipeline.</p>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">sed -i "/destinations:/a \ \ - namespace: \'openshift-adp\'\n \ \ \ server: '\*\'" ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/policies-app-project.yaml</code></pre>
@@ -1124,22 +1127,35 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig apply -k ~/5g-deployment-lab/ztp-pipeline/argocd/deployment/</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>At this stage, we have our ZTP GitOps pipeline running and waiting for committing declarative Infrastructure and Configuration as Code to the <code>ztp-repository</code> Git repository.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>clusters</strong>. It is responsible for the infrastructure and physical deployment of Single Node OpenShift clusters from the Git repository.</p>
+</li>
+<li>
+<p><strong>policies</strong>. It focuses on the logical and operational configuration of those clusters by applying the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a> via RHACM policies.</p>
+</li>
+</ul>
+</div>
 </li>
 </ol>
 </div>
 <div class="paragraph">
-<p>Above command creates the required Argo CD Applications in the Hub cluster that handles the ZTP Pipeline.</p>
+<p>To confirm that the Argo CD applications for clusters and policies are present and healthy, access the Argo CD instance on the lab at <a href="https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab" class="bare">https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab</a> and login in with the OpenShift admin credentials. You can also access through the pre-configured Firefox <span class="image"><img src="_images/bookmark-argocd.png" alt="ArgoCD bookmark icon"></span> bookmark. Another option is running:</p>
 </div>
 <div class="paragraph">
-<p>At this stage, we have our ZTP GitOps pipeline running and waiting for committing declarative Infrastructure and Configuration as Code to the <code>ztp-repository</code> Git repository.
-* <strong>clusters</strong>. It is responsible for managing the deployment of Single Node OpenShift clusters from the Git repository.
-* <strong>policies</strong>. It is responsible for managing the configuration via RHACM policies that will be applied to Single Node OpenShift clusters. Basically, it configures the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a>.</p>
+<p>+</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig apply get applications -n openshift-gitops</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>You can access the Argo CD instance on the lab at <a href="https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab" class="bare">https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab</a> and login in with the OpenShift admin credentials. You can also access through the pre-configured Firefox <span class="image"><img src="_images/bookmark-argocd.png" alt="ArgoCD bookmark icon"></span> bookmark.</p>
-</div>
-<div class="paragraph">
-<p>You can see what the ArgoCD Apps are running in the following images:</p>
+<p>You should see the following ArgoCD Apps running:</p>
 </div>
 <div class="imageblock">
 <div class="content">

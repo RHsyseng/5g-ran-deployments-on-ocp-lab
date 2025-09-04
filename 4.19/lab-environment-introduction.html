@@ -84,7 +84,10 @@
     <a class="nav-link" href="introduction.html">Introduction</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="introduction.html#lab-aim">Who is this lab aimed at? </a>
+    <a class="nav-link" href="introduction.html#lab-aim">Who Is This Lab Aimed At?</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#what-you-will-achieve">What You Will Achieve</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="introduction.html#lab-software-versions">Lab Software Versions</a>
@@ -818,7 +821,7 @@
 <div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p>Before jumping into the hands-on sections, let&#8217;s get familiar with the lab environment we have available.</p>
+<p>Before jumping into the hands-on sections, let&#8217;s get familiar with the lab environment we have available and I would recommend taking a second read of the <a href="introduction.html#what-you-will-achieve" class="xref page">What You Will Achieve</a> section.</p>
 </div>
 <div class="admonitionblock caution">
 <table>
@@ -849,7 +852,7 @@ The following lab sections rely on having a lab environment accessible in order 
 <p>A <a href="https://github.com/go-gitea/gitea">gitea</a> server is running on the infrastructure host, you can reach it at <a href="http://infra.5g-deployment.lab:3000/" class="bare">http://infra.5g-deployment.lab:3000/</a>. You can access through the pre-configured Firefox <span class="image"><img src="_images/bookmark-gitea.png" alt="Gitea bookmark icon"></span> bookmark.</p>
 </div>
 <div class="paragraph">
-<p>Credentials for the git server:</p>
+<p>Credentials for the git server.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -860,6 +863,9 @@ The following lab sections rely on having a lab environment accessible in order 
 <p>Password: <code>student</code></p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>You will use these credentials to log in to the Gitea WebUI and manage your GitOps repositories.</p>
 </div>
 </div>
 </div>
@@ -893,6 +899,9 @@ The mirror registry doesn&#8217;t have the WebUI enabled, you can only access it
 <p>Password: <code>r3dh4t1!</code></p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>These credentials are required for podman login or similar commands when interacting with the mirror registry from the terminal.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -955,6 +964,9 @@ If you receive an error message regarding the certificate please re-run update-c
 <p>Password: <code>admin1234</code></p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Access the management console with these credentials to manage S3 buckets for backup and restore operations related to image-based upgrades.</p>
 </div>
 </div>
 </div>

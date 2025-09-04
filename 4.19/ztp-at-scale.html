@@ -84,7 +84,10 @@
     <a class="nav-link" href="introduction.html">Introduction</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="introduction.html#lab-aim">Who is this lab aimed at? </a>
+    <a class="nav-link" href="introduction.html#lab-aim">Who Is This Lab Aimed At?</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#what-you-will-achieve">What You Will Achieve</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="introduction.html#lab-software-versions">Lab Software Versions</a>
@@ -823,7 +826,7 @@
 <div class="ulist">
 <ul>
 <li>
-<p>A <strong>Git repository</strong> that declares the <code>ClusterInstance</code> resource, e.g., how the cluster is provisioned, and one or multiple <code>PolicyGenTemplates</code> (PGT) resources that define how the cluster is configured. This includes the operators that are going to be installed, the configuration to be applied, and the applications to be deployed. Note that a Git repository is a must in any GitOps methodology.</p>
+<p>A <strong>Git repository</strong> that declares the <code>ClusterInstance</code> resource, e.g., how the cluster is provisioned, and one or multiple <code>PolicyGenerator</code> resources that define how the cluster is configured. This includes the operators that are going to be installed, the configuration to be applied, and the applications to be deployed. Note that a Git repository is a must in any GitOps methodology.</p>
 </li>
 </ul>
 </div>
@@ -834,7 +837,7 @@
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-In OpenShift 4.18, the <code>SiteConfig</code> resource managed by the SiteConfigGenerator kustomize plugin was replaced as the recommended method by the <code>ClusterInstance</code> resource managed by the SiteConfig Operator.
+Since OpenShift 4.18, the <code>SiteConfig</code> resource managed by the SiteConfigGenerator kustomize plugin was replaced as the recommended method by the <code>ClusterInstance</code> resource managed by the SiteConfig Operator.
 </td>
 </tr>
 </table>
@@ -1083,19 +1086,19 @@ Currently, the IBI Operator can only install Single-Node OpenShift (SNO) cluster
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Argo CD can pull and apply any Kubernetes custom resource, however, for ZTP we are mainly focusing on <code>ClusterInstance</code> and <code>PolicyGenTemplates</code> manifests, but Argo CD is not restricted to them.
+Argo CD can pull and apply any Kubernetes custom resource, however, for ZTP we are mainly focusing on <code>ClusterInstance</code> and <code>PolicyGenerators</code> manifests, but Argo CD is not restricted to them.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>We have been talking during this lab about how a ClusterInstance manifest describes the way an OpenShift cluster is going to be provisioned, while one or multiple PolicyGenTemplates describe the configuration that will be applied to the provisioned cluster.</p>
+<p>We have been talking during this lab about how a ClusterInstance manifest describes the way an OpenShift cluster is going to be provisioned, while one or multiple PolicyGenerators describe the configuration that will be applied to the provisioned cluster.</p>
 </div>
 <div class="paragraph">
-<p>However, certainly, both are high-level manifests that are not understood by the hub cluster. There is something in between that will translate those high-level definitions into something that RHACM (including MCE) recognizes. We are referring to the <a href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a> when deploying clusters and <a href="https://github.com/openshift-kni/cnf-features-deploy/tree/release-4.19/ztp/policygenerator-kustomize-plugin">Policy generator kustomize plugin</a> when configuring it.</p>
+<p>However, certainly, both are high-level manifests that are not understood by the hub cluster. There is something in between that will translate those high-level definitions into something that RHACM (including MCE) recognizes. We are referring to the <a href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a> when deploying clusters and <a href="https://github.com/open-cluster-management-io/policy-generator-plugin">Policy generator kustomize plugin</a> when configuring it.</p>
 </div>
 <div class="paragraph">
-<p>While the SiteConfig Operator follows a classical operator installation, the Policy generator kustomize plugin is installed into the OpenShift GitOps operator during the initial setup/configuration of the hub cluster. The procedure is <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/edge_computing/ztp-preparing-the-hub-cluster">fully documented here</a>. Basically, it modifies the <code>openshift-gitops-repo-server</code> deployment to include an initContainer that will load the kustomize plugin. Then, every time a PolicyGenTemplate is pulled from a Git repo, the proper kustomize plugin will be used and transform the manifest into the proper custom resources.</p>
+<p>While the SiteConfig Operator follows a classical operator installation, the Policy generator kustomize plugin is installed into the OpenShift GitOps operator during the initial setup/configuration of the hub cluster. The procedure is <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/edge_computing/ztp-preparing-the-hub-cluster">fully documented here</a>. Basically, it modifies the <code>openshift-gitops-repo-server</code> deployment to include an initContainer that will load the kustomize plugin. Then, every time a PolicyGenerator is pulled from a Git repo, the proper kustomize plugin will be used and transform the manifest into the proper custom resources.</p>
 </div>
 <div class="sect2">
 <h3 id="sitegen"><a class="anchor" href="#sitegen"></a>SiteGen</h3>
@@ -1114,8 +1117,20 @@ In OpenShift 4.18, the <code>SiteConfig</code> resource managed by the SiteConfi
 </div>
 <div class="sect2">
 <h3 id="policygen"><a class="anchor" href="#policygen"></a>PolicyGen</h3>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+OpenShift 4.16 has a new templating mechanism called Red Hat Advanced Cluster Management for Kubernetes (RHACM) Policy Generator that will eventually replace Policy Generator Template (PGT) as the standard way to generate Red Hat Advanced Cluster Management for Kubernetes policies.
+</td>
+</tr>
+</table>
+</div>
 <div class="paragraph">
-<p>The policy generator kustomize plugin is used to facilitate creating RHACM policies based on a set of provided source CRs (custom resources) and PolicyGenTemplates. Each PGT describes how to customize those source CRs. The plugin helps to generate the following RHACM resources:</p>
+<p>The policy generator kustomize plugin is used to facilitate creating RHACM policies based on a set of provided source CRs (custom resources) and PolicyGenerator CRs. Its primary goal is to convert reference Kubernetes manifest files into RHACM policies. Any deviations from the reference manifest, such as ethernet interface names, are captured in the patch section of the PolicyGenerator Custom Resource. The plugin helps to generate the following RHACM resources:</p>
 </div>
 <div class="ulist">
 <ul>
