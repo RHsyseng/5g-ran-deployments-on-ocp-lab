@@ -2,23 +2,26 @@
 include::_attributes.adoc[]
 :profile: 5g-ran-lab
 
-As we saw in an earlier section of the lab, we can leverage link:rhacm-policies.html[RHACM policies] to get our clusters configured the way we want. We also introduced the link:ztp-at-scale.html#policygen[PolicyGen component] which helps us to create a set of policies based on {cnf-features-source-crs}[pre-baked templates] (source-crs) crafted by the Red Hat CNF team.
+As we saw in an earlier section of the lab, we can leverage link:rhacm-policies.html[RHACM policies] to get our clusters configured the way we want. We also introduced the link:ztp-at-scale.html#policygen[Policy Generator component] which helps us to create a set of policies based on {cnf-features-source-crs}[pre-baked templates] (source-crs) crafted by the Red Hat CNF team.
 
-In this section, we are going to get into the implementation details of the PolicyGen tooling.
+In this section, we are going to get into the implementation details of the Policy Generator plugin.
+
+IMPORTANT: In Red Hat OpenShift 4.16 a new templating mechanism called Red Hat Advanced Cluster Management for Kubernetes (RHACM) Policy Generator was released to eventually replace Policy Generator Template (PGT) as the standard way to generate Red Hat Advanced Cluster Management for Kubernetes policies. Currently, both mechanisms can be used in GitOps ZTP to generate RHACM policies for managed clusters. However, using RHACM and PolicyGenerator CRs is the recommended approach for managing policies and deploying them to managed clusters. This replaces the use of PolicyGenTemplate CRs for this purpose which will be deprecated in an upcoming OpenShift Container Platform release. More information about the differences between them can be found in this https://developers.redhat.com/articles/2025/02/07/migrate-rhacm-policy-generator-openshift-416#[blog].
+
 
 [#policygen-implementation]
 == PolicyGen Implementation
 
-The policy generator is implemented as a Kustomize generator plugin. This allows for any Kustomize configuration (e.g. patches, common labels) to be applied to the generated policies. This also means that the policy generator can be integrated into existing GitOps processes that support Kustomize, such as RHACM Application Lifecycle Management and OpenShift GitOps (i.e. ArgoCD).
+The PolicyGen is implemented as a Kustomize generator plugin called `policygenerator`. This allows for any Kustomize configuration (e.g. patches, common labels) to be applied to the generated policies. This also means that the policy generator can be integrated into existing GitOps processes that support Kustomize, such as RHACM Application Lifecycle Management and OpenShift GitOps (i.e. ArgoCD).
 
-The `PolicyGenerator` plugin reads the PolicyGenTemplate manifest and generates the required Kubernetes manifest to configure an RHACM Policy targeting a set of clusters. Code is located {cnf-features-policy-gen}[here].
+The `policygenerator` plugin reads the `PolicyGenerator` manifests and generates the required Kubernetes manifest to configure an RHACM Policy targeting a set of clusters. Code is located in the {cnf-features-policy-gen}[policy-generator-plugin] Git repository.
 
 [#kustomize-plugins]
 == Kustomize Plugins
 
-As we already said, PolicyGenerator is a Kustomize plugin. Kustomize plugins work as described below.
+As we already said, PolicyGen is a Kustomize plugin. Kustomize plugins work as described below.
 
-IMPORTANT: When installing these tools in ArgoCD running on a hub cluster the configuration described in this section is handled automatically. The ArgoCD operator will find the plugin binaries and use them to generate CRs from PolicyGenTemplates. This section is provided as background/reference.
+IMPORTANT: When installing these tools in ArgoCD running on a hub cluster the configuration described in this section is handled automatically. The ArgoCD operator will find the plugin binaries and use them to generate CRs from PolicyGenerator manifests. This section is provided as background/reference.
 
 The user has a path configured in Kustomize for plugins (defaults to `~/.config/kustomize/plugin/`), inside this path different folders are configured in a way that Kustomize can understand what plugin needs to be executed under which situation. Let's explain this.
 
@@ -40,22 +43,22 @@ We see that under `generators` section we have a yaml file, _generators_ tell Ku
 [console-input]
 [source,yaml,subs="attributes+,+macros"]
 -----
-apiVersion: ran.openshift.io/v1
-kind: PolicyGenTemplate
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
 -----
 
-As we can see the group is `ran.openshift.io`, version is `v1` and kind is `PolicyGenTemplate`.
+As we can see the group is `policy.open-cluster-management.io`, version is `v1` and kind is `PolicyGenerator`.
 
 Earlier, we talked about the Kustomzie plugins path, and how it is required to have a proper folder structure so Kustomize knows which plugin needs to be executed. Using the example above we can explain what Kustomize will do for generating this file.
 
 **common-policies/common.yaml**
 
-Kustomize will get the GVK and after that will go to the plugins path and execute the plugin binary, the path for the binary is `$KUSTOMIZE_PLUGINS_PATH/<group>/<version>/<kind>/<pluginbinary>`. In this case Kustomize will execute the binary at `~/.config/kustomize/plugin/ran.openshift.io/v1/policygentemplate/PolicyGenTemplate`.
+Kustomize will get the GVK and after that will go to the plugins path and execute the plugin binary, the path for the binary is `$KUSTOMIZE_PLUGINS_PATH/<group>/<version>/<kind>/<pluginbinary>`. In this case Kustomize will execute the binary at `~/.config/kustomize/plugin/policy.open-cluster-management.io/v1/policygenerator`.
 
 [#policy-generator]
 === Policy Generator
 
-The PolicyGenerator reads the PolicyGenTemplate manifests and uses the information provided in these files to output a set of RHACM policies that will be used for different purposes, from day2ops to monitoring the cluster health. It makes use os templated policies that can be found {cnf-features-source-crs}[here].
+The policygenerator plugin reads the PolicyGenerator manifests and uses the information provided in these files to output a set of RHACM policies that will be used for different purposes, from day2ops to monitoring the cluster health. It makes use of templated policies that can be found {cnf-features-source-crs}[here].
 
 IMPORTANT: A high level view of the installation and configuration workflow can be found in the previous section link:ztp-workflow.html[ZTP workflow].
 
@@ -149,6 +152,8 @@ Configuration of the Precision Time Protocol. The DU can run in the following mo
 
 This also includes an optional event notification service that applications can subscribe to for ptp events.
 
+{cnf-features-source-crs}/PtpOperatorConfig-SetSelector.yaml[Operator Config Manifest]
+
 {cnf-features-source-crs}/PtpConfigSlave.yaml[Ordinary Clock Manifest]
 
 {cnf-features-source-crs}/PtpConfigMaster.yaml[Boundary Clock Manifest]
@@ -162,9 +167,9 @@ Provision and configure the SR-IOV CNI and device plugin. Both netdevice (kernel
 
 This will be customer specific.
 
-{cnf-features-source-crs}/SriovOperatorConfig.yaml[Operator Config Manifest]
+{cnf-features-source-crs}/SriovOperatorConfig-SetSelector.yaml[Operator Config Manifest]
 
-{cnf-features-source-crs}/SriovNetworkNodePolicy.yaml[SriovNetworkPolicy Manifest]
+{cnf-features-source-crs}/SriovNetworkNodePolicy-SetSelector.yaml[SriovNetworkPolicy Manifest]
 
 {cnf-features-source-crs}/SriovNetwork.yaml[SriovNetwork Manifest]
 
@@ -185,7 +190,7 @@ Performance Tuning interface including:
 * Configures reserved and isolated cpusets.
 * Additional kernel args.
 
-{cnf-features-source-crs}/PerformanceProfile.yaml[Manifest]
+{cnf-features-source-crs}/PerformanceProfile-SetSelector.yaml[Manifest]
 
 [#local-storage]
 === Local Storage
@@ -225,29 +230,46 @@ If you access this link you will see lots of files, like for example:
 * AmqInstance.yaml
 * etc.
 
-These CRs are referenced (by filename) from the PolicyGenTemplate CRs in Git. The PolicyGenTemplate CRs act as a manifest of which configuration CRs should be included and how they should be combined into Policy CRs. In addition, the PolicyGenTemplate can contain an "overlay" (or patch) that is applied to the CR before it is wrapped into the Policy.
+These CRs are referenced (by filename) from the PolicyGenerator CRs in Git. The POlicyGenerator CRs act as a manifest of which configuration CRs should be included and how they should be combined into Policy CRs. In addition, the PolicyGenerator can contain an "overlay" (or patch) that is applied to the CR before it is wrapped into the Policy.
 
-The way this works is a follows. We will have one or more PolicyGenTemplates where we will reference these base configuration CRs. We can see an example {example-groupdu-policygen-link}[here].
+The way this works is a follows. We will have one or more PolicyGenerators where we will reference these base configuration CRs. We can see an example {example-groupdu-policygen-link}[here].
 
 Let's use the following PolicyGenTemplate as example.
 
 [console-input]
 [source,yaml,subs="attributes+,+macros"]
 ----
-apiVersion: ran.openshift.io/v1
-kind: PolicyGenTemplate
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
 metadata:
  name: "test"
  namespace: "test"
-spec:
-  bindingRules:
-    test: "true"
-  mcp: "master"
-  sourceFiles:
-    - fileName: SriovOperatorConfig.yaml
-      policyName: "config-policy"
-    - fileName: PerformanceProfile.yaml
-      policyName: "config-policy"
+placementBindingDefaults:
+  name: test-placement-binding
+policyDefaults:
+  namespace: ztp-policies
+  placement:
+    labelSelector:
+      group-du-sno: ""
+      logicalGroup: "active"
+  remediationAction: inform
+  severity: low
+  namespaceSelector:
+    exclude:
+      - kube-*
+    include:
+      - '*'
+  evaluationInterval:
+    compliant: 10m
+    noncompliant: 10s
+policies:
+- name: test-policy
+  policyAnnotations:
+    ran.openshift.io/ztp-deploy-wave: "10"
+  manifests:
+    - path: source-crs/reference-crs/SriovOperatorConfig-SetSelector.yaml
+    - path: source-crs/reference-crs/PerformanceProfile-SetSelector.yaml
+      patches:
       spec:
         cpu:
           isolated: "2-19,22-39"
@@ -259,13 +281,11 @@ spec:
               count: 32
 ----
 
-We can see that the PolicyGenTemplate is targeting two base configuration CRs: `SriovOperatorConfig.yaml` and `PerformanceProfile.yaml`.
+We can see that the PolicyGenerator is targeting two base configuration CRs: `SriovOperatorConfig-SetSelector.yaml` and `PerformanceProfile-SetSelector.yaml`.
 
-The first source CR, `SriovOperatorConfig.yaml`, is not overriding any settings, we can tell this because we don't have a `spec` or `metadata` section below the `policyName`. That means that the final policy will include the configuration CR without modification ({cnf-features-source-crs}/SriovOperatorConfig.yaml[base SriovOperatorConfig configuration CR]).
+The first source CR, `SriovOperatorConfig-SetSelector.yaml`, is not overriding any settings, we can tell this because we don't have any `patches` section below the `path`. That means that the final policy will include the configuration CR without modification ({cnf-features-source-crs}/SriovOperatorConfig-SetSelector.yaml[base SriovOperatorConfig configuration CR]).
 
-The second source CR, `PerformanceProfile.yaml`, is overriding some parameters in the `spec`. That means that the final policy will be configured as a merge of the {cnf-features-source-crs}/PerformanceProfile.yaml[original CR] plus the custom overrides we provided in the PolicyGenTemplate.
-
-CAUTION: Inside the templates we can often see references to what may appear variables like `$size`, `$count`, etc. These are not vars, that actually tells the policyGen plugin to remove that line from the output if no value was provided as an override. The only variable that is referenced and is actually substituted is the `$mcp` variable that will be replaced with the value of the same property defined in the PolicyGenTemplate.
+The second source CR, `PerformanceProfile-SetSelector.yaml`, is overriding some parameters in the `spec`. That means that the final policy will be configured as a merge of the {cnf-features-source-crs}/PerformanceProfile-SetSelector.yaml[original CR] plus the custom overrides we provided in the PolicyGenerator.
 
 [#custom-policy-templates]
 === Policies Custom Templating
@@ -275,16 +295,17 @@ In the previous section we have seen how we can use pre-defined templates to cra
 [#kustomize-plugins-locally]
 == Running Kustomize Plugins Locally
 
-We have described how Argo CD makes use of the PolicyGenTool plugins to generate the required manifests for our 5G RAN deployments. In this section, we are going to cover how to run these plugins locally which can be useful while troubleshooting or getting a preview of what the files will look like when generated via Argo CD.
+We have described how Argo CD makes use of the `policygenerator` plugin to generate the required manifests for our 5G RAN deployments. In this section, we are going to cover how to run this plugin locally which can be useful while troubleshooting or getting a preview of what the files will look like when generated via Argo CD.
 
-By running the steps below we will get the plugins installed in our system. Kustomize should be already installed, you can get it from the https://github.com/kubernetes-sigs/kustomize/releases/[releases page].
+By running the steps below we will get the plugin installed in our system. Kustomize should be already installed, you can get it from the https://github.com/kubernetes-sigs/kustomize/releases/[releases page].
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
 mkdir -p ~/.config/kustomize/plugin
-podman cp $(podman create --name policgentool --rm registry.redhat.io/openshift4/ztp-site-generate-rhel8:{openshift-release}):/kustomize/plugin/ran.openshift.io ~/.config/kustomize/plugin/
-podman rm -f policgentool
+mkdir -p ~/.config/kustomize/plugin/policy.open-cluster-management.io/v1/policygenerator
+podman cp $(podman create --name policygentool --rm registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:{multicluster-policygenerator-version}):/policy-generator/PolicyGenerator-not-fips-compliant ~/.config/kustomize/plugin/policy.open-cluster-management.io/v1/policygenerator/PolicyGenerator
+podman rm -f policygentool
 -----
 
 Now that we have the plugins locally we can run them:
@@ -294,7 +315,7 @@ IMPORTANT: We need to enable the alpha plugins by using the parameter `--enable-
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-kustomize build site-configs/ --enable-alpha-plugins
+kustomize build site-policies/ --enable-alpha-plugins
 -----
 
 We will get the output (manifests that will be consumed by the RHACM Hub).
@@ -305,12 +326,9 @@ We will get the output (manifests that will be consumed by the RHACM Hub).
 apiVersion: v1
 kind: Namespace
 metadata:
-  annotations:
-    argocd.argoproj.io/sync-wave: "0"
-    ran.openshift.io/ztp-gitops-generated: '{}'
   labels:
-    name: ztp-sno
-  name: ztp-sno
+    name: ztp-policies
+  name: ztp-policies
 ---
 <OUTPUT_OMITTED>
 -----
