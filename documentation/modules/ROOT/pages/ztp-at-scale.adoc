@@ -4,9 +4,9 @@ include::_attributes.adoc[]
 
 The deployment (ZTP), configuration, and lifecycle management solution is built by different independent components that work together to provide an automated workflow to provision and configure remote OpenShift clusters. In the following picture, we can see the different moving pieces involved:
 
-* A *Git repository* that declares the `ClusterInstance` resource, e.g., how the cluster is provisioned, and one or multiple `PolicyGenTemplates` (PGT) resources that define how the cluster is configured. This includes the operators that are going to be installed, the configuration to be applied, and the applications to be deployed. Note that a Git repository is a must in any GitOps methodology.
+* A *Git repository* that declares the `ClusterInstance` resource, e.g., how the cluster is provisioned, and one or multiple `PolicyGenerator` resources that define how the cluster is configured. This includes the operators that are going to be installed, the configuration to be applied, and the applications to be deployed. Note that a Git repository is a must in any GitOps methodology.
 
-IMPORTANT: In OpenShift 4.18, the `SiteConfig` resource managed by the SiteConfigGenerator kustomize plugin was replaced as the recommended method by the `ClusterInstance` resource managed by the SiteConfig Operator.
+IMPORTANT: Since OpenShift 4.18, the `SiteConfig` resource managed by the SiteConfigGenerator kustomize plugin was replaced as the recommended method by the `ClusterInstance` resource managed by the SiteConfig Operator.
 
 * *Red Hat Advanced Cluster Management* installed on the hub cluster, at the heart of the architecture.
 * The *Red Hat OpenShift GitOps* operator allows building and integrating declarative Git-driven workflows. It is a key component and it is extended with the `policy-generator` kustomize plugin. The `siteconfig-generator` is no longer needed as it is replaced by the SiteConfig Operator.
@@ -100,13 +100,13 @@ The Assisted Service can currently install clusters with highly-available contro
 
 Red Hat OpenShift uses Argo CD to maintain cluster resources. Argo CD is an open-source declarative tool for the continuous integration and continuous deployment (CI/CD) of applications. So, in a ZTP workflow, Argo CD is responsible for pulling the custom resources definitions that are stored in a Git repository and applying them to the hub cluster. In the solution presented here, **the definitions are applied into the hub cluster**, where all the components described in this section are running. It is RHACM in charge of performing the necessary actions to the managed clusters and distributing those policies accordingly.
 
-IMPORTANT: Argo CD can pull and apply any Kubernetes custom resource, however, for ZTP we are mainly focusing on `ClusterInstance` and `PolicyGenTemplates` manifests, but Argo CD is not restricted to them.
+IMPORTANT: Argo CD can pull and apply any Kubernetes custom resource, however, for ZTP we are mainly focusing on `ClusterInstance` and `PolicyGenerators` manifests, but Argo CD is not restricted to them.
 
-We have been talking during this lab about how a ClusterInstance manifest describes the way an OpenShift cluster is going to be provisioned, while one or multiple PolicyGenTemplates describe the configuration that will be applied to the provisioned cluster. 
+We have been talking during this lab about how a ClusterInstance manifest describes the way an OpenShift cluster is going to be provisioned, while one or multiple PolicyGenerators describe the configuration that will be applied to the provisioned cluster.
 
 However, certainly, both are high-level manifests that are not understood by the hub cluster. There is something in between that will translate those high-level definitions into something that RHACM (including MCE) recognizes. We are referring to the link:ztp-at-scale.html#siteconfig[SiteConfig Operator] when deploying clusters and {cnf-features-policygen-plugin}[Policy generator kustomize plugin] when configuring it.
 
-While the SiteConfig Operator follows a classical operator installation, the Policy generator kustomize plugin is installed into the OpenShift GitOps operator during the initial setup/configuration of the hub cluster. The procedure is {ztp-gitops-docs}[fully documented here]. Basically, it modifies the `openshift-gitops-repo-server` deployment to include an initContainer that will load the kustomize plugin. Then, every time a PolicyGenTemplate is pulled from a Git repo, the proper kustomize plugin will be used and transform the manifest into the proper custom resources.
+While the SiteConfig Operator follows a classical operator installation, the Policy generator kustomize plugin is installed into the OpenShift GitOps operator during the initial setup/configuration of the hub cluster. The procedure is {ztp-gitops-docs}[fully documented here]. Basically, it modifies the `openshift-gitops-repo-server` deployment to include an initContainer that will load the kustomize plugin. Then, every time a PolicyGenerator is pulled from a Git repo, the proper kustomize plugin will be used and transform the manifest into the proper custom resources.
 
 [#sitegen]
 === SiteGen
@@ -116,7 +116,9 @@ IMPORTANT: In OpenShift 4.18, the `SiteConfig` resource managed by the SiteConfi
 [#policygen]
 === PolicyGen
 
-The policy generator kustomize plugin is used to facilitate creating RHACM policies based on a set of provided source CRs (custom resources) and PolicyGenTemplates. Each PGT describes how to customize those source CRs. The plugin helps to generate the following RHACM resources:
+IMPORTANT: OpenShift 4.16 has a new templating mechanism called Red Hat Advanced Cluster Management for Kubernetes (RHACM) Policy Generator that will eventually replace Policy Generator Template (PGT) as the standard way to generate Red Hat Advanced Cluster Management for Kubernetes policies.
+
+The policy generator kustomize plugin is used to facilitate creating RHACM policies based on a set of provided source CRs (custom resources) and PolicyGenerator CRs. Its primary goal is to convert reference Kubernetes manifest files into RHACM policies. Any deviations from the reference manifest, such as ethernet interface names, are captured in the patch section of the PolicyGenerator Custom Resource. The plugin helps to generate the following RHACM resources:
 
 * Policy.
 * PlacementRule.

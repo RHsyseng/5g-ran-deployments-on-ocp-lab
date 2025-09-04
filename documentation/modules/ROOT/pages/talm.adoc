@@ -4,7 +4,7 @@ include::_attributes.adoc[]
 
 Leveraging TALM, we can manage the lifecycle of thousands of clusters at scale in a constrained operational environment. This capability is essential when working in telecom (e.g., RAN) or other environments where service level agreements require managed updates to a fleet of clusters.
 
-Remember that link:ztp-workflow.html[ZTP] generates installation and configuration resources from manifests (`ClusterInstances` and `PolicyGenTemplates`) stored in Git. These artifacts are applied to a centralized hub cluster where a combination of OpenShift GitOps, Red Hat Advanced Cluster Management, the Assisted Service deployed by the Infrastructure Operator, and the Topology Aware Lifecycle Manager (TALM) use them to install and configure the cluster. See link:ztp-at-scale.html[ZTP components] chapter.
+Remember that link:ztp-workflow.html[ZTP] generates installation and configuration resources from manifests (`ClusterInstances` and `PolicyGenerators`) stored in Git. These artifacts are applied to a centralized hub cluster where a combination of OpenShift GitOps, Red Hat Advanced Cluster Management, the Assisted Service deployed by the Infrastructure Operator, and the Topology Aware Lifecycle Manager (TALM) use them to install and configure the cluster. See link:ztp-at-scale.html[ZTP components] chapter.
 
 TALM is responsible for managing the rollout of configuration throughout the lifecycle of the fleet of clusters. During initial deployment, the configuration phase of this ZTP process depends on TALM to orchestrate the application of the configuration custom resources to the cluster. When day-N configuration changes need to be rolled out to the fleet, TALM will manage that rollout in progressive limited size batches of clusters. When upgrades to OpenShift or the day-two operators are needed, TALM will progressively roll those out as well. There are several key integration points between GitOps, RHACM Policy, and TALM.
 
@@ -79,7 +79,7 @@ In essence, the ztp-done label will be applied when the cluster is fully ready f
 [#waves]
 == Waves
 
-A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every link:policygen-deepdive.html#policies-templating[policy] generated from a PolicyGenTemplate by ZTP incorporates a wave number such as the link:{cnf-features-source-crs}/SriovSubscriptionNS.yaml[SriovSubscriptionNS.yaml]:
+A ZTP wave is basically an annotation (ran.openshift.io/ztp-deploy-wave) included on each policy template that will permit TALM to apply policies in an ordered manner. As an example, every link:policygen-deepdive.html#policies-templating[policy] generated from a PolicyGenerator by ZTP incorporates a wave number such as the link:{cnf-features-source-crs}/SriovSubscriptionNS.yaml[SriovSubscriptionNS.yaml]:
 
 [console-input]
 [source,yaml,subs="attributes+,+macros"]
@@ -99,7 +99,7 @@ When TALM builds the auto-generated CGU as part of the ZTP phase, the included p
 
 As TALM works through the list of managedPolicies included in the CGU it will wait for each policy to be compliant before moving to the next policy. It is important to ensure that the order in which policies are listed under managedPolicies (and thus also the wave annotation used in populating this list during ZTP) takes into account any pre-requisites for the CRs in those policies to be applied to the cluster. For example an operator must be installed before, or concurrently with, the configuration for the operator.
 
-WARNING: All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenTemplate. Default ztp-deploy-wave value can be found on the proper {cnf-features-source-crs}[source crs].
+WARNING: All CRs in the same policy must have the same setting for the ztp-deploy-wave annotation. The default value of this annotation for each CR can be overridden in the PolicyGenerator. Default ztp-deploy-wave value can be found on the proper {cnf-features-source-crs}[source crs].
 
 [#sno-upgrades-at-scale]
 == SNO Upgrades at Scale
