@@ -1147,14 +1147,6 @@ sed -i "s|targetRevision: .*|targetRevision: main|" ~/5g-deployment-lab/ztp-pipe
 <p>To confirm that the Argo CD applications for clusters and policies are present and healthy, access the Argo CD instance on the lab at <a href="https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab" class="bare">https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab</a> and login in with the OpenShift admin credentials. You can also access through the pre-configured Firefox <span class="image"><img src="_images/bookmark-argocd.png" alt="ArgoCD bookmark icon"></span> bookmark. Another option is running:</p>
 </div>
 <div class="paragraph">
-<p>+</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig apply get applications -n openshift-gitops</code></pre>
-</div>
-</div>
-<div class="paragraph">
 <p>You should see the following ArgoCD Apps running:</p>
 </div>
 <div class="imageblock">
