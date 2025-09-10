@@ -196,12 +196,6 @@ At this stage, we have our ZTP GitOps pipeline running and waiting for committin
 
 
 To confirm that the Argo CD applications for clusters and policies are present and healthy, access the Argo CD instance on the lab at {argocd-hub-link} and login in with the OpenShift admin credentials. You can also access through the pre-configured Firefox image:bookmark-argocd.png[ArgoCD bookmark icon] bookmark. Another option is running:
-+
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-oc --kubeconfig ~/hub-kubeconfig apply get applications -n openshift-gitops
------
 
 You should see the following ArgoCD Apps running:
 
