@@ -828,7 +828,7 @@
 <p>PTP: We are in a virtual environment, hardware time stamping is not possible. We had to configure the policy to use software time stamping instead. There is a warning in the lab advising this is not supported.</p>
 </li>
 <li>
-<p>Subscriptions: We use the channels for 4.18 release and an install strategy automated rather than manual.</p>
+<p>Subscriptions: We use the channels for 4.19 release and an install strategy automated rather than manual.</p>
 </li>
 <li>
 <p>SriovNetworkNodePolicy: We add three extra parameters for the NICs.</p>
@@ -853,13 +853,85 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Cluster CR: ptp.openshift.io/v1_PtpConfig_openshift-ptp_du-ptp-slave
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">**********************************
+
+Cluster CR: machineconfiguration.openshift.io/v1_MachineConfig_01-disk-encryption-rebind-master
+Reference File: optional/machine-config/01-disk-encryption-pcr-rebind-master.yaml
+Description:
+  <a href="https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-machine-configuration_ran-ref-design-components" class="bare">https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-machine-configuration_ran-ref-design-components</a>
+Diff Output: diff -u -N /tmp/MERGED-1076456548/machineconfiguration-openshift-io-v1_machineconfig_01-disk-encryption-rebind-master /tmp/LIVE-2149626097/machineconfiguration-openshift-io-v1_machineconfig_01-disk-encryption-rebind-master
+--- /tmp/MERGED-1076456548/machineconfiguration-openshift-io-v1_machineconfig_01-disk-encryption-rebind-master  2025-09-12 09:52:35.049507266 -0400
+ /tmp/LIVE-2149626097/machineconfiguration-openshift-io-v1_machineconfig_01-disk-encryption-rebind-master    2025-09-12 09:52:35.050507265 -0400
+@@ -35,13 +35,9 @@
+         mode: 493
+         path: /usr/local/bin/hwupgrade-detection-methods/ostree.sh
+       - contents:
+-          source: data:text/plain;charset=utf-8;base64,IyEvYmluL2Jhc2gKc2V0IC1vIGVycmV4aXQgLW8gbm91bnNldCAtbyBwaXBlZmFpbAoKU1BPS0VfS1VCRUNPTkZJR19QQVRIPS9ldGMva3ViZXJuZXRlcy9zdGF0aWMtcG9kLXJlc291cmNlcy9rdWJlLWFwaXNlcnZlci1jZXJ0cy9zZWNyZXRzL25vZGUta3ViZWNvbmZpZ3MvbGItaW50Lmt1YmVjb25maWcKSFVCX1NFQ1JFVF9OQU1FU1BBQ0U9b3Blbi1jbHVzdGVyLW1hbmFnZW1lbnQtYWdlbnQKSFVCX1NFQ1JFVF9OQU1FPWh1Yi1rdWJlY29uZmlnLXNlY3JldAoKIyByZXRyaWV2ZXMgdGhlIGt1YmVjb25maWcgZm9yIHRoaXMgc3Bva2UncyBjbHVzdGVyCmdldEh1Ykt1YmVjb25maWcoKSB7Cglsb2NhbCBrdWJlQ29uZmlnUGF0aCBuYW1lc3BhY2Ugc2VjcmV0TmFtZSBLVUJFQ09ORklHX0RBVEEgVExTX0tFWSBUTFNfQ1JUCgoJa3ViZUNvbmZpZ1BhdGg9IiQxIgoJbmFtZXNwYWNlPSIkMiIKCXNlY3JldE5hbWU9IiQzIgoJS1VCRUNPTkZJR19EQVRBPSQob2MgLS1rdWJlY29uZmlnICIka3ViZUNvbmZpZ1BhdGgiIGdldCBzZWNyZXQgLW4gIiRuYW1lc3BhY2UiICIkc2VjcmV0TmFtZSIgLW8ganNvbiB8IGpxIC5kYXRhLmt1YmVjb25maWcgfCBzZWQgJ3MvIi8vZycgfCBiYXNlNjQgLWQpCglpZiBbIC16ICIkS1VCRUNPTkZJR19EQVRBIiBdOyB0aGVuCgkJcmV0dXJuICIkRkFMU0UiCglmaQoJVExTX0tFWT0kKG9jIC0ta3ViZWNvbmZpZyAiJGt1YmVDb25maWdQYXRoIiBnZXQgc2VjcmV0IC1uICIkbmFtZXNwYWNlIiAiJHNlY3JldE5hbWUiIC1vIGpzb24gfCBqcSAnLmRhdGEuInRscy5rZXkiJyB8IHNlZCAncy8iLy9nJykKCVRMU19DUlQ9JChvYyAtLWt1YmVjb25maWcgIiRrdWJlQ29uZmlnUGF0aCIgZ2V0IHNlY3JldCAtbiAiJG5hbWVzcGFjZSIgIiRzZWNyZXROYW1lIiAtbyBqc29uIHwganEgJy5kYXRhLiJ0bHMuY3J0IicgfCBzZWQgJ3MvIi8vZycpCgllY2hvICIkS1VCRUNPTkZJR19EQVRBIiB8IHNlZCAtZSAicy9jbGllbnQtY2VydGlmaWNhdGU6IHRscy5jcnQvY2xpZW50LWNlcnRpZmljYXRlLWRhdGE6ICRUTFNfQ1JUL2ciIHwgc2VkIC1lICJzL2NsaWVudC1rZXk6IHRscy5rZXkvY2xpZW50LWtleS1kYXRhOiAkVExTX0tFWS9nIiA+L3RtcC9rdWJlY29uZmlnLWh1YgoJcmV0dXJuICIkVFJVRSIKfQoKIyBSZXRyZWl2ZXMgVEFMTSdzIHN0YXRlIGluIHRoZSBodWIgY2x1c3RlcidzIG1hbmFnZWRDbHVzdGVyIG9iamVjdC4gVGFrZXMgb25lIGFyZ3VtZW50OgojIGRvbmUgLT4gcmV0dXJuICRUUlVFIGlmIHRoZSB6dHAtZG9uZSBsYWJlbCBpcyBzZXQsICRGQUxTRSBvdGhlcndpc2UKIyBydW5uaW5nIC0+IHJldHVybiAkVFJVRSBpZiB0aGUgenRwLXJ1bm5pbmcgbGFiZWwgaXMgc2V0LCAkRkFMU0Ugb3RoZXJ3aXNlCmlzWnRwU3RhdGUoKSB7Cglsb2NhbCB0YWxtU3RhdGUgUkVTVUxUCgoJdGFsbVN0YXRlPSIkMSIKCVJFU1VMVD0kRkFMU0UKCgljbHVzdGVyTmFtZT0kKG9jIC0ta3ViZWNvbmZpZyAiJFNQT0tFX0tVQkVDT05GSUdfUEFUSCIgZ2V0IGtsdXN0ZXJsZXQga2x1c3RlcmxldCAtb2pzb25wYXRoPSd7LnNwZWMuY2x1c3Rlck5hbWV9JykKCWNhc2UgIiR0YWxtU3RhdGUiIGluCgkicnVubmluZyIpCgkJUkVTVUxUPSQoS1VCRUNPTkZJRz0vdG1wL2t1YmVjb25maWctaHViIG9jIGdldCBtYW5hZ2VkY2x1c3RlciAiJGNsdXN0ZXJOYW1lIiAtb2pzb24gfCBqcSAnLm1ldGFkYXRhLmxhYmVsc1sienRwLXJ1bm5pbmciXSE9bnVsbCcpCgkJOzsKCSJkb25lIikKCQlSRVNVTFQ9JChLVUJFQ09ORklHPS90bXAva3ViZWNvbmZpZy1odWIgb2MgZ2V0IG1hbmFnZWRjbHVzdGVyICIkY2x1c3Rlck5hbWUiIC1vanNvbiB8IGpxICcubWV0YWRhdGEubGFiZWxzWyJ6dHAtZG9uZSJdIT1udWxsJykKCQk7OwoJKikKCQkjIENvZGUgdG8gZXhlY3V0ZSB3aGVuIG5vIHBhdHRlcm5zIG1hdGNoCgkJOzsKCWVzYWMKCWlmIFsgIiRSRVNVTFQiID09ICJmYWxzZSIgXTsgdGhlbgoJCWxvZ0RlYnVnICJUQUxNICR0YWxtU3RhdGUgc3RhdGUgaXMgJFJFU1VMVCIKCQlyZXR1cm4gIiRGQUxTRSIKCWZpCglsb2dEZWJ1ZyAiVEFMTSAkdGFsbVN0YXRlIHN0YXRlIGlzICRSRVNVTFQiCglyZXR1cm4gIiRUUlVFIgp9Cgppc1RBTE1VcGRhdGluZygpIHsKCWlmICEgZ2V0SHViS3ViZWNvbmZpZyAkU1BPS0VfS1VCRUNPTkZJR19QQVRIICRIVUJfU0VDUkVUX05BTUVTUEFDRSAkSFVCX1NFQ1JFVF9OQU1FOyB0aGVuCgkJbG9nSW5mbyAiVEFMTSBub3QgYXZhaWxhYmxlIG9yIGh1YiBrdWJlY29uZmlnIGlzIG5vIHJlYWR5IHlldCBhdCAkU1BPS0VfS1VCRUNPTkZJR19QQVRIIHBhdGgsIGNhbm5vdCBnZXQgc3Bva2Ugc2VjcmV0ICRIVUJfU0VDUkVUX05BTUUgaW4gJEhVQl9TRUNSRVRfTkFNRVNQQUNFIG5hbWVzcGFjZSIKCQlyZXR1cm4gIiRGQUxTRSIKCWZpCglpc1p0cFN0YXRlICJydW5uaW5nIgoJcmV0dXJuICQ/Cn0KCiMgQWRkIGEgbmV3IGZ1bmN0aW9uIHRvIHRoZSBhcnJheSBvZiB1cGRhdGUgZGV0ZWN0aW9uIG1ldGhvZHMKc2VydmVyVXBkYXRlRGV0ZWN0aW9uTWV0aG9kcys9KCJpc1RBTE1VcGRhdGluZyIpCg==
++          source: data:text/plain;charset=utf-8;base64,IyEvYmluL2Jhc2gKc2V0IC1vIGVycmV4aXQgLW8gbm91bnNldCAtbyBwaXBlZmFpbAoKU1BPS0VfS1VCRUNPTkZJR19QQVRIPS92YXIvbGliL2t1YmVsZXQva3ViZWNvbmZpZwpIVUJfU0VDUkVUX05BTUVTUEFDRT1vcGVuLWNsdXN0ZXItbWFuYWdlbWVudC1hZ2VudApIVUJfU0VDUkVUX05BTUU9aHViLWt1YmVjb25maWctc2VjcmV0CgojIHJldHJpZXZlcyB0aGUga3ViZWNvbmZpZyBmb3IgdGhpcyBzcG9rZSdzIGNsdXN0ZXIKZ2V0SHViS3ViZWNvbmZpZygpIHsKCWxvY2FsIGt1YmVDb25maWdQYXRoIG5hbWVzcGFjZSBzZWNyZXROYW1lIEtVQkVDT05GSUdfREFUQSBUTFNfS0VZIFRMU19DUlQKCglrdWJlQ29uZmlnUGF0aD0iJDEiCgluYW1lc3BhY2U9IiQyIgoJc2VjcmV0TmFtZT0iJDMiCglLVUJFQ09ORklHX0RBVEE9JChvYyAtLWt1YmVjb25maWcgIiRrdWJlQ29uZmlnUGF0aCIgZ2V0IHNlY3JldCAtbiAiJG5hbWVzcGFjZSIgIiRzZWNyZXROYW1lIiAtbyBqc29uIHwganEgLmRhdGEua3ViZWNvbmZpZyB8IHNlZCAncy8iLy9nJyB8IGJhc2U2NCAtZCkKCWlmIFsgLXogIiRLVUJFQ09ORklHX0RBVEEiIF07IHRoZW4KCQlyZXR1cm4gIiRGQUxTRSIKCWZpCglUTFNfS0VZPSQob2MgLS1rdWJlY29uZmlnICIka3ViZUNvbmZpZ1BhdGgiIGdldCBzZWNyZXQgLW4gIiRuYW1lc3BhY2UiICIkc2VjcmV0TmFtZSIgLW8ganNvbiB8IGpxICcuZGF0YS4idGxzLmtleSInIHwgc2VkICdzLyIvL2cnKQoJVExTX0NSVD0kKG9jIC0ta3ViZWNvbmZpZyAiJGt1YmVDb25maWdQYXRoIiBnZXQgc2VjcmV0IC1uICIkbmFtZXNwYWNlIiAiJHNlY3JldE5hbWUiIC1vIGpzb24gfCBqcSAnLmRhdGEuInRscy5jcnQiJyB8IHNlZCAncy8iLy9nJykKCWVjaG8gIiRLVUJFQ09ORklHX0RBVEEiIHwgc2VkIC1lICJzL2NsaWVudC1jZXJ0aWZpY2F0ZTogdGxzLmNydC9jbGllbnQtY2VydGlmaWNhdGUtZGF0YTogJFRMU19DUlQvZyIgfCBzZWQgLWUgInMvY2xpZW50LWtleTogdGxzLmtleS9jbGllbnQta2V5LWRhdGE6ICRUTFNfS0VZL2ciID4vdG1wL2t1YmVjb25maWctaHViCglyZXR1cm4gIiRUUlVFIgp9CgojIFJldHJlaXZlcyBUQUxNJ3Mgc3RhdGUgaW4gdGhlIGh1YiBjbHVzdGVyJ3MgbWFuYWdlZENsdXN0ZXIgb2JqZWN0LiBUYWtlcyBvbmUgYXJndW1lbnQ6CiMgZG9uZSAtPiByZXR1cm4gJFRSVUUgaWYgdGhlIHp0cC1kb25lIGxhYmVsIGlzIHNldCwgJEZBTFNFIG90aGVyd2lzZQojIHJ1bm5pbmcgLT4gcmV0dXJuICRUUlVFIGlmIHRoZSB6dHAtcnVubmluZyBsYWJlbCBpcyBzZXQsICRGQUxTRSBvdGhlcndpc2UKaXNadHBTdGF0ZSgpIHsKCWxvY2FsIHRhbG1TdGF0ZSBSRVNVTFQKCgl0YWxtU3RhdGU9IiQxIgoJUkVTVUxUPSRGQUxTRQoKCWNhc2UgIiR0YWxtU3RhdGUiIGluCgkicnVubmluZyIpCgkJUkVTVUxUPSQoS1VCRUNPTkZJRz0vdG1wL2t1YmVjb25maWctaHViIG9jIGdldCBtYW5hZ2VkY2x1c3RlciAiJChob3N0bmFtZSAtLXNob3J0KSIgLW9qc29uIHwganEgJy5tZXRhZGF0YS5sYWJlbHNbInp0cC1ydW5uaW5nIl0hPW51bGwnKQoJCTs7CgkiZG9uZSIpCgkJUkVTVUxUPSQoS1VCRUNPTkZJRz0vdG1wL2t1YmVjb25maWctaHViIG9jIGdldCBtYW5hZ2VkY2x1c3RlciAiJChob3N0bmFtZSAtLXNob3J0KSIgLW9qc29uIHwganEgJy5tZXRhZGF0YS5sYWJlbHNbInp0cC1kb25lIl0hPW51bGwnKQoJCTs7CgkqKQoJCSMgQ29kZSB0byBleGVjdXRlIHdoZW4gbm8gcGF0dGVybnMgbWF0Y2gKCQk7OwoJZXNhYwoJaWYgWyAiJFJFU1VMVCIgPT0gImZhbHNlIiBdOyB0aGVuCgkJbG9nRGVidWcgIlRBTE0gJHRhbG1TdGF0ZSBzdGF0ZSBpcyAkUkVTVUxUIgoJCXJldHVybiAiJEZBTFNFIgoJZmkKCWxvZ0RlYnVnICJUQUxNICR0YWxtU3RhdGUgc3RhdGUgaXMgJFJFU1VMVCIKCXJldHVybiAiJFRSVUUiCn0KCmlzVEFMTVVwZGF0aW5nKCkgewoJaWYgISBnZXRIdWJLdWJlY29uZmlnICRTUE9LRV9LVUJFQ09ORklHX1BBVEggJEhVQl9TRUNSRVRfTkFNRVNQQUNFICRIVUJfU0VDUkVUX05BTUU7IHRoZW4KCQlsb2dJbmZvICJUQUxNIG5vdCBhdmFpbGFibGUgb3IgaHViIGt1YmVjb25maWcgaXMgbm8gcmVhZHkgeWV0IGF0ICRTUE9LRV9LVUJFQ09ORklHX1BBVEggcGF0aCwgY2Fubm90IGdldCBzcG9rZSBzZWNyZXQgJEhVQl9TRUNSRVRfTkFNRSBpbiAkSFVCX1NFQ1JFVF9OQU1FU1BBQ0UgbmFtZXNwYWNlIgoJCXJldHVybiAiJEZBTFNFIgoJZmkKCWlzWnRwU3RhdGUgInJ1bm5pbmciCglyZXR1cm4gJD8KfQoKIyBBZGQgYSBuZXcgZnVuY3Rpb24gdG8gdGhlIGFycmF5IG9mIHVwZGF0ZSBkZXRlY3Rpb24gbWV0aG9kcwpzZXJ2ZXJVcGRhdGVEZXRlY3Rpb25NZXRob2RzKz0oImlzVEFMTVVwZGF0aW5nIikK
+         mode: 493
+         path: /usr/local/bin/hwupgrade-detection-methods/talm.sh
+-      - contents:
+-          source: data:text/plain;charset=utf-8;base64,IyBUaGlzIHVuaXQgZW5zdXJlcyB0aGF0IGNvbnRhaW5lcnMgc3RheSB1cCBvbiBzaHV0ZG93biB1bnRpbCB0aGUgcGNyLWRpc2FibGUtc2h1dGRvd24gc2VydmljZSBpcyBhYmxlIHRvIHJ1biAKW1VuaXRdCkJlZm9yZT1wY3ItZGlzYWJsZS1zaHV0ZG93bi5zZXJ2aWNlCg==
+-        mode: 420
+-        path: /etc/systemd/system/crio-.scope.d/order.conf
+     systemd:
+       units:
+       - contents: |
+@@ -59,8 +55,8 @@
+           [Service]
+           Type=oneshot
+           RemainAfterExit=true
++          ExecStart=/usr/bin/true
+           ExecStop=/usr/local/bin/disablePcrOnRebootOrShutdown.sh
+-
+           [Install]
+           WantedBy=multi-user.target
+         enabled: true
+
+**********************************
+
+Cluster CR: machineconfiguration.openshift.io/v1_MachineConfig_01-disk-encryption-rebind-worker
+Reference File: optional/machine-config/01-disk-encryption-pcr-rebind-worker.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-machine-configuration_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-3550180683/machineconfiguration-openshift-io-v1_machineconfig_01-disk-encryption-rebind-worker /tmp/LIVE-3640434934/machineconfiguration-openshift-io-v1_machineconfig_01-disk-encryption-rebind-worker
+--- /tmp/MERGED-3550180683/machineconfiguration-openshift-io-v1_machineconfig_01-disk-encryption-rebind-worker  2025-09-12 09:52:35.115507184 -0400
+ /tmp/LIVE-3640434934/machineconfiguration-openshift-io-v1_machineconfig_01-disk-encryption-rebind-worker    2025-09-12 09:52:35.117507182 -0400
+@@ -35,13 +35,9 @@
+         mode: 493
+         path: /usr/local/bin/hwupgrade-detection-methods/ostree.sh
+       - contents:
+-          source: data:text/plain;charset=utf-8;base64,IyEvYmluL2Jhc2gKc2V0IC1vIGVycmV4aXQgLW8gbm91bnNldCAtbyBwaXBlZmFpbAoKU1BPS0VfS1VCRUNPTkZJR19QQVRIPS9ldGMva3ViZXJuZXRlcy9zdGF0aWMtcG9kLXJlc291cmNlcy9rdWJlLWFwaXNlcnZlci1jZXJ0cy9zZWNyZXRzL25vZGUta3ViZWNvbmZpZ3MvbGItaW50Lmt1YmVjb25maWcKSFVCX1NFQ1JFVF9OQU1FU1BBQ0U9b3Blbi1jbHVzdGVyLW1hbmFnZW1lbnQtYWdlbnQKSFVCX1NFQ1JFVF9OQU1FPWh1Yi1rdWJlY29uZmlnLXNlY3JldAoKIyByZXRyaWV2ZXMgdGhlIGt1YmVjb25maWcgZm9yIHRoaXMgc3Bva2UncyBjbHVzdGVyCmdldEh1Ykt1YmVjb25maWcoKSB7Cglsb2NhbCBrdWJlQ29uZmlnUGF0aCBuYW1lc3BhY2Ugc2VjcmV0TmFtZSBLVUJFQ09ORklHX0RBVEEgVExTX0tFWSBUTFNfQ1JUCgoJa3ViZUNvbmZpZ1BhdGg9IiQxIgoJbmFtZXNwYWNlPSIkMiIKCXNlY3JldE5hbWU9IiQzIgoJS1VCRUNPTkZJR19EQVRBPSQob2MgLS1rdWJlY29uZmlnICIka3ViZUNvbmZpZ1BhdGgiIGdldCBzZWNyZXQgLW4gIiRuYW1lc3BhY2UiICIkc2VjcmV0TmFtZSIgLW8ganNvbiB8IGpxIC5kYXRhLmt1YmVjb25maWcgfCBzZWQgJ3MvIi8vZycgfCBiYXNlNjQgLWQpCglpZiBbIC16ICIkS1VCRUNPTkZJR19EQVRBIiBdOyB0aGVuCgkJcmV0dXJuICIkRkFMU0UiCglmaQoJVExTX0tFWT0kKG9jIC0ta3ViZWNvbmZpZyAiJGt1YmVDb25maWdQYXRoIiBnZXQgc2VjcmV0IC1uICIkbmFtZXNwYWNlIiAiJHNlY3JldE5hbWUiIC1vIGpzb24gfCBqcSAnLmRhdGEuInRscy5rZXkiJyB8IHNlZCAncy8iLy9nJykKCVRMU19DUlQ9JChvYyAtLWt1YmVjb25maWcgIiRrdWJlQ29uZmlnUGF0aCIgZ2V0IHNlY3JldCAtbiAiJG5hbWVzcGFjZSIgIiRzZWNyZXROYW1lIiAtbyBqc29uIHwganEgJy5kYXRhLiJ0bHMuY3J0IicgfCBzZWQgJ3MvIi8vZycpCgllY2hvICIkS1VCRUNPTkZJR19EQVRBIiB8IHNlZCAtZSAicy9jbGllbnQtY2VydGlmaWNhdGU6IHRscy5jcnQvY2xpZW50LWNlcnRpZmljYXRlLWRhdGE6ICRUTFNfQ1JUL2ciIHwgc2VkIC1lICJzL2NsaWVudC1rZXk6IHRscy5rZXkvY2xpZW50LWtleS1kYXRhOiAkVExTX0tFWS9nIiA+L3RtcC9rdWJlY29uZmlnLWh1YgoJcmV0dXJuICIkVFJVRSIKfQoKIyBSZXRyZWl2ZXMgVEFMTSdzIHN0YXRlIGluIHRoZSBodWIgY2x1c3RlcidzIG1hbmFnZWRDbHVzdGVyIG9iamVjdC4gVGFrZXMgb25lIGFyZ3VtZW50OgojIGRvbmUgLT4gcmV0dXJuICRUUlVFIGlmIHRoZSB6dHAtZG9uZSBsYWJlbCBpcyBzZXQsICRGQUxTRSBvdGhlcndpc2UKIyBydW5uaW5nIC0+IHJldHVybiAkVFJVRSBpZiB0aGUgenRwLXJ1bm5pbmcgbGFiZWwgaXMgc2V0LCAkRkFMU0Ugb3RoZXJ3aXNlCmlzWnRwU3RhdGUoKSB7Cglsb2NhbCB0YWxtU3RhdGUgUkVTVUxUCgoJdGFsbVN0YXRlPSIkMSIKCVJFU1VMVD0kRkFMU0UKCgljbHVzdGVyTmFtZT0kKG9jIC0ta3ViZWNvbmZpZyAiJFNQT0tFX0tVQkVDT05GSUdfUEFUSCIgZ2V0IGtsdXN0ZXJsZXQga2x1c3RlcmxldCAtb2pzb25wYXRoPSd7LnNwZWMuY2x1c3Rlck5hbWV9JykKCWNhc2UgIiR0YWxtU3RhdGUiIGluCgkicnVubmluZyIpCgkJUkVTVUxUPSQoS1VCRUNPTkZJRz0vdG1wL2t1YmVjb25maWctaHViIG9jIGdldCBtYW5hZ2VkY2x1c3RlciAiJGNsdXN0ZXJOYW1lIiAtb2pzb24gfCBqcSAnLm1ldGFkYXRhLmxhYmVsc1sienRwLXJ1bm5pbmciXSE9bnVsbCcpCgkJOzsKCSJkb25lIikKCQlSRVNVTFQ9JChLVUJFQ09ORklHPS90bXAva3ViZWNvbmZpZy1odWIgb2MgZ2V0IG1hbmFnZWRjbHVzdGVyICIkY2x1c3Rlck5hbWUiIC1vanNvbiB8IGpxICcubWV0YWRhdGEubGFiZWxzWyJ6dHAtZG9uZSJdIT1udWxsJykKCQk7OwoJKikKCQkjIENvZGUgdG8gZXhlY3V0ZSB3aGVuIG5vIHBhdHRlcm5zIG1hdGNoCgkJOzsKCWVzYWMKCWlmIFsgIiRSRVNVTFQiID09ICJmYWxzZSIgXTsgdGhlbgoJCWxvZ0RlYnVnICJUQUxNICR0YWxtU3RhdGUgc3RhdGUgaXMgJFJFU1VMVCIKCQlyZXR1cm4gIiRGQUxTRSIKCWZpCglsb2dEZWJ1ZyAiVEFMTSAkdGFsbVN0YXRlIHN0YXRlIGlzICRSRVNVTFQiCglyZXR1cm4gIiRUUlVFIgp9Cgppc1RBTE1VcGRhdGluZygpIHsKCWlmICEgZ2V0SHViS3ViZWNvbmZpZyAkU1BPS0VfS1VCRUNPTkZJR19QQVRIICRIVUJfU0VDUkVUX05BTUVTUEFDRSAkSFVCX1NFQ1JFVF9OQU1FOyB0aGVuCgkJbG9nSW5mbyAiVEFMTSBub3QgYXZhaWxhYmxlIG9yIGh1YiBrdWJlY29uZmlnIGlzIG5vIHJlYWR5IHlldCBhdCAkU1BPS0VfS1VCRUNPTkZJR19QQVRIIHBhdGgsIGNhbm5vdCBnZXQgc3Bva2Ugc2VjcmV0ICRIVUJfU0VDUkVUX05BTUUgaW4gJEhVQl9TRUNSRVRfTkFNRVNQQUNFIG5hbWVzcGFjZSIKCQlyZXR1cm4gIiRGQUxTRSIKCWZpCglpc1p0cFN0YXRlICJydW5uaW5nIgoJcmV0dXJuICQ/Cn0KCiMgQWRkIGEgbmV3IGZ1bmN0aW9uIHRvIHRoZSBhcnJheSBvZiB1cGRhdGUgZGV0ZWN0aW9uIG1ldGhvZHMKc2VydmVyVXBkYXRlRGV0ZWN0aW9uTWV0aG9kcys9KCJpc1RBTE1VcGRhdGluZyIpCg==
++          source: data:text/plain;charset=utf-8;base64,IyEvYmluL2Jhc2gKc2V0IC1vIGVycmV4aXQgLW8gbm91bnNldCAtbyBwaXBlZmFpbAoKU1BPS0VfS1VCRUNPTkZJR19QQVRIPS92YXIvbGliL2t1YmVsZXQva3ViZWNvbmZpZwpIVUJfU0VDUkVUX05BTUVTUEFDRT1vcGVuLWNsdXN0ZXItbWFuYWdlbWVudC1hZ2VudApIVUJfU0VDUkVUX05BTUU9aHViLWt1YmVjb25maWctc2VjcmV0CgojIHJldHJpZXZlcyB0aGUga3ViZWNvbmZpZyBmb3IgdGhpcyBzcG9rZSdzIGNsdXN0ZXIKZ2V0SHViS3ViZWNvbmZpZygpIHsKCWxvY2FsIGt1YmVDb25maWdQYXRoIG5hbWVzcGFjZSBzZWNyZXROYW1lIEtVQkVDT05GSUdfREFUQSBUTFNfS0VZIFRMU19DUlQKCglrdWJlQ29uZmlnUGF0aD0iJDEiCgluYW1lc3BhY2U9IiQyIgoJc2VjcmV0TmFtZT0iJDMiCglLVUJFQ09ORklHX0RBVEE9JChvYyAtLWt1YmVjb25maWcgIiRrdWJlQ29uZmlnUGF0aCIgZ2V0IHNlY3JldCAtbiAiJG5hbWVzcGFjZSIgIiRzZWNyZXROYW1lIiAtbyBqc29uIHwganEgLmRhdGEua3ViZWNvbmZpZyB8IHNlZCAncy8iLy9nJyB8IGJhc2U2NCAtZCkKCWlmIFsgLXogIiRLVUJFQ09ORklHX0RBVEEiIF07IHRoZW4KCQlyZXR1cm4gIiRGQUxTRSIKCWZpCglUTFNfS0VZPSQob2MgLS1rdWJlY29uZmlnICIka3ViZUNvbmZpZ1BhdGgiIGdldCBzZWNyZXQgLW4gIiRuYW1lc3BhY2UiICIkc2VjcmV0TmFtZSIgLW8ganNvbiB8IGpxICcuZGF0YS4idGxzLmtleSInIHwgc2VkICdzLyIvL2cnKQoJVExTX0NSVD0kKG9jIC0ta3ViZWNvbmZpZyAiJGt1YmVDb25maWdQYXRoIiBnZXQgc2VjcmV0IC1uICIkbmFtZXNwYWNlIiAiJHNlY3JldE5hbWUiIC1vIGpzb24gfCBqcSAnLmRhdGEuInRscy5jcnQiJyB8IHNlZCAncy8iLy9nJykKCWVjaG8gIiRLVUJFQ09ORklHX0RBVEEiIHwgc2VkIC1lICJzL2NsaWVudC1jZXJ0aWZpY2F0ZTogdGxzLmNydC9jbGllbnQtY2VydGlmaWNhdGUtZGF0YTogJFRMU19DUlQvZyIgfCBzZWQgLWUgInMvY2xpZW50LWtleTogdGxzLmtleS9jbGllbnQta2V5LWRhdGE6ICRUTFNfS0VZL2ciID4vdG1wL2t1YmVjb25maWctaHViCglyZXR1cm4gIiRUUlVFIgp9CgojIFJldHJlaXZlcyBUQUxNJ3Mgc3RhdGUgaW4gdGhlIGh1YiBjbHVzdGVyJ3MgbWFuYWdlZENsdXN0ZXIgb2JqZWN0LiBUYWtlcyBvbmUgYXJndW1lbnQ6CiMgZG9uZSAtPiByZXR1cm4gJFRSVUUgaWYgdGhlIHp0cC1kb25lIGxhYmVsIGlzIHNldCwgJEZBTFNFIG90aGVyd2lzZQojIHJ1bm5pbmcgLT4gcmV0dXJuICRUUlVFIGlmIHRoZSB6dHAtcnVubmluZyBsYWJlbCBpcyBzZXQsICRGQUxTRSBvdGhlcndpc2UKaXNadHBTdGF0ZSgpIHsKCWxvY2FsIHRhbG1TdGF0ZSBSRVNVTFQKCgl0YWxtU3RhdGU9IiQxIgoJUkVTVUxUPSRGQUxTRQoKCWNhc2UgIiR0YWxtU3RhdGUiIGluCgkicnVubmluZyIpCgkJUkVTVUxUPSQoS1VCRUNPTkZJRz0vdG1wL2t1YmVjb25maWctaHViIG9jIGdldCBtYW5hZ2VkY2x1c3RlciAiJChob3N0bmFtZSAtLXNob3J0KSIgLW9qc29uIHwganEgJy5tZXRhZGF0YS5sYWJlbHNbInp0cC1ydW5uaW5nIl0hPW51bGwnKQoJCTs7CgkiZG9uZSIpCgkJUkVTVUxUPSQoS1VCRUNPTkZJRz0vdG1wL2t1YmVjb25maWctaHViIG9jIGdldCBtYW5hZ2VkY2x1c3RlciAiJChob3N0bmFtZSAtLXNob3J0KSIgLW9qc29uIHwganEgJy5tZXRhZGF0YS5sYWJlbHNbInp0cC1kb25lIl0hPW51bGwnKQoJCTs7CgkqKQoJCSMgQ29kZSB0byBleGVjdXRlIHdoZW4gbm8gcGF0dGVybnMgbWF0Y2gKCQk7OwoJZXNhYwoJaWYgWyAiJFJFU1VMVCIgPT0gImZhbHNlIiBdOyB0aGVuCgkJbG9nRGVidWcgIlRBTE0gJHRhbG1TdGF0ZSBzdGF0ZSBpcyAkUkVTVUxUIgoJCXJldHVybiAiJEZBTFNFIgoJZmkKCWxvZ0RlYnVnICJUQUxNICR0YWxtU3RhdGUgc3RhdGUgaXMgJFJFU1VMVCIKCXJldHVybiAiJFRSVUUiCn0KCmlzVEFMTVVwZGF0aW5nKCkgewoJaWYgISBnZXRIdWJLdWJlY29uZmlnICRTUE9LRV9LVUJFQ09ORklHX1BBVEggJEhVQl9TRUNSRVRfTkFNRVNQQUNFICRIVUJfU0VDUkVUX05BTUU7IHRoZW4KCQlsb2dJbmZvICJUQUxNIG5vdCBhdmFpbGFibGUgb3IgaHViIGt1YmVjb25maWcgaXMgbm8gcmVhZHkgeWV0IGF0ICRTUE9LRV9LVUJFQ09ORklHX1BBVEggcGF0aCwgY2Fubm90IGdldCBzcG9rZSBzZWNyZXQgJEhVQl9TRUNSRVRfTkFNRSBpbiAkSFVCX1NFQ1JFVF9OQU1FU1BBQ0UgbmFtZXNwYWNlIgoJCXJldHVybiAiJEZBTFNFIgoJZmkKCWlzWnRwU3RhdGUgInJ1bm5pbmciCglyZXR1cm4gJD8KfQoKIyBBZGQgYSBuZXcgZnVuY3Rpb24gdG8gdGhlIGFycmF5IG9mIHVwZGF0ZSBkZXRlY3Rpb24gbWV0aG9kcwpzZXJ2ZXJVcGRhdGVEZXRlY3Rpb25NZXRob2RzKz0oImlzVEFMTVVwZGF0aW5nIikK
+         mode: 493
+         path: /usr/local/bin/hwupgrade-detection-methods/talm.sh
+-      - contents:
+-          source: data:text/plain;charset=utf-8;base64,IyBUaGlzIHVuaXQgZW5zdXJlcyB0aGF0IGNvbnRhaW5lcnMgc3RheSB1cCBvbiBzaHV0ZG93biB1bnRpbCB0aGUgcGNyLWRpc2FibGUtc2h1dGRvd24gc2VydmljZSBpcyBhYmxlIHRvIHJ1biAKW1VuaXRdCkJlZm9yZT1wY3ItZGlzYWJsZS1zaHV0ZG93bi5zZXJ2aWNlCg==
+-        mode: 420
+-        path: /etc/systemd/system/crio-.scope.d/order.conf
+     systemd:
+       units:
+       - contents: |
+@@ -59,8 +55,8 @@
+           [Service]
+           Type=oneshot
+           RemainAfterExit=true
++          ExecStart=/usr/bin/true
+           ExecStop=/usr/local/bin/disablePcrOnRebootOrShutdown.sh
+-
+           [Install]
+           WantedBy=multi-user.target
+         enabled: true
+
+**********************************
+
+Cluster CR: ptp.openshift.io/v1_PtpConfig_openshift-ptp_du-ptp-slave
 Reference File: optional/ptp-config/PtpConfigSlave.yaml
 Description:
-  <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-ptp-operator_ran-ref-design-components" class="bare">https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-ptp-operator_ran-ref-design-components</a>
-Diff Output: diff -u -N /tmp/MERGED-2723761606/ptp-openshift-io-v1_ptpconfig_openshift-ptp_du-ptp-slave /tmp/LIVE-215132605/ptp-openshift-io-v1_ptpconfig_openshift-ptp_du-ptp-slave
---- /tmp/MERGED-2723761606/ptp-openshift-io-v1_ptpconfig_openshift-ptp_du-ptp-slave     2025-06-11 09:41:27.964294094 +0000
- /tmp/LIVE-215132605/ptp-openshift-io-v1_ptpconfig_openshift-ptp_du-ptp-slave        2025-06-11 09:41:27.964294094 +0000
+  <a href="https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-ptp-operator_ran-ref-design-components" class="bare">https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-ptp-operator_ran-ref-design-components</a>
+Diff Output: diff -u -N /tmp/MERGED-2303766593/ptp-openshift-io-v1_ptpconfig_openshift-ptp_du-ptp-slave /tmp/LIVE-920166726/ptp-openshift-io-v1_ptpconfig_openshift-ptp_du-ptp-slave
+--- /tmp/MERGED-2303766593/ptp-openshift-io-v1_ptpconfig_openshift-ptp_du-ptp-slave     2025-09-12 09:52:35.034507284 -0400
+ /tmp/LIVE-920166726/ptp-openshift-io-v1_ptpconfig_openshift-ptp_du-ptp-slave        2025-09-12 09:52:35.034507284 -0400
 @@ -7,7 +7,7 @@
    profile:
    - interface: enp4s0
@@ -900,20 +972,40 @@ Diff Output: diff -u -N /tmp/MERGED-2723761606/ptp-openshift-io-v1_ptpconfig_ope
 
 **********************************
 
+Cluster CR: lvm.topolvm.io/v1alpha1_LVMCluster_openshift-storage_lvmcluster
+Reference File: optional/storage/StorageLVMCluster.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-lvms-operator_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-3768743777/lvm-topolvm-io-v1alpha1_lvmcluster_openshift-storage_lvmcluster /tmp/LIVE-2386295490/lvm-topolvm-io-v1alpha1_lvmcluster_openshift-storage_lvmcluster
+--- /tmp/MERGED-3768743777/lvm-topolvm-io-v1alpha1_lvmcluster_openshift-storage_lvmcluster      2025-09-12 09:52:34.999507328 -0400
+ /tmp/LIVE-2386295490/lvm-topolvm-io-v1alpha1_lvmcluster_openshift-storage_lvmcluster        2025-09-12 09:52:34.999507328 -0400
+@@ -1,6 +1,9 @@
+ apiVersion: lvm.topolvm.io/v1alpha1
+ kind: LVMCluster
+ metadata:
++  labels:
++    velero.io/backup-name: lvmcluster
++    velero.io/restore-name: lvmcluster
+   name: lvmcluster
+   namespace: openshift-storage
+ spec:
+
+**********************************
+
 Cluster CR: operators.coreos.com/v1alpha1_Subscription_openshift-storage_lvms-operator
 Reference File: optional/storage/StorageLVMSubscription.yaml
 Description:
-  https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-lvms-operator_ran-ref-design-components
-Diff Output: diff -u -N /tmp/MERGED-1076112886/operators-coreos-com-v1alpha1_subscription_openshift-storage_lvms-operator /tmp/LIVE-1440451828/operators-coreos-com-v1alpha1_subscription_openshift-storage_lvms-operator
---- /tmp/MERGED-1076112886/operators-coreos-com-v1alpha1_subscription_openshift-storage_lvms-operator   2025-06-11 09:41:27.991294322 +0000
- /tmp/LIVE-1440451828/operators-coreos-com-v1alpha1_subscription_openshift-storage_lvms-operator     2025-06-11 09:41:27.991294322 +0000
+  <a href="https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-lvms-operator_ran-ref-design-components" class="bare">https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-lvms-operator_ran-ref-design-components</a>
+Diff Output: diff -u -N /tmp/MERGED-44429289/operators-coreos-com-v1alpha1_subscription_openshift-storage_lvms-operator /tmp/LIVE-870388258/operators-coreos-com-v1alpha1_subscription_openshift-storage_lvms-operator
+--- /tmp/MERGED-44429289/operators-coreos-com-v1alpha1_subscription_openshift-storage_lvms-operator     2025-09-12 09:52:35.015507308 -0400
+ /tmp/LIVE-870388258/operators-coreos-com-v1alpha1_subscription_openshift-storage_lvms-operator      2025-09-12 09:52:35.016507307 -0400
 @@ -6,8 +6,8 @@
    name: lvms-operator
    namespace: openshift-storage
  spec:
 -  channel: stable
 -  installPlanApproval: Manual
-+  channel: stable-4.18
++  channel: stable-4.19
 +  installPlanApproval: Automatic
    name: lvms-operator
    source: redhat-operator-index
@@ -921,13 +1013,29 @@ Diff Output: diff -u -N /tmp/MERGED-1076112886/operators-coreos-com-v1alpha1_sub
 
 **********************************
 
+Cluster CR: v1_Namespace_openshift-storage
+Reference File: optional/storage/StorageLVMSubscriptionNS.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-lvms-operator_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-945002408/v1_namespace_openshift-storage /tmp/LIVE-2748243915/v1_namespace_openshift-storage
+--- /tmp/MERGED-945002408/v1_namespace_openshift-storage        2025-09-12 09:52:35.242507027 -0400
+ /tmp/LIVE-2748243915/v1_namespace_openshift-storage 2025-09-12 09:52:35.242507027 -0400
+@@ -5,4 +5,5 @@
+     workload.openshift.io/allowed: management
+   labels:
+     openshift.io/cluster-monitoring: "true"
++    workload.openshift.io/allowed: management
+   name: openshift-storage
+
+**********************************
+
 Cluster CR: observability.openshift.io/v1_ClusterLogForwarder_openshift-logging_instance
 Reference File: required/cluster-logging/ClusterLogForwarder.yaml
 Description:
-  <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-logging_ran-ref-design-components" class="bare">https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-logging_ran-ref-design-components</a>
-Diff Output: diff -u -N /tmp/MERGED-798312331/observability-openshift-io-v1_clusterlogforwarder_openshift-logging_instance /tmp/LIVE-2467593980/observability-openshift-io-v1_clusterlogforwarder_openshift-logging_instance
---- /tmp/MERGED-798312331/observability-openshift-io-v1_clusterlogforwarder_openshift-logging_instance  2025-06-11 09:41:27.960294060 +0000
- /tmp/LIVE-2467593980/observability-openshift-io-v1_clusterlogforwarder_openshift-logging_instance   2025-06-11 09:41:27.961294069 +0000
+  <a href="https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-logging_ran-ref-design-components" class="bare">https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-logging_ran-ref-design-components</a>
+Diff Output: diff -u -N /tmp/MERGED-855752900/observability-openshift-io-v1_clusterlogforwarder_openshift-logging_instance /tmp/LIVE-1958822530/observability-openshift-io-v1_clusterlogforwarder_openshift-logging_instance
+--- /tmp/MERGED-855752900/observability-openshift-io-v1_clusterlogforwarder_openshift-logging_instance  2025-09-12 09:52:34.986507344 -0400
+ /tmp/LIVE-1958822530/observability-openshift-io-v1_clusterlogforwarder_openshift-logging_instance   2025-09-12 09:52:34.986507344 -0400
 @@ -11,17 +11,33 @@
      type: openshiftLabels
    managementState: Managed
@@ -973,17 +1081,17 @@ Diff Output: diff -u -N /tmp/MERGED-798312331/observability-openshift-io-v1_clus
 Cluster CR: operators.coreos.com/v1alpha1_Subscription_openshift-logging_cluster-logging
 Reference File: required/cluster-logging/ClusterLogSubscription.yaml
 Description:
-  https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-logging_ran-ref-design-components
-Diff Output: diff -u -N /tmp/MERGED-3065126892/operators-coreos-com-v1alpha1_subscription_openshift-logging_cluster-logging /tmp/LIVE-3770876464/operators-coreos-com-v1alpha1_subscription_openshift-logging_cluster-logging
---- /tmp/MERGED-3065126892/operators-coreos-com-v1alpha1_subscription_openshift-logging_cluster-logging 2025-06-11 09:41:27.986294279 +0000
- /tmp/LIVE-3770876464/operators-coreos-com-v1alpha1_subscription_openshift-logging_cluster-logging   2025-06-11 09:41:27.986294279 +0000
+  https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-logging_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-1529939249/operators-coreos-com-v1alpha1_subscription_openshift-logging_cluster-logging /tmp/LIVE-4246787909/operators-coreos-com-v1alpha1_subscription_openshift-logging_cluster-logging
+--- /tmp/MERGED-1529939249/operators-coreos-com-v1alpha1_subscription_openshift-logging_cluster-logging 2025-09-12 09:52:35.008507317 -0400
+ /tmp/LIVE-4246787909/operators-coreos-com-v1alpha1_subscription_openshift-logging_cluster-logging   2025-09-12 09:52:35.009507315 -0400
 @@ -6,8 +6,8 @@
    name: cluster-logging
    namespace: openshift-logging
  spec:
--  channel: stable-6.1
+-  channel: stable-6.2
 -  installPlanApproval: Manual
-+  channel: stable-6.2
++  channel: stable-6.3
 +  installPlanApproval: Automatic
    name: cluster-logging
    source: redhat-operator-index
@@ -991,13 +1099,104 @@ Diff Output: diff -u -N /tmp/MERGED-3065126892/operators-coreos-com-v1alpha1_sub
 
 **********************************
 
+Cluster CR: operators.coreos.com/v1alpha1_Subscription_openshift-lifecycle-agent_lifecycle-agent
+Reference File: required/lca/LcaSubscription.yaml
+Description:
+  <a href="https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-lca-operator_ran-ref-design-components" class="bare">https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-lca-operator_ran-ref-design-components</a>
+Diff Output: diff -u -N /tmp/MERGED-3847792500/operators-coreos-com-v1alpha1_subscription_openshift-lifecycle-agent_lifecycle-agent /tmp/LIVE-849338573/operators-coreos-com-v1alpha1_subscription_openshift-lifecycle-agent_lifecycle-agent
+--- /tmp/MERGED-3847792500/operators-coreos-com-v1alpha1_subscription_openshift-lifecycle-agent_lifecycle-agent 2025-09-12 09:52:35.006507319 -0400
+ /tmp/LIVE-849338573/operators-coreos-com-v1alpha1_subscription_openshift-lifecycle-agent_lifecycle-agent    2025-09-12 09:52:35.006507319 -0400
+@@ -1,11 +1,13 @@
+ apiVersion: operators.coreos.com/v1alpha1
+ kind: Subscription
+ metadata:
++  labels:
++    operators.coreos.com/lifecycle-agent.openshift-lifecycle-agent: ""
+   name: lifecycle-agent
+   namespace: openshift-lifecycle-agent
+ spec:
+   channel: stable
+-  installPlanApproval: Manual
++  installPlanApproval: Automatic
+   name: lifecycle-agent
+   source: redhat-operator-index
+   sourceNamespace: openshift-marketplace
+
+**********************************
+
+Cluster CR: v1_Namespace_openshift-lifecycle-agent
+Reference File: required/lca/LcaSubscriptionNS.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-lca-operator_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-1800849248/v1_namespace_openshift-lifecycle-agent /tmp/LIVE-2951437081/v1_namespace_openshift-lifecycle-agent
+--- /tmp/MERGED-1800849248/v1_namespace_openshift-lifecycle-agent       2025-09-12 09:52:35.230507041 -0400
+ /tmp/LIVE-2951437081/v1_namespace_openshift-lifecycle-agent 2025-09-12 09:52:35.230507041 -0400
+@@ -3,4 +3,6 @@
+ metadata:
+   annotations:
+     workload.openshift.io/allowed: management
++  labels:
++    openshift.io/cluster-monitoring: "true"
+   name: openshift-lifecycle-agent
+
+**********************************
+
+Cluster CR: performance.openshift.io/v2_PerformanceProfile_openshift-node-performance-profile
+Reference File: required/node-tuning-operator/PerformanceProfile.yaml
+Description:
+  <a href="https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-node-tuning-operator_ran-ref-design-components" class="bare">https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-node-tuning-operator_ran-ref-design-components</a>
+Diff Output: diff -u -N /tmp/MERGED-2560563716/performance-openshift-io-v2_performanceprofile_openshift-node-performance-profile /tmp/LIVE-3646692258/performance-openshift-io-v2_performanceprofile_openshift-node-performance-profile
+--- /tmp/MERGED-2560563716/performance-openshift-io-v2_performanceprofile_openshift-node-performance-profile    2025-09-12 09:52:34.981507350 -0400
+ /tmp/LIVE-3646692258/performance-openshift-io-v2_performanceprofile_openshift-node-performance-profile      2025-09-12 09:52:34.981507350 -0400
+@@ -2,6 +2,10 @@
+ kind: PerformanceProfile
+ metadata:
+   annotations:
++    kubeletconfig.experimental: |
++      {"topologyManagerScope": "pod",
++       "systemReserved": {"memory": "3Gi"}
++      }
+     ran.openshift.io/reference-configuration: ran-du.redhat.com
+   name: openshift-node-performance-profile
+ spec:
+@@ -14,6 +18,7 @@
+   cpu:
+     isolated: 4-11
+     reserved: 0-3
++  globallyDisableIrqLoadBalancing: false
+   hugepages:
+     defaultHugepagesSize: 1G
+     pages:
+
+**********************************
+
+Cluster CR: tuned.openshift.io/v1_Tuned_openshift-cluster-node-tuning-operator_performance-patch
+Reference File: required/node-tuning-operator/TunedPerformancePatch.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-node-tuning-operator_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-4105110402/tuned-openshift-io-v1_tuned_openshift-cluster-node-tuning-operator_performance-patch /tmp/LIVE-1136608905/tuned-openshift-io-v1_tuned_openshift-cluster-node-tuning-operator_performance-patch
+--- /tmp/MERGED-4105110402/tuned-openshift-io-v1_tuned_openshift-cluster-node-tuning-operator_performance-patch 2025-09-12 09:52:34.984507346 -0400
+ /tmp/LIVE-1136608905/tuned-openshift-io-v1_tuned_openshift-cluster-node-tuning-operator_performance-patch   2025-09-12 09:52:34.984507346 -0400
+@@ -9,6 +9,9 @@
+       [main]
+       summary=Configuration changes profile inherited from performance created tuned
+       include=openshift-node-performance-openshift-node-performance-profile
++      [sysctl]
++      # When using the standard (non-realtime) kernel, remove the kernel.timer_migration override from the [sysctl] section
++      # kernel.timer_migration=0
+       [scheduler]
+       group.ice-ptp=0:f:10:*:ice-ptp.*
+       group.ice-gnss=0:f:10:*:ice-gnss.*
+
+**********************************
+
 Cluster CR: operators.coreos.com/v1alpha1_Subscription_openshift-ptp_ptp-operator-subscription
 Reference File: required/ptp-operator/PtpSubscription.yaml
 Description:
-  <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-ptp-operator_ran-ref-design-components" class="bare">https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-ptp-operator_ran-ref-design-components</a>
-Diff Output: diff -u -N /tmp/MERGED-2653432405/operators-coreos-com-v1alpha1_subscription_openshift-ptp_ptp-operator-subscription /tmp/LIVE-4159637412/operators-coreos-com-v1alpha1_subscription_openshift-ptp_ptp-operator-subscription
---- /tmp/MERGED-2653432405/operators-coreos-com-v1alpha1_subscription_openshift-ptp_ptp-operator-subscription   2025-06-11 09:41:27.987294288 +0000
- /tmp/LIVE-4159637412/operators-coreos-com-v1alpha1_subscription_openshift-ptp_ptp-operator-subscription     2025-06-11 09:41:27.988294296 +0000
+  <a href="https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-ptp-operator_ran-ref-design-components" class="bare">https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-ptp-operator_ran-ref-design-components</a>
+Diff Output: diff -u -N /tmp/MERGED-1256249069/operators-coreos-com-v1alpha1_subscription_openshift-ptp_ptp-operator-subscription /tmp/LIVE-2609883280/operators-coreos-com-v1alpha1_subscription_openshift-ptp_ptp-operator-subscription
+--- /tmp/MERGED-1256249069/operators-coreos-com-v1alpha1_subscription_openshift-ptp_ptp-operator-subscription   2025-09-12 09:52:35.011507313 -0400
+ /tmp/LIVE-2609883280/operators-coreos-com-v1alpha1_subscription_openshift-ptp_ptp-operator-subscription     2025-09-12 09:52:35.011507313 -0400
 @@ -7,7 +7,7 @@
    namespace: openshift-ptp
  spec:
@@ -1010,13 +1209,32 @@ Diff Output: diff -u -N /tmp/MERGED-2653432405/operators-coreos-com-v1alpha1_sub
 
 **********************************
 
+Cluster CR: operators.coreos.com/v1_OperatorGroup_openshift-ptp_ptp-operators
+Reference File: required/ptp-operator/PtpSubscriptionOperGroup.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-ptp-operator_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-3028948061/operators-coreos-com-v1_operatorgroup_openshift-ptp_ptp-operators /tmp/LIVE-1294565952/operators-coreos-com-v1_operatorgroup_openshift-ptp_ptp-operators
+--- /tmp/MERGED-3028948061/operators-coreos-com-v1_operatorgroup_openshift-ptp_ptp-operators    2025-09-12 09:52:34.963507373 -0400
+ /tmp/LIVE-1294565952/operators-coreos-com-v1_operatorgroup_openshift-ptp_ptp-operators      2025-09-12 09:52:34.964507371 -0400
+@@ -1,6 +1,8 @@
+ apiVersion: operators.coreos.com/v1
+ kind: OperatorGroup
+ metadata:
++  labels:
++    openshift.io/cluster-monitoring: "true"
+   name: ptp-operators
+   namespace: openshift-ptp
+ spec:
+
+**********************************
+
 Cluster CR: sriovnetwork.openshift.io/v1_SriovNetworkNodePolicy_openshift-sriov-network-operator_virt-enp4s0
 Reference File: required/sriov-operator/SriovNetworkNodePolicy.yaml
 Description:
-  https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-sr-iov-operator_ran-ref-design-components
-Diff Output: diff -u -N /tmp/MERGED-3740604193/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp4s0 /tmp/LIVE-1783959392/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp4s0
---- /tmp/MERGED-3740604193/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp4s0     2025-06-11 09:41:27.951293984 +0000
- /tmp/LIVE-1783959392/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp4s0       2025-06-11 09:41:27.951293984 +0000
+  <a href="https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-sr-iov-operator_ran-ref-design-components" class="bare">https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-sr-iov-operator_ran-ref-design-components</a>
+Diff Output: diff -u -N /tmp/MERGED-3968315773/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp4s0 /tmp/LIVE-2763894906/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp4s0
+--- /tmp/MERGED-3968315773/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp4s0     2025-09-12 09:52:34.989507340 -0400
+ /tmp/LIVE-2763894906/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp4s0       2025-09-12 09:52:34.989507340 -0400
 @@ -6,6 +6,9 @@
  spec:
    deviceType: netdevice
@@ -1033,10 +1251,10 @@ Diff Output: diff -u -N /tmp/MERGED-3740604193/sriovnetwork-openshift-io-v1_srio
 Cluster CR: sriovnetwork.openshift.io/v1_SriovNetworkNodePolicy_openshift-sriov-network-operator_virt-enp5s0
 Reference File: required/sriov-operator/SriovNetworkNodePolicy.yaml
 Description:
-  <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-sr-iov-operator_ran-ref-design-components" class="bare">https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-sr-iov-operator_ran-ref-design-components</a>
-Diff Output: diff -u -N /tmp/MERGED-304967710/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp5s0 /tmp/LIVE-224839892/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp5s0
---- /tmp/MERGED-304967710/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp5s0      2025-06-11 09:41:27.952293993 +0000
- /tmp/LIVE-224839892/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp5s0        2025-06-11 09:41:27.953294001 +0000
+  https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-sr-iov-operator_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-1410048180/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp5s0 /tmp/LIVE-1267564827/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp5s0
+--- /tmp/MERGED-1410048180/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp5s0     2025-09-12 09:52:34.991507338 -0400
+ /tmp/LIVE-1267564827/sriovnetwork-openshift-io-v1_sriovnetworknodepolicy_openshift-sriov-network-operator_virt-enp5s0       2025-09-12 09:52:34.993507335 -0400
 @@ -6,6 +6,9 @@
  spec:
    deviceType: vfio-pci
@@ -1053,10 +1271,10 @@ Diff Output: diff -u -N /tmp/MERGED-304967710/sriovnetwork-openshift-io-v1_sriov
 Cluster CR: operators.coreos.com/v1alpha1_Subscription_openshift-sriov-network-operator_sriov-network-operator-subscription
 Reference File: required/sriov-operator/SriovSubscription.yaml
 Description:
-  https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-sr-iov-operator_ran-ref-design-components
-Diff Output: diff -u -N /tmp/MERGED-3838910212/operators-coreos-com-v1alpha1_subscription_openshift-sriov-network-operator_sriov-network-operator-subscription /tmp/LIVE-2954688387/operators-coreos-com-v1alpha1_subscription_openshift-sriov-network-operator_sriov-network-operator-subscription
---- /tmp/MERGED-3838910212/operators-coreos-com-v1alpha1_subscription_openshift-sriov-network-operator_sriov-network-operator-subscription  2025-06-11 09:41:27.989294305 +0000
- /tmp/LIVE-2954688387/operators-coreos-com-v1alpha1_subscription_openshift-sriov-network-operator_sriov-network-operator-subscription    2025-06-11 09:41:27.989294305 +0000
+  <a href="https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-sr-iov-operator_ran-ref-design-components" class="bare">https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-sr-iov-operator_ran-ref-design-components</a>
+Diff Output: diff -u -N /tmp/MERGED-888432789/operators-coreos-com-v1alpha1_subscription_openshift-sriov-network-operator_sriov-network-operator-subscription /tmp/LIVE-2357036813/operators-coreos-com-v1alpha1_subscription_openshift-sriov-network-operator_sriov-network-operator-subscription
+--- /tmp/MERGED-888432789/operators-coreos-com-v1alpha1_subscription_openshift-sriov-network-operator_sriov-network-operator-subscription       2025-09-12 09:52:35.013507310 -0400
+ /tmp/LIVE-2357036813/operators-coreos-com-v1alpha1_subscription_openshift-sriov-network-operator_sriov-network-operator-subscription        2025-09-12 09:52:35.013507310 -0400
 @@ -11,7 +11,7 @@
      env:
      - name: DEV_MODE
@@ -1069,9 +1287,30 @@ Diff Output: diff -u -N /tmp/MERGED-3838910212/operators-coreos-com-v1alpha1_sub
 
 **********************************
 
+Cluster CR: v1_Namespace_openshift-sriov-network-operator
+Reference File: required/sriov-operator/SriovSubscriptionNS.yaml
+Description:
+  https://docs.openshift.com/container-platform/4.19/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-sr-iov-operator_ran-ref-design-components
+Diff Output: diff -u -N /tmp/MERGED-1439380245/v1_namespace_openshift-sriov-network-operator /tmp/LIVE-2401293255/v1_namespace_openshift-sriov-network-operator
+--- /tmp/MERGED-1439380245/v1_namespace_openshift-sriov-network-operator        2025-09-12 09:52:35.240507029 -0400
+ /tmp/LIVE-2401293255/v1_namespace_openshift-sriov-network-operator  2025-09-12 09:52:35.240507029 -0400
+@@ -3,4 +3,6 @@
+ metadata:
+   annotations:
+     workload.openshift.io/allowed: management
++  labels:
++    openshift.io/cluster-monitoring: "true"
+   name: openshift-sriov-network-operator
+
+**********************************
+
 Summary
-CRs with diffs: 8/52
+CRs with diffs: 18/56
 CRs in reference missing from the cluster: 3
+optional-lca:
+  lca:
+    Missing CRs:
+    - required/lca/LcaSubscriptionOperGroup.yaml
 optional-storage:
   storage:
     Missing CRs:
@@ -1080,14 +1319,8 @@ optional-storage-lvm:
   storage-operator:
     Missing CRs:
     - optional/storage/StoragePV.yaml
-required-cluster-tuning:
-  cluster-tuning:
-    Missing CRs:
-    - required/cluster-tuning/operator-hub/DisconnectedICSP.yaml
-      Description:
-        <a href="https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-cluster-tuning_ran-ref-design-components" class="bare">https://docs.openshift.com/container-platform/4.18/scalability_and_performance/telco_ref_design_specs/ran/telco-ran-ref-du-components.html#telco-ran-cluster-tuning_ran-ref-design-components</a>
 No CRs are unmatched to reference CRs
-Metadata Hash: cb16ce6e26891f9b18f9f6d86d110fdc4d3e6cb0d20c18452fa335394f75afdb
+Metadata Hash: e209f780327a1e53376a4443d55edd24dc91058a9194ab5a270a62b2aa2c4183
 No patched CRs</code></pre>
 </div>
 </div>
