@@ -50,12 +50,8 @@ The inventory includes the IP address of the hypervisor. Here you can see an exa
 10.6.76.211 public_dns_name=10.6.76.211
 -----
 
-<<<<<<< Updated upstream
-=== The Playbook
-=======
 [#playbook-run-role]
 == The Playbook
->>>>>>> Stashed changes
 
 The `run-role.yaml` playbook basically includes the `ocp4_workload_5gran_deployments_lab` Ansible role and adjustes the variables to the proper environment where the lab is about to be deployed. 
 
