@@ -6,7 +6,7 @@ This section describes how to deploy your own lab environment.
 
 CAUTION: If you are a Red Hatter, you can order a lab environment on the https://demo.redhat.com[Red Hat Demo Platform]. You just need to order the lab named `5G RAN RDS Deployments on OpenShift`.
 
-IMPORTANT: For lab versions 4.19 and later, deploying the lab in your local environment can be done using the https://github.com/RHsyseng/agnosticd/tree/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab[ocp4_workload_5gran_deployments_lab] Ansible role that is actually the same used for on-demand requests on the https://demo.redhat.com[Red Hat Demo Platform]. If you prefer a step-by-step deployment, refer to previous lab versions for guidance.
+IMPORTANT: For lab versions 4.19 and later, deploying the lab in your local environment can be done using the https://github.com/RHsyseng/agnosticd/tree/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab[ocp4_workload_5gran_deployments_lab] Ansible role that is actually the same used for on-demand requests on the https://demo.redhat.com[Red Hat Demo Platform]. If you prefer a step-by-step deployment, refer to https://labs.sysdeseng.com/5g-ran-deployments-on-ocp-lab/4.18/lab-environment.html[previous lab versions] for guidance.
 
 [#lab-requirements]
 == Lab Requirements
@@ -23,7 +23,7 @@ Size the filesystems containing these directories accordingly as the default par
 IMPORTANT: These instructions have been tested in a RHEL 9.6, we cannot guarantee that other operating systems (even RHEL-based) will work. We won't be providing support out of RHEL 9.
 
 [#role-overview]
-== Role Overview
+== OCP4 5G RAN Role Overview
 
 This role https://github.com/RHsyseng/agnosticd/tree/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab[ocp4_workload_5gran_deployments_lab] installs the 5G RAN RDS Deployments Lab environment. It consists of the following tasks files:
 
@@ -37,9 +37,8 @@ IMPORTANT: There are variables that might be adjusted for your environment. They
 
 Let's dive into the different files:
 
-
 [#inventory]
-== Inventory
+== Inventory FIle
 
 The inventory includes the IP address of the hypervisor. Here you can see an example of the inventory file for my lab:
 
@@ -228,7 +227,7 @@ If pre-workload fails, check:
 [#preworkload-time]
 === Time Requirements
 
-CAUTION: This is a estimation based in our experience and our environment. 
+CAUTION: This is a estimation based on our experience and our environment. 
 
 * *Typical duration*: 30-45 minutes.
 * *Slow internet*: 45-60 minutes.
@@ -280,21 +279,23 @@ The workload phase deploys the complete 5G RAN lab environment by:
 * *Configures Logging*: Sets up cluster logging for observability.
 
 8. SNO Seed Performance Optimization
-* *Applies performance profile*: Configures CPU isolation and NUMA topology
-* *Applies Tuned patches*: Optimizes system performance for telco workloads
-* *Prepares for reboot*: Indicates node reboot is required for performance tuning
+* *Applies performance profile*: Configures CPU isolation and NUMA topology.
+* *Applies Tuned patches*: Optimizes system performance for telco workloads.
+* *Prepares for reboot*: Indicates node reboot is required for performance tuning.
 
 [#workload-key-components]
 === Key Components Deployed
 
-**Hub Cluster Components**
+For Hub Cluster Components:
+
 * *OpenShift Cluster*: Full OpenShift 4.19 cluster.
 * *ArgoCD*: GitOps continuous deployment.
 * *LVM Storage*: Persistent storage solution.
 * *Multi-Cluster Management*: Red Hat Advanced Cluster Management.
 * *Multi-Cluster Engine*: Multi-cluster orchestration.
 
-**SNO Cluster Components**
+For SNO Cluster Components:
+
 * *Single Node OpenShift*: Edge-optimized OpenShift cluster.
 * *OADP Operator*: OpenShift API for Data Protection.
 * *LCA Operator*: Lifecycle Agent for cluster management.
@@ -303,10 +304,10 @@ The workload phase deploys the complete 5G RAN lab environment by:
 * *Logging Operator*: Cluster logging and observability.
 * *PTP Operator*: Precision Time Protocol for time sync.
 
-[#workload-time]
-=== Deployment Phases
+[#workload-deployment]
+===Deployment Phases
 
-CAUTION: This is a estimation based in our experience and our environment. 
+CAUTION: This is a estimation based on our experience and our environment. 
 
 Phase 1: Hub Cluster (30-45 minutes)
 
@@ -328,8 +329,6 @@ Phase 3: SNO Cluster (45-60 minutes)
 3. *Network Configuration*: Set up SR-IOV and PTP networks.
 4. *Performance Tuning*: Apply performance optimizations.
 
-**Total Duration**: 90-135 minutes
-
 [#workload-troubleshooting]
 === Troubleshooting
 
@@ -338,15 +337,7 @@ Here you can find some common issues and what to check.
 * *Operator installation failures*: Check operator catalog availability.
 * *ZTP configuration issues*: Verify ArgoCD patch application.
 
-Debugging Commands
-=======
-==== Total
-
-- **Total Duration**: 90-135 minutes
-- **Hub Cluster**: 30-45 minutes
-- **Multi-Cluster Setup**: 15-30 minutes
-- **SNO Cluster**: 45-60 minutes
-
+The following commands can help you to identify the potential issue:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -364,18 +355,25 @@ oc get csv -A --kubeconfig /home/lab-user/seed-cluster-kubeconfig
 oc get node openshift-master-0 -o json --kubeconfig /home/lab-user/seed-cluster-kubeconfig | jq '.status.allocatable'
 -----
 
-Once workload completes successfully, the system provides:
+[#workload-time]
+=== Time Requirements
+
+**Hub Cluster**: 30-45 minutes.
+**Multi-Cluster Setup**: 15-30 minutes.
+**SNO Cluster**: 45-60 minutes.
+
+**Total Duration**: 90-135 minutes aprox.
+
+[#next-steps]
+== Next Steps
+
+The workload phase creates a complete 5G RAN RDS lab environment ready for advanced telco workload deployment and testing. Once workload completes successfully, the system provides:
 
 1. **Fully functional hub cluster** with multi-cluster management.
 2. **SNO cluster** with telco-specific operators.
 3. **Network infrastructure** for 5G workloads.
 4. **Performance optimizations** for telco applications.
 5. **Ready environment** for 5G RAN lab exercises.
-
-The workload phase creates a complete 5G RAN RDS lab environment ready for advanced telco workload deployment and testing.
-
-[#next-steps]
-== Next Steps
 
 After successful workload deployment:
 
