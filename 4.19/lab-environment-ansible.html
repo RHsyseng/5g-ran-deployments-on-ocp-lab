@@ -1288,11 +1288,23 @@ $ cd agnosticd/ansible/roles_ocp_workload</code></pre>
 <div class="sect2">
 <h3 id="preworkload-troubleshooting"><a class="anchor" href="#preworkload-troubleshooting"></a>Troubleshooting</h3>
 <div class="paragraph">
-<p>If pre-workload fails, check:
-* <strong>System resources</strong>: Ensure minimum memory/CPU requirements.
-* <strong>Internet connectivity</strong>: Required for downloading dependencies.
-* <strong>Pull secret</strong>: Must be valid OpenShift pull secret.
-* <strong>Disk space</strong>: Ensure sufficient storage for libvirt.</p>
+<p>If pre-workload fails, check:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>System resources</strong>: Ensure minimum memory/CPU requirements.</p>
+</li>
+<li>
+<p><strong>Internet connectivity</strong>: Required for downloading dependencies.</p>
+</li>
+<li>
+<p><strong>Pull secret</strong>: Must be valid OpenShift pull secret.</p>
+</li>
+<li>
+<p><strong>Disk space</strong>: Ensure sufficient storage for libvirt.</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
@@ -1527,9 +1539,9 @@ The pre-workload phase is essential for creating a properly configured environme
 </li>
 </ul>
 </div>
-<div id="workload-deployment" class="paragraph">
-<p>===Deployment Phases</p>
 </div>
+<div class="sect2">
+<h3 id="workload-deployment"><a class="anchor" href="#workload-deployment"></a>Deployment Phases</h3>
 <div class="admonitionblock caution">
 <table>
 <tr>
