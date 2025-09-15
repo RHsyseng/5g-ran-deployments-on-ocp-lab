@@ -925,13 +925,13 @@ These instructions have been tested in a RHEL 9.6, we cannot guarantee that othe
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-There are variables that might be adjusted for your environment. They can be included as variables in the ansible-playbook command-line or a suggested included in the <code>run-role.yaml</code> ansible playbook.
+There are variables that might be adjusted for your environment. They can be included as variables in the ansible-playbook command-line, however, we suggest to be added in the <code>run-role.yaml</code> Ansible playbook.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Let&#8217;s explain them:</p>
+<p>Let&#8217;s dive into the different files:</p>
 </div>
 <div class="sect2">
 <h3 id="inventory"><a class="anchor" href="#inventory"></a>Inventory</h3>
@@ -944,11 +944,14 @@ There are variables that might be adjusted for your environment. They can be inc
 10.6.76.211 public_dns_name=10.6.76.211</code></pre>
 </div>
 </div>
-<div id="playbook-run-role" class="paragraph">
-<p>The <code>run-role.yaml</code> playbook basically includes the <code>ocp4_workload_5gran_deployments_lab</code> Ansible role and adjustes the variables to the proper environment where the lab is about to be deployed. The following playbook probably will just work for you except for the <code>ocp4_pull_secret</code> which has to be replaced by your personal OpenShift Pull Secret.</p>
+</div>
+<div class="sect2">
+<h3 id="_the_playbook"><a class="anchor" href="#_the_playbook"></a>The Playbook</h3>
+<div class="paragraph">
+<p>The <code>run-role.yaml</code> playbook basically includes the <code>ocp4_workload_5gran_deployments_lab</code> Ansible role and adjustes the variables to the proper environment where the lab is about to be deployed.</p>
 </div>
 <div class="paragraph">
-<p>The default upstream DNS is set to 1.1.1.1. There might be cases in your local environment where the hypervisor may not reach it. So, notice that you must change it to a different DNS that allows you to resolve public hostnames.</p>
+<p>The following playbook probably will just work for you except for the <code>ocp4_pull_secret</code> which has to be replaced by your personal OpenShift Pull Secret. Notice that the default upstream DNS is set to 1.1.1.1. There might be cases in your local environment where the hypervisor may not reach it. So, notice that you must change it to a different DNS that allows you to resolve public hostnames.</p>
 </div>
 <div class="admonitionblock caution">
 <table>
@@ -981,8 +984,8 @@ The variables that includes the <code>do not change</code> comment as set explic
     lab_hub_vm_disk: 120
     lab_sno_vm_memory: 22000
     lab_sno_vm_disk: 120
-    #upstream_dns: "10.6.73.2" #internal corporate DNS
-    upstream_dns: "1.1.1.1" #internet DNS
+    #upstream_dns: "10.6.73.2"
+    upstream_dns: "1.1.1.1"
     ACTION: provision
     ocp4_pull_secret: 'YOUR_PULL_SECRET'
   roles:
@@ -990,7 +993,7 @@ The variables that includes the <code>do not change</code> comment as set explic
 </div>
 </div>
 <div class="paragraph">
-<p>First, clone the RHsyseng GitHub repo:</p>
+<p>First, clone the <code>RHSyseng</code> GitHub repo:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -999,7 +1002,7 @@ $ cd agnosticd/ansible/roles_ocp_workload</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Next, create the inventory file in that path and copy and paste the <code>run-role.yaml</code> playbook shown previously. Finally run the playbook:</p>
+<p>Next, create the inventory file in that path. Copy and paste the <code>run-role.yaml</code> playbook shown previously. Finally run the playbook:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1007,13 +1010,13 @@ $ cd agnosticd/ansible/roles_ocp_workload</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The Ansible playbook uses the mentioned role to deploy the lab. The role is clearly divided into 2 stages: <code>pre-workload</code> tasks and <code>workload</code> tasks:</p>
+<p>Notice that the Ansible playbook uses the mentioned role to deploy the lab. The role is divided into 2 main stages: <code>pre-workload</code> and <code>workload</code> tasks:</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="preworkload-tasks-overview"><a class="anchor" href="#preworkload-tasks-overview"></a>Pre-Workload Tasks Overview</h3>
 <div class="paragraph">
-<p>The pre_workload.yml[<a href="https://github.com/RHsyseng/agnosticd/blob/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab/tasks/pre_workload.yml" class="bare">https://github.com/RHsyseng/agnosticd/blob/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab/tasks/pre_workload.yml</a>] file contains the initial setup and preparation tasks that must be completed before deploying the 5G RAN lab environment. This file ensures your hypervisor is properly configured with all necessary dependencies, services, and infrastructure components.</p>
+<p>The <a href="https://github.com/RHsyseng/agnosticd/blob/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab/tasks/pre_workload.yml"> pre_workload.yml</a> file contains the initial setup and preparation tasks that must be completed before deploying the 5G RAN RDS lab environment. This file ensures your hypervisor is properly configured with all necessary dependencies, services, and infrastructure components.</p>
 </div>
 <div class="sect3">
 <h4 id="what-preworkload-does"><a class="anchor" href="#what-preworkload-does"></a>What Pre-Workload Does</h4>
@@ -1228,20 +1231,63 @@ $ cd agnosticd/ansible/roles_ocp_workload</code></pre>
 </div>
 <div class="sect3">
 <h4 id="key-services-deployed"><a class="anchor" href="#key-services-deployed"></a>Key Services Deployed</h4>
-<div class="paragraph">
-<p>| Service | Port | Purpose | Credentials |
-|---------|------|---------|-------------|
-| <strong>Container Registry</strong> | 8443 | Stores OpenShift images | admin / r3dh4t1! |
-| <strong>Git Server (Gitea)</strong> | 3000 | Lab repository access | student / student |
-| <strong>S3 Storage (MinIO)</strong> | 9002 | Object storage | admin / admin1234 |
-| <strong>Web Cache</strong> | 8080 | Image caching | - |
-| <strong>Redfish API</strong> | 9000 | BMC simulation | - |
-| <strong>Lab Showroom</strong> | 80 | Lab documentation | lab-user / redhat123 |</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Service</th>
+<th class="tableblock halign-left valign-top">Port</th>
+<th class="tableblock halign-left valign-top">Purpose</th>
+<th class="tableblock halign-left valign-top">Credentials</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Container Registry</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8443</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stores OpenShift images</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>admin / r3dh4t1!</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Git Server (Gitea)</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lab repository access</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>student / student</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>S3 Storage (MinIO)</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Object storage</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>admin / admin1234</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Web Cache</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8080</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Image caching</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Redfish API</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BMC simulation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Lab Showroom</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">80</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lab documentation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lab-user / redhat123</code></p></td>
+</tr>
+</tbody>
+</table>
 </div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="preworkload-troubleshooting"><a class="anchor" href="#preworkload-troubleshooting"></a>Troubleshooting</h3>
+<div class="sect3">
+<h4 id="preworkload-troubleshooting"><a class="anchor" href="#preworkload-troubleshooting"></a>Troubleshooting</h4>
 <div class="paragraph">
 <p>If pre-workload fails, check:
 * <strong>System resources</strong>: Ensure minimum memory/CPU requirements.
@@ -1250,8 +1296,20 @@ $ cd agnosticd/ansible/roles_ocp_workload</code></pre>
 * <strong>Disk space</strong>: Ensure sufficient storage for libvirt.</p>
 </div>
 </div>
-<div class="sect2">
-<h3 id="preworkload-time"><a class="anchor" href="#preworkload-time"></a>Time Requirements</h3>
+<div class="sect3">
+<h4 id="preworkload-time"><a class="anchor" href="#preworkload-time"></a>Time Requirements</h4>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+This is a estimation based in our experience and our environment.
+</td>
+</tr>
+</table>
+</div>
 <div class="ulist">
 <ul>
 <li>
@@ -1273,6 +1331,7 @@ The pre-workload phase is essential for creating a properly configured environme
 </td>
 </tr>
 </table>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -1417,60 +1476,39 @@ The pre-workload phase is essential for creating a properly configured environme
 </div>
 <div class="sect3">
 <h4 id="workload-key-componets"><a class="anchor" href="#workload-key-componets"></a>Key Components Deployed</h4>
-<div class="sect4">
-<h5 id="_hub_cluster_components"><a class="anchor" href="#_hub_cluster_components"></a>Hub Cluster Components</h5>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>OpenShift Cluster</strong>: Full OpenShift 4.19 cluster.</p>
-</li>
-<li>
-<p><strong>ArgoCD</strong>: GitOps continuous deployment.</p>
-</li>
-<li>
-<p><strong>LVM Storage</strong>: Persistent storage solution.</p>
-</li>
-<li>
-<p><strong>Multi-Cluster Management</strong>: Red Hat Advanced Cluster Management.</p>
-</li>
-<li>
-<p><strong>Multi-Cluster Engine</strong>: Multi-cluster orchestration.</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>Hub Cluster Components
+* <strong>OpenShift Cluster</strong>: Full OpenShift 4.19 cluster.
+* <strong>ArgoCD</strong>: GitOps continuous deployment.
+* <strong>LVM Storage</strong>: Persistent storage solution.
+* <strong>Multi-Cluster Management</strong>: Red Hat Advanced Cluster Management.
+* <strong>Multi-Cluster Engine</strong>: Multi-cluster orchestration.</p>
+</div>
+<div class="paragraph">
+<p>SNO Cluster Components
+* <strong>Single Node OpenShift</strong>: Edge-optimized OpenShift cluster.
+* <strong>OADP Operator</strong>: OpenShift API for Data Protection.
+* <strong>LCA Operator</strong>: Lifecycle Agent for cluster management.
+* <strong>LVMS Operator</strong>: Local Volume Management Storage.
+* <strong>SR-IOV Operator</strong>: Single Root I/O Virtualization.
+* <strong>Logging Operator</strong>: Cluster logging and observability.
+* <strong>PTP Operator</strong>: Precision Time Protocol for time sync.</p>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_sno_cluster_components"><a class="anchor" href="#_sno_cluster_components"></a>SNO Cluster Components</h5>
-<div class="ulist">
-<ul>
-<li>
-<p><strong>Single Node OpenShift</strong>: Edge-optimized OpenShift cluster.</p>
-</li>
-<li>
-<p><strong>OADP Operator</strong>: OpenShift API for Data Protection.</p>
-</li>
-<li>
-<p><strong>LCA Operator</strong>: Lifecycle Agent for cluster management.</p>
-</li>
-<li>
-<p><strong>LVMS Operator</strong>: Local Volume Management Storage.</p>
-</li>
-<li>
-<p><strong>SR-IOV Operator</strong>: Single Root I/O Virtualization.</p>
-</li>
-<li>
-<p><strong>Logging Operator</strong>: Cluster logging and observability.</p>
-</li>
-<li>
-<p><strong>PTP Operator</strong>: Precision Time Protocol for time sync.</p>
-</li>
-</ul>
+<div class="sect3">
+<h4 id="workload-time"><a class="anchor" href="#workload-time"></a>Deployment Phases</h4>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+This is a estimation based in our experience and our environment.
+</td>
+</tr>
+</table>
 </div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="workload-time"><a class="anchor" href="#workload-time"></a>Deployment Phases</h3>
 <div class="paragraph">
 <p>Phase 1: Hub Cluster (30-45 minutes)
 1. <strong>Cluster Creation</strong>: Deploy OpenShift hub cluster.
@@ -1491,8 +1529,33 @@ The pre-workload phase is essential for creating a properly configured environme
 3. <strong>Network Configuration</strong>: Set up SR-IOV and PTP networks.
 4. <strong>Performance Tuning</strong>: Apply performance optimizations.</p>
 </div>
+<div class="paragraph">
+<p><strong>Total Duration</strong>: 90-135 minutes</p>
+</div>
+</div>
 <div class="sect3">
-<h4 id="_total"><a class="anchor" href="#_total"></a>Total</h4>
+<h4 id="workload-troubleshooting"><a class="anchor" href="#workload-troubleshooting"></a>Troubleshooting</h4>
+<div class="paragraph">
+<p>Common Issues</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Operator installation failures</strong>: Check operator catalog availability.</p>
+</li>
+<li>
+<p><strong>ZTP configuration issues</strong>: Verify ArgoCD patch application.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Debugging Commands</p>
+</div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>==== Total</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
@@ -1509,19 +1572,6 @@ The pre-workload phase is essential for creating a properly configured environme
 </li>
 </ul>
 </div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="workload-troubleshooting"><a class="anchor" href="#workload-troubleshooting"></a>Troubleshooting</h3>
-<div class="sect3">
-<h4 id="_common_issues"><a class="anchor" href="#_common_issues"></a>Common Issues</h4>
-<div class="paragraph">
-<p><strong>Operator installation failures</strong>: Check operator catalog availability.
-<strong>ZTP configuration issues</strong>: Verify ArgoCD patch application.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_debugging_commands"><a class="anchor" href="#_debugging_commands"></a>Debugging Commands</h4>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Check hub cluster status
@@ -1562,13 +1612,9 @@ oc get node openshift-master-0 -o json --kubeconfig /home/lab-user/seed-cluster-
 <div class="paragraph">
 <p>The workload phase creates a complete 5G RAN RDS lab environment ready for advanced telco workload deployment and testing.</p>
 </div>
+<div id="next-steps" class="paragraph">
+<p>== Next Steps</p>
 </div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="next-steps"><a class="anchor" href="#next-steps"></a>Next Steps</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>After successful workload deployment:</p>
 </div>
@@ -1582,11 +1628,9 @@ oc get node openshift-master-0 -o json --kubeconfig /home/lab-user/seed-cluster-
 </li>
 </ol>
 </div>
+<div id="delete-environment" class="paragraph">
+<p>== Delete the Environment</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="delete-environment"><a class="anchor" href="#delete-environment"></a>Delete the Environment</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>If the installation fails for whatever reason, you will need to delete all the VMs that were created and execute the same procedure again. To delete all the VMs and configurations done, you have to connect to your <strong>hypervisor server</strong> and become root. Then, create the following script and execute it:</p>
 </div>
@@ -1638,6 +1682,10 @@ Plan hub deleted!
 + podman rmi -f quay.io/alosadag/httpd:p8080 quay.io/mavazque/gitea:1.17.3 quay.io/mavazque/registry:2.7.1 quay.io/fedora/httpd-24-micro:2.4 quay.io/rhsysdeseng/showroom:webfirefox quay.io/rhsysdeseng/
 ... REDACTED ...
 + rm -f '/tmp/*.yaml' '/tmp/*.json'</code></pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
