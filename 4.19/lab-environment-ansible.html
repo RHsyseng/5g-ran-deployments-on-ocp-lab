@@ -947,16 +947,11 @@ There are variables that might be adjusted for your environment. They can be inc
 10.6.76.211 public_dns_name=10.6.76.211</code></pre>
 </div>
 </div>
-<div class="paragraph">
-<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
-=== The Playbook</p>
 </div>
-<div class="exampleblock">
-<div class="content">
-<div id="playbook-run-role" class="paragraph">
-<p>== The Playbook
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; Stashed changes</p>
 </div>
+<div class="sect1">
+<h2 id="playbook-run-role"><a class="anchor" href="#playbook-run-role"></a>The Playbook</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The <code>run-role.yaml</code> playbook basically includes the <code>ocp4_workload_5gran_deployments_lab</code> Ansible role and adjustes the variables to the proper environment where the lab is about to be deployed.</p>
 </div>
@@ -1022,15 +1017,16 @@ $ cd agnosticd/ansible/roles_ocp_workload</code></pre>
 <div class="paragraph">
 <p>Notice that the Ansible playbook uses the mentioned role to deploy the lab. The role is divided into 2 main stages: <code>pre-workload</code> and <code>workload</code> tasks:</p>
 </div>
-<div id="preworkload-tasks-overview" class="paragraph">
-<p>== Pre-Workload Tasks Overview</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="preworkload-tasks-overview"><a class="anchor" href="#preworkload-tasks-overview"></a>Pre-Workload Tasks Overview</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The <a href="https://github.com/RHsyseng/agnosticd/blob/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab/tasks/pre_workload.yml"> pre_workload.yml</a> file contains the initial setup and preparation tasks that must be completed before deploying the 5G RAN RDS lab environment. This file ensures your hypervisor is properly configured with all necessary dependencies, services, and infrastructure components.</p>
 </div>
-<div id="what-preworkload-does" class="paragraph">
-<p>=== What Pre-Workload Does</p>
-</div>
+<div class="sect2">
+<h3 id="what-preworkload-does"><a class="anchor" href="#what-preworkload-does"></a>What Pre-Workload Does</h3>
 <div class="paragraph">
 <p>The pre-workload phase prepares your RHEL 9 hypervisor by:</p>
 </div>
@@ -1239,9 +1235,9 @@ $ cd agnosticd/ansible/roles_ocp_workload</code></pre>
 </li>
 </ol>
 </div>
-<div id="key-services-deployed" class="paragraph">
-<p>=== Key Services Deployed</p>
 </div>
+<div class="sect2">
+<h3 id="key-services-deployed"><a class="anchor" href="#key-services-deployed"></a>Key Services Deployed</h3>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -1296,9 +1292,9 @@ $ cd agnosticd/ansible/roles_ocp_workload</code></pre>
 </tr>
 </tbody>
 </table>
-<div id="preworkload-troubleshooting" class="paragraph">
-<p>=== Troubleshooting</p>
 </div>
+<div class="sect2">
+<h3 id="preworkload-troubleshooting"><a class="anchor" href="#preworkload-troubleshooting"></a>Troubleshooting</h3>
 <div class="paragraph">
 <p>If pre-workload fails, check:
 * <strong>System resources</strong>: Ensure minimum memory/CPU requirements.
@@ -1306,9 +1302,9 @@ $ cd agnosticd/ansible/roles_ocp_workload</code></pre>
 * <strong>Pull secret</strong>: Must be valid OpenShift pull secret.
 * <strong>Disk space</strong>: Ensure sufficient storage for libvirt.</p>
 </div>
-<div id="preworkload-time" class="paragraph">
-<p>=== Time Requirements</p>
 </div>
+<div class="sect2">
+<h3 id="preworkload-time"><a class="anchor" href="#preworkload-time"></a>Time Requirements</h3>
 <div class="admonitionblock caution">
 <table>
 <tr>
@@ -1343,15 +1339,17 @@ The pre-workload phase is essential for creating a properly configured environme
 </tr>
 </table>
 </div>
-<div id="workload-tasks-overview" class="paragraph">
-<p>== Workload Tasks Overview</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="workload-tasks-overview"><a class="anchor" href="#workload-tasks-overview"></a>Workload Tasks Overview</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The <code>workload.yml</code> file contains the main deployment tasks that create and configure the 5G RAN lab environment. This file deploys OpenShift clusters, installs operators, and configures the infrastructure needed for 5G workloads.</p>
 </div>
-<div id="what-workload-does" class="paragraph">
-<p>=== What Workload Does</p>
-</div>
+<div class="sect2">
+<h3 id="what-workload-does"><a class="anchor" href="#what-workload-does"></a>What Workload Does</h3>
 <div class="paragraph">
 <p>The workload phase deploys the complete 5G RAN lab environment by:</p>
 </div>
@@ -1484,9 +1482,9 @@ The pre-workload phase is essential for creating a properly configured environme
 </li>
 </ol>
 </div>
-<div id="workload-key-components" class="paragraph">
-<p>=== Key Components Deployed</p>
 </div>
+<div class="sect2">
+<h3 id="workload-key-components"><a class="anchor" href="#workload-key-components"></a>Key Components Deployed</h3>
 <div class="paragraph">
 <p><strong>Hub Cluster Components</strong>
 * <strong>OpenShift Cluster</strong>: Full OpenShift 4.19 cluster.
@@ -1505,9 +1503,9 @@ The pre-workload phase is essential for creating a properly configured environme
 * <strong>Logging Operator</strong>: Cluster logging and observability.
 * <strong>PTP Operator</strong>: Precision Time Protocol for time sync.</p>
 </div>
-<div id="workload-time" class="paragraph">
-<p>=== Deployment Phases</p>
 </div>
+<div class="sect2">
+<h3 id="workload-time"><a class="anchor" href="#workload-time"></a>Deployment Phases</h3>
 <div class="admonitionblock caution">
 <table>
 <tr>
@@ -1577,9 +1575,9 @@ This is a estimation based in our experience and our environment.
 <div class="paragraph">
 <p><strong>Total Duration</strong>: 90-135 minutes</p>
 </div>
-<div id="workload-troubleshooting" class="paragraph">
-<p>=== Troubleshooting</p>
 </div>
+<div class="sect2">
+<h3 id="workload-troubleshooting"><a class="anchor" href="#workload-troubleshooting"></a>Troubleshooting</h3>
 <div class="paragraph">
 <p>Here you can find some common issues and what to check.</p>
 </div>
@@ -1596,10 +1594,11 @@ This is a estimation based in our experience and our environment.
 <div class="paragraph">
 <p>Debugging Commands</p>
 </div>
+<div class="exampleblock">
+<div class="content">
+<div class="paragraph">
+<p>==== Total</p>
 </div>
-</div>
-<div class="sect3">
-<h4 id="_total"><a class="anchor" href="#_total"></a>Total</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1656,12 +1655,9 @@ oc get node openshift-master-0 -o json --kubeconfig /home/lab-user/seed-cluster-
 <div class="paragraph">
 <p>The workload phase creates a complete 5G RAN RDS lab environment ready for advanced telco workload deployment and testing.</p>
 </div>
+<div id="next-steps" class="paragraph">
+<p>== Next Steps</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="next-steps"><a class="anchor" href="#next-steps"></a>Next Steps</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>After successful workload deployment:</p>
 </div>
@@ -1675,11 +1671,9 @@ oc get node openshift-master-0 -o json --kubeconfig /home/lab-user/seed-cluster-
 </li>
 </ol>
 </div>
+<div id="delete-environment" class="paragraph">
+<p>== Delete the Environment</p>
 </div>
-</div>
-<div class="sect1">
-<h2 id="delete-environment"><a class="anchor" href="#delete-environment"></a>Delete the Environment</h2>
-<div class="sectionbody">
 <div class="paragraph">
 <p>If the installation fails for whatever reason, you will need to delete all the VMs that were created and execute the same procedure again. To delete all the VMs and configurations done, you have to connect to your <strong>hypervisor server</strong> and become root. Then, create the following script and execute it:</p>
 </div>
@@ -1731,6 +1725,9 @@ Plan hub deleted!
 + podman rmi -f quay.io/alosadag/httpd:p8080 quay.io/mavazque/gitea:1.17.3 quay.io/mavazque/registry:2.7.1 quay.io/fedora/httpd-24-micro:2.4 quay.io/rhsysdeseng/showroom:webfirefox quay.io/rhsysdeseng/
 ... REDACTED ...
 + rm -f '/tmp/*.yaml' '/tmp/*.json'</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
