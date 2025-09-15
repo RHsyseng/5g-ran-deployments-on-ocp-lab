@@ -219,6 +219,7 @@ The pre-workload phase prepares your RHEL 9 hypervisor by:
 === Troubleshooting
 
 If pre-workload fails, check:
+
 * *System resources*: Ensure minimum memory/CPU requirements.
 * *Internet connectivity*: Required for downloading dependencies.
 * *Pull secret*: Must be valid OpenShift pull secret.
@@ -305,7 +306,7 @@ For SNO Cluster Components:
 * *PTP Operator*: Precision Time Protocol for time sync.
 
 [#workload-deployment]
-===Deployment Phases
+=== Deployment Phases
 
 CAUTION: This is a estimation based on our experience and our environment. 
 
