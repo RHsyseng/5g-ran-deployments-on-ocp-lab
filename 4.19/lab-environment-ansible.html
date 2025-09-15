@@ -933,8 +933,11 @@ There are variables that might be adjusted for your environment. They can be inc
 <div class="paragraph">
 <p>Let&#8217;s dive into the different files:</p>
 </div>
-<div class="sect2">
-<h3 id="inventory"><a class="anchor" href="#inventory"></a>Inventory</h3>
+</div>
+</div>
+<div class="sect1">
+<h2 id="inventory"><a class="anchor" href="#inventory"></a>Inventory</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>The inventory includes the IP address of the hypervisor. Here you can see an example of the inventory file for my lab:</p>
 </div>
@@ -944,9 +947,16 @@ There are variables that might be adjusted for your environment. They can be inc
 10.6.76.211 public_dns_name=10.6.76.211</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; Updated upstream
+=== The Playbook</p>
 </div>
-<div class="sect2">
-<h3 id="_the_playbook"><a class="anchor" href="#_the_playbook"></a>The Playbook</h3>
+<div class="exampleblock">
+<div class="content">
+<div id="playbook-run-role" class="paragraph">
+<p>== The Playbook
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; Stashed changes</p>
+</div>
 <div class="paragraph">
 <p>The <code>run-role.yaml</code> playbook basically includes the <code>ocp4_workload_5gran_deployments_lab</code> Ansible role and adjustes the variables to the proper environment where the lab is about to be deployed.</p>
 </div>
@@ -1012,14 +1022,15 @@ $ cd agnosticd/ansible/roles_ocp_workload</code></pre>
 <div class="paragraph">
 <p>Notice that the Ansible playbook uses the mentioned role to deploy the lab. The role is divided into 2 main stages: <code>pre-workload</code> and <code>workload</code> tasks:</p>
 </div>
+<div id="preworkload-tasks-overview" class="paragraph">
+<p>== Pre-Workload Tasks Overview</p>
 </div>
-<div class="sect2">
-<h3 id="preworkload-tasks-overview"><a class="anchor" href="#preworkload-tasks-overview"></a>Pre-Workload Tasks Overview</h3>
 <div class="paragraph">
 <p>The <a href="https://github.com/RHsyseng/agnosticd/blob/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab/tasks/pre_workload.yml"> pre_workload.yml</a> file contains the initial setup and preparation tasks that must be completed before deploying the 5G RAN RDS lab environment. This file ensures your hypervisor is properly configured with all necessary dependencies, services, and infrastructure components.</p>
 </div>
-<div class="sect3">
-<h4 id="what-preworkload-does"><a class="anchor" href="#what-preworkload-does"></a>What Pre-Workload Does</h4>
+<div id="what-preworkload-does" class="paragraph">
+<p>=== What Pre-Workload Does</p>
+</div>
 <div class="paragraph">
 <p>The pre-workload phase prepares your RHEL 9 hypervisor by:</p>
 </div>
@@ -1228,9 +1239,9 @@ $ cd agnosticd/ansible/roles_ocp_workload</code></pre>
 </li>
 </ol>
 </div>
+<div id="key-services-deployed" class="paragraph">
+<p>=== Key Services Deployed</p>
 </div>
-<div class="sect3">
-<h4 id="key-services-deployed"><a class="anchor" href="#key-services-deployed"></a>Key Services Deployed</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -1285,9 +1296,9 @@ $ cd agnosticd/ansible/roles_ocp_workload</code></pre>
 </tr>
 </tbody>
 </table>
+<div id="preworkload-troubleshooting" class="paragraph">
+<p>=== Troubleshooting</p>
 </div>
-<div class="sect3">
-<h4 id="preworkload-troubleshooting"><a class="anchor" href="#preworkload-troubleshooting"></a>Troubleshooting</h4>
 <div class="paragraph">
 <p>If pre-workload fails, check:
 * <strong>System resources</strong>: Ensure minimum memory/CPU requirements.
@@ -1295,9 +1306,9 @@ $ cd agnosticd/ansible/roles_ocp_workload</code></pre>
 * <strong>Pull secret</strong>: Must be valid OpenShift pull secret.
 * <strong>Disk space</strong>: Ensure sufficient storage for libvirt.</p>
 </div>
+<div id="preworkload-time" class="paragraph">
+<p>=== Time Requirements</p>
 </div>
-<div class="sect3">
-<h4 id="preworkload-time"><a class="anchor" href="#preworkload-time"></a>Time Requirements</h4>
 <div class="admonitionblock caution">
 <table>
 <tr>
@@ -1332,15 +1343,15 @@ The pre-workload phase is essential for creating a properly configured environme
 </tr>
 </table>
 </div>
+<div id="workload-tasks-overview" class="paragraph">
+<p>== Workload Tasks Overview</p>
 </div>
-</div>
-<div class="sect2">
-<h3 id="workload-tasks-overview"><a class="anchor" href="#workload-tasks-overview"></a>Workload Tasks Overview</h3>
 <div class="paragraph">
 <p>The <code>workload.yml</code> file contains the main deployment tasks that create and configure the 5G RAN lab environment. This file deploys OpenShift clusters, installs operators, and configures the infrastructure needed for 5G workloads.</p>
 </div>
-<div class="sect3">
-<h4 id="what-workload-does"><a class="anchor" href="#what-workload-does"></a>What Workload Does</h4>
+<div id="what-workload-does" class="paragraph">
+<p>=== What Workload Does</p>
+</div>
 <div class="paragraph">
 <p>The workload phase deploys the complete 5G RAN lab environment by:</p>
 </div>
@@ -1473,11 +1484,11 @@ The pre-workload phase is essential for creating a properly configured environme
 </li>
 </ol>
 </div>
+<div id="workload-key-components" class="paragraph">
+<p>=== Key Components Deployed</p>
 </div>
-<div class="sect3">
-<h4 id="workload-key-componets"><a class="anchor" href="#workload-key-componets"></a>Key Components Deployed</h4>
 <div class="paragraph">
-<p>Hub Cluster Components
+<p><strong>Hub Cluster Components</strong>
 * <strong>OpenShift Cluster</strong>: Full OpenShift 4.19 cluster.
 * <strong>ArgoCD</strong>: GitOps continuous deployment.
 * <strong>LVM Storage</strong>: Persistent storage solution.
@@ -1485,7 +1496,7 @@ The pre-workload phase is essential for creating a properly configured environme
 * <strong>Multi-Cluster Engine</strong>: Multi-cluster orchestration.</p>
 </div>
 <div class="paragraph">
-<p>SNO Cluster Components
+<p><strong>SNO Cluster Components</strong>
 * <strong>Single Node OpenShift</strong>: Edge-optimized OpenShift cluster.
 * <strong>OADP Operator</strong>: OpenShift API for Data Protection.
 * <strong>LCA Operator</strong>: Lifecycle Agent for cluster management.
@@ -1494,9 +1505,9 @@ The pre-workload phase is essential for creating a properly configured environme
 * <strong>Logging Operator</strong>: Cluster logging and observability.
 * <strong>PTP Operator</strong>: Precision Time Protocol for time sync.</p>
 </div>
+<div id="workload-time" class="paragraph">
+<p>=== Deployment Phases</p>
 </div>
-<div class="sect3">
-<h4 id="workload-time"><a class="anchor" href="#workload-time"></a>Deployment Phases</h4>
 <div class="admonitionblock caution">
 <table>
 <tr>
@@ -1510,33 +1521,67 @@ This is a estimation based in our experience and our environment.
 </table>
 </div>
 <div class="paragraph">
-<p>Phase 1: Hub Cluster (30-45 minutes)
-1. <strong>Cluster Creation</strong>: Deploy OpenShift hub cluster.
-2. <strong>ArgoCD Setup</strong>: Configure GitOps capabilities.
-3. <strong>Storage Setup</strong>: Configure LVM storage.
-4. <strong>Operator Installation</strong>: Install hub cluster operators.</p>
+<p>Phase 1: Hub Cluster (30-45 minutes)</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Cluster Creation</strong>: Deploy OpenShift hub cluster.</p>
+</li>
+<li>
+<p><strong>ArgoCD Setup</strong>: Configure GitOps capabilities.</p>
+</li>
+<li>
+<p><strong>Storage Setup</strong>: Configure LVM storage.</p>
+</li>
+<li>
+<p><strong>Operator Installation</strong>: Install hub cluster operators.</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
-<p>Phase 2: Multi-Cluster Setup (15-30 minutes)
-1. <strong>MCH Installation</strong>: Deploy Multi-Cluster Hub.
-2. <strong>MCE Configuration</strong>: Set up Multi-Cluster Engine.
-3. <strong>Readiness Verification</strong>: Ensure multi-cluster capabilities.</p>
+<p>Phase 2: Multi-Cluster Setup (15-30 minutes)</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>MCH Installation</strong>: Deploy Multi-Cluster Hub.</p>
+</li>
+<li>
+<p><strong>MCE Configuration</strong>: Set up Multi-Cluster Engine.</p>
+</li>
+<li>
+<p><strong>Readiness Verification</strong>: Ensure multi-cluster capabilities.</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
-<p>Phase 3: SNO Cluster (45-60 minutes)
-1. <strong>SNO Deployment</strong>: Create Single Node OpenShift cluster.
-2. <strong>Operator Installation</strong>: Install telco-specific operators.
-3. <strong>Network Configuration</strong>: Set up SR-IOV and PTP networks.
-4. <strong>Performance Tuning</strong>: Apply performance optimizations.</p>
+<p>Phase 3: SNO Cluster (45-60 minutes)</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>SNO Deployment</strong>: Create Single Node OpenShift cluster.</p>
+</li>
+<li>
+<p><strong>Operator Installation</strong>: Install telco-specific operators.</p>
+</li>
+<li>
+<p><strong>Network Configuration</strong>: Set up SR-IOV and PTP networks.</p>
+</li>
+<li>
+<p><strong>Performance Tuning</strong>: Apply performance optimizations.</p>
+</li>
+</ol>
 </div>
 <div class="paragraph">
 <p><strong>Total Duration</strong>: 90-135 minutes</p>
 </div>
+<div id="workload-troubleshooting" class="paragraph">
+<p>=== Troubleshooting</p>
 </div>
-<div class="sect3">
-<h4 id="workload-troubleshooting"><a class="anchor" href="#workload-troubleshooting"></a>Troubleshooting</h4>
 <div class="paragraph">
-<p>Common Issues</p>
+<p>Here you can find some common issues and what to check.</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1551,11 +1596,10 @@ This is a estimation based in our experience and our environment.
 <div class="paragraph">
 <p>Debugging Commands</p>
 </div>
-<div class="exampleblock">
-<div class="content">
-<div class="paragraph">
-<p>==== Total</p>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_total"><a class="anchor" href="#_total"></a>Total</h4>
 <div class="ulist">
 <ul>
 <li>
@@ -1612,9 +1656,12 @@ oc get node openshift-master-0 -o json --kubeconfig /home/lab-user/seed-cluster-
 <div class="paragraph">
 <p>The workload phase creates a complete 5G RAN RDS lab environment ready for advanced telco workload deployment and testing.</p>
 </div>
-<div id="next-steps" class="paragraph">
-<p>== Next Steps</p>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="next-steps"><a class="anchor" href="#next-steps"></a>Next Steps</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>After successful workload deployment:</p>
 </div>
@@ -1628,9 +1675,11 @@ oc get node openshift-master-0 -o json --kubeconfig /home/lab-user/seed-cluster-
 </li>
 </ol>
 </div>
-<div id="delete-environment" class="paragraph">
-<p>== Delete the Environment</p>
 </div>
+</div>
+<div class="sect1">
+<h2 id="delete-environment"><a class="anchor" href="#delete-environment"></a>Delete the Environment</h2>
+<div class="sectionbody">
 <div class="paragraph">
 <p>If the installation fails for whatever reason, you will need to delete all the VMs that were created and execute the same procedure again. To delete all the VMs and configurations done, you have to connect to your <strong>hypervisor server</strong> and become root. Then, create the following script and execute it:</p>
 </div>
@@ -1682,10 +1731,6 @@ Plan hub deleted!
 + podman rmi -f quay.io/alosadag/httpd:p8080 quay.io/mavazque/gitea:1.17.3 quay.io/mavazque/registry:2.7.1 quay.io/fedora/httpd-24-micro:2.4 quay.io/rhsysdeseng/showroom:webfirefox quay.io/rhsysdeseng/
 ... REDACTED ...
 + rm -f '/tmp/*.yaml' '/tmp/*.json'</code></pre>
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 </div>
