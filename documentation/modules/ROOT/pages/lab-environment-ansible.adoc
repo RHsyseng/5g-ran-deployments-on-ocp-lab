@@ -39,7 +39,7 @@ Let's dive into the different files:
 
 
 [#inventory]
-=== Inventory
+== Inventory
 
 The inventory includes the IP address of the hypervisor. Here you can see an example of the inventory file for my lab:
 
@@ -50,7 +50,12 @@ The inventory includes the IP address of the hypervisor. Here you can see an exa
 10.6.76.211 public_dns_name=10.6.76.211
 -----
 
+<<<<<<< Updated upstream
 === The Playbook
+=======
+[#playbook-run-role]
+== The Playbook
+>>>>>>> Stashed changes
 
 The `run-role.yaml` playbook basically includes the `ocp4_workload_5gran_deployments_lab` Ansible role and adjustes the variables to the proper environment where the lab is about to be deployed. 
 
@@ -106,12 +111,12 @@ $ ansible-playbook -i inventory run-role.yml -u root -k  -v
 Notice that the Ansible playbook uses the mentioned role to deploy the lab. The role is divided into 2 main stages: `pre-workload` and `workload` tasks:
 
 [#preworkload-tasks-overview]
-=== Pre-Workload Tasks Overview
+== Pre-Workload Tasks Overview
 
 The https://github.com/RHsyseng/agnosticd/blob/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab/tasks/pre_workload.yml[ pre_workload.yml] file contains the initial setup and preparation tasks that must be completed before deploying the 5G RAN RDS lab environment. This file ensures your hypervisor is properly configured with all necessary dependencies, services, and infrastructure components. 
 
 [#what-preworkload-does]
-==== What Pre-Workload Does
+=== What Pre-Workload Does
 
 The pre-workload phase prepares your RHEL 9 hypervisor by:
 
@@ -178,7 +183,7 @@ The pre-workload phase prepares your RHEL 9 hypervisor by:
 * *Sets up showroom*: Creates web interface for lab access.
 
 [#key-services-deployed]
-==== Key Services Deployed
+=== Key Services Deployed
 
 [cols="2,1,3,2",options="header"]
 |===
@@ -216,7 +221,7 @@ The pre-workload phase prepares your RHEL 9 hypervisor by:
 |===
 
 [#preworkload-troubleshooting]
-==== Troubleshooting
+=== Troubleshooting
 
 If pre-workload fails, check:
 * *System resources*: Ensure minimum memory/CPU requirements.
@@ -225,7 +230,7 @@ If pre-workload fails, check:
 * *Disk space*: Ensure sufficient storage for libvirt.
 
 [#preworkload-time]
-==== Time Requirements
+=== Time Requirements
 
 CAUTION: This is a estimation based in our experience and our environment. 
 
@@ -235,12 +240,12 @@ CAUTION: This is a estimation based in our experience and our environment.
 IMPORTANT: The pre-workload phase is essential for creating a properly configured environment that can successfully deploy and run the 5G RAN lab workloads.
 
 [#workload-tasks-overview]
-=== Workload Tasks Overview
+== Workload Tasks Overview
 
 The `workload.yml` file contains the main deployment tasks that create and configure the 5G RAN lab environment. This file deploys OpenShift clusters, installs operators, and configures the infrastructure needed for 5G workloads.
 
 [#what-workload-does]
-==== What Workload Does
+=== What Workload Does
 
 The workload phase deploys the complete 5G RAN lab environment by:
 
@@ -283,17 +288,17 @@ The workload phase deploys the complete 5G RAN lab environment by:
 * *Applies Tuned patches*: Optimizes system performance for telco workloads
 * *Prepares for reboot*: Indicates node reboot is required for performance tuning
 
-[#workload-key-componets]
-==== Key Components Deployed
+[#workload-key-components]
+=== Key Components Deployed
 
-Hub Cluster Components
+**Hub Cluster Components**
 * *OpenShift Cluster*: Full OpenShift 4.19 cluster.
 * *ArgoCD*: GitOps continuous deployment.
 * *LVM Storage*: Persistent storage solution.
 * *Multi-Cluster Management*: Red Hat Advanced Cluster Management.
 * *Multi-Cluster Engine*: Multi-cluster orchestration.
 
-SNO Cluster Components
+**SNO Cluster Components**
 * *Single Node OpenShift*: Edge-optimized OpenShift cluster.
 * *OADP Operator*: OpenShift API for Data Protection.
 * *LCA Operator*: Lifecycle Agent for cluster management.
@@ -303,22 +308,25 @@ SNO Cluster Components
 * *PTP Operator*: Precision Time Protocol for time sync.
 
 [#workload-time]
-==== Deployment Phases
+=== Deployment Phases
 
 CAUTION: This is a estimation based in our experience and our environment. 
 
 Phase 1: Hub Cluster (30-45 minutes)
+
 1. *Cluster Creation*: Deploy OpenShift hub cluster.
 2. *ArgoCD Setup*: Configure GitOps capabilities.
 3. *Storage Setup*: Configure LVM storage.
 4. *Operator Installation*: Install hub cluster operators.
 
 Phase 2: Multi-Cluster Setup (15-30 minutes)
+
 1. *MCH Installation*: Deploy Multi-Cluster Hub.
 2. *MCE Configuration*: Set up Multi-Cluster Engine.
 3. *Readiness Verification*: Ensure multi-cluster capabilities.
 
 Phase 3: SNO Cluster (45-60 minutes)
+
 1. *SNO Deployment*: Create Single Node OpenShift cluster.
 2. *Operator Installation*: Install telco-specific operators.
 3. *Network Configuration*: Set up SR-IOV and PTP networks.
@@ -327,9 +335,9 @@ Phase 3: SNO Cluster (45-60 minutes)
 **Total Duration**: 90-135 minutes
 
 [#workload-troubleshooting]
-==== Troubleshooting
+=== Troubleshooting
 
-Common Issues
+Here you can find some common issues and what to check.
 
 * *Operator installation failures*: Check operator catalog availability.
 * *ZTP configuration issues*: Verify ArgoCD patch application.
