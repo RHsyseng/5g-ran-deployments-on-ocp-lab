@@ -37,6 +37,7 @@ IMPORTANT: There are variables that might be adjusted for your environment. They
 
 Let's dive into the different files:
 
+
 [#inventory]
 === Inventory
 
@@ -49,7 +50,6 @@ The inventory includes the IP address of the hypervisor. Here you can see an exa
 10.6.76.211 public_dns_name=10.6.76.211
 -----
 
-[#playbook-run-role]
 === The Playbook
 
 The `run-role.yaml` playbook basically includes the `ocp4_workload_5gran_deployments_lab` Ansible role and adjustes the variables to the proper environment where the lab is about to be deployed. 
@@ -335,6 +335,14 @@ Common Issues
 * *ZTP configuration issues*: Verify ArgoCD patch application.
 
 Debugging Commands
+=======
+==== Total
+
+- **Total Duration**: 90-135 minutes
+- **Hub Cluster**: 30-45 minutes
+- **Multi-Cluster Setup**: 15-30 minutes
+- **SNO Cluster**: 45-60 minutes
+
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -423,8 +431,6 @@ sno-seed deleted on local!
 Plan hub deleted!
 + systemctl stop podman-gitea podman-registry.service podman-webcache.service podman-showroom-firefox.service podman-minio.service podman-showroom-traefik.service podman-showroom-apache.service podman-showroom-wetty.service
 + podman rmi -f quay.io/alosadag/httpd:p8080 quay.io/mavazque/gitea:1.17.3 quay.io/mavazque/registry:2.7.1 quay.io/fedora/httpd-24-micro:2.4 quay.io/rhsysdeseng/showroom:webfirefox quay.io/rhsysdeseng/
-...
 ... REDACTED ...
-...
 + rm -f '/tmp/*.yaml' '/tmp/*.json'
 -----
