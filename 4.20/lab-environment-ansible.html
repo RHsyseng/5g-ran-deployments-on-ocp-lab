@@ -1,0 +1,1774 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Lab Environment :: LAB - 5G RAN RDS Deployments on OpenShift</title>
+    <link rel="canonical" href="https://labs.sysdeseng.com/4.20/lab-environment-ansible.html">
+    <link rel="prev" href="closing-thoughts.html">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com/en/solutions/telecommunications" target="_blank"><img src="../_/img/Logo-Red_Hat-A-Reverse-RGB.png" height="40px" alt="Red Hat Telco Solutions"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://labs.sysdeseng.com">LAB - 5G RAN RDS Deployments on OpenShift</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="4.20" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="welcome.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="welcome.html">Welcome</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="welcome.html#5g-ran-lab">Lab Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="welcome.html#showroom-intro">Introduction to the Showroom Environment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="welcome.html#resizing-sections">Resizing App Sections</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="welcome.html#multiple-terminals">Opening Multiple Terminals</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="welcome.html#web-browser">Web Browser</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="welcome.html#current-contributors">Current Contributors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="welcome.html#past-contributors">Past Contributors</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="introduction.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#lab-aim">Who Is This Lab Aimed At?</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#what-you-will-achieve">What You Will Achieve</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#lab-software-versions">Lab Software Versions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="acronyms.html">Acronyms used in the lab</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="5g-ran-context.html">5G Ran Context</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#low-latency">Low Latency</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#numa-nodes">NUMA Nodes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#huge-pages">Huge Pages</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#cpu-pinning">CPU Pinning</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#irq-load-balancing">IRQ Load Balancing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#dpdk">DPDK</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#cpu-reduction-tuning">Tuning for CPU Reduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#vran-accelerators">vRAN Dedicated Accelerators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#ptp">PTP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#sriov">SR-IOV</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="sno-intro.html">Introduction to Single Node OpenShift (SNO)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="sno-intro.html#5g-ran">5G Radio Access Network</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="sno-intro.html#things-keep-mind">Things to keep in mind</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="sno-intro.html#deployments">Deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="sno-intro.html#extra-information">Extra information</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html">Introduction to Telco Related Infrastructure Operators</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#node-tuning-operator">Node Tuning Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#sriov-operator">SR-IOV Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#ptp-operator">PTP Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#cluster-logging-operator">Cluster Logging Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#lifecycle-operator">Lifecycle Agent Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#storage-operator">Storage Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#oadp-operator">OpenShift API for Data Protection Operator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-intro.html">Introduction to Zero Touch Provisioning (ZTP)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ztp-intro.html#what-is-ztp">What is ZTP?</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ocp-gitops.html">OpenShift GitOps</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ocp-gitops.html#gitops">GitOps</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#gitops-principles">GitOps Principles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#gitops-patterns-ocp">GitOps Patterns on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#directories-vs-branches">Directories vs Branches</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#direct-commit-to-main">Direct commit to main</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#prs-review-cycles">Pull Requests and review cycles</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ocp-gitops.html#gitops-ocp">GitOps on OpenShift</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-at-scale.html">Hub Management Components</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-at-scale.html#rhacm">Red Hat Advanced Cluster Management</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#mce">Multicluster Engine</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#ibio">Image Based Install Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#ai">Infrastructure Operator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-at-scale.html#gitops-operator">GitOps Operator</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#sitegen">SiteGen</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#policygen">PolicyGen</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ztp-at-scale.html#talm">Topology Aware Lifecycle Manager</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-workflow.html">ZTP Workflow</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-workflow.html#deployment-methods">Single-Node OpenShift Deployments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-workflow.html#abi-deployment">Agent Based Installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-workflow.html#ibi-deployment">Image Based Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="ztp-workflow.html#ibi-deploy-components">Image Based Installation and Deployment Components</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ztp-workflow.html#ztp-policies">Deployment Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ztp-workflow.html#takeaways">Takeaways</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rhacm-policies.html">RHACM Governance Policy Framework</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rhacm-policies.html#policy-framework">Policy Framework</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rhacm-policies.html#policies">Policies</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="rhacm-policies.html#policy-status">Policy Status</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="rhacm-policies.html#policy-remediation">Policy Remediation</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rhacm-policies.html#rhacm-policies-takeaways">Takeaways</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="managing-at-scale.html">Managing at Scale</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="managing-at-scale.html#inform-policies">Inform Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="managing-at-scale.html#olm-subscriptions">OLM Subscriptions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="managing-at-scale.html#cluster-policies">Cluster Policies</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lca.html">Lifecycle Agent Operator (LCA)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#seed-image-generation">Seed Image Generation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-installation">Image Based Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-upgrades">Image Based Upgrades</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-upgrades-at-scale">Image Based Upgrades at Scale</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="talm.html">Topology Aware Lifecycle Manager (TALM)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#inform-policies">Default Inform Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="talm.html#cgu">Cluster Group Upgrade</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="talm.html#autocreation-cgu">Auto Creation of CGUs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#phase-labels">Phase labels</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#waves">Policy Waves</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#sno-upgrades-at-scale">SNO Upgrades at Scale</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="policygen-deepdive.html">PolicyGen Deepdive</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="policygen-deepdive.html#policygen-implementation">PolicyGen Implementation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="policygen-deepdive.html#kustomize-plugins">Kustomize Plugins</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#policy-generator">Policy Generator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="policygen-deepdive.html#5g-ran-profile">5G RAN Profile</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#workload-partitioning">Workload Partitioning</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#kubelet-tuning">Kubelet Tuning</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#sctp">SCTP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#hide-container-mount">Container Mount Hiding</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#monitoring-footprint">Monitoring Operator Config</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#ocp-console">Console Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#networking-diags">Networking Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#operatorhub">OperatorHub</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#ptp-operator">PTP Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#sr-iov">SR-IOV</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#nto">Node Tuning Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#local-storage">Local Storage</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#logs">Log Collector and Forwarder</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#crun">crun Container Runtime</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="policygen-deepdive.html#policies-templating">Policies Templating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#custom-policy-templates">Policies Custom Templating</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="policygen-deepdive.html#kustomize-plugins-locally">Running Kustomize Plugins Locally</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="deployment-considerations.html#hardware-configurations">Hardware configurations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="deployment-considerations.html#bios-settings">Bios Settings</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="deployment-considerations.html#networking">Networking</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="deployment-considerations.html#disconnected-environments">Disconnected Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="deployment-considerations.html#connected-proxy">Connected through proxy</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="deployment-considerations.html#fully-disconnected">Fully disconnected</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="deployment-considerations.html#git-repo-structure">Git Repository Structure</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lab-environment-introduction.html">Introduction to the Lab Environment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#git-server">Git Server</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#container-registry">Container Registry</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#openshift-hub-cluster">OpenShift Hub Cluster</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#webserver">HTTP Server</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#s3-storage">S3 Storage Server</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#openshift-seed-sno">OpenShift Seed SNO Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="preparing-ztp-pipeline.html">Preparing the ZTP GitOps Pipeline</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="preparing-ztp-pipeline.html#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="preparing-ztp-pipeline.html#git-repository">Git Repository</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="preparing-ztp-pipeline.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting the Telco RAN Reference Design Specification</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#adding-custom-policies">Adding Custom Content</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-testing-policies">Crafting Testing Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#deploying-policies-using-gitops-pipeline">Deploying the Telco 5G RAN RDS using the ZTP GitOps Pipeline</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html">Deploying an Agent Based Install Cluster</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#baremetal-node-details">Bare Metal Node Details</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#pre-reqs">Deployment Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#clusterinstance">ClusterInstance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#reference-manifest-clusterinstance">Reference Manifest Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#preparing-installation">Get Ready for the Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment">Monitoring the Deployment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment-webui">Monitoring the Deployment via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment-cli">Monitoring the Deployment via the CLI</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="creating-seed-image.html#intro-to-seed-image-gen">Introduction to the Seed Image Generation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="creating-seed-image.html#running-seed-image-genn">Running the Seed Image Generation</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html">Deploying an Image Based Install Cluster</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#baremetal-node-details">Bare Metal Node Details</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-installation-iso">Creating the Installation ISO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#preinstallation-process">Pre-Installing the Host</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">Creating the Configuration ISO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#completing-install">Completing the Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html#verifying-install">Verifying the RAN DU Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="check-deployment-is-finished.html">Check SNO Deployment is finished</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-webui">Check SNO Deployment has Finished via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="using-talm-to-update-clusters.html">Image-based Upgrade for SNO clusters</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#introduction">Introduction to Image-based Upgrades</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifying Hub Software Requirements</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#getting-snos-kubeconfigs">Verifying Managed Clusters Requirements</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#install-lca">Preparing Managed Clusters for Upgrade</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the Image Base Group Upgrade</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#monitoring-ibu">Monitoring the Image Based Group Upgrade </a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="troubleshooting-tips.html">Troubleshooting Tips</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="troubleshooting-tips.html#verification-lab">Verification of the lab status</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="troubleshooting-tips.html#containerized-infra">Containerized Infrastructure Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="troubleshooting-tips.html#sno-vms">SNO Virtual Machines</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="troubleshooting-tips.html#hub">Hub cluster</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="troubleshooting-tips.html#dns">DNS resolution</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="troubleshooting-tips.html#policies-blank">Policies not showing in the Governance console</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="troubleshooting-tips.html#policies-not-applied">Policies not applied</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="common-pitfalls.html">Common Pitfalls</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#exec-probes-cpu-pinning">Exec Probes and CPU Pinning</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#energy-saving-hw-profiles">Energy Saving Hardware Profiles</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#secure-boot-oot-unsigned-drivers">Secure Boot and Unsigned OoT Drivers</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#sriov-node-drain">SR-IOV Node Drain</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#pod-disruption-budgets">Pod Disruption Budgets</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="closing-thoughts.html">Closing Thoughts</a>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lab-environment-ansible.html">Lab Environment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#lab-requirements">Lab Requirements</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#role-overview">OCP4 5G RAN Role Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#inventory">Inventory File</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#playbook-run-role">The Playbook</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#preworkload-tasks-overview">Pre-Workload Tasks</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#i#what-preworkload-does">What Pre-Workload Does</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#key-services-deployed">Key Services Deployed</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#preworkload-troubleshooting">Troubleshooting</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#preworkload-time">Time Requirements</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="#workload-tasks-overview">Workload Tasks</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#what-workload-does">What Workload Does</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#workload-key-components">Key Components Deployed</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#workload-deployment">Deployment Phases</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#workload-troubleshooting">Troubleshooting</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="#workload-time">Time Requirements</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#next-steps">Next Steps</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#delete-environment">Delete The Environment</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="welcome.html">LAB - 5G RAN RDS Deployments on OpenShift</a></li>
+    <li><a href="lab-environment-ansible.html">Lab Environment</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/lab-4.20/documentation/modules/ROOT/pages/lab-environment-ansible.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Lab Environment</h1>
+<div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>This section describes how to deploy your own lab environment.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+If you are a Red Hatter, you can order a lab environment on the <a href="https://demo.redhat.com">Red Hat Demo Platform</a>. You just need to order the lab named <code>5G RAN RDS Deployments on OpenShift</code>.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+For lab versions 4.19 and later, deploying the lab in your local environment can be done using the <a href="https://github.com/RHsyseng/agnosticd/tree/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab">ocp4_workload_5gran_deployments_lab</a> Ansible role that is actually the same used for on-demand requests on the <a href="https://demo.redhat.com">Red Hat Demo Platform</a>. If you prefer a step-by-step deployment, refer to <a href="https://labs.sysdeseng.com/5g-ran-deployments-on-ocp-lab/4.18/lab-environment.html">previous lab versions</a> for guidance.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="lab-requirements"><a class="anchor" href="#lab-requirements"></a>Lab Requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>RHEL 9.X box with access to the Internet. This lab relies on KVM, so you need to have the proper virtualization packages already installed. It is highly recommended to use a bare-metal host. Our lab environment has the following specs:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>96 cores in total, with or without hyperthreading enabled.</p>
+</li>
+<li>
+<p>128GiB Memory.</p>
+</li>
+<li>
+<p>1 TiB storage.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The /opt directory requires a minimum of 60 GiB of storage for the disconnected registry installation and the /var directory requires a minimum of 70 GiB for the lab installation.
+Size the filesystems containing these directories accordingly as the default partition layout for a RHEL 9.X install does not provide enough storage on the root filesystem for the lab installation.
+</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+These instructions have been tested in a RHEL 9.6, we cannot guarantee that other operating systems (even RHEL-based) will work. We won&#8217;t be providing support out of RHEL 9.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="role-overview"><a class="anchor" href="#role-overview"></a>OCP4 5G RAN Role Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>This role <a href="https://github.com/RHsyseng/agnosticd/tree/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab">ocp4_workload_5gran_deployments_lab</a> installs the 5G RAN RDS Deployments Lab environment. It consists of the following tasks files:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The <a href="https://github.com/RHsyseng/agnosticd/blob/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab/tasks/pre_workload.yml">pre_workload.yml</a> file contains the initial setup and preparation.</p>
+</li>
+<li>
+<p>The <a href="https://github.com/RHsyseng/agnosticd/blob/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab/tasks/workload.yml">workload.yml</a> file contains the main deployment tasks that create and configures the lab.</p>
+</li>
+<li>
+<p>The <a href="https://github.com/RHsyseng/agnosticd/blob/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab/defaults/main.yml">defaults/main.yml</a> file contains the default configuration variables for the 5G RAN lab deployment.</p>
+</li>
+<li>
+<p>The <code>run-role.yaml</code> file is the playbook that runs the role along with the variables customized for you environment.</p>
+</li>
+<li>
+<p>The <code>inventory</code> file contains the hypervisor where the lab is going to be deployed.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+There are variables that might be adjusted for your environment. They can be included as variables in the ansible-playbook command-line, however, we suggest to be added in the <code>run-role.yaml</code> Ansible playbook.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s dive into the different files:</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="inventory"><a class="anchor" href="#inventory"></a>Inventory FIle</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The inventory includes the IP address of the hypervisor. Here you can see an example of the inventory file for my lab:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">[bastions]
+10.6.76.211 public_dns_name=10.6.76.211</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="playbook-run-role"><a class="anchor" href="#playbook-run-role"></a>The Playbook</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>run-role.yaml</code> playbook basically includes the <code>ocp4_workload_5gran_deployments_lab</code> Ansible role and adjustes the variables to the proper environment where the lab is about to be deployed.</p>
+</div>
+<div class="paragraph">
+<p>The following playbook probably will just work for you except for the <code>ocp4_pull_secret</code> which has to be replaced by your personal OpenShift Pull Secret. Notice that the default upstream DNS is set to 1.1.1.1. There might be cases in your local environment where the hypervisor may not reach it. So, notice that you must change it to a different DNS that allows you to resolve public hostnames.</p>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+The variables that includes the <code>do not change</code> comment as set explicitly this way because the deployment we want here is on a local hypervisor.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">- name: telco 5G lab
+  hosts: 10.6.76.211
+  vars:
+    repo_user: RHsyseng
+    platform_demo_redhat_com: false #do not change
+    disconnected_update: true #do not change
+    download_rhcos_isos: true #do not change
+    install_lab_dependencies: true #do not change
+    lab_version: "lab-4.19"
+    student_name: "lab-user"
+    student_password: "redhat123"
+    hypervisor_min_memory_mb: 128000
+    hypervisor_min_cpus: 96
+    lab_hub_vm_memory: 22000
+    lab_hub_vm_disk: 120
+    lab_sno_vm_memory: 22000
+    lab_sno_vm_disk: 120
+    #upstream_dns: "10.6.73.2"
+    upstream_dns: "1.1.1.1"
+    ACTION: provision
+    ocp4_pull_secret: 'YOUR_PULL_SECRET'
+  roles:
+    - role: ocp4_workload_5gran_deployments_lab</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>First, clone the <code>RHSyseng</code> GitHub repo:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ git clone <a href="https://github.com/RHsyseng/agnosticd.git" class="bare">https://github.com/RHsyseng/agnosticd.git</a>
+$ cd agnosticd/ansible/roles_ocp_workload</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, create the inventory file in that path. Copy and paste the <code>run-role.yaml</code> playbook shown previously. Finally run the playbook:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ ansible-playbook -i inventory run-role.yml -u root -k  -v</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that the Ansible playbook uses the mentioned role to deploy the lab. The role is divided into 2 main stages: <code>pre-workload</code> and <code>workload</code> tasks:</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="preworkload-tasks-overview"><a class="anchor" href="#preworkload-tasks-overview"></a>Pre-Workload Tasks Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <a href="https://github.com/RHsyseng/agnosticd/blob/development/ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab/tasks/pre_workload.yml"> pre_workload.yml</a> file contains the initial setup and preparation tasks that must be completed before deploying the 5G RAN RDS lab environment. This file ensures your hypervisor is properly configured with all necessary dependencies, services, and infrastructure components.</p>
+</div>
+<div class="sect2">
+<h3 id="what-preworkload-does"><a class="anchor" href="#what-preworkload-does"></a>What Pre-Workload Does</h3>
+<div class="paragraph">
+<p>The pre-workload phase prepares your RHEL 9 hypervisor by:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>System Validation &amp; Requirements Check</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Validates pull secret</strong>: Ensures OpenShift pull secret is provided.</p>
+</li>
+<li>
+<p><strong>Checks system resources</strong>: Verifies minimum memory (128GB+), CPU cores (64+), and supported OS.</p>
+</li>
+<li>
+<p><strong>Displays system facts</strong>: Shows current system specifications vs. requirements.</p>
+</li>
+<li>
+<p><strong>Validates distribution</strong>: Confirms RHEL 9, CentOS 9, or Fedora compatibility.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Storage Configuration</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Identifies extra disk</strong>: Finds available disk (500GB+) for libvirt storage.</p>
+</li>
+<li>
+<p><strong>Creates XFS filesystem</strong>: Formats the selected disk with XFS.</p>
+</li>
+<li>
+<p><strong>Mounts libvirt storage</strong>: Mounts extra disk to <code>/var/lib/libvirt</code> for VM storage.</p>
+</li>
+<li>
+<p><strong>Sets up storage pools</strong>: Creates kcli storage pools for VM management.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Dependency Installation</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Installs virtualization packages</strong>: libvirt, qemu-kvm, podman, dnsmasq.</p>
+</li>
+<li>
+<p><strong>Installs Python modules</strong>: kubernetes, passlib, pyopenssl, cherrypy, firewall, minio.</p>
+</li>
+<li>
+<p><strong>Downloads OpenShift tools</strong>: oc, kubectl, openshift-installer binaries.</p>
+</li>
+<li>
+<p><strong>Installs kcli</strong>: Virtualization management tool for VM operations.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Network Infrastructure Setup</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Creates lab networks</strong>:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Main lab network (192.168.125.0/24)</p>
+</li>
+<li>
+<p>SR-IOV network (192.168.100.0/24)</p>
+</li>
+<li>
+<p>PTP network (192.168.200.0/24)</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p><strong>Configures DNSMasq</strong>: Sets up local DNS resolution for lab domains.</p>
+</li>
+<li>
+<p><strong>Configures NetworkManager</strong>: Ensures proper DNS resolution.</p>
+</li>
+<li>
+<p><strong>Sets up firewall rules</strong>: Opens required ports for lab services.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Container Registry Services</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Deploys disconnected registry</strong>: Podman-based container registry on port 8443.</p>
+</li>
+<li>
+<p><strong>Configures registry authentication</strong>: Sets up admin credentials.</p>
+</li>
+<li>
+<p><strong>Sets up SSL certificates</strong>: Configures trusted certificates for registry access.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>S3 Storage (MinIO)</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Deploys MinIO service</strong>: Object storage service on port 9002.</p>
+</li>
+<li>
+<p><strong>Creates storage buckets</strong>: Sets up buckets for backup and logging.</p>
+</li>
+<li>
+<p><strong>Configures S3 client</strong>: Installs and configures <code>mc</code> client.</p>
+</li>
+<li>
+<p><strong>Sets up aliases</strong>: Configures MinIO access credentials.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Git Server (Gitea)</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Deploys Gitea service</strong>: Git server on port 3000.</p>
+</li>
+<li>
+<p><strong>Creates admin user</strong>: Sets up student user with admin privileges.</p>
+</li>
+<li>
+<p><strong>Migrates repositories</strong>: Clones lab repository from GitHub to local Git (Gitea).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Web Cache Service</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Deploys web cache server</strong>: Podman-based caching service on port 8080.</p>
+</li>
+<li>
+<p><strong>Downloads RHCOS images</strong>: Downloads OpenShift CoreOS images (if enabled).</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Redfish Service (ksushy)</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Deploys ksushy service</strong>: Redfish API service on port 9000.</p>
+</li>
+<li>
+<p><strong>Configures BMC simulation</strong>: Simulates bare metal management interface.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Lab VM Preparation</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Creates VM definitions</strong>: Prepares SNO seed, ABI, and IBI VMs.</p>
+</li>
+<li>
+<p><strong>Configures VM resources</strong>: Sets CPU, memory, and disk allocations.</p>
+</li>
+<li>
+<p><strong>Sets up networking</strong>: Configures VM network interfaces.</p>
+</li>
+<li>
+<p><strong>Prepares for deployment</strong>: VMs are created but not started.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Lab Content Generation</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Clones lab repository</strong>: Downloads lab documentation and materials.</p>
+</li>
+<li>
+<p><strong>Generates documentation</strong>: Builds lab documentation using Antora.</p>
+</li>
+<li>
+<p><strong>Sets up showroom</strong>: Creates web interface for lab access.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="key-services-deployed"><a class="anchor" href="#key-services-deployed"></a>Key Services Deployed</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 12.5%;">
+<col style="width: 37.5%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Service</th>
+<th class="tableblock halign-left valign-top">Port</th>
+<th class="tableblock halign-left valign-top">Purpose</th>
+<th class="tableblock halign-left valign-top">Credentials</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Container Registry</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8443</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Stores OpenShift images</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>admin / r3dh4t1!</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Git Server (Gitea)</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">3000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lab repository access</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>student / student</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>S3 Storage (MinIO)</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9002</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Object storage</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>admin / admin1234</code></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Web Cache</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">8080</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Image caching</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Redfish API</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">9000</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BMC simulation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">-</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Lab Showroom</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">80</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lab documentation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>lab-user / redhat123</code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect2">
+<h3 id="preworkload-troubleshooting"><a class="anchor" href="#preworkload-troubleshooting"></a>Troubleshooting</h3>
+<div class="paragraph">
+<p>If pre-workload fails, check:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>System resources</strong>: Ensure minimum memory/CPU requirements.</p>
+</li>
+<li>
+<p><strong>Internet connectivity</strong>: Required for downloading dependencies.</p>
+</li>
+<li>
+<p><strong>Pull secret</strong>: Must be valid OpenShift pull secret.</p>
+</li>
+<li>
+<p><strong>Disk space</strong>: Ensure sufficient storage for libvirt.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="preworkload-time"><a class="anchor" href="#preworkload-time"></a>Time Requirements</h3>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+This is a estimation based on our experience and our environment.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Typical duration</strong>: 30-45 minutes.</p>
+</li>
+<li>
+<p><strong>Slow internet</strong>: 45-60 minutes.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The pre-workload phase is essential for creating a properly configured environment that can successfully deploy and run the 5G RAN lab workloads.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="workload-tasks-overview"><a class="anchor" href="#workload-tasks-overview"></a>Workload Tasks Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The <code>workload.yml</code> file contains the main deployment tasks that create and configure the 5G RAN lab environment. This file deploys OpenShift clusters, installs operators, and configures the infrastructure needed for 5G workloads.</p>
+</div>
+<div class="sect2">
+<h3 id="what-workload-does"><a class="anchor" href="#what-workload-does"></a>What Workload Does</h3>
+<div class="paragraph">
+<p>The workload phase deploys the complete 5G RAN lab environment by:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Hub Cluster Deployment</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Deploys hub cluster</strong>: Creates a compact OpenShift cluster.</p>
+</li>
+<li>
+<p><strong>Downloads manifests</strong>: Retrieves Kubernetes manifests for hub cluster configuration.</p>
+</li>
+<li>
+<p><strong>Establishes connectivity</strong>: Logs into the hub cluster and copies kubeconfig.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Hub Cluster Configuration</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Removes kubeadmin</strong>: Deletes the default kubeadmin user for security.</p>
+</li>
+<li>
+<p><strong>Configures ArgoCD</strong>: Patches ArgoCD for Zero Touch Provisioning (ZTP) support.</p>
+</li>
+<li>
+<p><strong>Waits for ArgoCD</strong>: Ensures ArgoCD pods are running and ready before proceeding to the next tasks.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Hub Cluster Operators Installation</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Deploys hub operators</strong>: Installs operators via ArgoCD applications.</p>
+</li>
+<li>
+<p><strong>Configures LVM storage</strong>: Sets up LVMCluster for persistent storage.</p>
+</li>
+<li>
+<p><strong>Waits for operator readiness</strong>: Ensures all hub operators are healthy and synced before proceeding to the next tasks.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Multi-Cluster Management Setup</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Installs MultiClusterHub</strong>: Deploys Red Hat Advanced Cluster Management.</p>
+</li>
+<li>
+<p><strong>Configures MultiClusterEngine</strong>: Sets up multi-cluster management capabilities.</p>
+</li>
+<li>
+<p><strong>Waits for readiness</strong>: Ensures MCH and MCE are running and available before continue.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>SNO Seed Cluster Deployment</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Deploys SNO cluster</strong>*: Creates Single Node OpenShift cluster via ArgoCD.</p>
+</li>
+<li>
+<p><strong>Extracts kubeconfig</strong>*: Retrieves SNO cluster kubeconfig for management.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>SNO Seed Cluster Operators Installation</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Downloads operator manifests</strong>: Retrieves manifests for telco-specific operators.</p>
+</li>
+<li>
+<p><strong>Installs operators</strong>: Deploys OADP, LCA, LVMS, SR-IOV, Logging, and PTP operators.</p>
+</li>
+<li>
+<p><strong>Verifies operator status</strong>: Confirms operators are in "Succeeded" state before continue.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>SNO Seed Network Configuration</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Configures SR-IOV</strong>: Sets up Single Root I/O Virtualization for high-performance networking.</p>
+</li>
+<li>
+<p><strong>Configures PTP</strong>: Sets up Precision Time Protocol for time synchronization.</p>
+</li>
+<li>
+<p><strong>Configures Logging</strong>: Sets up cluster logging for observability.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>SNO Seed Performance Optimization</p>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Applies performance profile</strong>: Configures CPU isolation and NUMA topology.</p>
+</li>
+<li>
+<p><strong>Applies Tuned patches</strong>: Optimizes system performance for telco workloads.</p>
+</li>
+<li>
+<p><strong>Prepares for reboot</strong>: Indicates node reboot is required for performance tuning.</p>
+</li>
+</ul>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="workload-key-components"><a class="anchor" href="#workload-key-components"></a>Key Components Deployed</h3>
+<div class="paragraph">
+<p>For Hub Cluster Components:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>OpenShift Cluster</strong>: Full OpenShift 4.19 cluster.</p>
+</li>
+<li>
+<p><strong>ArgoCD</strong>: GitOps continuous deployment.</p>
+</li>
+<li>
+<p><strong>LVM Storage</strong>: Persistent storage solution.</p>
+</li>
+<li>
+<p><strong>Multi-Cluster Management</strong>: Red Hat Advanced Cluster Management.</p>
+</li>
+<li>
+<p><strong>Multi-Cluster Engine</strong>: Multi-cluster orchestration.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For SNO Cluster Components:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Single Node OpenShift</strong>: Edge-optimized OpenShift cluster.</p>
+</li>
+<li>
+<p><strong>OADP Operator</strong>: OpenShift API for Data Protection.</p>
+</li>
+<li>
+<p><strong>LCA Operator</strong>: Lifecycle Agent for cluster management.</p>
+</li>
+<li>
+<p><strong>LVMS Operator</strong>: Local Volume Management Storage.</p>
+</li>
+<li>
+<p><strong>SR-IOV Operator</strong>: Single Root I/O Virtualization.</p>
+</li>
+<li>
+<p><strong>Logging Operator</strong>: Cluster logging and observability.</p>
+</li>
+<li>
+<p><strong>PTP Operator</strong>: Precision Time Protocol for time sync.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect2">
+<h3 id="workload-deployment"><a class="anchor" href="#workload-deployment"></a>Deployment Phases</h3>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+This is a estimation based on our experience and our environment.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Phase 1: Hub Cluster (30-45 minutes)</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Cluster Creation</strong>: Deploy OpenShift hub cluster.</p>
+</li>
+<li>
+<p><strong>ArgoCD Setup</strong>: Configure GitOps capabilities.</p>
+</li>
+<li>
+<p><strong>Storage Setup</strong>: Configure LVM storage.</p>
+</li>
+<li>
+<p><strong>Operator Installation</strong>: Install hub cluster operators.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Phase 2: Multi-Cluster Setup (15-30 minutes)</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>MCH Installation</strong>: Deploy Multi-Cluster Hub.</p>
+</li>
+<li>
+<p><strong>MCE Configuration</strong>: Set up Multi-Cluster Engine.</p>
+</li>
+<li>
+<p><strong>Readiness Verification</strong>: Ensure multi-cluster capabilities.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Phase 3: SNO Cluster (45-60 minutes)</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>SNO Deployment</strong>: Create Single Node OpenShift cluster.</p>
+</li>
+<li>
+<p><strong>Operator Installation</strong>: Install telco-specific operators.</p>
+</li>
+<li>
+<p><strong>Network Configuration</strong>: Set up SR-IOV and PTP networks.</p>
+</li>
+<li>
+<p><strong>Performance Tuning</strong>: Apply performance optimizations.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="workload-troubleshooting"><a class="anchor" href="#workload-troubleshooting"></a>Troubleshooting</h3>
+<div class="paragraph">
+<p>Here you can find some common issues and what to check.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Operator installation failures</strong>: Check operator catalog availability.</p>
+</li>
+<li>
+<p><strong>ZTP configuration issues</strong>: Verify ArgoCD patch application.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The following commands can help you to identify the potential issue:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"># Check hub cluster status
+oc get nodes --kubeconfig /home/lab-user/hub-kubeconfig
+
+# Check SNO cluster status
+oc get nodes --kubeconfig /home/lab-user/seed-cluster-kubeconfig
+
+# Check operator status
+oc get csv -A --kubeconfig /home/lab-user/seed-cluster-kubeconfig
+
+# Check SR-IOV configuration
+oc get node openshift-master-0 -o json --kubeconfig /home/lab-user/seed-cluster-kubeconfig | jq '.status.allocatable'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="workload-time"><a class="anchor" href="#workload-time"></a>Time Requirements</h3>
+<div class="paragraph">
+<p><strong>Hub Cluster</strong>: 30-45 minutes.
+<strong>Multi-Cluster Setup</strong>: 15-30 minutes.
+<strong>SNO Cluster</strong>: 45-60 minutes.</p>
+</div>
+<div class="paragraph">
+<p><strong>Total Duration</strong>: 90-135 minutes aprox.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="next-steps"><a class="anchor" href="#next-steps"></a>Next Steps</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The workload phase creates a complete 5G RAN RDS lab environment ready for advanced telco workload deployment and testing. Once workload completes successfully, the system provides:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Fully functional hub cluster</strong> with multi-cluster management.</p>
+</li>
+<li>
+<p><strong>SNO cluster</strong> with telco-specific operators.</p>
+</li>
+<li>
+<p><strong>Network infrastructure</strong> for 5G workloads.</p>
+</li>
+<li>
+<p><strong>Performance optimizations</strong> for telco applications.</p>
+</li>
+<li>
+<p><strong>Ready environment</strong> for 5G RAN lab exercises.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>After successful workload deployment:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Access the lab</strong>: Use the showroom interface. Showroom is a WebAPP consisting of different services that will be used to expose the lab content and a terminal and a browser running on the hypervisor host, that way uses can consume the lab from their browser without extra requirements. At this point we can access our hypervisor to get the Showroom app, this URL is the one the student will use with the credentials we configured. Example url: <a href="https://hypervisor.example.com/content/" class="bare">https://hypervisor.example.com/content/</a>.</p>
+</li>
+<li>
+<p><strong>Run lab exercises</strong>: Follow the <a href="https://labs.sysdeseng.com/5g-ran-deployments-on-ocp-lab/4.20/welcome.html">5G RAN RDS deployments lab</a>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="delete-environment"><a class="anchor" href="#delete-environment"></a>Delete the Environment</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If the installation fails for whatever reason, you will need to delete all the VMs that were created and execute the same procedure again. To delete all the VMs and configurations done, you have to connect to your <strong>hypervisor server</strong> and become root. Then, create the following script and execute it:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/clean.sh
+#!/bin/bash
+
+kcli delete plan hub -y
+systemctl stop podman-gitea podman-registry.service podman-webcache.service podman-showroom-firefox.service podman-minio.service podman-showroom-traefik.service podman-showroom-apache.service podman-showroom-wetty.service
+podman rmi -f quay.io/alosadag/httpd:p8080 quay.io/mavazque/gitea:1.17.3 quay.io/mavazque/registry:2.7.1 quay.io/fedora/httpd-24-micro:2.4 quay.io/rhsysdeseng/showroom:webfirefox quay.io/rhsysdeseng/showroom:traefik-v3.3.4 quay.io/minio/minio:RELEASE.2025-02-07T23-21-09Z quay.io/rhsysdeseng/showroom:wetty quay.io/rhsysdeseng/showroom:antora-v3.0.0 infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.19.0-1 registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.19
+rm -rf /opt/gitea/
+rm -rf /opt/webcache/
+rm -rf /opt/dnsmasq
+rm -rf /opt/registry
+rm -rf /opt/minio
+rm -rf /opt/showroom
+rm -rf ~/.kcli
+rm -f /usr/bin/oc /usr/bin/kubectl /usr/bin/openshift-install
+rm -f /tmp/*.yaml /tmp/*.json
+rm -rf /home/lab-user/.ssh
+rm -rf ~/manifests ~/working-dir
+rm -f /root/*
+rm -rf /root/5g-deployment-lab/
+rm -f /home/lab-user/*
+rm -f /etc/systemd/system/dnsmasq-virt.service /etc/systemd/system/podman-webcache.service /etc/systemd/system/podman-registry.service /etc/systemd/system/podman-minio.service /etc/systemd/system/podman-gitea.service /etc/systemd/system/podman-*
+rm -f /tmp/*.yaml /tmp/*.json
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">bash -x clean.sh</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">+ kcli delete plan hub -y
+Deleting cluster hub
+hub-ctlplane-0 deleted on local!
+hub-ctlplane-1 deleted on local!
+hub-ctlplane-2 deleted on local!
+Deleting directory /root/.kcli/clusters/hub
+sno-abi deleted on local!
+sno-ibi deleted on local!
+sno-seed deleted on local!
+Plan hub deleted!
++ systemctl stop podman-gitea podman-registry.service podman-webcache.service podman-showroom-firefox.service podman-minio.service podman-showroom-traefik.service podman-showroom-apache.service podman-showroom-wetty.service
++ podman rmi -f quay.io/alosadag/httpd:p8080 quay.io/mavazque/gitea:1.17.3 quay.io/mavazque/registry:2.7.1 quay.io/fedora/httpd-24-micro:2.4 quay.io/rhsysdeseng/showroom:webfirefox quay.io/rhsysdeseng/
+... REDACTED ...
++ rm -f '/tmp/*.yaml' '/tmp/*.json'</code></pre>
+</div>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="closing-thoughts.html">Closing Thoughts</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://redhat.com" target="_blank"></div>
+</footer>
+<script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
