@@ -15,7 +15,7 @@ content:
 
 asciidoc:
   attributes:
-    release-version: 4.20
+    release-version: "4.20"
     page-pagination: true
     demo_environment: demo_environment_here
   extensions:
