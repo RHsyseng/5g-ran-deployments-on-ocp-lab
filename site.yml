@@ -10,12 +10,12 @@ content:
   sources:
     - url: ./
       branches:
-      - 'lab-4.19'
+      - 'lab-4.20'
       start_path: documentation
 
 asciidoc:
   attributes:
-    release-version: 4.19
+    release-version: 4.20
     page-pagination: true
     demo_environment: demo_environment_here
   extensions:

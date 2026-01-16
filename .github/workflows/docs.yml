@@ -12,6 +12,7 @@ on:
       - 'lab-4.17'
       - 'lab-4.18'
       - 'lab-4.19'
+      - 'lab-4.20'
 env:
   SITE_DIR: "gh-pages"
 jobs:
