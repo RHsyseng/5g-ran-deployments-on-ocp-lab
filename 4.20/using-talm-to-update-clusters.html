@@ -816,7 +816,7 @@
 <p>In this section, we will perform an image-based upgrade to both managed clusters (<code>sno-abi</code> and <code>sno-ibi</code>) by leveraging the <a href="lca.html">Lifecycle Agent</a> (LCA) and the <a href="talm.html">Topology Aware Lifecycle Manager</a> (TALM) operators. The LCA provides an alternative way to upgrade the platform version of a single-node OpenShift cluster, while TALM manages the rollout of configurations throughout the lifecycle of the cluster fleet.</p>
 </div>
 <div class="paragraph">
-<p>The image-based upgrade is faster than the standard upgrade method and allows direct upgrades from OpenShift Container Platform &lt;4.y&gt; to &lt;4.y+2&gt;, and &lt;4.y.z&gt; to &lt;4.y.z+n&gt;. These upgrades utilize a generated OCI image from a dedicated seed cluster. We have already provided a seed image with version 4.20.8. The process to generate this seed image is the same as the one we executed in <a href="creating-seed-image.html">Creating the Seed Image</a> for version 4.20.6 to install <code>sno-ibi</code>.</p>
+<p>The image-based upgrade is faster than the standard upgrade method and allows direct upgrades from OpenShift Container Platform &lt;4.y&gt; to &lt;4.y+2&gt;, and &lt;4.y.z&gt; to &lt;4.y.z+n&gt;. These upgrades utilize a generated OCI image from a dedicated seed cluster. We have already provided a seed image with version 4.20.10. The process to generate this seed image is the same as the one we executed in <a href="creating-seed-image.html">Creating the Seed Image</a> for version 4.20.8 to install <code>sno-ibi</code>.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -831,12 +831,12 @@ Image-based upgrades rely on custom images specific to the hardware platform on 
 </table>
 </div>
 <div class="paragraph">
-<p>Below are the steps to upgrade both managed clusters and their configuration from 4.20.6 to 4.20.8:</p>
+<p>Below are the steps to upgrade both managed clusters and their configuration from 4.20.8 to 4.20.10:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Create a seed image using the Lifecycle Agent. As mentioned, the seed image <code>infra.5g-deployment.lab:8443/rhsysdeseng/lab5gran:v4.20.8</code> is already available in the <a href="lab-environment-introduction.html#container-registry">container registry</a>.</p>
+<p>Create a seed image using the Lifecycle Agent. As mentioned, the seed image <code>infra.5g-deployment.lab:8443/rhsysdeseng/lab5gran:v4.20.10</code> is already available in the <a href="lab-environment-introduction.html#container-registry">container registry</a>.</p>
 </li>
 <li>
 <p>Verify that all software components meet the required versions. You can find the minimum software requirements <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/edge_computing/image-based-installation-for-single-node-openshift#ztp-image-based-upgrade-prereqs_ibi-understanding-image-based-install">here</a>.</p>
@@ -859,7 +859,7 @@ Image-based upgrades rely on custom images specific to the hardware platform on 
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-Both clusters were installed using different methodologies. While <code>sno-abi</code> was provisioned using the <a href="ztp-workflow.html#abi-deployment">agent-based install</a> workflow, <code>sno-ibi</code> was deployed using the <a href="ztp-workflow.html#ibi-deployment">image-based install</a>. However, as long as they both meet the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/edge_computing/image-based-installation-for-single-node-openshift#seed-cluster-guidelines">Seed cluster guidelines</a> (which ensure the base image is compatible with the installed hardware and software configuration on the target clusters) and have the same combination of hardware, Day 2 Operators, and cluster configuration as the 4.20.8 seed cluster, we&#8217;re ready to proceed.
+Both clusters were installed using different methodologies. While <code>sno-abi</code> was provisioned using the <a href="ztp-workflow.html#abi-deployment">agent-based install</a> workflow, <code>sno-ibi</code> was deployed using the <a href="ztp-workflow.html#ibi-deployment">image-based install</a>. However, as long as they both meet the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/edge_computing/image-based-installation-for-single-node-openshift#seed-cluster-guidelines">Seed cluster guidelines</a> (which ensure the base image is compatible with the installed hardware and software configuration on the target clusters) and have the same combination of hardware, Day 2 Operators, and cluster configuration as the 4.20.10 seed cluster, we&#8217;re ready to proceed.
 </td>
 </tr>
 </table>
@@ -938,7 +938,7 @@ openshift-gitops-operator-controller-manager-57684fcdc9-9p5rm   2/2     Running 
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-We already know that both SNO clusters meet the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/edge_computing/image-based-installation-for-single-node-openshift#seed-cluster-guidelines">seed cluster guidelines</a> and have the same combination of hardware, Day 2 Operators, and cluster configuration as the target seed cluster from which the seed image version v4.20.8 was obtained.
+We already know that both SNO clusters meet the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/edge_computing/image-based-installation-for-single-node-openshift#seed-cluster-guidelines">seed cluster guidelines</a> and have the same combination of hardware, Day 2 Operators, and cluster configuration as the target seed cluster from which the seed image version v4.20.10 was obtained.
 </td>
 </tr>
 </table>
@@ -971,7 +971,7 @@ openshift-storage                      lvms-operator.v4.19.0                    
 </div>
 </div>
 <div class="paragraph">
-<p>On the other hand, <code>sno-ibi</code> is running all the required operators: Day 2 Operators plus LCA and OADP, which are necessary to run the image-based upgrade process. This is because they were already included in the seed image version v4.20.6. See <a href="creating-seed-image.html#_running_the_seed_image_generation">Running the Seed Image Generation</a> for a list of the operators installed in the seed cluster. They are the same versions because <code>sno-ibi</code> was provisioned with that seed image (image-based installation).</p>
+<p>On the other hand, <code>sno-ibi</code> is running all the required operators: Day 2 Operators plus LCA and OADP, which are necessary to run the image-based upgrade process. This is because they were already included in the seed image version v4.20.8. See <a href="creating-seed-image.html#_running_the_seed_image_generation">Running the Seed Image Generation</a> for a list of the operators installed in the seed cluster. They are the same versions because <code>sno-ibi</code> was provisioned with that seed image (image-based installation).</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -1515,8 +1515,8 @@ spec:
         - sno-ibi
   ibuSpec:
     seedImageRef:
-      image: infra.5g-deployment.lab:8443/rhsysdeseng/lab5gran:v4.20.8
-      version: 4.20.8
+      image: infra.5g-deployment.lab:8443/rhsysdeseng/lab5gran:v4.20.10
+      version: 4.20.10
       pullSecretRef:
         name: disconnected-registry-pull-secret
     extraManifests:
