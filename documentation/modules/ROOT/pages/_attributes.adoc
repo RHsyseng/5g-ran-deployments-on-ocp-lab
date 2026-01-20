@@ -26,22 +26,22 @@ code:experimental:
 // demo_environment controls some texts that are shown only when running/not running on demo.redhat.com
 //:demo_environment: demo_environment_here --> This attribute needs to be defined in site.yml for being able to use it in nav.adoc
 :hub_admin_password: admin_password_here
-:hub-cluster-ocp-version: v4.20.6
+:hub-cluster-ocp-version: v4.20.8
 :hub-cluster-kubeversion: v1.32.5
-:sno-cluster-version1: v4.20.6
-:sno-cluster-version2: v4.20.8
-:sno-seed-version: v4.20.6
+:sno-cluster-version1: v4.20.8
+:sno-cluster-version2: v4.20.10
+:sno-seed-version: v4.20.8
 :sno-cluster-version1-kubeversion: v1.32.5
 :sno-cluster-version2-kubeversion: v1.32.5
-:sno-cluster-version1-cvo: 4.20.6
-:sno-cluster-version2-cvo: 4.20.8
+:sno-cluster-version1-cvo: 4.20.8
+:sno-cluster-version2-cvo: 4.20.10
 :active-ocp-version-clusterimageset: infra.5g-deployment.lab:8443/openshift/release-images:{sno-cluster-version1-cvo}-x86_64
 :talm-update-file: zone-europe-upgrade-420-8.yaml
 :talm-update-channel: stable-4.20
-:talm-update-version: 4.20.8
+:talm-update-version: 4.20.10
 // oc adm release info 4.17.4 | grep "Pull From"
-:seed-image: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.20.6
-:talm-update-image: infra.5g-deployment.lab:8443/rhsysdeseng/lab5gran:v4.20.8
+:seed-image: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.20.8
+:talm-update-image: infra.5g-deployment.lab:8443/rhsysdeseng/lab5gran:v4.20.10
 //:talm-update-image:  infra.5g-deployment.lab:8443/openshift/release-images@sha256:bada2d7626c8652e0fb68d3237195cb37f425e960347fbdd747beb17f671cf13
 :talm-update-policy-name: version-420-1
 :rhacm-version: v2.15
