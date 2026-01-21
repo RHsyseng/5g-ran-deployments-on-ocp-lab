@@ -38,7 +38,7 @@ metadata:
   name: cluster-logging
   namespace: openshift-logging
 spec:
-  channel: "stable-6.3"
+  channel: "stable-6.4"
   name: cluster-logging
   source: cs-redhat-operator-index-v4-20-176852
   sourceNamespace: openshift-marketplace
@@ -51,7 +51,7 @@ metadata:
   name: loki-operator
   namespace: openshift-operators
 spec:
-  channel: "stable-6.3"
+  channel: "stable-6.4"
   name: loki-operator
   source: cs-redhat-operator-index-v4-20-176852
   sourceNamespace: openshift-marketplace
