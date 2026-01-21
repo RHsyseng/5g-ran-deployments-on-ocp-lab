@@ -28,7 +28,7 @@ metadata:
   annotations:
     ran.openshift.io/ztp-deploy-wave: "2"
 spec:
-  channel: "stable-6.3"
+  channel: "stable-6.4"
   name: cluster-logging
   source: redhat-operator-index
   sourceNamespace: openshift-marketplace
