@@ -9,7 +9,6 @@ metadata:
   namespace: open-cluster-management
 spec: 
   availabilityConfig: Basic
-  enableClusterBackup: false
   overrides:
     components:
     - name: siteconfig
