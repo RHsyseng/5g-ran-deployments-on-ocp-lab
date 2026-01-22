@@ -13,7 +13,8 @@ spec:
   clusterDeploymentRef:
     name: sno-seed
   imageSetRef:
-    name: openshift-v4.20.8-disconnected
+    # TODO: go back to 4.20.10
+    name: openshift-v4.20.10-disconnected
   networking:
     networkType: "OVNKubernetes"
     clusterNetwork:
