@@ -214,7 +214,7 @@ policyDefaults:
   namespace: ztp-policies
   placement:
     labelSelector:
-      common: "ocp419"
+      common: "{policygen-common-label}"
       logicalGroup: "active"
       du-zone: "europe"
   remediationAction: inform
@@ -415,7 +415,7 @@ cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{opens
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 generators:
-  - common-419.yaml
+  - {policygen-common-file}
   - group-du-sno.yaml
   - sites-specific.yaml
   - requirements-upgrade.yaml
