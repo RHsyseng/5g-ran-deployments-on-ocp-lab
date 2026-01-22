@@ -1117,7 +1117,7 @@ policyDefaults:
   namespace: ztp-policies
   placement:
     labelSelector:
-      common: "ocp419"
+      common: "ocp420"
       logicalGroup: "active"
       du-zone: "europe"
   remediationAction: inform
@@ -1318,7 +1318,7 @@ EOF</code></pre>
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 generators:
-  - common-419.yaml
+  - common-420.yaml
   - group-du-sno.yaml
   - sites-specific.yaml
   - requirements-upgrade.yaml
