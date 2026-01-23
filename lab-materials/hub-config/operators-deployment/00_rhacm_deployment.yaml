@@ -9,6 +9,16 @@ metadata:
   labels:
     openshift.io/cluster-monitoring: "true"
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+    workload.openshift.io/allowed: management
+  name: open-cluster-management-observability
+  labels:
+    openshift.io/cluster-monitoring: "true"
+---
 apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
