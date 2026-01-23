@@ -13,4 +13,71 @@ spec:
     components:
     - name: siteconfig
       enabled: true
-
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  name: multiclusterhub-operator-pull-secret
+  namespace: open-cluster-management-observability
+stringData:
+  .dockerconfigjson: '{"auths":{"infra.5g-deployment.lab:8443":{"auth":"YWRtaW46cjNkaDR0MSE="}}}'
+type: kubernetes.io/dockerconfigjson
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  name: thanos-object-storage
+  namespace: open-cluster-management-observability
+type: Opaque
+stringData:
+  thanos.yaml: |
+    type: s3
+    config:
+      bucket: multiclusterobservability
+      endpoint: infra.5g-deployment.lab:9002
+      insecure: true
+      access_key: admin
+      secret_key: admin1234
+---
+apiVersion: observability.open-cluster-management.io/v1beta2
+kind: MultiClusterObservability
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  name: observability
+spec:
+  instanceSize: minimal
+  observabilityAddonSpec: {}
+  advanced:
+    alertmanager:
+      replicas: 1
+    grafana: 
+      replicas: 1
+    observatoriumAPI:
+      replicas: 1
+    rbacQueryProxy:
+      replicas: 1
+    storeMemcached:
+      replicas: 1
+    queryFrontendMemcached:
+      replicas: 1
+    queryFrontend:
+      replicas: 1
+    query:
+      replicas: 1
+    receive:
+      replicas: 1
+    rule:
+      replicas: 1
+    store:
+      replicas: 1
+    multiClusterObservabilityAddon:
+      replicas: 1
+  storageConfig:
+    metricObjectStorage:
+      name: thanos-object-storage
+      key: thanos.yaml
