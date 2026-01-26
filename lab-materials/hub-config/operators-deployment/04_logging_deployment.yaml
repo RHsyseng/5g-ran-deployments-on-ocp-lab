@@ -40,7 +40,7 @@ metadata:
 spec:
   channel: "stable-6.4"
   name: cluster-logging
-  source: cs-redhat-operator-index-v4-20-176852
+  source: cs-redhat-operator-index-v4-20-176943
   sourceNamespace: openshift-marketplace
 ---
 apiVersion: operators.coreos.com/v1alpha1
@@ -53,5 +53,5 @@ metadata:
 spec:
   channel: "stable-6.4"
   name: loki-operator
-  source: cs-redhat-operator-index-v4-20-176852
+  source: cs-redhat-operator-index-v4-20-176943
   sourceNamespace: openshift-marketplace
