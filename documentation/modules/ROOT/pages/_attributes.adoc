@@ -18,7 +18,7 @@ code:experimental:
 :seed-cluster-kubeconfig: ~/seed-cluster-kubeconfig
 :abi-cluster-kubeconfig: ~/abi-cluster-kubeconfig
 :ibi-cluster-kubeconfig: ~/ibi-cluster-kubeconfig
-:catalogsource-index-image-tag: v4.20-1768521167
+:catalogsource-index-image-tag: v4.20-1769431701
 :ztp-sitegenerate-disconnected-image: infra.5g-deployment.lab:8443/openshift4/ztp-site-generate-rhel8:v4.20.0-1
 :example-sno-clusterinstance-link: https://github.com/stolostron/siteconfig/blob/release-2.15/config/samples/siteconfig_v1alpha1_clusterinstance.yaml
 :example-groupdu-policygen-link: https://github.com/openshift-kni/cnf-features-deploy/blob/release-4.20/ztp/gitops-subscriptions/argocd/example/policygentemplates/group-du-standard-ranGen.yaml

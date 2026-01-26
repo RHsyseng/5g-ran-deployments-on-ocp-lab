@@ -4,7 +4,7 @@ kind: MultiClusterHub
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "1"
-    installer.open-cluster-management.io/mce-subscription-spec: '{"source": "cs-redhat-operator-index-v4-20-176852"}'
+    installer.open-cluster-management.io/mce-subscription-spec: '{"source": "cs-redhat-operator-index-v4-20-176943"}'
   name: multiclusterhub
   namespace: open-cluster-management
 spec: 
