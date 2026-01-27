@@ -164,7 +164,8 @@ IMPORTANT: An S3-compatible storage server is required for backup and restore op
 
 Let's create a PolicyGenerator manifest called `requirements-upgrade` on the hub cluster. This will help us to create multiple RHACM policies, as explained in the link:policygen-deepdive.html[PolicyGen DeepDive] section.
 
-WARNING: Due to an issue with the OADP Data Protection source CR because of a deprecated configuration in version 1.5 of OADP, a custom source CR must be created and referenced in the Policy. Below is shown the new source CR of OadpDataProtectionApplication.yaml stored as custom CR.
+WARNING: Due to an issue with the OADP Data Protection source CR because of a deprecated configuration in version 1.5 of OADP, a custom source CR must be created and referenced in the Policy. Below is shown the new source CR of OadpDataProtectionApplication.yaml stored as custom CR. On top of that the BackupStorageLocation needs to be manually set as default via a custom cr due to https://issues.redhat.com/browse/OADP-7151[this bug].
+
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -194,6 +195,17 @@ status:
   - reason: Complete
     status: "True"
     type: Reconciled
+EOF
+cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/source-crs/custom-crs/OadpBackupStorageLocation.yaml
+apiVersion: velero.io/v1
+kind: BackupStorageLocation
+metadata:
+  annotations:
+    ran.openshift.io/ztp-deploy-wave: "100"
+  name: dataprotectionapplication-1
+  namespace: openshift-adp
+spec:
+  default: true
 EOF
 -----
 
@@ -281,6 +293,7 @@ policies:
                 bucket: '{{hub .ManagedClusterName hub}}'
                 prefix: velero
               provider: aws
+    - path: source-crs/custom-crs/OadpBackupStorageLocation.yaml
     - path: source-crs/reference-crs/OadpBackupStorageLocationStatus.yaml
 - name: requirements-upgrade-extra-manifests
   policyAnnotations:
