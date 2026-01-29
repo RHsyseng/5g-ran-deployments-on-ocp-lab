@@ -127,6 +127,8 @@ kind: Placement
 metadata:
   name: obs-route-policy-placement
   namespace: open-cluster-management-observability
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   predicates:
     - requiredClusterSelector:
@@ -147,6 +149,8 @@ kind: PlacementBinding
 metadata:
   name: obs-route-policy-placementbinding
   namespace: open-cluster-management-observability
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 placementRef:
   name: obs-route-policy-placement
   kind: Placement
@@ -161,5 +165,7 @@ kind: ManagedClusterSetBinding
 metadata:
   name: default
   namespace: open-cluster-management-observability
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   clusterSet: default
