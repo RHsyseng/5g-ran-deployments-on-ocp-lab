@@ -54,6 +54,10 @@ policies:
     ran.openshift.io/ztp-deploy-wave: "1"
   manifests:
     - path: source-crs/reference-crs/ReduceMonitoringFootprint.yaml
+      patches:
+        - metadata:
+            labels:
+              backup-with-velero: "true"
     - path: source-crs/reference-crs/DefaultCatsrc.yaml
       patches:
         - metadata:
@@ -715,6 +719,10 @@ policies:
     ran.openshift.io/ztp-deploy-wave: "1"
   manifests:
     - path: source-crs/reference-crs/ReduceMonitoringFootprint.yaml
+      patches:
+        - metadata:
+            labels:
+              backup-with-velero: "true"
     - path: source-crs/reference-crs/DefaultCatsrc.yaml
       patches:
         - metadata:
