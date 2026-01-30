@@ -1315,6 +1315,45 @@ EOF</code></pre>
 </div>
 </div>
 <div class="paragraph">
+<p>We also need to backup the monitoring configuration since the seed image doesn&#8217;t include the alertmanager configuration for sending alerts to the hub.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.20/source-crs/custom-crs/PlatformMonitoringBackupRestore.yaml
+---
+apiVersion: velero.io/v1
+kind: Backup
+metadata:
+  name: platform-monitoring
+  labels:
+    velero.io/storage-location: default
+  namespace: openshift-adp
+spec:
+  includedNamespaces:
+  - openshift-monitoring
+  includedNamespaceScopedResources:
+  - configmaps
+  excludedNamespaceScopedResources: []
+  labelSelector:
+    matchLabels:
+      backup-with-velero: "true"
+---
+apiVersion: velero.io/v1
+kind: Restore
+metadata:
+  name: platform-monitoring
+  namespace: openshift-adp
+  labels:
+    velero.io/storage-location: default
+  annotations:
+    lca.openshift.io/apply-wave: "1"
+spec:
+  backupName:
+    platform-monitoring
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>Modify the <code>kustomization.yaml</code> inside the <code>site-policies</code> folder so that it includes this new PolicyGenerator manifest which will be eventually applied by ArgoCD.</p>
 </div>
 <div class="listingblock console-input">
@@ -1334,6 +1373,7 @@ configMapGenerator:
 - files:
   - source-crs/reference-crs/ibu/PlatformBackupRestoreWithIBGU.yaml
   - source-crs/reference-crs/ibu/PlatformBackupRestoreLvms.yaml
+  - source-crs/custom-crs/PlatformMonitoringBackupRestore.yaml
   name: oadp-cm
   namespace: openshift-adp
 generatorOptions:
