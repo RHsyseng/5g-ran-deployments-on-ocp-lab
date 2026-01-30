@@ -7,7 +7,7 @@ Type=simple
 WorkingDirectory=/root
 TimeoutStartSec=300
 ExecStartPre=-/usr/bin/podman rm -f showroom-firefox
-ExecStart=/usr/bin/podman run --name showroom-firefox --network host -e CUSTOM_USER=<CHANGEME_LAB_USER> -e PASSWORD=<CHANGEME_LAB_USER_PWD> -e CUSTOM_PORT=3002 -e CUSTOM_HTTPS_PORT=3004 -e SUBFOLDER=/firefox/ -e NO_DECOR=true -e TZ=Etc/UTC -e FIREFOX_CLI=http://infra.5g-deployment.lab:3000 -v /opt/showroom/firefox-config:/config:z quay.io/rhsysdeseng/showroom:webfirefox
+ExecStart=/usr/bin/podman run --name showroom-firefox --network host -e CUSTOM_USER=<CHANGEME_LAB_USER> -e PASSWORD=<CHANGEME_LAB_USER_PWD> -e CUSTOM_PORT=3002 -e CUSTOM_HTTPS_PORT=3004 -e SUBFOLDER=/firefox/ -e NO_DECOR=true -e TZ=Etc/UTC -e FIREFOX_CLI=http://infra.5g-deployment.lab:3005 -v /opt/showroom/firefox-config:/config:z quay.io/rhsysdeseng/showroom:webfirefox
 ExecStop=-/usr/bin/podman rm -f showroom-firefox
 Restart=always
 RestartSec=30s
