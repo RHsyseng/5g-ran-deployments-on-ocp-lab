@@ -688,7 +688,7 @@ NAME                                         VERSION	   AVAILABLE   PROGRESSING 
 clusterversion.config.openshift.io/version   {sno-cluster-version1-cvo}   False       False         4h54m   Error while reconciling {sno-cluster-version1-cvo}: an unknown error has occurred: MultipleErrors
 
 NAME                                   STATUS   ROLES                         AGE     VERSION
-node/ocp-sno-ibi.sno-ibi.5g-deployment.lab   Ready    control-plane,master,worker   6m40s   v1.31.4
+node/ocp-sno-ibi.sno-ibi.5g-deployment.lab   Ready    control-plane,master,worker   6m40s   {sno-cluster-version1-kubeversion}
 
 NAME                                                         CONFIG                                             UPDATED   UPDATING   DEGRADED   MACHINECOUNT   READYMACHINECOUNT   UPDATEDMACHINECOUNT   DEGRADEDMACHINECOUNT   AGE
 machineconfigpool.machineconfiguration.openshift.io/master   rendered-master-484df4de53ef04b47b119185a6025d18   True	  False      False	1              1                   1                     0                      5h14m
