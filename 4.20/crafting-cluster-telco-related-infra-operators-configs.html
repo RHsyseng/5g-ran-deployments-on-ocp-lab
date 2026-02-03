@@ -1606,7 +1606,7 @@ EOF</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.20/source-crs/reference-crs/ReduceMonitoringFootprint.yaml
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;'EOF' &gt; ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/v4.20/source-crs/reference-crs/ReduceMonitoringFootprint.yaml
 ---
 # RAN Observability configuration
 # As a prerequisite for merging RAN Observability configuration with openshift-monitoring, apply the observabilityRoutePolicy on the HUB from the telco-hub required reference-crs. This is needed to copy the alert-manager URL from the hub side open-cluster-management-observability namespace and make it available in the openshift-monitoring configmap.
