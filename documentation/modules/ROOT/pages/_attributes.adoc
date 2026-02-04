@@ -51,7 +51,7 @@ code:experimental:
 :policygentool-version: v4.20
 :argocd-hub-link: https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab
 :kcli-tools-tag: 4.20
-:kcli-rpm: https://github.com/{repo_user}/5g-ran-deployments-on-ocp-lab/releases/download/{lab-major-version}/kcli-99.0.0.git.202601221511.f5f535c9-0.el9.x86_64.rpm
+:kcli-rpm: https://github.com/{repo_user}/5g-ran-deployments-on-ocp-lab/releases/download/{lab-major-version}/kcli-99.0.0.git.202602040650.86cacd3-0.el9.x86_64.rpm
 :rhcos-rootfs-url: https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.20/4.20.0/rhcos-4.20.0-x86_64-live-rootfs.x86_64.img
 :rhcos-rootfs-filename: rhcos-4.20.0-x86_64-live-rootfs.x86_64.img
 :rhcos-liveiso-url: https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.20/4.20.0/rhcos-4.20.0-x86_64-live-iso.x86_64.iso
