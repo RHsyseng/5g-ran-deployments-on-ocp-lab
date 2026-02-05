@@ -1328,15 +1328,15 @@ metadata:
   labels:
     velero.io/storage-location: default
   namespace: openshift-adp
+  annotations:
+    # Below annotation makes LCA label the configmap and adds a label selector to the backup
+    lca.openshift.io/apply-label: v1/configmaps/openshift-monitoring/cluster-monitoring-config
 spec:
   includedNamespaces:
   - openshift-monitoring
   includedNamespaceScopedResources:
   - configmaps
   excludedNamespaceScopedResources: []
-  labelSelector:
-    matchLabels:
-      backup-with-velero: "true"
 ---
 apiVersion: velero.io/v1
 kind: Restore
