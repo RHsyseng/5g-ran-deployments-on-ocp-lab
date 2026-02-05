@@ -676,7 +676,7 @@ EOF
 In order to workaround the https://issues.redhat.com/browse/OCPBUGS-70352[issue] we need to modify the `ReduceMonitoringFootprint.yaml` manifest included in the current release of manifests.
 
 [.console-input]
-[source,bash,subs="attributes+,+macros"]
+[source,bash,subs="attributes+"]
 -----
 cat <<'EOF' > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/source-crs/reference-crs/ReduceMonitoringFootprint.yaml
 ---
