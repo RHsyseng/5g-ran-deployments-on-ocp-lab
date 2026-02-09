@@ -296,9 +296,13 @@ policies:
 - name: requirements-upgrade-status-policy
   policyAnnotations:
     ran.openshift.io/soak-seconds: "30"
-    ran.openshift.io/ztp-deploy-wave: "100"
   manifests:
     - path: source-crs/reference-crs/OadpBackupStorageLocationStatus.yaml
+      patches:
+        - metadata:
+            annotations:
+              $patch: delete
+              ran.openshift.io/ztp-deploy-wave: "100"
 EOF
 -----
 
