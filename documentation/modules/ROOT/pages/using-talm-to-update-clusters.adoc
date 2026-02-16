@@ -203,7 +203,7 @@ Next, let's create a `PolicyGenerator` manifest to install and configure the LCA
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----
-cat <<EOF > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/requirements-upgrade.yaml
+cat <<'EOF' > ~/5g-deployment-lab/ztp-repository/site-policies/fleet/active/{openshift-release}/requirements-upgrade.yaml
 ---
 apiVersion: policy.open-cluster-management.io/v1
 kind: PolicyGenerator
