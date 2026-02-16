@@ -191,6 +191,14 @@ cp ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir/rhcos-ibi.iso /opt/webca
 [#preinstallation-process]
 == Pre-Installing the Host
 
+In order to free-up some resources in our server, let's stop the seed cluster now that is not required anymore:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+kcli stop vm sno-seed
+-----
+
 Now we are ready to boot sno-ibi with the Installation ISO. Run the following command from the infrastructure host:
 
 IMPORTANT: We’re using the `kcli` tool, a command-line interface for managing virtual machines and bare-metal nodes, to boot the server from the ISO by leveraging the RedFish API. You can boot the server using other methods as needed.
