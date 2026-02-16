@@ -1044,6 +1044,14 @@ EOF</code></pre>
 <h2 id="preinstallation-process"><a class="anchor" href="#preinstallation-process"></a>Pre-Installing the Host</h2>
 <div class="sectionbody">
 <div class="paragraph">
+<p>In order to free-up some resources in our server, let&#8217;s stop the seed cluster now that is not required anymore:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli stop vm sno-seed</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>Now we are ready to boot sno-ibi with the Installation ISO. Run the following command from the infrastructure host:</p>
 </div>
 <div class="admonitionblock important">
