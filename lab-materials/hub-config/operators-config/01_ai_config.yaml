@@ -227,25 +227,25 @@ spec:
         storage: 20Gi
   osImages:
   - cpuArchitecture: x86_64
-    openshiftVersion: "4.20"
-    rootFSUrl: http://infra.5g-deployment.lab:8080/rhcos-4.20.0-x86_64-live-rootfs.x86_64.img
-    url: http://infra.5g-deployment.lab:8080/rhcos-4.20.0-x86_64-live-iso.x86_64.iso
-    version: 420.96.20250826-1
+    openshiftVersion: "4.21"
+    rootFSUrl: http://infra.5g-deployment.lab:8080/rhcos-4.21.0-x86_64-live-rootfs.x86_64.img
+    url: http://infra.5g-deployment.lab:8080/rhcos-4.21.0-x86_64-live-iso.x86_64.iso
+    version: 421.96.20251212-1
 ---
 apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
 metadata:
   annotations:
         argocd.argoproj.io/sync-wave: "4"
-  name: openshift-v4.20.8-disconnected
+  name: openshift-v4.21.8-disconnected
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.20.8-x86_64
+  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.21.8-x86_64
 ---
 apiVersion: hive.openshift.io/v1
 kind: ClusterImageSet
 metadata:
   annotations:
         argocd.argoproj.io/sync-wave: "4"
-  name: openshift-v4.20.10-disconnected
+  name: openshift-v4.21.10-disconnected
 spec:
-  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.20.10-x86_64
+  releaseImage: infra.5g-deployment.lab:8443/openshift/release-images:4.21.10-x86_64

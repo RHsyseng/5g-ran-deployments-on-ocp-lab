@@ -28,7 +28,7 @@ metadata:
   name: multicluster-engine
   namespace: multicluster-engine
 spec:
-  channel: "stable-2.10"
+  channel: "stable-2.11"
   name: multicluster-engine
-  source: cs-redhat-operator-index-v4-20-176943
+  source: cs-redhat-operator-index-v4-21-177789
   sourceNamespace: openshift-marketplace
