@@ -1130,3 +1130,130 @@ After:
   imageSetRef:
     name: openshift-v4.21.8-disconnected
 ~~~
+
+### Updating lab automation
+
+Before starting the user must haved cloned this repository https://github.com/RHsyseng/agnosticd, ask the user for the absolute path so you can work within that path.
+
+Each section below represents a file that must be updated as part of the upgrade to a new OCP release. The path of the files is relative to the git repository root provided by the user.
+
+> **NOTE:** If the lab content files have already been updated (steps 1-3 of "Updating lab content files" completed), the agent can read `documentation/modules/ROOT/pages/_attributes.adoc` from the lab repo to derive all version values instead of re-running the discovery commands or asking the user again. Key mappings:
+>
+> | `_attributes.adoc` attribute | agnosticd variable |
+> |---|---|
+> | `catalogsource-index-image-tag` | tag portion of `disconnected_catalog_image` |
+> | `rhcos-liveiso-filename` | `rhcos_live_image` |
+> | `rhcos-rootfs-filename` | `rhcos_rootfs_image` |
+> | `rhcos-liveiso-url` / `rhcos-rootfs-url` | path portion of `rhcos_live_image_url` / `rhcos_rootfs_image_url` |
+> | `lab-major-version` | `ocp4_major_release`, `lab_version` (as `lab-X.Y`), `lab_release` |
+> | `sno-cluster-version2-cvo` | `ocp4_minor_release` |
+
+#### ansible/roles_ocp_workloads/ocp4_workload_5gran_deployments_lab/defaults/main.yml
+
+Change references from OLD OCP version to NEW OCP version.
+Change references to RHCOS files and URLs.
+Change references to disconnected operator catalog
+
+##### Example update from 4.20 (Old OCP version) to 4.21 (New OCP version)
+
+Before:
+
+~~~yaml
+---
+become_override: true
+ocp_username: opentlc-mgr
+silent: false
+lab_version: "lab-4.20"
+lab_release: "4.20"
+repo_user: "RHsyseng"
+platform_demo_redhat_com: true
+student_name: "lab-user"
+# yamllint disable rule:line-length
+kcli_rpm: "https://github.com/{{ repo_user }}/5g-ran-deployments-on-ocp-lab/releases/download/{{ lab_release }}/kcli-99.0.0.git.202602040650.86cacd3-0.el9.x86_64.rpm"
+lab_repo: "https://github.com/{{ repo_user }}/5g-ran-deployments-on-ocp-lab.git"
+# yamllint enable rule:line-length
+ocp4_major_release: "4.20"
+ocp4_minor_release: "4.20.10"
+lab_network_cidr: "192.168.125.0/24"
+lab_network_domain: "5g-deployment.lab"
+lab_sriov_domain: "sriov-network.lab"
+lab_ptp_domain: "ptp-network.lab"
+lab_sriov_cidr: "192.168.100.0/24"
+lab_ptp_cidr: "192.168.200.0/24"
+lab_registry_host: "infra.5g-deployment.lab:8443"
+lab_api_host: "api.hub.5g-deployment.lab:6443"
+upstream_dns: "1.1.1.1"
+disconnected_update: false
+download_rhcos_isos: false
+install_lab_dependencies: false
+hypervisor_min_memory_mb: 204800
+# hypervisor_min_cpus: 128
+hypervisor_min_cpus: 64
+hypervisor_supported_distributions: ['RedHat', 'CentOS', 'Fedora']
+lab_hub_vm_cpus: 16
+lab_hub_vm_memory: 48000
+lab_hub_vm_disk: 200
+lab_sno_vm_cpus: 12
+lab_sno_vm_memory: 24000
+lab_sno_vm_disk: 200
+extra_disk_libvirt_images: true
+disconnected_catalog_image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.20-1769431701
+# yamllint disable rule:line-length
+rhcos_live_image: 'rhcos-4.20.0-x86_64-live-iso.x86_64.iso'
+rhcos_rootfs_image: 'rhcos-4.20.0-x86_64-live-rootfs.x86_64.img'
+rhcos_live_image_url: "https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.20/4.20.0/{{ rhcos_live_image }}"
+rhcos_rootfs_image_url: "https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.20/4.20.0/{{ rhcos_rootfs_image }}"
+lab_url: "https://labs.sysdeseng.com/5g-ran-deployments-on-ocp-lab/{{ ocp4_major_release }}/index.html"
+# yamllint enable rule:line-length
+~~~
+
+After:
+
+~~~yaml
+---
+become_override: true
+ocp_username: opentlc-mgr
+silent: false
+lab_version: "lab-4.21"
+lab_release: "4.21"
+repo_user: "RHsyseng"
+platform_demo_redhat_com: true
+student_name: "lab-user"
+# yamllint disable rule:line-length
+kcli_rpm: "https://github.com/{{ repo_user }}/5g-ran-deployments-on-ocp-lab/releases/download/{{ lab_release }}/kcli-99.0.0.git.202602040650.86cacd3-0.el9.x86_64.rpm"
+lab_repo: "https://github.com/{{ repo_user }}/5g-ran-deployments-on-ocp-lab.git"
+# yamllint enable rule:line-length
+ocp4_major_release: "4.21"
+ocp4_minor_release: "4.21.10"
+lab_network_cidr: "192.168.125.0/24"
+lab_network_domain: "5g-deployment.lab"
+lab_sriov_domain: "sriov-network.lab"
+lab_ptp_domain: "ptp-network.lab"
+lab_sriov_cidr: "192.168.100.0/24"
+lab_ptp_cidr: "192.168.200.0/24"
+lab_registry_host: "infra.5g-deployment.lab:8443"
+lab_api_host: "api.hub.5g-deployment.lab:6443"
+upstream_dns: "1.1.1.1"
+disconnected_update: false
+download_rhcos_isos: false
+install_lab_dependencies: false
+hypervisor_min_memory_mb: 204800
+# hypervisor_min_cpus: 128
+hypervisor_min_cpus: 64
+hypervisor_supported_distributions: ['RedHat', 'CentOS', 'Fedora']
+lab_hub_vm_cpus: 16
+lab_hub_vm_memory: 48000
+lab_hub_vm_disk: 200
+lab_sno_vm_cpus: 12
+lab_sno_vm_memory: 24000
+lab_sno_vm_disk: 200
+extra_disk_libvirt_images: true
+disconnected_catalog_image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.21-1777899690
+# yamllint disable rule:line-length
+rhcos_live_image: 'rhcos-4.21.0-x86_64-live-iso.x86_64.iso'
+rhcos_rootfs_image: 'rhcos-4.21.0-x86_64-live-rootfs.x86_64.img'
+rhcos_live_image_url: "https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.21/4.21.0/{{ rhcos_live_image }}"
+rhcos_rootfs_image_url: "https://mirror.openshift.com/pub/openshift-v4/x86_64/dependencies/rhcos/4.21/4.21.0/{{ rhcos_rootfs_image }}"
+lab_url: "https://labs.sysdeseng.com/5g-ran-deployments-on-ocp-lab/{{ ocp4_major_release }}/index.html"
+# yamllint enable rule:line-length
+~~~
