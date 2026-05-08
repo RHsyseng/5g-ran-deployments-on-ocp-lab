@@ -370,9 +370,9 @@ configMapGenerator:
     - reference-manifest/{lab-major-version}/08-set-rcu-normal-master.yaml
     - reference-manifest/{lab-major-version}/08-set-rcu-normal-worker.yaml
     - reference-manifest/{lab-major-version}/09-openshift-marketplace-ns.yaml
-    - reference-manifest/{lab-major-version}/99-crio-disable-wipe-worker.yaml
+    - reference-manifest/{lab-major-version}/10-rename-gnrd-interfaces-master.yaml
+    - reference-manifest/{lab-major-version}/10-rename-gnrd-interfaces-worker.yaml
     - reference-manifest/{lab-major-version}/99-sync-time-once-master.yaml
-    - reference-manifest/{lab-major-version}/99-crio-disable-wipe-master.yaml
     - reference-manifest/{lab-major-version}/99-sync-time-once-worker.yaml
     - hub-1/extra-manifest/enable-crun-master.yaml
     - hub-1/extra-manifest/enable-crun-worker.yaml
