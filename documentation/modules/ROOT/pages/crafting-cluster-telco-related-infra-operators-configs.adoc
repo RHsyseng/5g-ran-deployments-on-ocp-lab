@@ -73,6 +73,10 @@ policies:
             source: redhat-operator-index
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/PtpSubscriptionOperGroup.yaml
+      patches:
+      - metadata:
+        annotations:
+          operatorframework.io/bundle-unpack-min-retry-interval: 10m
     - path: source-crs/reference-crs/PtpOperatorStatus.yaml
     - path: source-crs/reference-crs/PtpOperatorConfig-SetSelector.yaml
       patches:
@@ -92,6 +96,10 @@ policies:
                   value: "TRUE"
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/SriovSubscriptionOperGroup.yaml
+      patches:
+      - metadata:
+        annotations:
+          operatorframework.io/bundle-unpack-min-retry-interval: 10m
     - path: source-crs/reference-crs/SriovOperatorStatus.yaml
     # Storage operator
     - path: source-crs/reference-crs/StorageLVMSubscriptionNS.yaml
@@ -100,6 +108,10 @@ policies:
           annotations:
             workload.openshift.io/allowed: "management"
     - path: source-crs/reference-crs/StorageLVMSubscriptionOperGroup.yaml
+      patches:
+      - metadata:
+        annotations:
+          operatorframework.io/bundle-unpack-min-retry-interval: 10m
     - path: source-crs/reference-crs/StorageLVMSubscription.yaml
       patches:
         - spec:
@@ -116,6 +128,10 @@ policies:
             source: redhat-operator-index
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/ClusterLogOperGroup.yaml
+      patches:
+      - metadata:
+        annotations:
+          operatorframework.io/bundle-unpack-min-retry-interval: 10m
     - path: source-crs/reference-crs/ClusterLogOperatorStatus.yaml
 EOF
 -----
@@ -787,6 +803,10 @@ policies:
             source: redhat-operator-index
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/PtpSubscriptionOperGroup.yaml
+      patches:
+      - metadata:
+        annotations:
+          operatorframework.io/bundle-unpack-min-retry-interval: 10m
     - path: source-crs/reference-crs/PtpOperatorStatus.yaml
     # SRIOV operator
     - path: source-crs/reference-crs/SriovSubscriptionNS.yaml
@@ -801,6 +821,10 @@ policies:
                   value: "TRUE"
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/SriovSubscriptionOperGroup.yaml
+      patches:
+      - metadata:
+        annotations:
+          operatorframework.io/bundle-unpack-min-retry-interval: 10m
     - path: source-crs/reference-crs/SriovOperatorStatus.yaml
     # Storage operator
     - path: source-crs/reference-crs/StorageLVMSubscriptionNS.yaml
@@ -809,6 +833,10 @@ policies:
           annotations:
             workload.openshift.io/allowed: "management"
     - path: source-crs/reference-crs/StorageLVMSubscriptionOperGroup.yaml
+      patches:
+      - metadata:
+        annotations:
+          operatorframework.io/bundle-unpack-min-retry-interval: 10m
     - path: source-crs/reference-crs/StorageLVMSubscription.yaml
       patches:
         - spec:
@@ -825,6 +853,10 @@ policies:
             source: redhat-operator-index
             installPlanApproval: Automatic
     - path: source-crs/reference-crs/ClusterLogOperGroup.yaml
+      patches:
+      - metadata:
+        annotations:
+          operatorframework.io/bundle-unpack-min-retry-interval: 10m
     - path: source-crs/reference-crs/ClusterLogOperatorStatus.yaml
 EOF
 -----

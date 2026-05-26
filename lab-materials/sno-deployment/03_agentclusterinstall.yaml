@@ -13,8 +13,9 @@ spec:
   clusterDeploymentRef:
     name: sno-seed
   imageSetRef:
-    name: openshift-v4.21.8-disconnected
-#Uncomment for IBU seed image    name: openshift-v4.21.10-disconnected
+    #name: openshift-v4.21.8-disconnected
+    # Uncomment for IBU seed image
+    name: openshift-v4.21.10-disconnected
   networking:
     networkType: "OVNKubernetes"
     clusterNetwork:
