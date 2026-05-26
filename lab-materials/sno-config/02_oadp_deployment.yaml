@@ -10,6 +10,8 @@ kind: OperatorGroup
 metadata:
   name: redhat-oadp-operator
   namespace: openshift-adp
+  annotations:
+    operatorframework.io/bundle-unpack-min-retry-interval: 10m
 spec:
   targetNamespaces:
   - openshift-adp

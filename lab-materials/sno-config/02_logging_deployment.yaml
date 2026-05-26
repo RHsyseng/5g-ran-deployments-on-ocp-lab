@@ -16,6 +16,7 @@ metadata:
   namespace: openshift-logging
   annotations:
     ran.openshift.io/ztp-deploy-wave: "2"
+    operatorframework.io/bundle-unpack-min-retry-interval: 10m
 spec:
   targetNamespaces:
   - openshift-logging
