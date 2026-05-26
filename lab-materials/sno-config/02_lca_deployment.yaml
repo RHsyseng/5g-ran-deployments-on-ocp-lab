@@ -12,6 +12,8 @@ kind: OperatorGroup
 metadata:
   name: lifecycle-agent-operatorgroup
   namespace: openshift-lifecycle-agent
+  annotations:
+    operatorframework.io/bundle-unpack-min-retry-interval: 10m
 spec:
   targetNamespaces:
   - openshift-lifecycle-agent
