@@ -3,19 +3,16 @@ kind: PerformanceProfile
 metadata:
   annotations:
     kubeletconfig.experimental: |
-      {"topologyManagerScope": "pod",
-       "systemReserved": {"memory": "3Gi"}
+      {
+       "systemReserved":{"memory":"11Gi"}
       }
     ran.openshift.io/reference-configuration: ran-du.redhat.com
     ran.openshift.io/ztp-deploy-wave: "10"
   name: openshift-node-performance-profile
 spec:
   additionalKernelArgs:
-  - rcupdate.rcu_normal_after_boot=0
-  - efi=runtime
   - vfio_pci.enable_sriov=1
   - vfio_pci.disable_idle_d3=1
-  - module_blacklist=irdma
   cpu:
     isolated: 4-11
     reserved: 0-3
