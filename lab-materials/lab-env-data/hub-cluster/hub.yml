@@ -2,7 +2,7 @@ plan: hub-cluster
 force: false
 version: stable
 #disconnected_channel: fast
-tag: "4.21.8"
+tag: "4.22.1"
 cluster: "hub"
 domain: 5g-deployment.lab
 api_ip: 192.168.125.10
@@ -12,7 +12,7 @@ disconnected_url: infra.5g-deployment.lab:8443
 disconnected_update: True
 disconnected_user: admin
 disconnected_password: r3dh4t1!
-disconnected_operators_version: v4.21-1777899690
+disconnected_operators_version: v4.22-1777899690
 disconnected_prefix: openshift/release-images
 prega: False
 disconnected_operators:
@@ -50,12 +50,12 @@ disconnected_operators:
   channels:
   - name: stable-6.5
 disconnected_extra_images:
-- registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.21.0-1
+- registry.redhat.io/openshift4/ztp-site-generate-rhel8:v4.22.0-1
 # Image below is required for kustomize plugins
 - registry.redhat.io/rhacm2/multicluster-operators-subscription-rhel9:v2.16.0-1
 # Seed image for IBU
-- quay.io/rhsysdeseng/lab5gran:v4.21.10
-disconnected_extra_release: 4.21.10
+- quay.io/rhsysdeseng/lab5gran:v4.22.1
+disconnected_extra_release: 4.22.1
 disk_size: 120
 extra_disks: [120]
 memory: 26000
