@@ -124,7 +124,7 @@ Reduce footprint of the monitoring stack by:
 [#ocp-console]
 === Console Operator
 
-As part of the composable OpenShift Settings the Console Operator can be enabled-disabled. The `ClusterInstance` CR allows to define these settings via the `installConfigOverrides`.
+As part of the composable OpenShift Settings the Console Operator can be enabled-disabled. The `ClusterInstance` CR allows these settings to be defined via the `installConfigOverrides`.
 
 Since the DUs are being centrally managed from a RHACM hub, the local console will be disabled to reduce resource consumption.
 
@@ -230,7 +230,7 @@ If you access this link you will see lots of files, like for example:
 * AmqInstance.yaml
 * etc.
 
-These CRs are referenced (by filename) from the PolicyGenerator CRs in Git. The POlicyGenerator CRs act as a manifest of which configuration CRs should be included and how they should be combined into Policy CRs. In addition, the PolicyGenerator can contain an "overlay" (or patch) that is applied to the CR before it is wrapped into the Policy.
+These CRs are referenced (by filename) from the PolicyGenerator CRs in Git. The PolicyGenerator CRs act as a manifest of which configuration CRs should be included and how they should be combined into Policy CRs. In addition, the PolicyGenerator can contain an "overlay" (or patch) that is applied to the CR before it is wrapped into the Policy.
 
 The way this works is a follows. We will have one or more PolicyGenerators where we will reference these base configuration CRs. We can see an example {example-groupdu-policygen-link}[here].
 
