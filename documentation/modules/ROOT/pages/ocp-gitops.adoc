@@ -7,7 +7,7 @@ GitOps is a key part of how we deploy and manage RAN infrastructure at scale, in
 [#gitops]
 == GitOps
 
-GitOps brings proven patterns and methods of working from an IP operations workflow into management of OpenShift infrastructure. The desired state of the OpenShift infrastructure is captured within a Git repository where standard methods of change control, such as pull requests, reviews, sign-off, and merging, can be used to ensure changes are validated prior to taking effect. As with traditional source-code management, Git represents the single "source of truth" for the entire state of the system where the trail of changes to the system state are visible and auditable.
+GitOps brings proven patterns and methods of working from software development workflows (Git, pull requests, code reviews, CI/CD) into the management of OpenShift infrastructure. The desired state of the OpenShift infrastructure is captured within a Git repository where standard methods of change control, such as pull requests, reviews, sign-off, and merging, can be used to ensure changes are validated prior to taking effect. As with traditional source-code management, Git represents the single "source of truth" for the entire state of the system where the trail of changes to the system state are visible and auditable.
 
 Traceability of changes in GitOps is no novelty in itself as this approach is almost universally employed for the application source code. However, GitOps advocates applying the same principles (reviews, pull requests, tagging, etc.) to infrastructure and application configuration so that teams can benefit from the same assurance as they do for the application source code.
 

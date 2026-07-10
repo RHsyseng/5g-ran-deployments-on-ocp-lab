@@ -406,7 +406,7 @@ At this point, ArgoCD started doing its magic which means that the cluster deplo
 WARNING: It may take up to 5 minutes for Argo CD to start syncing changes.
 
 1. Login into https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab/[Argo CD].
-2. When accessing choose `Logging with OpenShift`. On the next screen use the OpenShift Console Admin credentials.
+2. When accessing choose `Log in via OpenShift`. On the next screen use the OpenShift Console Admin credentials.
 3. From all these apps, click on `clusters` we will see something similar to the following screen:
 +
 image::argocd-clusters-app-sno-abi.png[ArgoCD Clusters App]
@@ -422,7 +422,7 @@ Once the ZTP GitOps Pipeline starts deploying our clusters we can follow the ins
 WARNING: It may take a while for the installation to start. Wait at least 10 minutes if you see the message `The cluster is not ready for installation` or if the `SNO ABI` cluster appears as `draft`.
 
 1. Access the https://console-openshift-console.apps.hub.5g-deployment.lab/multicloud/home/welcome[RHACM WebUI] and log in using your OpenShift credentials.
-2. In the top-left corner, click on `local-cluster` and select `All Clusters` to enter the RHACM Console.
+2. In the top-left corner, click on `Fleet Management` to enter the RHACM console.
 3. Navigate to `Infrastructure` -> `Clusters`. If the deployment has not yet started, you will see a screen similar to this:
 +
 image::acm-clusterview-draft.png[RHACM Cluster View Draft]

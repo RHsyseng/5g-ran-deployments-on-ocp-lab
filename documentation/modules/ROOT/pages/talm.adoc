@@ -67,7 +67,7 @@ So, once clusters are provisioned, TALM monitors their state by checking the Man
 * Precaching is disabled.
 * Timeout set to 4 hours (240 minutes).
 
-IMPORTANT: TALM will basically enforce all existing policies that are bound to a cluster that has not the label "ztp-done'. This is performed by creating automatically a proper CGU CR.
+IMPORTANT: TALM will basically enforce all existing policies that are bound to a cluster that does not have the label "ztp-done'. This is performed by creating automatically a proper CGU CR.
 
 [#phase-labels]
 == Phase labels

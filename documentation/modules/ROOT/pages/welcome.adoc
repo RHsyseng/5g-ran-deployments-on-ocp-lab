@@ -85,11 +85,14 @@ image::showroom-app-9.png[Showroom App Web Browser Clipboard]
 |Ian Miller
 |Lab Reviewer / CNF Developer
 
-|Juan Carlos Tovar
-|Lab Reviewer
-
 |Mario Vázquez
 |Lab Developer / Maintainer
+
+|Mihai Idu
+|Lab Reviewer
+
+|Steven Reichard
+|Lab Reviewer
 
 |===
 

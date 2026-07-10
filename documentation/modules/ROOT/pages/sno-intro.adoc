@@ -11,7 +11,7 @@ SNO's primary use case is for edge computing workloads, including intermittent c
 
 Notice that in the context of telecommunications service providers' 5G RANs, it is increasingly common to see "cloud native" implementations of the 5G RAN application, including the Distributed Unit (DU) components. Due to latency constraints, the DU needs to be deployed very close to the Radio Units (RUs), for which it is responsible. In practice, this can mean running the DU on anything from a single server at the base of a cell tower to a more datacenter-like environment serving several RUs.
 
-A typical DU example is a resource-intensive workload, requiring multiple dedicated cores per DU and several DUs packed on the server. For performance the DU requires dedicated memory configured as huge pages, multiple single route I/O virtualization (SR-IOV) NICs, FPGA, or GPU acceleration cards  carrying several Gbps of traffic each.
+A typical DU example is a resource-intensive workload, requiring multiple dedicated cores per DU and several DUs packed on the server. For performance the DU requires dedicated memory configured as huge pages, multiple single route I/O virtualization (SR-IOV) NICs, FPGA, or GPU acceleration cards carrying several Gbps of traffic each.
 
 One crucial detail of this use case is ensuring that this workload can be "autonomous" so that it can continue operating with its existing configuration, even when any centralized management functionality is unavailable. This is where Single Node OpenShift comes in.
 
@@ -20,7 +20,7 @@ One crucial detail of this use case is ensuring that this workload can be "auton
 
 Single Node OpenShift offers both control and worker node capabilities in a single server and provides users with a consistent experience across the sites where OpenShift is deployed, regardless of the size of the deployment. Keep in mind a Single Node OpenShift deployment differs from the default self-managed/highly-available cluster profile in a couple of ways:
 
-* To optimize system resource usage, many operators are configured to reduce the footprint (cpu use) of their operands when running on a Single Node OpenShift. This is even more visible when deploying the Telco 5G RAN QE validated configuration which establishes a base platform for RAN DU workloads.
+* To optimize system resource usage, many operators are configured to reduce the footprint (cpu use) of their operands when running on a Single Node OpenShift. This is even more visible when deploying the Telco 5G RAN QE validated configuration which establishes a base platform for RAN DU workloads (Telco QE validates this configuration internally at Red Hat to make sure it can meet our customers expectations under high load).
 * In environments that require high availability, it is recommended that the architecture be configured in a way in which if the hardware was to fail, those workloads are transitioned to other sites or nodes while the impacted node is recovered. This is where https://www.redhat.com/en/technologies/management/advanced-cluster-management[Red Hat Advanced Cluster Management for Kubernetes](ACM) can really help us control our fleet of clusters.
 
 [#deployments]
@@ -28,7 +28,7 @@ Single Node OpenShift offers both control and worker node capabilities in a sing
 
 OpenShift installs typically require a temporary bootstrap machine, which is usually a separate machine, but edge deployments are often performed in environments where there are no extra nodes. However, for these use-cases, the new functionality provided by OpenShift’s “Bootstrap-in-Place” option eliminates the separate bootstrap node requirement for single-node deployments. So when installing single-node OpenShift, you only need the node you wish to install onto.
 
-OpenShift Container Platform on a Single Node is a specialized installation that requires the creation of a special ignition configuration ISO. It is supported on bare metal, vSphere, and Red Hat OpenStack platforms as today. When using ACM's Assisted Service for installation, this ISO is automatically created as part of the installation process.
+OpenShift Container Platform on a Single Node is a specialized installation that requires the creation of a special ignition configuration ISO. As of the last update of this lab, it is supported on bare metal, vSphere, and Red Hat OpenStack platforms. When using ACM's Assisted Service for installation, this ISO is automatically created as part of the installation process.
 
 IMPORTANT: The use of OpenShiftSDN with single-node OpenShift is not supported. OVN-Kubernetes is the default networking solution for single-node OpenShift deployments.
 

@@ -149,7 +149,7 @@ oc --kubeconfig {seed-cluster-kubeconfig} get seedgen
 [.console]
 [source,bash,subs="attributes+,+macros"]
 -----
-Get "https://api.sno-seed.5g-deployment.lab:6443/apis/lca.openshift.io/v1/seedgenerators?limit=500": dial tcp 192.168.125.30:6443: connect: connection refused - error from a previous attempt: unexpected EOF
+The connection to the server api.sno-seed.5g-deployment.lab:6443 was refused - did you specify the right host or port?
 -----
 
 After the cluster recovers and is available, you can continue checking the status of the SeedGenerator CR by running the following command:
