@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Deploying an Image Based Install Cluster :: LAB - 5G RAN RDS Deployments on OpenShift</title>
+    <link rel="canonical" href="https://labs.sysdeseng.com/4.21/installing-imagebaseinstall-cluster.html">
+    <link rel="prev" href="creating-seed-image.html">
+    <link rel="next" href="check-deployment-is-finished.html">
+    <meta name="generator" content="Antora 3.0.0">
+    <link rel="stylesheet" href="../_/css/site.css">
+  </head>
+  <body class="article">
+<header class="header">
+  <nav class="navbar">
+    <div class="navbar-brand">
+      <a class="navbar-item" href="https://www.redhat.com/en/solutions/telecommunications" target="_blank"><img src="../_/img/Logo-Red_Hat-A-Reverse-RGB.png" height="40px" alt="Red Hat Telco Solutions"></a>
+      <a class="navbar-item" style="font-size: 24px; color: white" href="https://labs.sysdeseng.com">LAB - 5G RAN RDS Deployments on OpenShift</a>
+      <button class="navbar-burger" data-target="topbar-nav">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div id="topbar-nav" class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://developers.redhat.com/ebooks/" target="_blank">Books</a>
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link" href="#">More Tutorials</a>
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/kubernetes-tutorial/" target="_blank">Kubernetes</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/istio-tutorial/" target="_blank">Istio</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/quarkus-tutorial/" target="_blank">Quarkus</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/knative-tutorial/" target="_blank">Knative</a>
+            <a class="navbar-item" href="https://redhat-developer-demos.github.io/tekton-tutorial/" target="_blank">Tekton</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>
+<div class="body">
+<div class="nav-container" data-component="4.21" data-version="">
+  <aside class="nav">
+    <div class="panels">
+<div class="nav-panel-menu is-active" data-panel="menu">
+  <nav class="nav-menu">
+    <h3 class="title"><a href="welcome.html"></a></h3>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="0">
+<ul class="nav-list">
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="welcome.html">Welcome</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="welcome.html#5g-ran-lab">Lab Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="welcome.html#showroom-intro">Introduction to the Showroom Environment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="welcome.html#resizing-sections">Resizing App Sections</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="welcome.html#multiple-terminals">Opening Multiple Terminals</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="welcome.html#web-browser">Web Browser</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="welcome.html#current-contributors">Current Contributors</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="welcome.html#past-contributors">Past Contributors</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="introduction.html">Introduction</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#lab-aim">Who Is This Lab Aimed At?</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#what-you-will-achieve">What You Will Achieve</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="introduction.html#lab-software-versions">Lab Software Versions</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="acronyms.html">Acronyms used in the lab</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="5g-ran-context.html">5G Ran Context</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#low-latency">Low Latency</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#numa-nodes">NUMA Nodes</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#huge-pages">Huge Pages</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#cpu-pinning">CPU Pinning</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#irq-load-balancing">IRQ Load Balancing</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#dpdk">DPDK</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#cpu-reduction-tuning">Tuning for CPU Reduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#vran-accelerators">vRAN Dedicated Accelerators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#ptp">PTP</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="5g-ran-context.html#sriov">SR-IOV</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="sno-intro.html">Introduction to Single Node OpenShift (SNO)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="sno-intro.html#5g-ran">5G Radio Access Network</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="sno-intro.html#things-keep-mind">Things to keep in mind</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="sno-intro.html#deployments">Deployments</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="sno-intro.html#extra-information">Extra information</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="telco-related-infra-operators-intro.html">Introduction to Telco Related Infrastructure Operators</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#node-tuning-operator">Node Tuning Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#sriov-operator">SR-IOV Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#ptp-operator">PTP Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#accelerators-operators">Accelerators Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#cluster-logging-operator">Cluster Logging Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#lifecycle-operator">Lifecycle Agent Operator</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#storage-operator">Storage Operators</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="telco-related-infra-operators-intro.html#oadp-operator">OpenShift API for Data Protection Operator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-intro.html">Introduction to Zero Touch Provisioning (ZTP)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ztp-intro.html#what-is-ztp">What is ZTP?</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ocp-gitops.html">OpenShift GitOps</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ocp-gitops.html#gitops">GitOps</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#gitops-principles">GitOps Principles</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#gitops-patterns-ocp">GitOps Patterns on OpenShift</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#directories-vs-branches">Directories vs Branches</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#direct-commit-to-main">Direct commit to main</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ocp-gitops.html#prs-review-cycles">Pull Requests and review cycles</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ocp-gitops.html#gitops-ocp">GitOps on OpenShift</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-at-scale.html">Hub Management Components</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-at-scale.html#rhacm">Red Hat Advanced Cluster Management</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#mce">Multicluster Engine</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#siteconfig">SiteConfig Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#ibio">Image Based Install Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#ai">Infrastructure Operator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-at-scale.html#gitops-operator">GitOps Operator</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#sitegen">SiteGen</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-at-scale.html#policygen">PolicyGen</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ztp-at-scale.html#talm">Topology Aware Lifecycle Manager</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-workflow.html">ZTP Workflow</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-workflow.html#deployment-methods">Single-Node OpenShift Deployments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="ztp-workflow.html#abi-deployment">Agent Based Installation</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="ztp-workflow.html#ibi-deployment">Image Based Installation</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="4">
+    <a class="nav-link" href="ztp-workflow.html#ibi-deploy-components">Image Based Installation and Deployment Components</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ztp-workflow.html#ztp-policies">Deployment Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="ztp-workflow.html#takeaways">Takeaways</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rhacm-policies.html">RHACM Governance Policy Framework</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rhacm-policies.html#policy-framework">Policy Framework</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="rhacm-policies.html#policies">Policies</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="rhacm-policies.html#policy-status">Policy Status</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="rhacm-policies.html#policy-remediation">Policy Remediation</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="rhacm-policies.html#rhacm-policies-takeaways">Takeaways</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="managing-at-scale.html">Managing at Scale</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="managing-at-scale.html#inform-policies">Inform Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="managing-at-scale.html#olm-subscriptions">OLM Subscriptions</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="managing-at-scale.html#cluster-policies">Cluster Policies</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lca.html">Lifecycle Agent Operator (LCA)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#seed-image-generation">Seed Image Generation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-installation">Image Based Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-upgrades">Image Based Upgrades</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lca.html#image-based-upgrades-at-scale">Image Based Upgrades at Scale</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="talm.html">Topology Aware Lifecycle Manager (TALM)</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#inform-policies">Default Inform Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="talm.html#cgu">Cluster Group Upgrade</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="talm.html#autocreation-cgu">Auto Creation of CGUs</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#phase-labels">Phase labels</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#waves">Policy Waves</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="talm.html#sno-upgrades-at-scale">SNO Upgrades at Scale</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="policygen-deepdive.html">PolicyGen Deepdive</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="policygen-deepdive.html#policygen-implementation">PolicyGen Implementation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="policygen-deepdive.html#kustomize-plugins">Kustomize Plugins</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#policy-generator">Policy Generator</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="policygen-deepdive.html#5g-ran-profile">5G RAN Profile</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#workload-partitioning">Workload Partitioning</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#kubelet-tuning">Kubelet Tuning</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#sctp">SCTP</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#hide-container-mount">Container Mount Hiding</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#monitoring-footprint">Monitoring Operator Config</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#ocp-console">Console Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#networking-diags">Networking Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#operatorhub">OperatorHub</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#ptp-operator">PTP Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#sr-iov">SR-IOV</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#nto">Node Tuning Operator</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#local-storage">Local Storage</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#logs">Log Collector and Forwarder</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#crun">crun Container Runtime</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="policygen-deepdive.html#policies-templating">Policies Templating</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="policygen-deepdive.html#custom-policy-templates">Policies Custom Templating</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="policygen-deepdive.html#kustomize-plugins-locally">Running Kustomize Plugins Locally</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="deployment-considerations.html">Deployment Considerations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="deployment-considerations.html#hardware-configurations">Hardware configurations</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="deployment-considerations.html#bios-settings">Bios Settings</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="deployment-considerations.html#networking">Networking</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="deployment-considerations.html#disconnected-environments">Disconnected Environments</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="deployment-considerations.html#connected-proxy">Connected through proxy</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="deployment-considerations.html#fully-disconnected">Fully disconnected</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="deployment-considerations.html#git-repo-structure">Git Repository Structure</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lab-environment-introduction.html">Introduction to the Lab Environment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#git-server">Git Server</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#container-registry">Container Registry</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#openshift-hub-cluster">OpenShift Hub Cluster</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#webserver">HTTP Server</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#s3-storage">S3 Storage Server</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-introduction.html#openshift-seed-sno">OpenShift Seed SNO Cluster</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="preparing-ztp-pipeline.html">Preparing the ZTP GitOps Pipeline</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="preparing-ztp-pipeline.html#introduction-to-clusterinstance">Introduction to the ClusterInstance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="preparing-ztp-pipeline.html#git-repository">Git Repository</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="preparing-ztp-pipeline.html#deploying-ztp-gitops-pipeline">Deploying the ZTP GitOps Pipeline</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html">Crafting the Telco RAN Reference Design Specification</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-common-policies">Crafting Common Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-group-policies">Crafting Group Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-site-policies">Crafting Site Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#adding-custom-policies">Adding Custom Content</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#crafting-testing-policies">Crafting Testing Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#configure-kustomization-for-policies">Configure Kustomization for Policies</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="crafting-cluster-telco-related-infra-operators-configs.html#deploying-policies-using-gitops-pipeline">Deploying the Telco 5G RAN RDS using the ZTP GitOps Pipeline</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html">Deploying an Agent Based Install Cluster</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#baremetal-node-details">Bare Metal Node Details</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#pre-reqs">Deployment Prerequisites</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#clusterinstance">ClusterInstance</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#reference-manifest-clusterinstance">Reference Manifest Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#extra-manifest-clusterinstance">Extra Manifest Configuration</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#preparing-installation">Get Ready for the Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment">Monitoring the Deployment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment-webui">Monitoring the Deployment via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="installing-agentbasedinstall-cluster.html#monitoring-deployment-cli">Monitoring the Deployment via the CLI</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="creating-seed-image.html">Creating the Seed Image</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="creating-seed-image.html#intro-to-seed-image-gen">Introduction to the Seed Image Generation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="creating-seed-image.html#running-seed-image-genn">Running the Seed Image Generation</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item is-current-page" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="installing-imagebaseinstall-cluster.html">Deploying an Image Based Install Cluster</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#introduction">Introduction</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#baremetal-node-details">Bare Metal Node Details</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#creating-the-installation-iso">Creating the Installation ISO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#preinstallation-process">Pre-Installing the Host</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#creating-the-configuration-iso">Creating the Configuration ISO</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#deploying-sno-using-gitops-pipeline">Deploying the SNO Cluster using the ZTP GitOps Pipeline</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#completing-install">Completing the Installation</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#verifying-install">Verifying the RAN DU Configuration</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="check-deployment-is-finished.html">Check SNO Deployment is finished</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-webui">Check SNO Deployment has Finished via the WebUI</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="check-deployment-is-finished.html#check-sno-deployment-cli">Check SNO Deployment has Finished via the CLI</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="using-talm-to-update-clusters.html">Image-based Upgrade for SNO clusters</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#introduction">Introduction to Image-based Upgrades</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#verify-talm">Verifying Hub Software Requirements</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#getting-snos-kubeconfigs">Verifying Managed Clusters Requirements</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#install-lca">Preparing Managed Clusters for Upgrade</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#upgrade-policy-creation">Creating the Image Base Group Upgrade</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="using-talm-to-update-clusters.html#monitoring-ibu">Monitoring the Image Based Group Upgrade </a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="troubleshooting-tips.html">Troubleshooting Tips</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="troubleshooting-tips.html#verification-lab">Verification of the lab status</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="troubleshooting-tips.html#containerized-infra">Containerized Infrastructure Services</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="troubleshooting-tips.html#sno-vms">SNO Virtual Machines</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="troubleshooting-tips.html#hub">Hub cluster</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="troubleshooting-tips.html#dns">DNS resolution</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="troubleshooting-tips.html#policies-blank">Policies not showing in the Governance console</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="troubleshooting-tips.html#policies-not-applied">Policies not applied</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="common-pitfalls.html">Common Pitfalls</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#exec-probes-cpu-pinning">Exec Probes and CPU Pinning</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#energy-saving-hw-profiles">Energy Saving Hardware Profiles</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#secure-boot-oot-unsigned-drivers">Secure Boot and Unsigned OoT Drivers</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#sriov-node-drain">SR-IOV Node Drain</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="common-pitfalls.html#pod-disruption-budgets">Pod Disruption Budgets</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <a class="nav-link" href="closing-thoughts.html">Closing Thoughts</a>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lab-environment-ansible.html">Lab Environment</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-ansible.html#lab-requirements">Lab Requirements</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-ansible.html#role-overview">OCP4 5G RAN Role Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-ansible.html#inventory">Inventory File</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-ansible.html#playbook-run-role">The Playbook</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lab-environment-ansible.html#preworkload-tasks-overview">Pre-Workload Tasks</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment-ansible.html#i#what-preworkload-does">What Pre-Workload Does</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment-ansible.html#key-services-deployed">Key Services Deployed</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment-ansible.html#preworkload-troubleshooting">Troubleshooting</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment-ansible.html#preworkload-time">Time Requirements</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="lab-environment-ansible.html#workload-tasks-overview">Workload Tasks</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment-ansible.html#what-workload-does">What Workload Does</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment-ansible.html#workload-key-components">Key Components Deployed</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment-ansible.html#workload-deployment">Deployment Phases</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment-ansible.html#workload-troubleshooting">Troubleshooting</a>
+  </li>
+  <li class="nav-item" data-depth="3">
+    <a class="nav-link" href="lab-environment-ansible.html#workload-time">Time Requirements</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-ansible.html#next-steps">Next Steps</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="lab-environment-ansible.html#delete-environment">Delete The Environment</a>
+  </li>
+</ul>
+  </li>
+</ul>
+  </li>
+</ul>
+  </nav>
+</div>
+    </div>
+  </aside>
+</div>
+<main class="article">
+<div class="toolbar" role="navigation">
+<button class="nav-toggle"></button>
+<nav class="breadcrumbs" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="welcome.html">LAB - 5G RAN RDS Deployments on OpenShift</a></li>
+    <li><a href="installing-imagebaseinstall-cluster.html">Deploying an Image Based Install Cluster</a></li>
+  </ul>
+</nav>
+  <div class="edit-this-page"><a href="https://github.com/RHsyseng/5g-ran-deployments-on-ocp-lab/edit/lab-4.21/documentation/modules/ROOT/pages/installing-imagebaseinstall-cluster.adoc">Edit this Page</a></div>
+  </div>
+  <div class="content">
+<article class="doc">
+<h1 class="page">Deploying an Image Based Install Cluster</h1>
+<div class="sect1">
+<h2 id="introduction"><a class="anchor" href="#introduction"></a>Introduction</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the previous section, <a href="creating-seed-image.html">Creating the Seed Image</a>, we created a seed image of a Single Node OpenShift cluster, version v4.21.8. This seed image will be used to deploy a new SNO in under 20 minutes. This is why, especially in Telco RAN environments where we manage thousands of clusters, this deployment method is preferred.</p>
+</div>
+<div class="paragraph">
+<p>The following diagram illustrates the process we&#8217;ll follow to deploy and configure the <strong>sno-ibi</strong> OpenShift clusters with the RAN DU profile:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ibi-installation.png" alt="ZTP Workflow 2">
+</div>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A seed image has already been created and stored in our <a href="lab-environment-introduction.html#container-registry">container registry</a>.</p>
+</li>
+<li>
+<p>The appropriate RHCOS images are available on a <a href="lab-environment-introduction.html#webserver">HTTP server</a> deployed in the infrastructure server.</p>
+</li>
+<li>
+<p>The ImageBasedInstallationConfig CR is provided and will be used by the <code>openshift-install</code> binary to create the installation ISO.</p>
+</li>
+<li>
+<p>The installation ISO is remotely mounted to the sno-ibi, and the preinstallation process begins.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Once preinstallation is complete, the sno-ibi will shut down. At this point, in a Telco RAN scenario, the thousands of SNO clusters that were preinstalled at the customer premises would be transported to remote locations. In this lab, once the sno-ibi arrives at the remote location, the SNO is ready to be reconfigured and complete the installation.</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The Image Based Install (IBI) Operator, running in the hub cluster, takes the site-specific configuration resources (<code>ImageClusterInstall</code>, <code>ClusterDeployment</code>, <code>BaremetalHost</code>, etc.) and creates the Configuration ISO.</p>
+</li>
+<li>
+<p>The configuration ISO is mounted in the sno-ibi, and the host is booted.</p>
+</li>
+<li>
+<p>The Lifecycle-Agent Operator, included in the seed image and thus available in the sno-ibi, detects the configuration ISO and starts the reconfiguration process until the OpenShift cluster is fully deployed.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="baremetal-node-details"><a class="anchor" href="#baremetal-node-details"></a>Bare Metal Node Details</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The details for the bare-metal node we want to provision as sno-ibi are as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>RedFish Endpoint: <code>redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno-ibi</code></p>
+</li>
+<li>
+<p>MAC Address: <code>aa:aa:aa:aa:04:01</code></p>
+</li>
+<li>
+<p>Primary disk: <code>/dev/vda</code></p>
+</li>
+<li>
+<p>BMC User: <code>admin</code></p>
+</li>
+<li>
+<p>BMC Password: <code>admin</code></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="creating-the-installation-iso"><a class="anchor" href="#creating-the-installation-iso"></a>Creating the Installation ISO</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>To create the installation ISO, we&#8217;ll first create a working directory on the infrastructure node.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">mkdir -p ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir
+cd ~/5g-deployment-lab/imagebaseinstall/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, create the <code>ImageBasedInstallationConfig</code>. Note that the <code>seedImage</code> spec points to the container registry where the seed image we created was pushed.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir/image-based-installation-config.yaml
+---
+apiVersion: v1beta1
+kind: ImageBasedInstallationConfig
+metadata:
+  name: example-image-based-installation-config
+seedImage: infra.5g-deployment.lab:8443/ibi/lab5gran:v4.21.8
+seedVersion: 4.21.8
+extraPartitionStart: "-60G"
+installationDisk: "/dev/vda"
+sshKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5pFKFLOuxrd9Q/TRu9sRtwGg2PV+kl2MHzBIGUhCcR0LuBJk62XG9tQWPQYTQ3ZUBKb6pRTqPXg+cDu5FmcpTwAKzqgUb6ArnjECxLJzJvWieBJ7k45QzhlZPeiN2Omik5bo7uM/P1YIo5pTUdVk5wJjaMOb7Xkcmbjc7r22xY54cce2Wb7B1QDtLWJkq++eJHSX2GlEjfxSlEvQzTN7m2N5pmoZtaXpLKcbOqtuSQSVKC4XPgb57hgEs/ZZy/LbGGHZyLAW5Tqfk1JCTFGm6Q+oOd3wAOF1SdUxM7frdrN3UOB12u/E6YuAx3fDvoNZvcrCYEpjkfrsjU91oz78aETZV43hOK9NWCOhdX5djA7G35/EMn1ifanVoHG34GwNuzMdkb7KdYQUztvsXIC792E2XzWfginFZha6kORngokZ2DwrzFj3wgvmVyNXyEOqhwi6LmlsYdKxEvUtiYhdISvh2Y9GPrFcJ5DanXe7NVAKXe5CyERjBnxWktqAPBzXJa36FKIlkeVF5G+NWgufC6ZWkDCD98VZDiPP9sSgqZF8bSR4l4/vxxAW4knKIZv11VX77Sa1qZOR9Ml12t5pNGT7wDlSOiDqr5EWsEexga/2s/t9itvfzhcWKt+k66jd8tdws2dw6+8JYJeiBbU63HBjxCX+vCVZASrNBjiXhFw=="
+pullSecret: '{"auths": {"infra.5g-deployment.lab:8443": {"auth": "YWRtaW46cjNkaDR0MSE="}}}'
+ignitionConfigOverride: '{"ignition":{"version":"3.2.0"},"storage":{"files":[{"path":"/etc/containers/policy.json","mode":420,"overwrite":true,"contents":{"source":"data:text/plain;charset=utf-8;base64,ewogICAgImRlZmF1bHQiOiBbCiAgICAgICAgewogICAgICAgICAgICAidHlwZSI6ICJpbnNlY3VyZUFjY2VwdEFueXRoaW5nIgogICAgICAgIH0KICAgIF0sCiAgICAidHJhbnNwb3J0cyI6CiAgICAgICAgewogICAgICAgICAgICAiZG9ja2VyLWRhZW1vbiI6CiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgIiI6IFt7InR5cGUiOiJpbnNlY3VyZUFjY2VwdEFueXRoaW5nIn1dCiAgICAgICAgICAgICAgICB9CiAgICAgICAgfQp9"}}]}}'
+shutdown: true
+imageDigestSources:
+  - mirrors:
+    - infra.5g-deployment.lab:8443/multicluster-engine
+    source: registry.redhat.io/multicluster-engine
+  - mirrors:
+    - infra.5g-deployment.lab:8443/openshift-gitops-1
+    source: registry.redhat.io/openshift-gitops-1
+  - mirrors:
+    - infra.5g-deployment.lab:8443/rh-sso-7
+    source: registry.redhat.io/rh-sso-7
+  - mirrors:
+    - infra.5g-deployment.lab:8443/lvms4
+    source: registry.redhat.io/lvms4
+  - mirrors:
+    - infra.5g-deployment.lab:8443/openshift4
+    source: registry.redhat.io/openshift4
+  - mirrors:
+    - infra.5g-deployment.lab:8443/rhacm2
+    source: registry.redhat.io/rhacm2
+  - mirrors:
+    - infra.5g-deployment.lab:8443/rhel8
+    source: registry.redhat.io/rhel8
+  - mirrors:
+    - infra.5g-deployment.lab:8443/oadp
+    source: registry.redhat.io/oadp
+  - mirrors:
+    - infra.5g-deployment.lab:8443/openshift-logging
+    source: registry.redhat.io/openshift-logging
+  - mirrors:
+    - infra.5g-deployment.lab:8443/rh-osbs
+    source: quay.io/prega/test/rh-osbs
+  - mirrors:
+    - infra.5g-deployment.lab:8443/openshift-release-dev/ocp-v4.0-art-dev
+    - infra.5g-deployment.lab:8443/openshift/release
+    source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+  - mirrors:
+    - infra.5g-deployment.lab:8443/openshift-release-dev
+    source: quay.io/openshift-release-dev
+  - mirrors:
+    - infra.5g-deployment.lab:8443/openshift/release-images
+    source: quay.io/openshift-release-dev/ocp-release
+networkConfig:
+    interfaces:
+      - name: enp3s0
+        type: ethernet
+        state: up
+        ipv4:
+          enabled: true
+          dhcp: true
+          auto-dns: true
+        ipv6:
+          enabled: false
+    routes:
+      config:
+      - destination: 0.0.0.0/0
+        metric: 150
+        next-hop-address: 192.168.125.1
+        next-hop-interface: enp3s0
+additionalTrustBundle: |
+  -----BEGIN CERTIFICATE-----
+  MIIFSzCCAzOgAwIBAgIUEz9Cc3eC77zRr/y6Eg7wPLzjYBswDQYJKoZIhvcNAQEL
+  BQAwIjEgMB4GA1UEAwwXaW5mcmEuNWctZGVwbG95bWVudC5sYWIwIBcNMjIxMTIx
+  MTcwMDIwWhgPMjA1MDA0MDcxNzAwMjBaMCIxIDAeBgNVBAMMF2luZnJhLjVnLWRl
+  cGxveW1lbnQubGFiMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAm/dG
+  FbJkusaOpMlDJ9GJ1+Z3Y2G0/RxVRuqZ5E7ufZk69vp9DaERclN/KwiTNMoRUvcZ
+  gtIj2HAfaN8L7FfwN8qqMfeJg/fdh9X0sqNydMaZ/fSA60LxmUqmU4e7g01obTmH
+  e6j2vjRprDDzfE1683VvgWkecroeG4mujHUUREHs9xfgoW7+nHDpKWZ1vLaZdFKy
+  Zrzz1IBvPo+DxgL+3n8orb0aM3uQdufQ2uHZ2fYrxrKUzIVFv+CTT7ctEG/PjQxJ
+  tjswizCG6Obk9+B3CMp/s6mT6W7P9xzpbW3aRZLMxSR3/lSAxpWTP/57G3ZyXoNJ
+  Cp2UtZEyxRGG1M0f3epzvu4H8JYuXTs/+w6JRLJTN7BF+dThuDKCmbkzq7NzJ/Kq
+  ln3qEvFVgMKLprkY7hzU/e/Egr6QA26c2nvwJ2vV5COJrqaPSq52NubseVGPnK2s
+  kkKWdf4wPwE1/LrbcjxpcUwJysy+oOmowYhx8X8GUUBZk8ejupYkg/gGop2F9JWD
+  sOwmWqRBqn7yKJF4GyJZ0h62xhEfQdBHKub6VLfh6GFNrNHvNpy+DFq3nWGKnV7j
+  y5wxx2bR5exN/qZ8wyaFq5k9tVLFd1CMAzQkWkmT9EpI6y4Ux9tPGXgB6h6yjjnK
+  gxbLH84ejwDaaiSc2NBVP+47b7Vhoiw4++hNBqcCAwEAAaN3MHUwHQYDVR0OBBYE
+  FGQeCqTJ5HZJIXNKx2t7dY+fRYo1MB8GA1UdIwQYMBaAFGQeCqTJ5HZJIXNKx2t7
+  dY+fRYo1MA8GA1UdEwEB/wQFMAMBAf8wIgYDVR0RBBswGYIXaW5mcmEuNWctZGVw
+  bG95bWVudC5sYWIwDQYJKoZIhvcNAQELBQADggIBAEvsOv4uVMHUZrFQrwUYJRV7
+  MC/FB0bgZZ1VhqpL+7+W98+HEYVZRuK9IKjGRfen9wOrLI6hc6zZYOwMDJgfuFwd
+  X6qv/HZKp+TfZrFu1IhgDeTPkJX7t7ECD63BgOSNc8OgmGL34dP5qCB3qaSzuP9x
+  mukIAZyvHwf2ZfWzrpvR9GLzTuh01GHqQyojC9ntWvlzgKec3nZNFt8tWRyMraAr
+  C/a++HeOlZCeRtH9gSOy49H1B7/kfTwFw/Y/h0oVMpH6x8dewyuefe8Q5fvURO3T
+  y4B/esUA9R/h971BGIoYk5pAZAJdkD8GAmegyj47vFg6mw095dwB1eNAD7ddqdQn
+  RCqwrqYEV1TExI23mC0oiDck0RY8FWI+Q034MOnZFn6Dv6EYMF4IBjJIJICMqvSf
+  MA/AXZ111P5/5j+qODTwJ/IDhiT46HMY/SN3MW96uZuJKchJchMNQG+MOuTJb6gd
+  cVVyItPgufANPzlf4GpF0+OaOMRjg2BdeRJKluWhie1rSKT/DpvB9ZBWU6ng/MFa
+  oW5xpMLuZIUF45kP2ZhQhbRA2zjIaZ8XPgaHPNr4INhSW5pqqLISZCJvkMJV07eT
+  s+KzXHlydQpzajOOzwRgq+dIGl6y4GYM1Y0EElHY7S/LvJBNpcw8BDjWmZfpie0y
+  /fp7Z8v3m9S2+TmGjDVC
+  -----END CERTIFICATE-----
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Create the Installation ISO by running the following command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">openshift-install image-based create image --dir ibi-iso-workdir</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Verify that the <strong>rhcos-ibi.iso</strong> image has been created in our working directory:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"> ls -l ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">total 1250304
+-rw-r--r--. 1 root root 1280311296 Feb 25 12:05 rhcos-ibi.iso</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>At this stage, we&#8217;re ready to manually boot the sno-ibi with the Installation ISO we created. First, move the ISO to a location accessible to the host for installation. Let&#8217;s copy it to the <a href="lab-environment-introduction.html#webserver">HTTP server</a> available in our infrastructure:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cp ~/5g-deployment-lab/imagebaseinstall/ibi-iso-workdir/rhcos-ibi.iso /opt/webcache/data/</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="preinstallation-process"><a class="anchor" href="#preinstallation-process"></a>Pre-Installing the Host</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to free-up some resources in our server, let&#8217;s stop the seed cluster now that is not required anymore:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli stop vm sno-seed</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we are ready to boot sno-ibi with the Installation ISO. Run the following command from the infrastructure host:</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+We’re using the <code>kcli</code> tool, a command-line interface for managing virtual machines and bare-metal nodes, to boot the server from the ISO by leveraging the RedFish API. You can boot the server using other methods as needed.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli start baremetal -u admin -p admin -P iso_url=http://192.168.125.1:8080/rhcos-ibi.iso <a href="https://192.168.125.1:9000/redfish/v1/Systems/local/sno-ibi" class="bare">https://192.168.125.1:9000/redfish/v1/Systems/local/sno-ibi</a></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The sno-ibi will then boot and the preinstallation process will start. You can monitor the process by connecting to the sno-ibi via SSH. The output will be similar to the following:</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The pre-installation process is complete once the sno-ibi is automatically powered off.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ssh -i ~/.ssh/snokey core@192.168.125.50</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">journalctl -f</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">...
+Feb 04 10:37:52 ocp-sno-ibi systemd[1]: Starting SNO Image-based Installation...
+Feb 04 10:37:52 ocp-sno-ibi systemd[1]: iscsi.service: Unit cannot be reloaded because it is inactive.
+Feb 04 10:37:53 ocp-sno-ibi systemd[1]: var-lib-containers-storage-overlay-opaque\x2dbug\x2dcheck2861559422-merged.mount: Deactivated successfully.
+Feb 04 10:37:53 ocp-sno-ibi podman[1625]: 2025-02-04 10:37:53.120804852 +0000 UTC m=+0.201463935 system refresh
+Feb 04 10:37:53 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1625]: Trying to pull infra.5g-deployment.lab:8443/ibi/lab5gran:v4.21.8...
+Feb 04 10:37:53 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1625]: Getting image source signatures
+Feb 04 10:37:53 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1625]: Copying blob sha256:93570925bc4c04f7a453bd0eb530ddad84ea634c54defef1ec2a6410ad1eb683
+...
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="IBI preparation process has started"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Start preparing disk"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Cleaning up /dev/vda disk"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Start cleaning up device /dev/vda"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing vgs with args [--noheadings -o vg_name,pv_name]"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing pvs with args [--noheadings -o pv_name]"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing dmsetup with args [ls]"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing mdadm with args [-v --query --detail --scan]"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing wipefs with args [--all --force /dev/vda]"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Writing image to disk"
+Feb 04 10:38:06 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:38:06" level=info msg="Executing coreos-installer with args [install /dev/vda]"
+...
+Feb 04 10:39:43 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:39:43" level=info msg="Precaching imaging"
+Feb 04 10:39:43 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:39:43" level=info msg="Path doesn't exist, skipping chrootpath/host"
+Feb 04 10:39:43 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:39:43Z" level=info msg="Will attempt to pull 84 images"
+Feb 04 10:39:43 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:39:43Z" level=info msg="Configured precaching job to concurrently pull 10 images."
+...
+Feb 04 10:41:22 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:41:22Z" level=info msg="Completed executing pre-caching"
+Feb 04 10:41:22 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:41:22Z" level=info msg="Failed to pre-cache the following images:"
+Feb 04 10:41:22 ocp-sno-ibi systemd[1]: var-lib-containers-storage-overlay.mount: Deactivated successfully.
+Feb 04 10:41:22 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:41:22Z" level=info msg="quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:bcb68cf733405788242e599946ae51e3369edd3ceb6dd57a2a07531d75267f23, but found locally after downloading other images"
+Feb 04 10:41:22 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04T10:41:22Z" level=info msg="Pre-cached images successfully."
+Feb 04 10:41:22 ocp-sno-ibi install-rhcos-and-restore-seed.sh[1795]: time="2025-02-04 10:41:22" level=info msg="Executing ostree with args [admin undeploy --sysroot /mnt 1]"
+Feb 04 10:41:22 ocp-sno-ibi ostree[5337]: Starting syncfs() for system root
+Feb 04 10:41:22 ocp-sno-ibi ostree[5337]: Completed syncfs() for system root in 1 ms
+Feb 04 10:41:22 ocp-sno-ibi ostree[5337]: Starting freeze/thaw cycle for system root
+Feb 04 10:41:22 ocp-sno-ibi ostree[5337]: Completed freeze/thaw cycle for system root in 31 ms
+Feb 04 10:41:22 ocp-sno-ibi ostree[5337]: Bootloader updated; bootconfig swap: yes; bootversion: boot.1.1, deployment count change: -1
+...
+Broadcast message from root@localhost (Tue 2025-02-04 10:41:25 UTC):
+...
+The system will power off now!</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="creating-the-configuration-iso"><a class="anchor" href="#creating-the-configuration-iso"></a>Creating the Configuration ISO</h2>
+<div class="sectionbody">
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<strong>DO NOT</strong> continue with this section until the host has been powered off.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>With the host now powered off, we can complete the installation by reconfiguring the cluster. The Image Based Install (IBI) Operator, running in the hub cluster, is responsible for creating the configuration ISO and booting the host with it attached.</p>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s verify that the IBI Operator is installed and running in the <code>multicluster-engine</code> namespace of the hub cluster:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig get pods -n multicluster-engine -lapp=image-based-install-operator</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                                            READY   STATUS    RESTARTS   AGE
+image-based-install-operator-7f7659f86c-cd46k   2/2     Running   0          5h</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once we&#8217;ve confirmed that the operator is running in our hub cluster, we can start creating the site-specific configuration resources. First, create the target cluster namespace:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno-ibi/ns.yaml
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sno-ibi
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, we need the authentication credentials to pull the seed container image from the registry:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno-ibi/pull-secret.yaml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: disconnected-registry-pull-secret
+  namespace: sno-ibi
+stringData:
+  .dockerconfigjson: '{"auths":{"infra.5g-deployment.lab:8443":{"auth":"YWRtaW46cjNkaDR0MSE="}}}'
+  type: kubernetes.io/dockerconfigjson
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We also need the credentials to access the BMC in order to mount the configuration ISO and boot the node automatically:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno-ibi/bmc-credentials.yaml
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sno-ibi-bmc-credentials
+  namespace: sno-ibi
+data:
+  username: "YWRtaW4="
+  password: "YWRtaW4="
+type: Opaque
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, we must create a <code>ConfigMap</code> resource to define additional manifests for our image-based deployment. Based on our seed image, we have to define:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>The disconnected catalog source that will allow us to install additional operators in the target SNO cluster.</p>
+</li>
+<li>
+<p>The LVMCluster configuration for the LVM Operator. Note that the LVM Operator was included in the seed image.</p>
+</li>
+<li>
+<p>The ImageDigestMirrorSet, which is required in our disconnected environment.</p>
+</li>
+</ul>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+Remember that, during seed image generation, the catalog sources are removed from the seed image. Also, the LVMCluster CR is not allowed to exist in the seed cluster; it has to be added during the reconfiguration process. More information on the prerequisites for generating a seed image can be found <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/edge_computing/image-based-installation-for-single-node-openshift#ibi-preparing-for-image-based-install">here</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno-ibi/ibi_extra_manifests.yaml
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: disconnected-ran-config
+  namespace: sno-ibi
+data:
+  redhat-operator-index.yaml: |
+    apiVersion: operators.coreos.com/v1alpha1
+    kind: CatalogSource
+    metadata:
+      annotations:
+        target.workload.openshift.io/management: '{"effect": "PreferredDuringScheduling"}'
+      name: redhat-operator-index
+      namespace: openshift-marketplace
+    spec:
+      displayName: default-cat-source
+      image: infra.5g-deployment.lab:8443/redhat/redhat-operator-index:v4.21-1777899690
+      publisher: Red Hat
+      sourceType: grpc
+      updateStrategy:
+        registryPoll:
+          interval: 1h
+  lvmcluster.yaml: |
+    apiVersion: lvm.topolvm.io/v1alpha1
+    kind: LVMCluster
+    metadata:
+      name: lvmcluster
+      namespace: openshift-storage
+    spec:
+      storage:
+        deviceClasses:
+        - deviceSelector:
+            paths:
+            - /dev/vdb
+          fstype: xfs
+          name: vg1
+          thinPoolConfig:
+            chunkSizeCalculationPolicy: Static
+            metadataSizeCalculationPolicy: Host
+            name: thin-pool-1
+            overprovisionRatio: 10
+            sizePercent: 90
+  ImageDigestSources.yaml: |
+    apiVersion: config.openshift.io/v1
+    kind: ImageDigestMirrorSet
+    metadata:
+      name: image-digest-mirror
+    spec:
+      imageDigestMirrors:
+      - mirrors:
+        - infra.5g-deployment.lab:8443/openshift4
+        source: registry.redhat.io/openshift4
+      - mirrors:
+        - infra.5g-deployment.lab:8443/rhacm2
+        source: registry.redhat.io/rhacm2
+      - mirrors:
+        - infra.5g-deployment.lab:8443/rhceph
+        source: registry.redhat.io/rhceph
+      - mirrors:
+        - infra.5g-deployment.lab:8443/rhel8
+        source: registry.redhat.io/rhel8
+      - mirrors:
+        - infra.5g-deployment.lab:8443/rh-sso-7
+        source: registry.redhat.io/rh-sso-7
+      - mirrors:
+        - infra.5g-deployment.lab:8443/odf4
+        source: registry.redhat.io/odf4
+      - mirrors:
+        - infra.5g-deployment.lab:8443/multicluster-engine
+        source: registry.redhat.io/multicluster-engine
+      - mirrors:
+        - infra.5g-deployment.lab:8443/openshift-gitops-1
+        source: registry.redhat.io/openshift-gitops-1
+      - mirrors:
+        - infra.5g-deployment.lab:8443/lvms4
+        source: registry.redhat.io/lvms4
+      - mirrors:
+        - infra.5g-deployment.lab:8443/rh-osbs
+        source: quay.io/prega/test/rh-osbs
+      - mirrors:
+        - infra.5g-deployment.lab:8443/oadp
+        source: registry.redhat.io/oadp
+      - mirrors:
+        - infra.5g-deployment.lab:8443/openshift-logging
+        source: registry.redhat.io/openshift-logging
+      - mirrors:
+        - infra.5g-deployment.lab:8443/openshift/release
+        source: quay.io/openshift-release-dev/ocp-v4.0-art-dev
+      - mirrors:
+        - infra.5g-deployment.lab:8443/openshift/release-images
+        source: quay.io/openshift-release-dev/ocp-release
+    status: {}
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, add the Kustomization files so that the previous manifests can be applied using a ZTP GitOps workflow.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/sno-ibi/kustomization.yaml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - bmc-credentials.yaml
+  - pull-secret.yaml
+  - ns.yaml
+  - ibi_extra_manifests.yaml
+EOF</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt;EOF &gt; ~/5g-deployment-lab/ztp-repository/site-configs/pre-reqs/kustomization.yaml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - sno-abi/
+  - sno-ibi/
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Eventually, let&#8217;s create the ClusterInstance CR, which is an abstraction layer on top of the different components managed by the SiteConfig Operator used to deploy an OpenShift cluster. Note that in this installation we are using the Image Based Installation flow. We can see that by checking the <code>templateRefs</code> specifications: <code>ibi-node-templates-v1</code> and <code>ibi-cluster-templates-v1</code>, which are the default templates for IBI.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+The SiteConfig Operator transforms the ClusterInstance CR into multiple Installation Manifests, as detailed in the <a href="ztp-workflow.html#ibi-deployment">Image Based Installation</a> section. With some of those manifests that define site-specific resources, the IBI operator creates a configuration ISO to start the reconfiguration process.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; 'EOF' &gt; ~/5g-deployment-lab/ztp-repository/site-configs/hub-1/ocp-sno-ibi.yaml
+---
+apiVersion: siteconfig.open-cluster-management.io/v1alpha1
+kind: ClusterInstance
+metadata:
+  name: "ocp-sno-ibi"
+  namespace: "sno-ibi"
+spec:
+  additionalNTPSources:
+    - "clock.corp.redhat.com"
+  baseDomain: "5g-deployment.lab"
+  # The active-ocp-version" points to a ClusterImageSet resource, which defines the specific OpenShift release image (e.g., v4.21.8) that the cluster should be deployed with. This abstraction allows for easier management of OpenShift versions.
+  clusterImageSetNameRef: "active-ocp-version"
+  clusterName: "sno-ibi"
+  clusterNetwork:
+    - cidr: "10.128.0.0/14"
+      hostPrefix: 23
+  cpuPartitioningMode: AllNodes
+  extraAnnotations:
+    ImageClusterInstall:
+      imageclusterinstall.extensions.hive.openshift.io/install-timeout: "3h"
+  extraLabels:
+    ManagedCluster:
+      common: "ocp421"
+      logicalGroup: "active"
+      group-du-sno: ""
+      du-site: "sno-ibi"
+      hardware-type: "hw-type-platform-1"
+  holdInstallation: false
+  extraManifestsRefs:
+    - name: disconnected-ran-config
+  machineNetwork:
+    - cidr: "192.168.125.0/24"
+  networkType: "OVNKubernetes"
+  pullSecretRef:
+    name: "disconnected-registry-pull-secret"
+  serviceNetwork:
+    - cidr: "172.30.0.0/16"
+  sshPublicKey: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC5pFKFLOuxrd9Q/TRu9sRtwGg2PV+kl2MHzBIGUhCcR0LuBJk62XG9tQWPQYTQ3ZUBKb6pRTqPXg+cDu5FmcpTwAKzqgUb6ArnjECxLJzJvWieBJ7k45QzhlZPeiN2Omik5bo7uM/P1YIo5pTUdVk5wJjaMOb7Xkcmbjc7r22xY54cce2Wb7B1QDtLWJkq++eJHSX2GlEjfxSlEvQzTN7m2N5pmoZtaXpLKcbOqtuSQSVKC4XPgb57hgEs/ZZy/LbGGHZyLAW5Tqfk1JCTFGm6Q+oOd3wAOF1SdUxM7frdrN3UOB12u/E6YuAx3fDvoNZvcrCYEpjkfrsjU91oz78aETZV43hOK9NWCOhdX5djA7G35/EMn1ifanVoHG34GwNuzMdkb7KdYQUztvsXIC792E2XzWfginFZha6kORngokZ2DwrzFj3wgvmVyNXyEOqhwi6LmlsYdKxEvUtiYhdISvh2Y9GPrFcJ5DanXe7NVAKXe5CyERjBnxWktqAPBzXJa36FKIlkeVF5G+NWgufC6ZWkDCD98VZDiPP9sSgqZF8bSR4l4/vxxAW4knKIZv11VX77Sa1qZOR9Ml12t5pNGT7wDlSOiDqr5EWsEexga/2s/t9itvfzhcWKt+k66jd8tdws2dw6+8JYJeiBbU63HBjxCX+vCVZASrNBjiXhFw=="
+  # override required for rhcos 419.9.16
+  ignitionConfigOverride: '{"ignition":{"version":"3.2.0"},"storage":{"files":[{"path":"/etc/containers/policy.json","mode":420,"overwrite":true,"contents":{"source":"data:text/plain;charset=utf-8;base64,ewogICAgImRlZmF1bHQiOiBbCiAgICAgICAgewogICAgICAgICAgICAidHlwZSI6ICJpbnNlY3VyZUFjY2VwdEFueXRoaW5nIgogICAgICAgIH0KICAgIF0sCiAgICAidHJhbnNwb3J0cyI6CiAgICAgICAgewogICAgICAgICAgICAiZG9ja2VyLWRhZW1vbiI6CiAgICAgICAgICAgICAgICB7CiAgICAgICAgICAgICAgICAgICAgIiI6IFt7InR5cGUiOiJpbnNlY3VyZUFjY2VwdEFueXRoaW5nIn1dCiAgICAgICAgICAgICAgICB9CiAgICAgICAgfQp9"}}]}}'
+  templateRefs:
+    - name: ibi-cluster-templates-v1
+      namespace: open-cluster-management
+  nodes:
+    - automatedCleaningMode: "disabled"
+      bmcAddress: "redfish-virtualmedia://192.168.125.1:9000/redfish/v1/Systems/local/sno-ibi"
+      bmcCredentialsName:
+        name: "sno-ibi-bmc-credentials"
+      bootMACAddress: "AA:AA:AA:AA:04:01"
+      bootMode: "UEFI"
+      hostName: "ocp-sno-ibi.sno-ibi.5g-deployment.lab"
+      nodeNetwork:
+        interfaces:
+          - name: "enp3s0"
+            macAddress: "AA:AA:AA:AA:04:01"
+        config:
+          interfaces:
+            - name: enp3s0
+              type: ethernet
+              state: up
+              ipv4:
+                enabled: true
+                dhcp: true
+              ipv6:
+                enabled: false
+      role: "master"
+      rootDeviceHints:
+        deviceName: "/dev/vda"
+      templateRefs:
+        - name: ibi-node-templates-v1
+          namespace: open-cluster-management
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Add the Kustomization file to pull the <code>ClusterInstance</code> that was recently created:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cat &lt;&lt; 'EOF' &gt; ~/5g-deployment-lab/ztp-repository/site-configs/kustomization.yaml
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - pre-reqs/
+  - resources/
+  - hub-1/ocp-sno-abi.yaml
+  - hub-1/ocp-sno-ibi.yaml
+
+configMapGenerator:
+  - files:
+    - reference-manifest/4.21/01-container-mount-ns-and-kubelet-conf-master.yaml
+    - reference-manifest/4.21/01-container-mount-ns-and-kubelet-conf-worker.yaml
+    - reference-manifest/4.21/01-disk-encryption-pcr-rebind-master.yaml
+    - reference-manifest/4.21/01-disk-encryption-pcr-rebind-worker.yaml
+    - reference-manifest/4.21/03-sctp-machine-config-master.yaml
+    - reference-manifest/4.21/03-sctp-machine-config-worker.yaml
+    - reference-manifest/4.21/06-kdump-master.yaml
+    - reference-manifest/4.21/06-kdump-worker.yaml
+    - reference-manifest/4.21/07-sriov-related-kernel-args-master.yaml
+    - reference-manifest/4.21/07-sriov-related-kernel-args-worker.yaml
+    - reference-manifest/4.21/08-set-rcu-normal-master.yaml
+    - reference-manifest/4.21/08-set-rcu-normal-worker.yaml
+    - reference-manifest/4.21/09-openshift-marketplace-ns.yaml
+    - reference-manifest/4.21/10-rename-gnrd-interfaces-master.yaml
+    - reference-manifest/4.21/10-rename-gnrd-interfaces-worker.yaml
+    - reference-manifest/4.21/99-sync-time-once-master.yaml
+    - reference-manifest/4.21/99-sync-time-once-worker.yaml
+    - hub-1/extra-manifest/enable-crun-master.yaml
+    - hub-1/extra-manifest/enable-crun-worker.yaml
+    name: ran-rds-421-manifests
+    namespace: sno-abi
+
+generatorOptions:
+  disableNameSuffixHash: true
+EOF</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally, commit all these changes to our <a href="lab-environment-introduction.html#git-server">Git Server</a> repository.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/5g-deployment-lab/ztp-repository/site-configs/
+git add --all
+git commit -m 'Added SNO IBI cluster using image-based install flow'
+git push origin main
+cd ~</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="deploying-sno-using-gitops-pipeline"><a class="anchor" href="#deploying-sno-using-gitops-pipeline"></a>Deploying the SNO Cluster using the ZTP GitOps Pipeline</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>When we applied the ZTP GitOps Pipeline configuration in the last section, the <code>clusters</code> ArgoCD application was configured to automatically synchronize the committed changes. This means that ArgoCD should have started deploying the cluster. Let&#8217;s check Argo CD to see what has happened.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Log in to <a href="https://openshift-gitops-server-openshift-gitops.apps.hub.5g-deployment.lab/">Argo CD</a>.</p>
+</li>
+<li>
+<p>When accessing, choose <code>Log in with OpenShift</code>. On the next screen, use the OpenShift Console Admin credentials.</p>
+</li>
+<li>
+<p>You should see the following applications:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argocd-apps.png" alt="ArgoCD Apps">
+</div>
+</div>
+</li>
+<li>
+<p>From all these apps, the ones related to the ZTP GitOps Pipeline are <code>clusters</code> and <code>policies</code>. If we click on <code>clusters</code>, we will see the following screen:</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ibi-cluster-app-sno-ibi.png" alt="ArgoCD Clusters App">
+</div>
+</div>
+</li>
+<li>
+<p>You can see how the pipeline created all the required objects to get <code>sno-ibi</code> deployed. Notice also that the <code>sno-abi</code> objects are present from the <a href="installing-agentbasedinstall-cluster.html#deploying-sno-using-gitops-pipeline">previous configuration</a>.</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="completing-install"><a class="anchor" href="#completing-install"></a>Completing the Installation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With the changes committed and pushed to the Git repository, the <a href="ocp-gitops.html">OpenShift GitOps</a> operator takes over to reconcile them. Now, let&#8217;s monitor the status of the reconfiguration process. Use the following command to track progress from the hub cluster. Notice the <code>dataimage</code> object, which contains information about the configuration ISO created in the previous section, <a href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">Creating the Configuration ISO</a>.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno-ibi get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAMESPACE   NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
+sno-ibi        baremetalhost.metal3.io/ocp-sno-ibi   externally provisioned              true             35s
+
+NAME                                                             PAUSED   PROVISIONSTATUS   PROVISIONDETAILS         AGE
+clusterinstance.siteconfig.open-cluster-management.io/ocp-sno-ibi            Completed         Provisioning completed   9h
+
+NAMESPACE   NAME                                       INFRAID                                PLATFORM          REGION   VERSION       CLUSTERTYPE   PROVISIONSTATUS   POWERSTATE   AGE
+sno-ibi        clusterdeployment.hive.openshift.io/sno-ibi   sno-ibi-zrts7                             none-platform                                          Provisioning                   35s
+
+NAMESPACE   NAME                                                    REQUIREMENTSMET           COMPLETED                      BAREMETALHOSTREF
+sno-ibi        imageclusterinstall.extensions.hive.openshift.io/sno-ibi   HostValidationSucceeded   ClusterInstallationInProgress   ocp-sno-ibi
+
+NAMESPACE   NAME                           AGE
+sno-ibi        dataimage.metal3.io/ocp-sno-ibi   34s</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also observe the progress from the Red Hat ACM console in the hub cluster.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ibi-acm-reconfig01.png" alt="IBI Installation in ACM">
+</div>
+</div>
+<div class="paragraph">
+<p>To check the OpenShift installation progress in the target cluster, we need the <code>sno-ibi</code> credentials. Obtain them from the hub cluster using this command:</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The command below may timeout if the SNO API is still starting, give it up to 10 minutes for the API to start responding.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno-ibi extract secret/sno-ibi-admin-kubeconfig --to=- &gt; ~/ibi-cluster-kubeconfig</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now that we have the <code>sno-ibi</code> admin credentials, let&#8217;s examine the current status of the cluster and how the various cluster operators are advancing:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/ibi-cluster-kubeconfig get clusterversion,nodes,mcp,co</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                                         VERSION	   AVAILABLE   PROGRESSING   SINCE   STATUS
+clusterversion.config.openshift.io/version   4.21.8   False       False         4h54m   Error while reconciling 4.21.8: an unknown error has occurred: MultipleErrors
+
+NAME                                   STATUS   ROLES                         AGE     VERSION
+node/ocp-sno-ibi.sno-ibi.5g-deployment.lab   Ready    control-plane,master,worker   6m40s   v1.34.5
+
+NAME                                                         CONFIG                                             UPDATED   UPDATING   DEGRADED   MACHINECOUNT   READYMACHINECOUNT   UPDATEDMACHINECOUNT   DEGRADEDMACHINECOUNT   AGE
+machineconfigpool.machineconfiguration.openshift.io/master   rendered-master-484df4de53ef04b47b119185a6025d18   True	  False      False	1              1                   1                     0                      5h14m
+machineconfigpool.machineconfiguration.openshift.io/worker   rendered-worker-ca41ad0a46d9e710d6540dafbcbbb473   True	  False      False	0              0                   0                     0                      5h14m
+
+NAME                                                                           VERSION       AVAILABLE   PROGRESSING   DEGRADED   SINCE   MESSAGE
+clusteroperator.config.openshift.io/authentication                             4.21.8   False	 False         True	  5m39s   OAuthServerRouteEndpointAccessibleControllerAvailable: Get "https://oauth-openshift.apps.sno-ibi.5g-deployment.lab/healthz": EOF
+clusteroperator.config.openshift.io/config-operator                            4.21.8   True        False         False	  5h14m
+clusteroperator.config.openshift.io/dns                                        4.21.8   True        False         False	  5m25s
+clusteroperator.config.openshift.io/etcd                                       4.21.8   True        False         False	  5h5m
+clusteroperator.config.openshift.io/ingress                                    4.21.8   True        False         True	  5m38s   The "default" ingress controller reports Degraded=True: DegradedConditions: One or more other status
+ conditions indicate a degraded state: CanaryChecksSucceeding=Unknown (CanaryRouteNotAdmitted: Canary route is not admitted by the default ingress controller)
+clusteroperator.config.openshift.io/kube-apiserver                             4.21.8   True        False         False	  4h54m
+clusteroperator.config.openshift.io/kube-controller-manager                    4.21.8   True        False         False	  4h57m
+clusteroperator.config.openshift.io/kube-scheduler                             4.21.8   True        False         False	  5h2m
+clusteroperator.config.openshift.io/kube-storage-version-migrator              4.21.8   True        False         False	  5h14m
+clusteroperator.config.openshift.io/machine-approver                           4.21.8   True        False         False	  5h14m
+clusteroperator.config.openshift.io/machine-config                             4.21.8   True        False         False	  5h14m
+clusteroperator.config.openshift.io/monitoring                                 4.21.8   True        False         False	  4h57m
+clusteroperator.config.openshift.io/network                                    4.21.8   True        False         False	  5h14m
+clusteroperator.config.openshift.io/node-tuning                                4.21.8   True        False         False	  5m38s
+clusteroperator.config.openshift.io/openshift-apiserver                        4.21.8   True        False         False	  5m32s
+clusteroperator.config.openshift.io/openshift-controller-manager               4.21.8   True        False         False	  5m22s
+clusteroperator.config.openshift.io/operator-lifecycle-manager                 4.21.8   True        False         False	  5h14m
+clusteroperator.config.openshift.io/operator-lifecycle-manager-catalog         4.21.8   True        False         False	  5h14m
+clusteroperator.config.openshift.io/operator-lifecycle-manager-packageserver   4.21.8   True        False         False	  5m31s
+clusteroperator.config.openshift.io/service-ca                                 4.21.8   True        False         False	  5h14m</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The installation process typically takes less than <strong>10 minutes</strong>. You can confirm that the reconfiguration was successful by running the following command from the hub cluster.</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+Verify that the <code>clusterInstance</code> is shown as "Provisioning completed", the <code>imageclusterinstall</code> status is ClusterInstallationSucceeded, and the <code>clusterdeployment</code> is Provisioned.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/hub-kubeconfig -n sno-ibi get bmh,clusterinstance,clusterdeployment,imageclusterinstall,dataimage</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                               STATE                    CONSUMER   ONLINE   ERROR   AGE
+baremetalhost.metal3.io/ocp-sno-ibi   externally provisioned              true             32m
+
+NAME                                                             PAUSED   PROVISIONSTATUS   PROVISIONDETAILS         AGE
+clusterinstance.siteconfig.open-cluster-management.io/ocp-sno-ibi            Completed         Provisioning completed   32m
+
+NAME                                       INFRAID      PLATFORM        REGION   VERSION       CLUSTERTYPE   PROVISIONSTATUS   POWERSTATE   AGE
+clusterdeployment.hive.openshift.io/sno-ibi   sno-ibi-vcd52   none-platform            4.21.8                 Provisioned       Running      32m
+
+NAME                                                    REQUIREMENTSMET           COMPLETED                      BAREMETALHOSTREF
+imageclusterinstall.extensions.hive.openshift.io/sno-ibi   HostValidationSucceeded   ClusterInstallationSucceeded   ocp-sno-ibi
+
+NAME                           AGE
+dataimage.metal3.io/ocp-sno-ibi   32m</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Red Hat ACM console will also reflect that the <code>sno-ibi</code> OpenShift cluster is Ready:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ibi-acm-reconfig02.png" alt="IBI Installation Completed">
+</div>
+</div>
+<div class="paragraph">
+<p>The add-ons applied via the <code>KlusterletAddonConfig</code> CR are installed and available as well:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/ibi-acm-reconfig03.png" alt="IBI Add-ons Installed">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="verifying-install"><a class="anchor" href="#verifying-install"></a>Verifying the RAN DU Configuration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>As explained in the <a href="ztp-workflow.html">ZTP Workflow</a> section, the process culminates with the CNF workload deployed and running on the site nodes. While the workload isn&#8217;t yet deployed, the foundation is set with the <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/scalability_and_performance/telco-ran-du-ref-design-specs#telco-ran-du-reference-configuration-crs">Telco RAN DU reference configuration</a> applied.</p>
+</div>
+<div class="paragraph">
+<p>First, confirm that OpenShift, specifically the platform, is installed with version 4.21.8:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/ibi-cluster-kubeconfig get clusterversion,nodes</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                                         VERSION       AVAILABLE   PROGRESSING   SINCE   STATUS
+clusterversion.config.openshift.io/version   4.21.8   True        False         6h4m    Cluster version is 4.21.8
+
+NAME                                   STATUS   ROLES                         AGE   VERSION
+node/ocp-sno-ibi.sno-ibi.5g-deployment.lab   Ready    control-plane,master,worker   32m   v1.34.5</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check the installed operators. These operators were included in the seed image:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/ibi-cluster-kubeconfig get operators</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                                                      AGE
+cluster-logging.openshift-logging                         3h51m
+lifecycle-agent.openshift-lifecycle-agent                 3h51m
+lvms-operator.openshift-storage                           3h51m
+ptp-operator.openshift-ptp                                3h51m
+redhat-oadp-operator.openshift-adp                        3h51m
+sriov-network-operator.openshift-sriov-network-operator   3h51m</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Verify that the LVMS Operator is ready to provision persistent storage for the cluster. Recall that we added an <a href="installing-imagebaseinstall-cluster.html#creating-the-configuration-iso">extra-manifest</a> in the form of a <code>ConfigMap</code> to our image-based installation to configure it.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/ibi-cluster-kubeconfig get sc,lvmcluster -A</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                                   PROVISIONER   RECLAIMPOLICY   VOLUMEBINDINGMODE      ALLOWVOLUMEEXPANSION   AGE
+storageclass.storage.k8s.io/lvms-vg1   topolvm.io    Delete          WaitForFirstConsumer   true                   32m
+
+NAMESPACE           NAME                                   STATUS
+openshift-storage   lvmcluster.lvm.topolvm.io/lvmcluster   Ready</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Confirm that the SR-IOV interfaces are ready for use by our CNFs and that the performance profile has been applied:</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+The SR-IOV configuration was included in the seed cluster because the hardware of both the seed and target clusters was identical. If the SR-IOV configuration differs, it can be included as another extra-manifest, similar to how the LVM operator was reconfigured. Further information can be found <a href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.21/html/edge_computing/image-based-installation-for-single-node-openshift#ibi-create-extra-manifest-configmap_ibi-edge-image-based-install">here</a>.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/ibi-cluster-kubeconfig describe node | grep Allocatable: -A10</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Allocatable:
+  cpu:                                     8
+  ephemeral-storage:                       56362847342
+  hugepages-1Gi:                           4Gi
+  hugepages-2Mi:                           0
+  management.workload.openshift.io/cores:  12k
+  memory:                                  13530204Ki
+  openshift.io/virt-enp4s0:                2 // 2x sr-iov vf
+  openshift.io/virt-enp5s0:                2 // 2x sr-iov vf
+  pods:                                    250</code></pre>
+</div>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc --kubeconfig ~/ibi-cluster-kubeconfig get performanceprofile</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                                 AGE
+openshift-node-performance-profile   6h24m</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>At this point, the <code>sno-ibi</code> is deployed and configured with the RAN DU profile, making it ready to run telco CNF applications.</p>
+</div>
+</div>
+</div>
+<nav class="pagination">
+  <span class="prev"><a href="creating-seed-image.html">Creating the Seed Image</a></span>
+  <span class="next"><a href="check-deployment-is-finished.html">Check SNO Deployment is finished</a></span>
+</nav>
+</article>
+<aside class="toc sidebar" data-title="Contents" data-levels="2">
+  <div class="toc-menu"></div>
+</aside>
+  </div>
+</main>
+</div>
+<footer class="footer">
+  <a class="rhd-logo" href="https://redhat.com" target="_blank"></div>
+</footer>
+<script src="../_/js/vendor/clipboard.js"></script>
+<script src="../_/js/site.js"></script>
+<script async src="../_/js/vendor/highlight.js"></script>
+  </body>
+</html>
