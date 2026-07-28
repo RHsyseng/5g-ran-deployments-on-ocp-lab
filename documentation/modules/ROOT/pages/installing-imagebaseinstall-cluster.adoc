@@ -211,7 +211,7 @@ kcli start baremetal -u admin -p admin -P iso_url=http://192.168.125.1:8080/rhco
 
 The sno-ibi will then boot and the preinstallation process will start. You can monitor the process by connecting to the sno-ibi via SSH. The output will be similar to the following:
 
-WARNING: The pre-installation process is complete once the sno-ibi is automatically powered off.
+WARNING: The pre-installation process is complete once the sno-ibi is automatically powered off. Do **not** create or push the ClusterInstance / site-config manifests until that power-off happens; doing so attaches the configuration ISO too early and leaves the disk unbootable.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -223,6 +223,20 @@ ssh -i ~/.ssh/snokey core@192.168.125.50
 [source,bash,subs="attributes+,+macros"]
 -----
 journalctl -f
+-----
+
+You can also confirm the host is powered off from the infrastructure node before continuing:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+-----
+kcli list vm | grep sno-ibi
+-----
+
+[.console]
+[source,bash,subs="attributes+,+macros"]
+-----
+|    sno-ibi     |  down  |                |                                             | hub  |  kvirt  |
 -----
 
 [.console]
