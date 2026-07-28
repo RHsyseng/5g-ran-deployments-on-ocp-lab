@@ -418,33 +418,6 @@ EOF
 
 We also need to backup the monitoring configuration since the seed image doesn't include the alertmanager configuration for sending alerts to the hub.
 
-IMPORTANT: ACM Observability creates the Alertmanager secrets in `openshift-monitoring` with a suffix derived from the hub cluster ID. The Lifecycle Agent `lca.openshift.io/apply-label` annotation expects the unsuffixed names, so create aliases from the suffixed secrets:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-oc --kubeconfig {abi-cluster-kubeconfig} get secrets -n openshift-monitoring | grep -E 'observability-alertmanager-accessor|hub-alertmanager-router-ca'
------
-
-[.console]
-[source,bash,subs="attributes+,+macros"]
------
-hub-alertmanager-router-ca-{hub-cluster-id-nosep}            Opaque                                1      97m
-observability-alertmanager-accessor-{hub-cluster-id-nosep}   Opaque                                1      97m
------
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
------
-# Repeat for both managed clusters ({abi-cluster-kubeconfig} and {ibi-cluster-kubeconfig})
-oc --kubeconfig {abi-cluster-kubeconfig} get secret observability-alertmanager-accessor-{hub-cluster-id-nosep} -n openshift-monitoring -o json | \
-  jq 'del(.metadata.resourceVersion,.metadata.uid,.metadata.creationTimestamp,.metadata.ownerReferences) | .metadata.name="observability-alertmanager-accessor"' | \
-  oc --kubeconfig {abi-cluster-kubeconfig} apply -f -
-oc --kubeconfig {abi-cluster-kubeconfig} get secret hub-alertmanager-router-ca-{hub-cluster-id-nosep} -n openshift-monitoring -o json | \
-  jq 'del(.metadata.resourceVersion,.metadata.uid,.metadata.creationTimestamp,.metadata.ownerReferences) | .metadata.name="hub-alertmanager-router-ca"' | \
-  oc --kubeconfig {abi-cluster-kubeconfig} apply -f -
------
-
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 -----

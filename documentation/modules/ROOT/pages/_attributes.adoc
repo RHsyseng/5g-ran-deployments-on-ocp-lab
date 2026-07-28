@@ -28,8 +28,6 @@ code:experimental:
 :hub_admin_password: admin_password_here
 :hub-cluster-ocp-version: v4.21.8
 :hub-cluster-kubeversion: v1.34.5
-// ACM observability secrets on spokes are suffixed with the hub cluster ID (UUID without hyphens, truncated)
-:hub-cluster-id-nosep: 2a9c5b6e57324cb6a02
 :sno-cluster-version1: v4.21.8
 :sno-cluster-version2: v4.21.10
 :sno-seed-version: v4.21.8
