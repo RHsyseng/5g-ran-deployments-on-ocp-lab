@@ -1081,7 +1081,7 @@ We’re using the <code>kcli</code> tool, a command-line interface for managing 
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-The pre-installation process is complete once the sno-ibi is automatically powered off.
+The pre-installation process is complete once the sno-ibi is automatically powered off. Do <strong>not</strong> create or push the ClusterInstance / site-config manifests until that power-off happens; doing so attaches the configuration ISO too early and leaves the disk unbootable.
 </td>
 </tr>
 </table>
@@ -1094,6 +1094,19 @@ The pre-installation process is complete once the sno-ibi is automatically power
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">journalctl -f</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You can also confirm the host is powered off from the infrastructure node before continuing:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kcli list vm | grep sno-ibi</code></pre>
+</div>
+</div>
+<div class="listingblock console">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">|    sno-ibi     |  down  |                |                                             | hub  |  kvirt  |</code></pre>
 </div>
 </div>
 <div class="listingblock console">
