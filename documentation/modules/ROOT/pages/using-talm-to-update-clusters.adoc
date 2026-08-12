@@ -431,13 +431,14 @@ metadata:
     velero.io/storage-location: default
   namespace: openshift-adp
   annotations:
-    # Below annotation makes LCA label the configmap and adds a label selector to the backup
-    lca.openshift.io/apply-label: v1/configmaps/openshift-monitoring/cluster-monitoring-config,v1/secrets/openshift-monitoring/observability-alertmanager-accessor,v1/secrets/openshift-monitoring/hub-alertmanager-router-ca
+    # Below annotation makes LCA label the configmap and adds a label selector to the backup (since we have secrets with dynamic names we need to backup everything for now)
+    # lca.openshift.io/apply-label: v1/configmaps/openshift-monitoring/cluster-monitoring-config,v1/secrets/openshift-monitoring/observability-alertmanager-accessor,v1/secrets/openshift-monitoring/hub-alertmanager-router-ca
 spec:
   includedNamespaces:
   - openshift-monitoring
   includedNamespaceScopedResources:
   - configmaps
+  - secrets
   excludedNamespaceScopedResources: []
 ---
 apiVersion: velero.io/v1
