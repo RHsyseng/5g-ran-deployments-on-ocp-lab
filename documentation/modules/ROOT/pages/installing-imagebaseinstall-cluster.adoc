@@ -743,7 +743,7 @@ clusteroperator.config.openshift.io/operator-lifecycle-manager-packageserver   {
 clusteroperator.config.openshift.io/service-ca                                 {sno-cluster-version1-cvo}   True        False         False	  5h14m
 -----
 
-The installation process typically takes less than *10 minutes*. You can confirm that the reconfiguration was successful by running the following command from the hub cluster.
+In a real baremetal environment, the installation process typically takes less than *10 minutes*. In this lab, it can take up to 1h (due to disk I/O limitations). You can confirm that the reconfiguration was successful by running the following command from the hub cluster.
 
 WARNING: Verify that the `clusterInstance` is shown as "Provisioning completed", the `imageclusterinstall` status is ClusterInstallationSucceeded, and the `clusterdeployment` is Provisioned.
 
